@@ -29,7 +29,6 @@
 
 html,
 body {
-  height: 100dvh; /* 뷰포트 단위 높이 확보 */
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* 가로 스크롤 방지 */
@@ -52,9 +51,9 @@ body {
 */
 body {
   min-height: 100dvh;
-  height: 100%;
   overflow-x: hidden;
   line-height: 1;
+  background: #f5f5f5; /* PC에서 볼 때 바깥 배경 */
 }
 
 menu,
