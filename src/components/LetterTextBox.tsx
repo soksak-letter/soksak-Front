@@ -2,15 +2,12 @@ import { useState, type ChangeEvent } from 'react';
 
 const LetterTextBox = () => {
   const [title, setTitle] = useState('');
+  const [titleTouched, setTitleTouched] = useState(false);
   const [context, setContext] = useState('');
+
   const LENGTH = {
-    TITLE: {
-      MIN: 3,
-      MAX: 20,
-    },
-    CONTENT: {
-      MAX: 500,
-    },
+    TITLE: { MIN: 3, MAX: 20 },
+    CONTENT: { MAX: 500 },
   } as const;
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,18 +20,23 @@ const LetterTextBox = () => {
     setContext(next.length <= LENGTH.CONTENT.MAX ? next : next.slice(0, LENGTH.CONTENT.MAX));
   };
 
-  // const isTitleValid =
-  //   title.length === 0 || (title.length >= LENGTH.TITLE.MIN && title.length <= LENGTH.TITLE.MAX);
+  const titleTooShort = title.length > 0 && title.length < LENGTH.TITLE.MIN;
+  const showTitleError = titleTouched && titleTooShort;
 
   return (
     <div className='w-full max-w-xl mx-auto'>
-      <div className='min-h-[49px] w-[343px] resize-none rounded-t-md bg-[#EFEFEF] px-4 py-3 text-xl font-medium text-[#8C8C8C] shadow-sm'>
+      <div className='min-h-[46px] w-[343px] resize-none rounded-t-md bg-[#EFEFEF] px-4 py-3 text-xl font-medium text-[#8C8C8C] shadow-sm'>
         <input
           value={title}
           onChange={handleTitleChange}
+          onBlur={() => setTitleTouched(true)}
           className='w-full bg-transparent text-xl font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
           placeholder='제목'
         />
+
+        {showTitleError && (
+          <p className='mt-1 text-xs text-red-500'>제목은 최소 3자 이상 입력해주세요.</p>
+        )}
       </div>
 
       <div className='h-[350px] w-[343px] rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
