@@ -24,22 +24,22 @@ const LetterTextBox = () => {
   const showTitleError = titleTouched && titleTooShort;
 
   return (
-    <div className='w-full max-w-xl mx-auto'>
-      <div className='min-h-[46px] w-[343px] resize-none rounded-t-md bg-[#EFEFEF] px-4 py-3 text-xl font-medium text-[#8C8C8C] shadow-sm'>
+    <div className='w-full h-full flex flex-col'>
+      <div className='h-[46px] shrink-0 rounded-t-md bg-[#EFEFEF] px-4 py-2.5 shadow-sm'>
         <input
           value={title}
           onChange={handleTitleChange}
           onBlur={() => setTitleTouched(true)}
-          className='w-full bg-transparent text-xl font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
+          className='w-full bg-transparent text-lg font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
           placeholder='제목'
         />
-
-        {showTitleError && (
-          <p className='mt-1 text-xs text-red-500'>제목은 최소 3자 이상 입력해주세요.</p>
-        )}
       </div>
 
-      <div className='h-[350px] w-[343px] rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
+      {showTitleError && (
+        <p className='mt-1 text-xs text-red-500'>제목은 최소 3자 이상 입력해주세요.</p>
+      )}
+
+      <div className='flex-1 rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
         <textarea
           value={context}
           onChange={handleContextChange}
