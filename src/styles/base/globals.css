@@ -1,0 +1,22 @@
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: var(--font-pretendard);
+    background-color: var(--color-bg-white);
+    line-height: 1;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-bg-gray); /* PC 바깥 배경 */
+  }
+
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
