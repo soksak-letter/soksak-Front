@@ -1,0 +1,105 @@
+@layer base {
+  @font-face {
+    font-family: 'HallymGothic';
+    font-weight: 700;
+    src:
+      local('Hallym Gothic Bold'),
+      url('../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Bold.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'HallymGothic';
+    font-weight: 500;
+    src:
+      local('Hallym Gothic Medium'),
+      url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 400;
+    src:
+      local('Pretendard Regular'),
+      url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 500;
+    src:
+      local('Pretendard Medium'),
+      url('../assets/fonts/Pretendard-Medium.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Medium.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 700;
+    src:
+      local('Pretendard Bold'),
+      url('../assets/fonts/Pretendard-Bold.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Bold.woff2') format('woff2');
+  }
+
+  :root {
+    --font-pretendard:
+      Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+      sans-serif;
+
+    --font-hallym:
+      'HallymGothic', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+  }
+}
+
+@layer components {
+  /* ===== Hallym Gothic ===== */
+  .ty-largeTitle {
+    @apply font-hallym text-largeTitle font-bold;
+  }
+
+  .ty-title1 {
+    @apply font-hallym text-title1 font-medium;
+  }
+
+  .ty-title2 {
+    @apply font-hallym text-title2 font-medium;
+  }
+
+  /* ===== Pretendard ===== */
+  .ty-title3 {
+    @apply font-pretendard text-title3 font-semibold;
+  }
+
+  .ty-body1 {
+    @apply font-pretendard text-body1 font-medium;
+  }
+
+  .ty-body2 {
+    @apply font-pretendard text-body2 font-semibold;
+  }
+
+  .ty-body3 {
+    @apply font-pretendard text-body3 font-medium;
+  }
+
+  .ty-body4 {
+    @apply font-pretendard text-body4 font-semibold;
+  }
+
+  .ty-body5 {
+    @apply font-pretendard text-body5 font-medium;
+  }
+
+  /* detail은 2개로 분리 */
+  .ty-detail {
+    @apply font-pretendard text-detail font-normal;
+  }
+
+  .ty-detailMedium {
+    @apply font-pretendard text-detail font-medium;
+  }
+}
