@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Letter } from '../types/letter';
 import LetterCard from './LetterCard';
@@ -25,6 +25,16 @@ export default function LetterCarousel({
   const CARD_WIDTH = 150;
   const CARD_GAP = 12;
   const CARD_WITH_GAP = CARD_WIDTH + CARD_GAP;
+
+  // currentIndex 변경 시 transform 업데이트
+  useEffect(() => {
+    if (containerRef.current) {
+      const targetTranslate = -currentIndex * CARD_WITH_GAP;
+      containerRef.current.style.transform = `translateX(${targetTranslate}px)`;
+      prevTranslateRef.current = targetTranslate;
+      currentTranslateRef.current = targetTranslate;
+    }
+  }, [currentIndex, CARD_WITH_GAP]);
 
   const handleCardClick = useCallback(
     (letter: Letter) => {
@@ -80,13 +90,11 @@ export default function LetterCarousel({
     else if (movedBy < -threshold && currentIndex < letters.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     }
-
-    // 원래 위치로 복귀
-    prevTranslateRef.current = -currentIndex * CARD_WITH_GAP;
-    currentTranslateRef.current = prevTranslateRef.current;
-
-    if (containerRef.current) {
-      containerRef.current.style.transform = `translateX(-${currentIndex * CARD_WITH_GAP}px)`;
+    // 이동하지 않는 경우 원위치로
+    else {
+      if (containerRef.current) {
+        containerRef.current.style.transform = `translateX(${prevTranslateRef.current}px)`;
+      }
     }
 
     // 드래그 플래그를 약간 지연 후 리셋 (클릭 이벤트 방지)
@@ -146,7 +154,7 @@ export default function LetterCarousel({
       <div className="w-full py-6">
         <div className="relative w-full">
           <div className="overflow-hidden">
-            <div style={{ width: `${CARD_WIDTH}px` }}>
+            <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `${CARD_GAP}px` }}>
               <EmptyStateCard message={emptyMessage} />
             </div>
           </div>
@@ -173,8 +181,8 @@ export default function LetterCarousel({
             ref={containerRef}
             className="flex transition-transform duration-300 ease-out"
             style={{
-              transform: `translateX(-${currentIndex * CARD_WITH_GAP}px)`,
               gap: `${CARD_GAP}px`,
+              paddingLeft: `${CARD_GAP}px`,
             }}
           >
             {letters.map((letter) => (
