@@ -1,3 +1,4 @@
+import TabBar from '@/components/Tabbar';
 import { Outlet } from 'react-router-dom';
 
 export default function AppShellLayout() {
@@ -7,7 +8,7 @@ export default function AppShellLayout() {
         {/* <Header /> */}
         {/* <main className="flex-1 overflow-y-auto"></main> */}
         <Outlet />
-        {/* <TabBar /> */}
+        <TabBar />
       </div>
     </div>
   );
