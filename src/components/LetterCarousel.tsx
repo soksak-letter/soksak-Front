@@ -1,0 +1,219 @@
+import { useState, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import type { Letter } from '../types/letter';
+import LetterCard from './LetterCard';
+import EmptyStateCard from './EmptyStateCard';
+
+interface LetterCarouselProps {
+  letters: Letter[];
+  emptyMessage?: string;
+}
+
+export default function LetterCarousel({
+  letters,
+  emptyMessage,
+}: LetterCarouselProps) {
+  const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const currentTranslateRef = useRef(0);
+  const prevTranslateRef = useRef(0);
+
+  // 카드 하나의 너비: 375px의 40% = 150px
+  const CARD_WIDTH = 150;
+  const CARD_GAP = 12;
+  const CARD_WITH_GAP = CARD_WIDTH + CARD_GAP;
+
+  const handleCardClick = useCallback(
+    (letter: Letter) => {
+      // 드래그 중이었다면 클릭 이벤트 무시
+      if (isDraggingRef.current) {
+        return;
+      }
+      navigate(letter.link);
+    },
+    [navigate]
+  );
+
+  // 드래그 시작
+  const handleDragStart = (clientX: number) => {
+    isDraggingRef.current = false;
+    startXRef.current = clientX;
+    if (containerRef.current) {
+      containerRef.current.style.transition = 'none';
+    }
+  };
+
+  // 드래그 중
+  const handleDragMove = (clientX: number) => {
+    const currentX = clientX;
+    const diff = currentX - startXRef.current;
+
+    // 5px 이상 움직였을 때만 드래그로 간주
+    if (Math.abs(diff) > 5) {
+      isDraggingRef.current = true;
+    }
+
+    currentTranslateRef.current = prevTranslateRef.current + diff;
+
+    if (containerRef.current) {
+      containerRef.current.style.transform = `translateX(${currentTranslateRef.current}px)`;
+    }
+  };
+
+  // 드래그 종료
+  const handleDragEnd = () => {
+    const movedBy = currentTranslateRef.current - prevTranslateRef.current;
+    const threshold = 50; // 최소 드래그 거리
+
+    if (containerRef.current) {
+      containerRef.current.style.transition = 'transform 0.3s ease-out';
+    }
+
+    // 오른쪽으로 드래그 (이전)
+    if (movedBy > threshold && currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+    // 왼쪽으로 드래그 (다음)
+    else if (movedBy < -threshold && currentIndex < letters.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+
+    // 원래 위치로 복귀
+    prevTranslateRef.current = -currentIndex * CARD_WITH_GAP;
+    currentTranslateRef.current = prevTranslateRef.current;
+
+    if (containerRef.current) {
+      containerRef.current.style.transform = `translateX(-${currentIndex * CARD_WITH_GAP}px)`;
+    }
+
+    // 드래그 플래그를 약간 지연 후 리셋 (클릭 이벤트 방지)
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 100);
+  };
+
+  // 마우스 이벤트
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleDragStart(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (startXRef.current !== 0) {
+      handleDragMove(e.clientX);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (startXRef.current !== 0) {
+      handleDragEnd();
+      startXRef.current = 0;
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (startXRef.current !== 0) {
+      handleDragEnd();
+      startXRef.current = 0;
+    }
+  };
+
+  // 터치 이벤트
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (startXRef.current !== 0) {
+      handleDragMove(e.touches[0].clientX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (startXRef.current !== 0) {
+      handleDragEnd();
+      startXRef.current = 0;
+    }
+  };
+
+  // 빈 상태
+  if (letters.length === 0) {
+    return (
+      <div className="w-full py-6">
+        <div className="relative w-full">
+          <div className="overflow-hidden">
+            <div style={{ width: `${CARD_WIDTH}px` }}>
+              <EmptyStateCard message={emptyMessage} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full py-6">
+      <div className="relative w-full">
+        {/* 캐러셀 컨테이너 */}
+        <div
+          className="overflow-hidden cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            ref={containerRef}
+            className="flex transition-transform duration-300 ease-out"
+            style={{
+              transform: `translateX(-${currentIndex * CARD_WITH_GAP}px)`,
+              gap: `${CARD_GAP}px`,
+            }}
+          >
+            {letters.map((letter) => (
+              <div
+                key={letter.id}
+                className="flex-shrink-0"
+                style={{ width: `${CARD_WIDTH}px` }}
+              >
+                <LetterCard
+                  letter={letter}
+                  onClick={() => handleCardClick(letter)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 인디케이터 */}
+        {letters.length > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {letters.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  prevTranslateRef.current = -index * CARD_WITH_GAP;
+                  currentTranslateRef.current = prevTranslateRef.current;
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? 'bg-blue-500 w-6'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`${index + 1}번째 페이지로 이동`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
