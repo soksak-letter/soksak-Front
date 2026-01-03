@@ -61,7 +61,7 @@ export default {
       },
 
       fontFamily: {
-        hallym: 'var(--font-hallym)',
+        // hallym: 'var(--font-hallym)',
         pretendard: 'var(--font-pretendard)',
       },
 
