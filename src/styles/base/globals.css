@@ -4,7 +4,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     font-family: var(--font-pretendard);
-    background-color: var(--color-bg-white);
+    background-color: var(--color-bg-primary);
     line-height: 1;
   }
 
