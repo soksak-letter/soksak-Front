@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <ModalRoot />
-      <Outlet />;
+      <Outlet />
     </>
   );
 }
