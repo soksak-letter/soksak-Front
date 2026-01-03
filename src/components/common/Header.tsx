@@ -9,8 +9,8 @@ type HeaderProps = {
 const Header = ({ children,className } : HeaderProps ) => {
     return (
         <header className={`flex w-full max-w-[375px] mx-auto
-             px-[10px] justify-center items-center relative
-             bg-white border-b-2 border-white ${className}`}>
+             px-[10px]  justify-center items-center relative
+             bg-white ${className}`}>
             {children}
         </header>
     );
