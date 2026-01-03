@@ -21,7 +21,9 @@
       url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
       url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
   }
+  */
 
+  /* ===== Pretendard ===== */
   @font-face {
     font-family: Pretendard;
     font-weight: 400;
@@ -30,7 +32,6 @@
       url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
       url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');
   }
-  */
 
   @font-face {
     font-family: Pretendard;
@@ -55,57 +56,97 @@
       Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
       sans-serif;
 
+    /*
+    TODO: HallymGothic 적용 시에만 활성화
     --font-hallym:
       'HallymGothic', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
       'Helvetica Neue', Arial, sans-serif;
+    */
   }
 }
 
 @layer components {
-  /* ===== Hallym Gothic(Todo) ===== */
+  /* ===== Typography Utilities ===== */
+  /* Tailwind v4 환경에서 커스텀 text-* 유틸은 @apply로 인식되지 않음
+     → font-size / line-height는 순수 CSS로 직접 선언 */
+
+  /* ===== (원래 Hallym 영역) 지금은 Pretendard로 대체 ===== */
   .ty-largeTitle {
-    @apply font-pretendard text-largeTitle font-bold;
+    @apply font-bold;
+    font-family: var(--font-pretendard);
+    font-size: 32px;
+    line-height: 1.2;
   }
 
   .ty-title1 {
-    @apply font-pretendard text-title1 font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 22px;
+    line-height: 1.2;
   }
 
   .ty-title2 {
-    @apply font-pretendard text-title2 font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 20px;
+    line-height: 1.2;
   }
 
   /* ===== Pretendard ===== */
   .ty-title3 {
-    @apply font-pretendard text-title3 font-semibold;
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 18px;
+    line-height: 1.6;
   }
 
   .ty-body1 {
-    @apply font-pretendard text-body1 font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 18px;
+    line-height: 1.6;
   }
 
   .ty-body2 {
-    @apply font-pretendard text-body2 font-semibold;
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   .ty-body3 {
-    @apply font-pretendard text-body3 font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   .ty-body4 {
-    @apply font-pretendard text-body4 font-semibold;
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 14px;
+    line-height: 1.7;
   }
 
   .ty-body5 {
-    @apply font-pretendard text-body5 font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 14px;
+    line-height: 1.7;
   }
 
   /* detail은 2개로 분리 */
   .ty-detail {
-    @apply font-pretendard text-detail font-normal;
+    @apply font-normal;
+    font-family: var(--font-pretendard);
+    font-size: 12px;
+    line-height: 1.7;
   }
 
   .ty-detailMedium {
-    @apply font-pretendard text-detail font-medium;
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 12px;
+    line-height: 1.7;
   }
 }
