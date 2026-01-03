@@ -1,33 +1,54 @@
 import { useState, type ChangeEvent } from 'react';
 
-const LetterTextBox = () => {
-  const [title, setTitle] = useState('');
-  const [titleTouched, setTitleTouched] = useState(false);
-  const [context, setContext] = useState('');
+type LetterTextBoxValue = {
+  title: string;
+  content: string;
+};
 
-  const LENGTH = {
-    TITLE: { MIN: 3, MAX: 20 },
-    CONTENT: { MAX: 500 },
-  } as const;
+type LetterTextBoxProps = {
+  value: LetterTextBoxValue;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (next: LetterTextBoxValue) => void;
+  // 부모 className에 w, h값 명시하여 사용해주시면 됩니다
+  className?: string;
+};
+
+const LENGTH = {
+  TITLE: { MIN: 3, MAX: 20 },
+  CONTENT: { MAX: 500 },
+} as const;
+
+const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
+  const [titleTouched, setTitleTouched] = useState(false);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const next = e.target.value;
-    setTitle(next.length <= LENGTH.TITLE.MAX ? next : next.slice(0, LENGTH.TITLE.MAX));
+    const nextTitle = e.target.value;
+    onChange({
+      ...value,
+      title:
+        nextTitle.length <= LENGTH.TITLE.MAX ? nextTitle : nextTitle.slice(0, LENGTH.TITLE.MAX),
+    });
   };
 
-  const handleContextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const next = e.target.value;
-    setContext(next.length <= LENGTH.CONTENT.MAX ? next : next.slice(0, LENGTH.CONTENT.MAX));
+  const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const nextContent = e.target.value;
+    onChange({
+      ...value,
+      content:
+        nextContent.length <= LENGTH.CONTENT.MAX
+          ? nextContent
+          : nextContent.slice(0, LENGTH.CONTENT.MAX),
+    });
   };
 
-  const titleTooShort = title.length > 0 && title.length < LENGTH.TITLE.MIN;
+  const titleTooShort = value.title.length > 0 && value.title.length < LENGTH.TITLE.MIN;
   const showTitleError = titleTouched && titleTooShort;
 
   return (
-    <div className='w-full h-full flex flex-col'>
+    <div className={`flex flex-col ${className ?? ''}`}>
       <div className='h-[46px] shrink-0 rounded-t-md bg-[#EFEFEF] px-4 py-2.5 shadow-sm'>
         <input
-          value={title}
+          value={value.title}
           onChange={handleTitleChange}
           onBlur={() => setTitleTouched(true)}
           className='w-full bg-transparent text-lg font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
@@ -41,8 +62,8 @@ const LetterTextBox = () => {
 
       <div className='flex-1 rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
         <textarea
-          value={context}
-          onChange={handleContextChange}
+          value={value.content}
+          onChange={handleContentChange}
           className='flex-1 w-full resize-none bg-transparent px-4 py-3 text-base text-gray-800 placeholder:text-gray-500 focus:outline-none overflow-y-auto'
           placeholder={`오늘의 질문을 읽고 
 얘기해보고 싶은 내용이나 주제가 있나요?
@@ -51,7 +72,7 @@ const LetterTextBox = () => {
         />
 
         <div className='shrink-0 flex items-center justify-end px-3 py-2 text-sm text-gray-500 tabular-nums'>
-          {context.length} / {LENGTH.CONTENT.MAX}
+          {value.content.length} / {LENGTH.CONTENT.MAX}
         </div>
       </div>
     </div>
