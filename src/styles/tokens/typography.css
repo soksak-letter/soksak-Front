@@ -1,4 +1,9 @@
 @layer base {
+  /*
+  TODO: HallymGothic
+  - 웹폰트 원본(ttf/woff) 및 라이선스 확인 필요
+  - 디자이너 전달 후 재적용 예정
+
   @font-face {
     font-family: 'HallymGothic';
     font-weight: 700;
@@ -25,6 +30,7 @@
       url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
       url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');
   }
+  */
 
   @font-face {
     font-family: Pretendard;
@@ -56,17 +62,17 @@
 }
 
 @layer components {
-  /* ===== Hallym Gothic ===== */
+  /* ===== Hallym Gothic(Todo) ===== */
   .ty-largeTitle {
-    @apply font-hallym text-largeTitle font-bold;
+    @apply font-pretendard text-largeTitle font-bold;
   }
 
   .ty-title1 {
-    @apply font-hallym text-title1 font-medium;
+    @apply font-pretendard text-title1 font-medium;
   }
 
   .ty-title2 {
-    @apply font-hallym text-title2 font-medium;
+    @apply font-pretendard text-title2 font-medium;
   }
 
   /* ===== Pretendard ===== */
