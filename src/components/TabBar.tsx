@@ -1,4 +1,3 @@
-import router from '@/Router';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const HomeIcon = ({ className }: { className?: string }) =>(
@@ -27,7 +26,7 @@ const ReportIcon=({className}:{className?:string})=>(
     </svg>
 );
 const SettingIcon=({className}:{className?:string})=>(
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.345 20C7.895 20 7.50767 19.85 7.183 
         19.55C6.85833 19.25 6.66233 18.8833 6.595 
         18.45L6.37 16.8C6.15333 16.7167 5.94933 16.6167 5.758 
@@ -61,7 +60,9 @@ const TabBar = () => {
   ];
 
   return (
-    <nav className=" fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[375px] bg-white border-t border-white h-16 pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[375px] 
+    bg-#FAFAFA h-[85px] pt-[5px]
+     border-t border-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.08)] h-16 pb-safe">
       <ul className="flex w-full h-full">
         {tabs.map((tab) => {
             const isActive = location.pathname === tab.route;
@@ -75,7 +76,7 @@ const TabBar = () => {
                   className={`flex flex-col items-center justify-center w-full h-full gap-1.5 
                     ${isActive ? 'text-[#F5544C]' : 'text-[#97999B]'}`}
                 >
-                  {/* 여기를 고쳤습니다: span 대신 Icon 컴포넌트 직접 사용 */}
+                  {/* Icon 컴포넌트 직접 사용 */}
                   <Icon className="w-[22px] h-[22px]" />
                   
                   {/* 라벨 텍스트 */}
