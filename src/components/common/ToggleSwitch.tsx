@@ -1,4 +1,4 @@
-// 토클 on/off 버튼
+// 토글 on/off 버튼
 
 import clsx from 'clsx';
 
