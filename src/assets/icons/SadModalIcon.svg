@@ -1,0 +1,21 @@
+<svg width="84" height="82" viewBox="0 0 84 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_g_1104_6556)">
+<path d="M82.9054 42.6263C82.9054 65.6681 66.2785 80.3428 43.119 80.3428C19.9595 80.3428 0.905396 65.5576 0.905396 42.5158C0.905396 19.4739 16.6936 0.905298 39.8531 0.905298C63.0126 0.905298 82.9054 19.5844 82.9054 42.6263Z" fill="#AEDEFC"/>
+</g>
+<path d="M6.88456 39.8595C6.88456 45.8058 10.8681 49.5928 16.4167 49.5928C21.9654 49.5928 26.5304 45.7772 26.5304 39.831C26.5304 33.8847 22.7478 29.0928 17.1992 29.0928C11.6505 29.0928 6.88456 33.9132 6.88456 39.8595Z" fill="#F5544C" fill-opacity="0.25"/>
+<path d="M58.1346 44.9845C58.1346 50.9308 62.1181 54.7178 67.6667 54.7178C73.2154 54.7178 77.7804 50.9022 77.7804 44.956C77.7804 39.0097 73.9978 34.2178 68.4492 34.2178C62.9005 34.2178 58.1346 39.0382 58.1346 44.9845Z" fill="#F5544C" fill-opacity="0.25"/>
+<path d="M28.914 30.9294C27.6633 32.8873 28.9066 34.2961 30.1982 35.1212C31.4897 35.9462 33.5731 35.8442 34.8238 33.8864C36.0745 31.9285 34.8086 29.7032 33.5171 28.8782C32.2256 28.0532 30.1647 28.9715 28.914 30.9294Z" fill="black"/>
+<path d="M58.0799 33.8837C58.8985 36.058 57.3906 37.1791 55.9563 37.7191C54.5221 38.259 52.5048 37.7283 51.6862 35.554C50.8677 33.3797 52.5665 31.4645 54.0008 30.9245C55.435 30.3846 57.2613 31.7094 58.0799 33.8837Z" fill="black"/>
+<path d="M33.4919 42.9935C33.4919 42.9935 37.1687 39.8689 42.3324 40.197C47.4962 40.5251 50.447 44.4678 50.447 44.4678" stroke="black" stroke-width="3.41667" stroke-linecap="round"/>
+<defs>
+<filter id="filter0_g_1104_6556" x="-2.10404e-05" y="-0.000143111" width="83.8108" height="81.2483" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.32162958383560181 0.32162958383560181" numOctaves="3" seed="4563" />
+<feDisplacementMap in="shape" scale="1.8108330965042114" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_1104_6556">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>
