@@ -21,7 +21,7 @@ const BackHeader = ({ title,rightElement,titleClassName }: Props) => {
         aria-label="뒤로 가기"
         className="absolute left-4" // absolute로 위치 고정
       >
-        <IoChevronBackSharp className="w-5 h-5 stroke-current stroke-[2px]"/>
+        <IoChevronBackSharp className="w-5 h-5 text-current"/>
       </button>
 
       {/* 2. 타이틀 (중앙) */}
