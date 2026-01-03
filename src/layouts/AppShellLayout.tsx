@@ -1,4 +1,4 @@
-import TabBar from '@/components/Tabbar';
+import TabBar from '@/components/TabBar';
 import { Outlet } from 'react-router-dom';
 
 export default function AppShellLayout() {
