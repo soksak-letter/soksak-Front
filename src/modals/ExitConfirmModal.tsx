@@ -3,11 +3,12 @@ import { useModalStore } from '@/stores/modalStore';
 import SadModalIcon from '@/assets/icons/SadModalIcon.svg?react';
 
 export default function ExitConfirmModal() {
-  const { closeModal } = useModalStore();
+  const { closeModal, payload } = useModalStore();
 
   const handleStay = () => closeModal();
 
   const handleExit = () => {
+    payload?.onConfirmExit?.();
     closeModal();
   };
 
