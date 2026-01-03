@@ -10,7 +10,7 @@
 
   body {
     min-height: 100dvh;
-    background: var(--color-bg-gray); /* PC 바깥 배경 */
+    background: var(--color-grey-300); /* PC 바깥 배경 */
   }
 
   button {
