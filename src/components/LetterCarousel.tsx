@@ -20,6 +20,8 @@ export default function LetterCarousel({
   const startXRef = useRef(0);
   const currentTranslateRef = useRef(0);
   const prevTranslateRef = useRef(0);
+  const dragResetTimeoutRef = useRef<number | null>(null);
+
 
   // 카드 하나의 너비: 375px의 40% = 150px
   const CARD_WIDTH = 150;
@@ -35,6 +37,15 @@ export default function LetterCarousel({
       currentTranslateRef.current = targetTranslate;
     }
   }, [currentIndex, CARD_WITH_GAP]);
+
+  // 컴포넌트 언마운트 시 타임아웃 정리
+  useEffect(() => {
+    return () => {
+      if (dragResetTimeoutRef.current) {
+        clearTimeout(dragResetTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleCardClick = useCallback(
     (letter: Letter) => {
@@ -98,8 +109,14 @@ export default function LetterCarousel({
     }
 
     // 드래그 플래그를 약간 지연 후 리셋 (클릭 이벤트 방지)
-    setTimeout(() => {
+    // 기존 타임아웃이 있으면 먼저 제거
+    if (dragResetTimeoutRef.current) {
+      clearTimeout(dragResetTimeoutRef.current);
+    }
+    // 새 타임아웃 설정 및 ID 저장
+    dragResetTimeoutRef.current = setTimeout(() => {
       isDraggingRef.current = false;
+      dragResetTimeoutRef.current = null;
     }, 100);
   };
 
