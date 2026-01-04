@@ -5,7 +5,7 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
-import { OnboardingTopicSelectPage } from './pages/OnboardingTopicSelectPage';
+import OnboardingTopicSelectPage from './pages/OnboardingTopicSelectPage';
 
 const router = createBrowserRouter([
   {
