@@ -16,6 +16,7 @@ export default function LetterCarousel({
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isPointerDownRef = useRef(false);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const currentTranslateRef = useRef(0);
@@ -60,6 +61,7 @@ export default function LetterCarousel({
 
   // 드래그 시작
   const handleDragStart = (clientX: number) => {
+    isPointerDownRef.current = true;
     isDraggingRef.current = false;
     startXRef.current = clientX;
     if (containerRef.current) {
@@ -86,6 +88,8 @@ export default function LetterCarousel({
 
   // 드래그 종료
   const handleDragEnd = () => {
+    if (!isPointerDownRef.current) return;
+
     const movedBy = currentTranslateRef.current - prevTranslateRef.current;
     const threshold = 50; // 최소 드래그 거리
 
@@ -108,6 +112,10 @@ export default function LetterCarousel({
       }
     }
 
+    // 포인터 다운 플래그 리셋
+    isPointerDownRef.current = false;
+    startXRef.current = 0;
+
     // 드래그 플래그를 약간 지연 후 리셋 (클릭 이벤트 방지)
     // 기존 타임아웃이 있으면 먼저 제거
     if (dragResetTimeoutRef.current) {
@@ -128,22 +136,20 @@ export default function LetterCarousel({
 
   const handleMouseMove = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (startXRef.current !== 0) {
+    if (isPointerDownRef.current) {
       handleDragMove(e.clientX);
     }
   };
 
   const handleMouseUp = () => {
-    if (startXRef.current !== 0) {
+    if (isPointerDownRef.current) {
       handleDragEnd();
-      startXRef.current = 0;
     }
   };
 
   const handleMouseLeave = () => {
-    if (startXRef.current !== 0) {
+    if (isPointerDownRef.current) {
       handleDragEnd();
-      startXRef.current = 0;
     }
   };
 
@@ -153,15 +159,14 @@ export default function LetterCarousel({
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (startXRef.current !== 0) {
+    if (isPointerDownRef.current) {
       handleDragMove(e.touches[0].clientX);
     }
   };
 
   const handleTouchEnd = () => {
-    if (startXRef.current !== 0) {
+    if (isPointerDownRef.current) {
       handleDragEnd();
-      startXRef.current = 0;
     }
   };
 
