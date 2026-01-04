@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import AppShellLayout from './layouts/AppShellLayout';
+import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           { index: true, element: <Homepage /> },
           // { path: 'friends/search', element: <FriendSearchPage /> },
         ],
+      },
+      {
+        path: '/test/letter-carousel',
+        element: <LetterCarouselTestPage />,
       },
     ],
   },
