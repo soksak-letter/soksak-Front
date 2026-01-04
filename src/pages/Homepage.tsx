@@ -1,4 +1,4 @@
-const Hompage = () => {
+const Homepage = () => {
   return (
     <div className='text-4xl min-h-dvh flex items-center justify-center font-semibold'>
       안녕하세요
@@ -6,4 +6,4 @@ const Hompage = () => {
   );
 };
 
-export default Hompage;
+export default Homepage;
