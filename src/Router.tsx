@@ -5,6 +5,7 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import { OnboardingTopicSelectPage } from './pages/OnboardingTopicSelectPage';
 
 const router = createBrowserRouter([
   {
@@ -14,9 +15,7 @@ const router = createBrowserRouter([
       // 프레임만
       {
         element: <AppShellLayout />,
-        children: [
-          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
-        ],
+        children: [{ path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }],
       },
 
       // 프레임 + 탭바
