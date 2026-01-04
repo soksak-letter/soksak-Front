@@ -1,3 +1,4 @@
+import TabBar from '@/components/TabBar';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { Outlet } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ export default function AppShellLayout() {
         <BackHeader title='친구찾기' rightElement='추가' />
         {/* <main className="flex-1 overflow-y-auto"></main> */}
         <Outlet />
-        {/* <TabBar /> */}
+        <TabBar />
       </div>
     </div>
   );
