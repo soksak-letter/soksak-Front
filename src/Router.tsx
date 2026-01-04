@@ -1,22 +1,31 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Hompage from './pages/Hompage';
+
 import AppShellLayout from './layouts/AppShellLayout';
 import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
+import AppShellWithTab from './layouts/AppShellWithTab';
+
+import Homepage from './pages/Homepage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      // 프레임만
       {
-        element: <AppShellLayout />, // 375 고정 레이아웃
+        element: <AppShellLayout />,
         children: [
-          {
-            index: true,
-            element: <Hompage />,
-          },
-          // { path: 'letter/:id', element: <LetterDetailPage /> },
+          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+        ],
+      },
+
+      // 프레임 + 탭바
+      {
+        element: <AppShellWithTab />,
+        children: [
+          { index: true, element: <Homepage /> },
+          // { path: 'friends/search', element: <FriendSearchPage /> },
         ],
       },
       {

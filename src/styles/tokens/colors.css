@@ -1,0 +1,78 @@
+@layer base {
+  :root {
+    /* =========================
+       Primary Color (Coral)
+       ========================= */
+    --color-primary-900: #4b0906;
+    --color-primary-850: #6d120e;
+    --color-primary-800: #8f1e19;
+    --color-primary-700: #b12d27;
+    --color-primary-600: #d33f38;
+    --color-primary-500: #f5544c;
+    --color-primary-400: #ff7d77;
+    --color-primary-300: #ffa39e;
+    --color-primary-200: #ffc9c6;
+    --color-primary-100: #ffeeed;
+
+    /* =========================
+       Secondary Color (Blue)
+       ========================= */
+    --color-secondary-900: #0888d8;
+    --color-secondary-800: #1da3f7;
+    --color-secondary-700: #4eb7f8;
+    --color-secondary-600: #7fcbfa;
+    --color-secondary-500: #aedefc;
+    --color-secondary-400: #c9e9fd;
+    --color-secondary-300: #e1f3fe;
+
+    /* =========================
+       Status Color
+       ========================= */
+    --color-status-alert: #f33326;
+    --color-status-caution: #f43d34;
+    --color-status-positive: #22c61c;
+
+    /* =========================
+       Text Color
+       ========================= */
+    --color-text-strong: #000000;
+    --color-text-normal: #171717;
+    --color-text-alternative: #404040;
+    --color-text-assistive: #8c8c8c;
+    --color-text-disable: #d9d9d9;
+
+    /* =========================
+       Grey Color
+       ========================= */
+    --color-grey-900: #191a1a;
+    --color-grey-800: #323334;
+    --color-grey-700: #4b4d4e;
+    --color-grey-600: #646668;
+    --color-grey-500: #7d8082;
+    --color-grey-400: #97999b;
+    --color-grey-300: #b1b3b4;
+    --color-grey-200: #cbcccd;
+    --color-grey-100: #e5e6e6;
+
+    /* =========================
+       Background Color
+       ========================= */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #efefef;
+    --color-bg-tertiary: #eaeaea;
+
+    /* =========================
+       Dim / Line
+       ========================= */
+    --color-dim: #000000;
+
+    --color-line-normal: #e1e2e4;
+    --color-line-alternative: #ffffff;
+
+    /* =========================
+       White / Black
+       ========================= */
+    --color-white: #ffffff;
+    --color-black: #000000;
+  }
+}
