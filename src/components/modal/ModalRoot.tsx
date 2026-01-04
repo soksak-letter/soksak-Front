@@ -1,0 +1,13 @@
+import ExitConfirmModal from '@/modals/ExitConfirmModal';
+import { useModalStore } from '@/stores/modalStore';
+
+export default function ModalRoot() {
+  const { activeModal } = useModalStore();
+
+  switch (activeModal) {
+    case 'exitConfirm':
+      return <ExitConfirmModal />;
+    default:
+      return null;
+  }
+}

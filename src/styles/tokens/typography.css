@@ -1,0 +1,152 @@
+@layer base {
+  /*
+  TODO: HallymGothic
+  - 웹폰트 원본(ttf/woff) 및 라이선스 확인 필요
+  - 디자이너 전달 후 재적용 예정
+
+  @font-face {
+    font-family: 'HallymGothic';
+    font-weight: 700;
+    src:
+      local('Hallym Gothic Bold'),
+      url('../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Bold.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'HallymGothic';
+    font-weight: 500;
+    src:
+      local('Hallym Gothic Medium'),
+      url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
+  }
+  */
+
+  /* ===== Pretendard ===== */
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 400;
+    src:
+      local('Pretendard Regular'),
+      url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 500;
+    src:
+      local('Pretendard Medium'),
+      url('../assets/fonts/Pretendard-Medium.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Medium.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    font-weight: 700;
+    src:
+      local('Pretendard Bold'),
+      url('../assets/fonts/Pretendard-Bold.woff') format('woff'),
+      url('../assets/fonts/Pretendard-Bold.woff2') format('woff2');
+  }
+
+  :root {
+    --font-pretendard:
+      Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+      sans-serif;
+
+    /*
+    TODO: HallymGothic 적용 시에만 활성화
+    --font-hallym:
+      'HallymGothic', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+    */
+  }
+}
+
+@layer components {
+  /* ===== Typography Utilities ===== */
+  /* Tailwind v4 환경에서 커스텀 text-* 유틸은 @apply로 인식되지 않음
+     → font-size / line-height는 순수 CSS로 직접 선언 */
+
+  /* ===== (원래 Hallym 영역) 지금은 Pretendard로 대체 ===== */
+  .ty-largeTitle {
+    @apply font-bold;
+    font-family: var(--font-pretendard);
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .ty-title1 {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .ty-title2 {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  /* ===== Pretendard ===== */
+  .ty-title3 {
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .ty-body1 {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .ty-body2 {
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .ty-body3 {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .ty-body4 {
+    @apply font-semibold;
+    font-family: var(--font-pretendard);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .ty-body5 {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* detail은 2개로 분리 */
+  .ty-detail {
+    @apply font-normal;
+    font-family: var(--font-pretendard);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .ty-detailMedium {
+    @apply font-medium;
+    font-family: var(--font-pretendard);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+}
