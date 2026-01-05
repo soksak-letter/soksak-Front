@@ -5,8 +5,8 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
-import OnboardingTopicSelectPage from './pages/OnboardingTopicSelectPage';
-import OnboardingProfileSelectPage from './pages/OnboardingProfileSelectPage';
+import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
+import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
 
 const router = createBrowserRouter([
   {
