@@ -4,9 +4,12 @@ import { SelectButton } from '@/components/common/SelectButton';
 import { ONBOARDING_TOPICS } from '@/constants/onboardingTopics';
 import { Button } from '@/components/common/Button';
 import CautionIcon from '@/assets/icons/CautionIcon.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 export default function OnboardingTopicSelectPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  const navigate = useNavigate();
 
   const selectedCount = selectedIds.size;
   const isNextEnabled = selectedCount >= 3;
@@ -27,8 +30,8 @@ export default function OnboardingTopicSelectPage() {
     if (!isNextEnabled) return;
 
     console.log('선택된 토픽:', selectedArray);
-    // TODO: 다음 화면 이동 or store 저장
-    // navigate('/onboarding/next')
+    // TODO: store 저장
+    navigate('/onboarding/letter-intro');
   };
 
   return (

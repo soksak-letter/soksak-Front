@@ -12,6 +12,7 @@ import {
 } from '@/constants/onboardingProfile';
 
 import { useModalStore } from '@/stores/modalStore';
+import { useNavigate } from 'react-router-dom';
 
 type GenderId = GenderOption['id'];
 type JobId = JobOption['id'];
@@ -20,18 +21,21 @@ export default function OnboardingProfileSelectPage() {
   const [gender, setGender] = useState<GenderId | null>(null);
   const [job, setJob] = useState<JobId | null>(null);
 
+  const navigate = useNavigate();
   const openModal = useModalStore((s) => s.openModal);
 
+  const isNextEnabled = gender !== null && job !== null;
+
   const handleNext = () => {
-    // TODO: store 저장 or 다음 페이지 이동
+    if (!isNextEnabled) return;
     console.log('gender:', gender, 'job:', job);
+    navigate('/onboarding/topic-select');
   };
 
   const handleSkipOpen = () => {
     openModal('onboardingSkipConfirm', {
-      onConfirmExit: () => {
-        // TODO: 선택값 없이 다음 페이지 이동
-        // navigate('/onboarding/topic')
+      onConfirmSkip: () => {
+        navigate('/onboarding/topic-select');
       },
     });
   };
@@ -91,7 +95,7 @@ export default function OnboardingProfileSelectPage() {
           건너뛰기
         </button>
 
-        <Button color='primary' size='large' onClick={handleNext}>
+        <Button color='primary' size='large' onClick={handleNext} disabled={!isNextEnabled}>
           다음으로
         </Button>
       </div>
