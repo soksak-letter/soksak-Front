@@ -4,6 +4,9 @@ export type ModalType = 'exitConfirm' | null;
 
 export type ModalPayload = {
   onConfirmExit?: () => void;
+
+  // 온보딩 건너뛰기 확인에서 쓸 콜백
+  onConfirmSkip?: () => void;
 };
 
 interface ModalState {
