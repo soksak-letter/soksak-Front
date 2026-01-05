@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type ModalType = 'exitConfirm' | null;
+export type ModalType = 'exitConfirm' | 'onboardingSkipConfirm' | null;
 
 export type ModalPayload = {
   onConfirmExit?: () => void;
