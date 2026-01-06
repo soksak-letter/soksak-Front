@@ -223,7 +223,7 @@ export default function LetterCarousel({
         </div>
 
         {/* 인디케이터 */}
-        {letters.length > 1 && (
+        {/* {letters.length > 1 && (
           <div className="flex justify-center gap-2 mt-6">
             {letters.map((_, index) => (
               <button
@@ -242,7 +242,7 @@ export default function LetterCarousel({
               />
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
