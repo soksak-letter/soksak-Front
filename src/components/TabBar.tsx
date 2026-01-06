@@ -104,7 +104,7 @@ const TabBar = () => {
   return (
     <nav
       className='fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[375px] 
-    bg-#FAFAFA h-[85px] pt-[5px]
+    bg-[#FAFAFA] h-[85px] pt-[5px]
      border-t border-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.08)] h-16 pb-safe'
     >
       <ul className='flex w-full h-full'>
