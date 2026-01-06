@@ -6,6 +6,7 @@ import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import MainPage from './pages/MainPage';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Homepage /> },
+          { path: 'main', element: <MainPage /> },
           // { path: 'friends/search', element: <FriendSearchPage /> },
         ],
       },
