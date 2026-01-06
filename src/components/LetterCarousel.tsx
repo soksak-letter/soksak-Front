@@ -9,10 +9,7 @@ interface LetterCarouselProps {
   emptyMessage?: string;
 }
 
-export default function LetterCarousel({
-  letters,
-  emptyMessage,
-}: LetterCarouselProps) {
+export default function LetterCarousel({ letters, emptyMessage }: LetterCarouselProps) {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +19,6 @@ export default function LetterCarousel({
   const currentTranslateRef = useRef(0);
   const prevTranslateRef = useRef(0);
   const dragResetTimeoutRef = useRef<number | null>(null);
-
 
   // 카드 하나의 너비: 375px의 40% = 150px
   const CARD_WIDTH = 150;
@@ -56,7 +52,7 @@ export default function LetterCarousel({
       }
       navigate(letter.link);
     },
-    [navigate]
+    [navigate],
   );
 
   // 드래그 시작
@@ -173,9 +169,9 @@ export default function LetterCarousel({
   // 빈 상태
   if (letters.length === 0) {
     return (
-      <div className="w-full py-6">
-        <div className="relative w-full">
-          <div className="overflow-hidden">
+      <div className='w-full py-6'>
+        <div className='relative w-full'>
+          <div className='overflow-hidden'>
             <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `${CARD_GAP}px` }}>
               <EmptyStateCard message={emptyMessage} />
             </div>
@@ -186,11 +182,11 @@ export default function LetterCarousel({
   }
 
   return (
-    <div className="w-full py-6">
-      <div className="relative w-full">
+    <div className='w-full py-6'>
+      <div className='relative w-full'>
         {/* 캐러셀 컨테이너 */}
         <div
-          className="overflow-hidden cursor-grab active:cursor-grabbing"
+          className='overflow-hidden cursor-grab active:cursor-grabbing'
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -201,22 +197,15 @@ export default function LetterCarousel({
         >
           <div
             ref={containerRef}
-            className="flex transition-transform duration-300 ease-out"
+            className='flex transition-transform duration-300 ease-out'
             style={{
               gap: `${CARD_GAP}px`,
               paddingLeft: `${CARD_GAP}px`,
             }}
           >
             {letters.map((letter) => (
-              <div
-                key={letter.id}
-                className="flex-shrink-0"
-                style={{ width: `${CARD_WIDTH}px` }}
-              >
-                <LetterCard
-                  letter={letter}
-                  onClick={() => handleCardClick(letter)}
-                />
+              <div key={letter.id} className='flex-shrink-0' style={{ width: `${CARD_WIDTH}px` }}>
+                <LetterCard letter={letter} onClick={() => handleCardClick(letter)} />
               </div>
             ))}
           </div>
@@ -224,7 +213,7 @@ export default function LetterCarousel({
 
         {/* 인디케이터 */}
         {letters.length > 1 && (
-          <div className="flex justify-center gap-2 mt-6">
+          <div className='flex justify-center gap-2 mt-6'>
             {letters.map((_, index) => (
               <button
                 key={index}
@@ -234,9 +223,7 @@ export default function LetterCarousel({
                   currentTranslateRef.current = prevTranslateRef.current;
                 }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? 'bg-blue-500 w-6'
-                    : 'bg-gray-300 hover:bg-gray-400'
+                  index === currentIndex ? 'bg-blue-500 w-6' : 'bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`${index + 1}번째 페이지로 이동`}
               />
