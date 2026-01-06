@@ -4,7 +4,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DAY_MS = 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 const AnonDraftPage = () => {
   const navigate = useNavigate();
@@ -33,12 +33,15 @@ const AnonDraftPage = () => {
         onBack={handleBack}
       />
       <div>
-        <p>
+        <p className='text-black font-medium text-[20px] leading-[120%] w-[251px]'>
           당신의 인생에 가장 큰 영감을
           <br />
           주는 사람은 누구인가요?
         </p>
-        <div>{mmss} 후에 질문이 사라져요.</div>
+        <div className='flex items-center text-[16px] leading-[160%] font-semibold'>
+          <span className='text-[#F2261C]'>{mmss}</span>
+          <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+        </div>
       </div>
     </>
   );
