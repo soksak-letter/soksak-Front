@@ -6,6 +6,7 @@ import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import AnonDraftPage from './pages/letter/AnonDraftPage';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Homepage /> },
           // { path: 'friends/search', element: <FriendSearchPage /> },
+          {
+            path: '/letter/anon-draft',
+            element: <AnonDraftPage />,
+          },
         ],
       },
       {
