@@ -3,6 +3,7 @@ import App from './App';
 
 import AppShellLayout from './layouts/AppShellLayout';
 import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
+import BottomSheetTestPage from './pages/BottomSheetTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/test/letter-carousel',
         element: <LetterCarouselTestPage />,
+      },
+      {
+        path: '/test/bottom-sheet',
+        element: <BottomSheetTestPage />,
       },
     ],
   },
