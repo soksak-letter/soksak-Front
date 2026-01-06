@@ -18,6 +18,10 @@ const router = createBrowserRouter([
         element: <AppShellLayout />,
         children: [
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          {
+            path: '/letter/anon-draft',
+            element: <AnonDraftPage />,
+          },
         ],
       },
 
@@ -27,10 +31,6 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Homepage /> },
           // { path: 'friends/search', element: <FriendSearchPage /> },
-          {
-            path: '/letter/anon-draft',
-            element: <AnonDraftPage />,
-          },
         ],
       },
       {
