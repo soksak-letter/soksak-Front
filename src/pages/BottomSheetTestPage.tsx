@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import BottomSheet from '../components/BottomSheet';
-import SurpriseLetterContent from '../components/SurpriseLetterContent';
+import BottomSheet from '../components/BottomSheet/BottomSheet';
+import SurpriseLetterContent from '../components/BottomSheet/contents/SurpriseLetterContent';
 import LetterStyleContent from '../components/LetterStyleContent';
 
 type ContentType = 'surprise' | 'basic' | 'settings' | 'terms' | 'style' | null;
