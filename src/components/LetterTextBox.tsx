@@ -51,7 +51,7 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
           value={value.title}
           onChange={handleTitleChange}
           onBlur={() => setTitleTouched(true)}
-          className='w-full bg-transparent text-lg font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
+          className='w-full py-1 bg-transparent text-[14px] font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
           placeholder='제목'
         />
       </div>
@@ -64,11 +64,8 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
         <textarea
           value={value.content}
           onChange={handleContentChange}
-          className='flex-1 w-full resize-none bg-transparent px-4 py-3 text-base text-gray-800 placeholder:text-gray-500 focus:outline-none overflow-y-auto'
-          placeholder={`오늘의 질문을 읽고 
-얘기해보고 싶은 내용이나 주제가 있나요?
-
-자유롭게 작성해보세요.`}
+          className='flex-1 w-full resize-none bg-transparent px-4 py-4 text-[14px] text-gray-800 leading-[170%] placeholder:text-gray-500 focus:outline-none overflow-y-auto'
+          placeholder={`오늘의 질문을 읽고 얘기해보고 싶은 내용이나 주제가 있나요? 자유롭게 작성해보세요.`}
         />
 
         <div className='shrink-0 flex items-center justify-end px-3 py-2 text-sm text-gray-500 tabular-nums'>

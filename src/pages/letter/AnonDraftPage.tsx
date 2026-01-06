@@ -1,7 +1,8 @@
 import BackHeader from '@/components/common/headers/BackHeader';
+import LetterTextBox from '@/components/LetterTextBox';
 import useCountdown from '@/hooks/useCountdown';
 import { useModalStore } from '@/stores/modalStore';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -9,6 +10,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const AnonDraftPage = () => {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+
+  const [letter, setLetter] = useState({
+    title: '',
+    content: '',
+  });
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
@@ -26,13 +32,13 @@ const AnonDraftPage = () => {
   };
 
   return (
-    <>
+    <div className='flex flex-col'>
       <BackHeader
         title='타인에게 보내는 편지'
         rightElement={<button>꾸미기</button>}
         onBack={handleBack}
       />
-      <div>
+      <div className='flex flex-col items-start p-5 gap-3'>
         <p className='text-black font-medium text-[20px] leading-[120%] w-[251px]'>
           당신의 인생에 가장 큰 영감을
           <br />
@@ -43,7 +49,10 @@ const AnonDraftPage = () => {
           <span className='text-black ml-1'>후에 질문이 사라져요.</span>
         </div>
       </div>
-    </>
+      <div className='px-4'>
+        <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
+      </div>
+    </div>
   );
 };
 
