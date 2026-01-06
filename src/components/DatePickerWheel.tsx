@@ -9,7 +9,7 @@ const MONTHS = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const ITEM_HEIGHT = 44; // Height of each item in pixels
+const ITEM_HEIGHT = 44; // 각 항목의 높이 (픽셀)
 
 export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) {
   const currentDate = new Date();
@@ -21,10 +21,10 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   const dayRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
 
-  // Generate years (current year - 5 to current year + 10)
+  // 연도 생성 (현재 연도 - 5년부터 현재 연도 + 10년까지)
   const years = Array.from({ length: 16 }, (_, i) => currentDate.getFullYear() - 5 + i);
 
-  // Get days in month
+  // 해당 월의 일수 가져오기
   const getDaysInMonth = (month: number, year: number) => {
     return new Date(year, month + 1, 0).getDate();
   };
@@ -36,7 +36,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   }, [selectedMonth, selectedDay, selectedYear, onDateChange]);
 
   const handleScroll = (
-    ref: React.RefObject<HTMLDivElement>,
+    ref: React.RefObject<HTMLDivElement | null>,
     setter: (value: number) => void,
     offset: number = 0
   ) => {
@@ -47,7 +47,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
     setter(index + offset);
   };
 
-  const scrollToIndex = (ref: React.RefObject<HTMLDivElement>, index: number) => {
+  const scrollToIndex = (ref: React.RefObject<HTMLDivElement | null>, index: number) => {
     if (!ref.current) return;
     ref.current.scrollTop = index * ITEM_HEIGHT;
   };
@@ -59,7 +59,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   }, []);
 
   useEffect(() => {
-    // Adjust day if it exceeds days in the selected month
+    // 선택한 월의 일수를 초과하는 경우 일자 조정
     const maxDays = getDaysInMonth(selectedMonth, selectedYear);
     if (selectedDay > maxDays) {
       setSelectedDay(maxDays);
@@ -79,7 +79,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
 
   return (
     <div className="relative">
-      {/* Selection highlight bar */}
+      {/* 선택 강조 바 */}
       <div
         className="absolute left-0 right-0 bg-[#FEE8E7] pointer-events-none z-0"
         style={{
@@ -90,7 +90,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
       />
 
       <div className="flex justify-center gap-4 relative z-10">
-        {/* Month Picker */}
+        {/* 월 선택기 */}
         <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '140px' }}>
           <div
             ref={monthRef}
@@ -126,7 +126,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
           </div>
         </div>
 
-        {/* Day Picker */}
+        {/* 일 선택기 */}
         <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '60px' }}>
           <div
             ref={dayRef}
@@ -162,7 +162,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
           </div>
         </div>
 
-        {/* Year Picker */}
+        {/* 연도 선택기 */}
         <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '80px' }}>
           <div
             ref={yearRef}

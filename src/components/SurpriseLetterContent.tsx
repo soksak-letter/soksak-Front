@@ -25,7 +25,7 @@ export default function SurpriseLetterContent() {
 
   return (
     <div className="p-4">
-      {/* Tab Selection */}
+      {/* 탭 선택 */}
       <div className="flex gap-1 mb-4">
         <button
           onClick={() => setSelectedTab('surprise')}
@@ -49,7 +49,7 @@ export default function SurpriseLetterContent() {
         </button>
       </div>
 
-      {/* Time Period Selection - Only shown when 'surprise' tab is selected */}
+      {/* 시간 선택 - '깜짝편지로 받기' 탭이 선택되었을 때만 표시 */}
       {selectedTab === 'surprise' && (
         <div className="grid grid-cols-2 gap-x-1 gap-y-2">
           {timePeriodOptions.map((option) => (
@@ -68,7 +68,7 @@ export default function SurpriseLetterContent() {
         </div>
       )}
 
-      {/* Manual Selection Content - Shown when 'manual' tab is selected */}
+      {/* 직접 선택 내용 - '직접 선택하기' 탭이 선택되었을 때 표시 */}
       {selectedTab === 'manual' && (
         <div className="py-4">
           <DatePickerWheel onDateChange={setSelectedDate} />

@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import BottomSheet from '../components/BottomSheet';
 import SurpriseLetterContent from '../components/SurpriseLetterContent';
-import BasicContent from '../components/BasicContent';
-import SettingsContent from '../components/SettingsContent';
-import TermsContent from '../components/TermsContent';
+import LetterStyleContent from '../components/LetterStyleContent';
 
-type ContentType = 'surprise' | 'basic' | 'settings' | 'terms' | null;
+type ContentType = 'surprise' | 'basic' | 'settings' | 'terms' | 'style' | null;
 
 export default function BottomSheetTestPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +24,8 @@ export default function BottomSheetTestPage() {
     switch (currentContent) {
       case 'surprise':
         return <SurpriseLetterContent />;
-      case 'basic':
-        return <BasicContent onClose={closeBottomSheet} />;
-      case 'settings':
-        return <SettingsContent onClose={closeBottomSheet} />;
-      case 'terms':
-        return <TermsContent onClose={closeBottomSheet} />;
+      case 'style':
+        return <LetterStyleContent />;
       default:
         return null;
     }
@@ -45,7 +39,7 @@ export default function BottomSheetTestPage() {
         </h1>
 
         <div className="space-y-4">
-          {/* 깜짝편지 BottomSheet */}
+          {/* 깜짝편지 바텀시트 */}
           <button
             onClick={() => openBottomSheet('surprise')}
             className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
@@ -53,32 +47,16 @@ export default function BottomSheetTestPage() {
             깜짝편지 BottomSheet 열기
           </button>
 
-          {/* 기본 BottomSheet */}
+          {/* 편지 스타일 선택 바텀시트 */}
           <button
-            onClick={() => openBottomSheet('basic')}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+            onClick={() => openBottomSheet('style')}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
           >
-            기본 BottomSheet 열기
-          </button>
-
-          {/* 제목 있는 BottomSheet */}
-          <button
-            onClick={() => openBottomSheet('settings', '설정')}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-          >
-            제목 있는 BottomSheet 열기
-          </button>
-
-          {/* 긴 컨텐츠 BottomSheet */}
-          <button
-            onClick={() => openBottomSheet('terms', '약관 동의')}
-            className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-          >
-            긴 컨텐츠 BottomSheet 열기
+            편지 스타일 선택 BottomSheet 열기
           </button>
         </div>
 
-        {/* 단일 BottomSheet - 내용만 교체 */}
+        {/* 단일 바텀시트 - 내용만 교체 */}
         <BottomSheet isOpen={isOpen} onClose={closeBottomSheet} title={title}>
           {renderContent()}
         </BottomSheet>
