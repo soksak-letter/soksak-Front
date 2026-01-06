@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         children: [
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
           {
-            path: '/letter/anon-draft',
+            path: 'letter/anon-draft',
             element: <AnonDraftPage />,
           },
         ],
