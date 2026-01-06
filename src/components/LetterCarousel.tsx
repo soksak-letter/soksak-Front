@@ -24,9 +24,9 @@ export default function LetterCarousel({
   const dragResetTimeoutRef = useRef<number | null>(null);
 
 
-  // 카드 하나의 너비: 375px의 40% = 150px
-  const CARD_WIDTH = 150;
-  const CARD_GAP = 12;
+  // 카드 크기: 피그마 디자인 기준 130px
+  const CARD_WIDTH = 130;
+  const CARD_GAP = 13; // 피그마에서 확인한 간격
   const CARD_WITH_GAP = CARD_WIDTH + CARD_GAP;
 
   // currentIndex 변경 시 transform 업데이트
@@ -173,10 +173,10 @@ export default function LetterCarousel({
   // 빈 상태
   if (letters.length === 0) {
     return (
-      <div className="w-full py-6">
+      <div className="w-full py-1.5">
         <div className="relative w-full">
           <div className="overflow-hidden">
-            <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `${CARD_GAP}px` }}>
+            <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `16px` }}>
               <EmptyStateCard message={emptyMessage} />
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function LetterCarousel({
   }
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-1.5">
       <div className="relative w-full">
         {/* 캐러셀 컨테이너 */}
         <div
@@ -204,7 +204,7 @@ export default function LetterCarousel({
             className="flex transition-transform duration-300 ease-out"
             style={{
               gap: `${CARD_GAP}px`,
-              paddingLeft: `${CARD_GAP}px`,
+              paddingLeft: `16px`,
             }}
           >
             {letters.map((letter) => (
