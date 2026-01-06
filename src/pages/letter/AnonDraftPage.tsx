@@ -40,7 +40,7 @@ const AnonDraftPage = () => {
         rightElement={<button>꾸미기</button>}
         onBack={handleBack}
       />
-      <div className='flex flex-col items-start p-5 gap-3'>
+      <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
         <p className='text-black font-medium text-[20px] leading-[120%] w-[251px]'>
           당신의 인생에 가장 큰 영감을
           <br />
@@ -54,7 +54,7 @@ const AnonDraftPage = () => {
       <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
-      <div className='flex items-center justify-end p-5 gap-2'>
+      <div className='flex items-center justify-end p-5 -mt-3 gap-2'>
         <span className='text-[var(--color-text-normal)] text-[14px] font-medium'>
           오늘 하루 동안 편지 공개하기
         </span>
