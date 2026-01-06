@@ -1,4 +1,5 @@
 import BackHeader from '@/components/common/headers/BackHeader';
+import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/LetterTextBox';
 import useCountdown from '@/hooks/useCountdown';
 import { useModalStore } from '@/stores/modalStore';
@@ -15,6 +16,7 @@ const AnonDraftPage = () => {
     title: '',
     content: '',
   });
+  const [isPublic, setIsPublic] = useState(false);
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
@@ -52,6 +54,17 @@ const AnonDraftPage = () => {
       <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
+      <div className='flex items-center justify-end p-5 gap-2'>
+        <span className='text-[var(--color-text-normal)] text-[14px] font-medium'>
+          오늘 하루 동안 편지 공개하기
+        </span>
+        <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
+      </div>
+      <p className='flex p-5 text-[12px] text-[var(--color-text-assistive)] leading-[160%] font-medium'>
+        비방의 언어가 담기면 자동으로 필터링 돼요.
+        <br />
+        상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
+      </p>
     </div>
   );
 };
