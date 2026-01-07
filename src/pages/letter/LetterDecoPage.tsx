@@ -3,6 +3,8 @@ import LetterPreviewCard from '@/components/LetterPreviewCard';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 function LetterDecoPage() {
+  // safeMode - 엣지포인트 처리 위해 만들어놓음.
+  // TODO : 에러 페이지 제작 후 그쪽으로 이동하도록 고려
   const { mode } = useParams<{ mode?: string }>();
   const safeMode: Mode = mode === 'anon' || mode === 'other' || mode === 'self' ? mode : 'anon';
 
@@ -17,6 +19,7 @@ function LetterDecoPage() {
 
   return (
     <div className='relative'>
+      {/* TODO : 완료 버튼 -> SendConfirmModal 이동 */}
       <BackHeader title='꾸미기' rightElement={<button>완료</button>} onBack={handleBack} />
 
       <p className='p-5 text-[20px] font-medium leading-[120%]'>편지를 마음껏 꾸며보세요.</p>
