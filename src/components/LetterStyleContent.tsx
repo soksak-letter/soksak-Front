@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type StyleTab = 'font' | 'paper' | 'stamp';
 
@@ -18,6 +18,14 @@ interface PaperOption {
 interface StampOption {
   id: string;
   preview: React.ReactNode;
+}
+
+interface LetterStyleContentProps {
+  onStyleChange?: (style: {
+    font: string;
+    paper: string;
+    stamp: string;
+  }) => void;
 }
 
 const fontOptions: FontOption[] = [
@@ -79,11 +87,16 @@ const stampOptions: StampOption[] = [
   { id: 'stamp9', preview: <StampPreview type="plant" color="#C5E1A5" /> },
 ];
 
-export default function LetterStyleContent() {
+export default function LetterStyleContent({ onStyleChange }: LetterStyleContentProps = {}) {
   const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
   const [selectedFont, setSelectedFont] = useState('font1');
   const [selectedPaper, setSelectedPaper] = useState('paper2');
   const [selectedStamp, setSelectedStamp] = useState('stamp1');
+
+  // 선택 값이 변경될 때마다 부모에게 알림
+  useEffect(() => {
+    onStyleChange?.({ font: selectedFont, paper: selectedPaper, stamp: selectedStamp });
+  }, [selectedFont, selectedPaper, selectedStamp, onStyleChange]);
 
   return (
     <div className="p-4">
