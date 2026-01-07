@@ -14,7 +14,7 @@ const OtherDraftPage = () => {
 
   // mock data
   const nickname = '파란수박';
-  const letterLeft = '4';
+  const letterLeft = 4;
   const dailyQuestion = '당신의 인생에 큰 영감을 주는 사람은 누구인가요?';
 
   return (
