@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 
 type LocationState = {
@@ -8,8 +8,6 @@ type LocationState = {
 
 export default function OnboardingLetterGuidePage() {
   const { state } = useLocation() as { state?: LocationState };
-
-  const navigate = useNavigate();
 
   const title = state?.title ?? '제목';
   const content = state?.content ?? '';
@@ -35,7 +33,7 @@ export default function OnboardingLetterGuidePage() {
 
       <div className='mt-4 text-center'>
         <p className='mt-2 text-sm text-[#171717] leading-6'>
-          속삭편지에 오신 걸 환영해요!
+          속삭편지에 오신 걸 환영해요
           <br />
           3일 뒤의 나에게 가볍게 편지를 작성해볼까요?
           <br />
@@ -64,14 +62,6 @@ export default function OnboardingLetterGuidePage() {
           </div>
         </div>
       </div>
-
-      <button
-        type='button'
-        className='text-center text-xs text-gray-400 underline underline-offset-2'
-        onClick={() => navigate('/')}
-      >
-        건너뛰기
-      </button>
 
       <div className='mt-auto flex justify-center pt-4'>
         <Button color='primary' size='large' onClick={handleNext}>
