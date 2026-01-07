@@ -30,7 +30,7 @@ const SelfDraftPage = () => {
   });
 
   const openSheet = () => setIsOpen(true);
-  const closeSheet = () => setIsOpen(false);
+  //   const closeSheet = () => setIsOpen(false);
 
   const label = `${pickedDate.year}.${pickedDate.month + 1}.${pickedDate.day}`;
 
