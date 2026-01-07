@@ -36,7 +36,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
   return (
     <button
       onClick={onClick}
-      className="relative w-full transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      className='relative w-full transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
       aria-label={`${letter.title} 편지 열기`}
       style={{ aspectRatio: '1.5 / 1' }}
     >
@@ -45,7 +45,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
         className={`relative ${styles.bg} ${styles.border} border-2 rounded-lg p-4 shadow-lg ${styles.shadow} overflow-hidden h-full`}
       >
         {/* 봉투 윗부분 삼각형 플랩 */}
-        <div className="absolute top-0 left-0 right-0 h-0">
+        <div className='absolute top-0 left-0 right-0 h-0'>
           <div
             className={`absolute top-0 left-0 w-0 h-0 border-l-[calc(50%-1px)] border-l-transparent border-r-[calc(50%-1px)] border-r-transparent border-t-[40px] ${styles.flapBorder}`}
             style={{
@@ -65,18 +65,18 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
         </div>
 
         {/* 편지 내용 영역 - 오른쪽 하단 */}
-        <div className="absolute bottom-3 right-3 z-10 text-right">
+        <div className='absolute bottom-3 right-3 z-10 text-right'>
           {/* 제목 - 5자 제한 */}
-          <h3 className="text-sm font-semibold text-gray-800 mb-1">
+          <h3 className='text-sm font-semibold text-gray-800 mb-1'>
             {letter.title.length > 5 ? `${letter.title.slice(0, 5)}...` : letter.title}
           </h3>
 
           {/* 날짜 */}
-          <p className="text-xs text-gray-600">{letter.date}</p>
+          <p className='text-xs text-gray-600'>{letter.date}</p>
         </div>
 
         {/* 봉투 테두리 라인 효과 */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-30"></div>
+        <div className='absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-30'></div>
       </div>
     </button>
   );

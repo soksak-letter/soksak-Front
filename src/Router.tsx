@@ -6,6 +6,7 @@ import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import AnonDraftPage from './pages/letter/AnonDraftPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         element: <AppShellLayout />,
         children: [
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          {
+            path: 'letter/anon-draft',
+            element: <AnonDraftPage />,
+          },
         ],
       },
 
