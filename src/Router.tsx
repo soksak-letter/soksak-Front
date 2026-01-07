@@ -6,6 +6,11 @@ import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import FriendRequestPage from './pages/friend/FriendRequestPage';
+import FriendInboxPage from './pages/friend/FriendInboxPage';
+import FriendPostPage from './pages/friend/FriendPostPage';
+import FriendDraftPage from './pages/friend/FriendDraftPage';
+import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +30,11 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Homepage /> },
-          // { path: 'friends/search', element: <FriendSearchPage /> },
+          { path: 'friend/request', element: <FriendRequestPage /> },
+          { path: 'friend/inbox', element: <FriendInboxPage /> },
+          { path: 'friend/post', element: <FriendPostPage /> },
+          { path: 'friend/draft', element: <FriendDraftPage /> },
+          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
         ],
       },
       {
