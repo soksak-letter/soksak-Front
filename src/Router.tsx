@@ -22,6 +22,8 @@ const router = createBrowserRouter([
         element: <AppShellLayout />,
         children: [
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          { path: 'friend/post', element: <FriendPostPage /> },
+          { path: 'friend/draft', element: <FriendDraftPage /> },
         ],
       },
 
@@ -32,8 +34,6 @@ const router = createBrowserRouter([
           { index: true, element: <Homepage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
-          { path: 'friend/post', element: <FriendPostPage /> },
-          { path: 'friend/draft', element: <FriendDraftPage /> },
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
         ],
       },
