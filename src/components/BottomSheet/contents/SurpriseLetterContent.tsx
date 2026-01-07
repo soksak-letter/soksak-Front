@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DatePickerWheel from './DatePickerWheel';
 
 type TabType = 'surprise' | 'manual';
@@ -7,6 +7,14 @@ type TimePeriod = '3days' | '1week' | '1month' | '3months' | '6months' | '1year'
 interface TimePeriodOption {
   id: TimePeriod;
   label: string;
+}
+
+interface SurpriseLetterContentProps {
+  onSelectionChange?: (selection: {
+    type: 'surprise' | 'manual';
+    period?: TimePeriod;
+    date?: { month: number; day: number; year: number };
+  }) => void;
 }
 
 const timePeriodOptions: TimePeriodOption[] = [
@@ -18,10 +26,18 @@ const timePeriodOptions: TimePeriodOption[] = [
   { id: '1year', label: '1년 후' },
 ];
 
-export default function SurpriseLetterContent() {
+export default function SurpriseLetterContent({ onSelectionChange }: SurpriseLetterContentProps = {}) {
   const [selectedTab, setSelectedTab] = useState<TabType>('surprise');
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('3months');
   const [selectedDate, setSelectedDate] = useState<{ month: number; day: number; year: number } | null>(null);
+
+  useEffect(() => {
+    if (selectedTab === 'surprise') {
+      onSelectionChange?.({ type: 'surprise', period: selectedPeriod });
+    } else if (selectedDate) {
+      onSelectionChange?.({ type: 'manual', date: selectedDate });
+    }
+  }, [selectedTab, selectedPeriod, selectedDate, onSelectionChange]);
 
   return (
     <div className="p-4">
