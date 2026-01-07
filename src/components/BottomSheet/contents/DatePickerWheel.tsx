@@ -20,6 +20,12 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   const monthRef = useRef<HTMLDivElement>(null);
   const dayRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
+  const onDateChangeRef = useRef(onDateChange);
+
+  // Keep the ref updated with the latest callback
+  useEffect(() => {
+    onDateChangeRef.current = onDateChange;
+  }, [onDateChange]);
 
   // 연도 생성 (현재 연도 - 5년부터 현재 연도 + 10년까지)
   const years = Array.from({ length: 16 }, (_, i) => currentDate.getFullYear() - 5 + i);
@@ -32,8 +38,8 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   const days = Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
 
   useEffect(() => {
-    onDateChange?.({ month: selectedMonth, day: selectedDay, year: selectedYear });
-  }, [selectedMonth, selectedDay, selectedYear, onDateChange]);
+    onDateChangeRef.current?.({ month: selectedMonth, day: selectedDay, year: selectedYear });
+  }, [selectedMonth, selectedDay, selectedYear]);
 
   const handleScroll = (
     ref: React.RefObject<HTMLDivElement | null>,
