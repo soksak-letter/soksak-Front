@@ -31,7 +31,7 @@ const LetterReportPage=()=>{
                 <div>  {/* 프로필 영역 */}
                     <div className="flex flex-col items-center mt-10 mb-8">
                         <div className="w-24 h-24 bg-[#FFC8C6] rounded-full mb-3"></div>
-                        <span className="font-bold text-lg">파란수박님</span>
+                        <span className="ty-body2">파란수박님</span>
                     </div>
                 </div>
 
@@ -39,8 +39,8 @@ const LetterReportPage=()=>{
                 <div className="px-4">
                                         {/* 안내 문구 */}
                     <div className="mb-6">
-                        <h2 className="text-m font-bold mb-1">개굴님, 신고 사유를 선택해주세요.</h2>
-                        <p className="text-sm text-gray-500">
+                        <h2 className="ty-body2 mb-1">개굴님, 신고 사유를 선택해주세요.</h2>
+                        <p className="ty-body5 text-[#595959]">
                         해당 내역은 마이페이지 - 신고 내역에서 확인할 수 있습니다.
                         </p>
                     </div>
@@ -67,12 +67,12 @@ const LetterReportPage=()=>{
 
 
 
-            <div className="absolute bottom-5 right-4 flex justify-end items-center mb-5">
-                <span className="mr-3 font-medium text-[#171717]">차단하기</span>
+            <div className="absolute bottom-3 right-4 flex items-center mb-3">
+                <span className="mr-3 ty-body5 text-[#171717]">차단하기</span>
                 <ToggleSwitch 
                 checked={isBlocked} 
                 onCheckedChange={setIsBlocked} 
-                className={!isBlocked ? "!bg-[#CBCCCD]" : ""}
+        className={!isBlocked ? "!bg-[#CBCCCD] [&>span]:!bg-[#E5E6E6]" : ""}
                 />
             </div>
             
