@@ -35,7 +35,7 @@ const router = createBrowserRouter([
             element: <SelfDraftPage />,
           },
           {
-            path: 'letter/deco',
+            path: 'letter/:mode-decorate',
             element: <LetterDecoPage />,
           },
         ],
