@@ -6,7 +6,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+const DAY_MS = 2 * 60 * 1000;
 
 const AnonDraftPage = () => {
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ const AnonDraftPage = () => {
 
   return (
     <div className='flex flex-col'>
+      {/* TODO: 편지 꾸미기 기능 구현 시 스타일 편집 페이지로 이동 */}
       <BackHeader
         title='타인에게 보내는 편지'
         rightElement={<button>꾸미기</button>}
