@@ -30,29 +30,29 @@ const fontOptions: FontOption[] = [
   },
   {
     id: 'font2',
-    name: '나눔 배은체',
-    fontFamily: 'NanumBarunGothic, cursive',
+    name: '나눔 배은혜체',
+    fontFamily: 'NanumBaeEunHyeCe, cursive',
     koreanSample: '좋은 의미으로 편지를 나눠보세요.',
     englishSample: 'Try using Soksak letters'
   },
   {
     id: 'font3',
-    name: '나눔 바샘체',
-    fontFamily: 'NanumSquare, sans-serif',
+    name: '나눔 비상체',
+    fontFamily: 'NanumBiSangCe, sans-serif',
     koreanSample: '편지로 내용을 인연을 만나보세요.',
     englishSample: 'Try using Soksak letters'
   },
   {
     id: 'font4',
-    name: '나눔 바른하이제',
-    fontFamily: 'NanumBarunpen, handwriting',
-    koreanSample: '좋은 의미으로 편지를 나눠보세요.',
+    name: '나눔 강인한 위로체',
+    fontFamily: 'NanumGangInHanWiRo, handwriting',
+    koreanSample: '혹은 익명으로 편지를 나눠보세요.',
     englishSample: 'Try using Soksak letters'
   },
   {
     id: 'font5',
     name: '나눔 아빠글씨체',
-    fontFamily: 'NanumPen, handwriting',
+    fontFamily: 'NanumABbaGeurSsi, handwriting',
     koreanSample: '편지로 새로운 인연을 만나보세요.',
     englishSample: 'Try using Soksak letters'
   },
@@ -131,7 +131,7 @@ export default function LetterStyleContent() {
               className="w-full py-4 px-4 flex items-center justify-between border-b border-gray-200 hover:bg-gray-50 transition-colors"
             >
               <div className="text-left flex-shrink-0 w-32">
-                <p className="text-[15px] font-medium text-black">{font.name}</p>
+                <p className="text-[15px] font-medium text-black" style={{ fontFamily: font.fontFamily }}>{font.name}</p>
               </div>
               <div className="flex-1 text-center px-4">
                 <p
