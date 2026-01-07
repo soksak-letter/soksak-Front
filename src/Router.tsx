@@ -8,6 +8,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import Homepage from './pages/Homepage';
 import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
+import SelfDraftPage from './pages/letter/SelfDraftPage';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           {
             path: 'letter/other-draft',
             element: <OtherDraftPage />,
+          },
+          {
+            path: 'letter/self-draft',
+            element: <SelfDraftPage />,
           },
         ],
       },
