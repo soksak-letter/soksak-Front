@@ -3,8 +3,11 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/LetterTextBox';
 import { useState } from 'react';
 import Question from '@/assets/icons/Question.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 const OtherDraftPage = () => {
+  const navigate = useNavigate();
+
   const [letter, setLetter] = useState({
     title: '',
     content: '',
@@ -17,9 +20,29 @@ const OtherDraftPage = () => {
   const letterLeft = 4;
   const dailyQuestion = '당신의 인생에 큰 영감을 주는 사람은 누구인가요?';
 
+  const handleSubmit = () => {
+    // TODO:
+    // 1. title 최소/최대 글자 수 조건 확인
+    // 2. content 최소/최대 글자 수 조건 확인
+    // 3. 조건 안 맞으면 토스트/에러 처리
+    navigate('/letter/other-decorate', {
+      state: {
+        title: letter.title,
+        content: letter.content,
+      },
+    });
+  };
+
   return (
     <div className='flex flex-col'>
-      <BackHeader title={`${nickname}에게 보내는 편지`} rightElement={<button>꾸미기</button>} />
+      <BackHeader
+        title={`${nickname}에게 보내는 편지`}
+        rightElement={
+          <button type='submit' onClick={handleSubmit}>
+            꾸미기
+          </button>
+        }
+      />
       <div className='flex flex-col items-start p-5 -mt-3 gap-3'>
         <div className='text-[18px] font-semibold leading-[160%]'>
           <span className='text-black'>우리에게 남은 편지 횟수는 </span>

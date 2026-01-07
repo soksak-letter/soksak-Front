@@ -49,12 +49,29 @@ const SelfDraftPage = () => {
     navigate(-1);
   };
 
+  const handleSubmit = () => {
+    // TODO:
+    // 1. title 최소/최대 글자 수 조건 확인
+    // 2. content 최소/최대 글자 수 조건 확인
+    // 3. 조건 안 맞으면 토스트/에러 처리
+    navigate('/letter/self-decorate', {
+      state: {
+        title: letter.title,
+        content: letter.content,
+      },
+    });
+  };
+
   return (
     <div className='flex flex-col'>
       {/* TODO: 편지 꾸미기 기능 구현 시 스타일 편집 페이지로 이동 */}
       <BackHeader
         title='나에게 보내는 편지'
-        rightElement={<button>꾸미기</button>}
+        rightElement={
+          <button type='submit' onClick={handleSubmit}>
+            꾸미기
+          </button>
+        }
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
