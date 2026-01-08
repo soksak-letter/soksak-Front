@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const WelcomePage = () => {
   const navigate = useNavigate();
   return (
-    <div className='w-[375px] h-screen mx-auto flex flex-col items-center px-6 relative'>
+    <div className='w-[375px] bg-[#FAFAFA]! h-screen mx-auto flex flex-col items-center px-6 relative'>
       {/* 상단 로고 및 타이틀 영역 */}
       <div className='mt-24 flex flex-col items-center mb-10'>
         <h1 className='ty-largeTitle font-bold text-[var(--color-primary-500)] mb-3 tracking-tight'>
