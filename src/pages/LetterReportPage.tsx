@@ -1,7 +1,7 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import Toast from '@/components/common/Toast';
@@ -13,6 +13,8 @@ const LetterReportPage = () => {
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   // 차단하기 토글 상태 (boolean)
   const [isBlocked, setIsBlocked] = useState(false);
+
+  const [isCompleted, setIsCompleted] = useState(false);
 
   //토스트 상태 관리 (Toast 파일 수정 필요..?)
   const [toastMessage, setToastMessage] = useState('');
@@ -28,7 +30,7 @@ const LetterReportPage = () => {
     '불법 행위 유도',
     '사칭/허위정보',
   ];
-  const [isCompleted, setIsCompleted] = useState(false);
+
   // 사유 선택 토글 핸들러
   const handleReasonToggle = (reason: string) => {
     setSelectedReasons((prev) => {
@@ -40,6 +42,17 @@ const LetterReportPage = () => {
       return newReasons;
     });
   };
+  // 3초 뒤 메인으로 이동
+  useEffect(() => {
+    if (isCompleted) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 3000);
+
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [isCompleted, navigate]);
+
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
@@ -61,17 +74,12 @@ const LetterReportPage = () => {
       return;
     }
     setIsCompleted(true); // 완료 화면으로 전환
-
-    // 3초 뒤 메인으로 이동
-    setTimeout(() => {
-      navigate('/'); // 이동할 경로
-    }, 3000);
   };
   if (isCompleted) {
     return (
       <div className='w-[375px] h-screen mx-auto  flex flex-col justify-center items-center'>
         <div className='flex flex-col items-center text-center gap-6'>
-          <p className='ty-title2 text-meduim text-[var(--color-dim)] mb-4'>신고가 완료됐어요.</p>
+          <p className='ty-title2 text-medium text-[var(--color-dim)] mb-4'>신고가 완료됐어요.</p>
           <SleepIcon className='mb-8 ml-[30px]' />
           <p className='ty-body3 text-regular text-[#595959] mb-2'>
             상세 내용은 마이페이지에서 확인 가능합니다
@@ -114,7 +122,7 @@ const LetterReportPage = () => {
                   key={reason}
                   selected={isSelected}
                   onClick={() => handleReasonToggle(reason)}
-                  className='!w-full !h-[34px] !text-[13px] !px-3 '
+                  className='w-full! h-[34px]! text-[13px]! px-3! '
                 >
                   {reason}
                 </SelectButton>
