@@ -4,6 +4,7 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
+import Toast from '@/components/common/Toast';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,11 @@ const LetterReportPage = () => {
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   // 차단하기 토글 상태 (boolean)
   const [isBlocked, setIsBlocked] = useState(false);
+
+  //토스트 상태 관리 (Toast 파일 수정 필요..?)
+  const [toastMessage, setToastMessage] = useState('');
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
   const reasons = [
     '욕설/비하',
     '혐오 표현',
@@ -34,13 +40,13 @@ const LetterReportPage = () => {
       return newReasons;
     });
   };
-  // ▼ [추가됨] 차단하기 토글 핸들러
+  //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
-      // setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
-      // setIsToastVisible(true); // 토스트 띄우기
-      return; // 상태 변경 안 하고 함수 종료 (즉, 분홍색으로 안 바뀜)
+      setToastMessage('신고 사유를 선택해주세요.');
+      setIsToastVisible(true); // 토스트 띄우기
+      return; // 상태 변경 안 하고 함수 종료
     }
 
     // 사유가 있으면 정상적으로 토글 상태 변경
@@ -50,8 +56,8 @@ const LetterReportPage = () => {
   const handleSubmit = () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
-      // setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
-      // setIsToastVisible(true); // 토스트 띄우기
+      setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
+      setIsToastVisible(true); // 토스트 띄우기
       return;
     }
     setIsCompleted(true); // 완료 화면으로 전환
@@ -128,11 +134,11 @@ const LetterReportPage = () => {
           className={!isBlocked ? '!bg-[#CBCCCD] [&>span]:!bg-[#E5E6E6]' : ''}
         />
       </div>
-      {/* <Toast
+      <Toast
         message={toastMessage}
         isVisible={isToastVisible}
         onClose={() => setIsToastVisible(false)}
-      /> */}
+      />
     </div>
   );
 };
