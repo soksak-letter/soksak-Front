@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import type { Letter } from '../../types/letter';
 
 interface LetterCardProps {
@@ -29,7 +28,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
   return (
     <button
       onClick={onClick}
-      className="relative w-full transition-all duration-300 ease-out hover:scale-105 focus:outline-none"
+      className='relative w-full transition-all duration-300 ease-out hover:scale-105 focus:outline-none'
       aria-label={`${letter.title} 편지 열기`}
       style={{
         width: '130px',
@@ -38,7 +37,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
     >
       {/* 편지봉투 본체 */}
       <div
-        className="relative rounded-lg overflow-hidden h-full"
+        className='relative rounded-lg overflow-hidden h-full'
         style={{
           backgroundColor: colors.bg,
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
@@ -46,28 +45,28 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
       >
         {/* 봉투 플랩 라인 (사선) */}
         <svg
-          className="absolute"
+          className='absolute'
           style={{
             left: '2.5px',
             top: '2.5px',
             width: '125px',
             height: '45px',
           }}
-          viewBox="0 0 125 45"
-          fill="none"
+          viewBox='0 0 125 45'
+          fill='none'
         >
           <path
-            d="M0 0 L62.5 45 L125 0"
+            d='M0 0 L62.5 45 L125 0'
             stroke={colors.line}
-            strokeWidth="1"
-            strokeLinecap="round"
-            fill="none"
+            strokeWidth='1'
+            strokeLinecap='round'
+            fill='none'
           />
         </svg>
 
         {/* 편지 내용 영역 - 오른쪽 하단 */}
         <div
-          className="absolute flex flex-col items-end"
+          className='absolute flex flex-col items-end'
           style={{
             bottom: '12px',
             right: '12px',
@@ -76,7 +75,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
         >
           {/* 제목 */}
           <h3
-            className="text-sm font-semibold text-right w-full overflow-hidden"
+            className='text-sm font-semibold text-right w-full overflow-hidden'
             style={{
               color: '#171717',
               fontSize: '14px',
@@ -92,7 +91,7 @@ export default function LetterCard({ letter, onClick }: LetterCardProps) {
 
           {/* 날짜 */}
           <p
-            className="text-xs text-right w-full overflow-hidden"
+            className='text-xs text-right w-full overflow-hidden'
             style={{
               color: '#171717',
               fontSize: '12px',
