@@ -1,4 +1,5 @@
 import ExitConfirmModal from '@/modals/ExitConfirmModal';
+import FriendAddedModal from '@/modals/FriendAddedModal';
 import { useModalStore } from '@/stores/modalStore';
 
 export default function ModalRoot() {
@@ -7,6 +8,8 @@ export default function ModalRoot() {
   switch (activeModal) {
     case 'exitConfirm':
       return <ExitConfirmModal />;
+    case 'friendAdded':
+      return <FriendAddedModal />;
     default:
       return null;
   }

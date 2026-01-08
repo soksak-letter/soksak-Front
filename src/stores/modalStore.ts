@@ -1,9 +1,15 @@
 import { create } from 'zustand';
 
-export type ModalType = 'exitConfirm' | null;
+export type ModalType = 'exitConfirm' | 'friendAdded' | null;
 
 export type ModalPayload = {
+  // exitConfirm
   onConfirmExit?: () => void;
+
+  // friendAdded
+  friendName?: string;
+  onConfirm?: () => void;
+  onWriteLetter?: () => void;
 };
 
 interface ModalState {
