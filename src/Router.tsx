@@ -5,6 +5,7 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import MainPage from './pages/main/Mainpage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -22,6 +23,9 @@ import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
+
+import FeedPage from './pages/feed/PublicFeedPage';
+import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +62,8 @@ const router = createBrowserRouter([
             path: 'letter/:mode-decorate',
             element: <LetterDecoPage />,
           },
+          { path: 'feed/public', element: <FeedPage /> },
+          { path: 'feed/friend', element: <FriendFeedPage /> },
         ],
       },
 
@@ -66,6 +72,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Homepage /> },
+          { path: 'main', element: <MainPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
