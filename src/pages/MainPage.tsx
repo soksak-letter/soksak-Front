@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import LetterCarousel from '../components/letters/LetterCarousel';
-import QuestionCard from '../components/QuestionCard';
-import WriteLetterButtons from '../components/WriteLetterButtons';
-import LetterJourney from '../components/LetterJourney';
+import QuestionCard from '../components/mainpage/QuestionCard';
+import WriteLetterButtons from '../components/mainpage/WriteLetterButtons';
+import LetterJourney from '../components/mainpage/LetterJourney';
 import type { Letter } from '../types/letter';
 
 const MainPage = () => {
