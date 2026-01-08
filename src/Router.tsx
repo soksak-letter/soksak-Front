@@ -9,6 +9,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import Homepage from './pages/Homepage';
 import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
+import WelcomePage from './pages/WelcomePage';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: 'letter/other-draft',
             element: <OtherDraftPage />,
+          },
+          {
+            path: '/auth/login_entry',
+            element: <WelcomePage />,
           },
         ],
       },
