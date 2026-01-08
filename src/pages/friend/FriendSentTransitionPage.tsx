@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const FriendSentTransitionPage = () => {
+export default function FriendSentTransitionPage() {
   return <div>FriendSentTransitionPage</div>;
-};
+}
