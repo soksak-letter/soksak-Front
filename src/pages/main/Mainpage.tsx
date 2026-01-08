@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from './QuestionCard';
 import WriteLetterButtons from './WriteLetterButtons';
@@ -6,6 +7,8 @@ import LetterJourney from './LetterJourney';
 import type { Letter } from '../../types/letter';
 
 const MainPage = () => {
+  const navigate = useNavigate();
+
   // 샘플 데이터 (실제로는 API에서 가져올 데이터)
   const [publicLetters] = useState<Letter[]>([
     {
@@ -74,7 +77,10 @@ const MainPage = () => {
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='text-base font-semibold text-[#171717]'>공개 편지</h2>
-          <button className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'>
+          <button
+            onClick={() => navigate('/feed')}
+            className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
+          >
             <span>전체보기</span>
             <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>
               <path
