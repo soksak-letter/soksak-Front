@@ -1,5 +1,5 @@
 import BackHeader from '@/components/common/headers/BackHeader';
-import LetterPreviewCard from '@/components/letters/LetterCard';
+import LetterCard from '@/components/letters/LetterCard';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 type Mode = 'anon' | 'other' | 'self';
@@ -8,6 +8,7 @@ function LetterDecoPage() {
   // safeMode - 엣지포인트 처리 위해 만들어놓음.
   // TODO : 에러 페이지 제작 후 그쪽으로 이동하도록 고려
   const { mode } = useParams<{ mode?: string }>();
+  const safeMode: Mode = mode === 'anon' || mode === 'other' || mode === 'self' ? mode : 'anon';
 
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ function LetterDecoPage() {
       {/* 편지 미리보기 Wrapper */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
         {/* 편지지 배경 */}
-        <LetterPreviewCard />
+        <LetterCard />
 
         {/* 텍스트 레이어 (겹침) */}
         <div className='absolute inset-0 flex flex-col px-3 pt-4 pb-3'>
