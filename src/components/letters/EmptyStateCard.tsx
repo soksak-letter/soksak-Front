@@ -7,7 +7,7 @@ export default function EmptyStateCard({
 }: EmptyStateCardProps) {
   return (
     <div
-      className="flex items-center justify-center rounded-lg"
+      className='flex items-center justify-center rounded-lg'
       style={{
         width: '130px',
         height: '100px',
@@ -16,7 +16,7 @@ export default function EmptyStateCard({
     >
       {/* 안내 문구 */}
       <p
-        className="text-center px-4"
+        className='text-center px-4'
         style={{
           color: 'rgba(0, 0, 0, 0.4)',
           fontSize: '14px',

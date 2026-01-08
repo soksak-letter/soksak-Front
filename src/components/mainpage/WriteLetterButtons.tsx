@@ -8,11 +8,11 @@ export default function WriteLetterButtons({
   onWriteToOther,
 }: WriteLetterButtonsProps) {
   return (
-    <div className="w-full flex gap-3 px-4 py-2.5">
+    <div className='w-full flex gap-3 px-4 py-2.5'>
       {/* 나에게 편지 보내기 */}
       <button
         onClick={onWriteToSelf}
-        className="relative flex-1 rounded-lg overflow-hidden"
+        className='relative flex-1 rounded-lg overflow-hidden'
         style={{
           width: '160px',
           height: '160px',
@@ -21,11 +21,9 @@ export default function WriteLetterButtons({
         }}
       >
         {/* 상단 태그 */}
-        <div
-          className="absolute top-3.5 left-5 right-0 flex justify-center"
-        >
+        <div className='absolute top-3.5 left-5 right-0 flex justify-center'>
           <div
-            className="px-2.5 py-1 rounded-lg"
+            className='px-2.5 py-1 rounded-lg'
             style={{
               backgroundColor: '#FFFFFF',
             }}
@@ -44,10 +42,10 @@ export default function WriteLetterButtons({
         </div>
 
         {/* 이모지 일러스트 */}
-        <div className="absolute" style={{ left: '-15px', bottom: '-20px' }}>
+        <div className='absolute' style={{ left: '-15px', bottom: '-20px' }}>
           <img
-            src="/Charactor.png"
-            alt="Character"
+            src='/Charactor.png'
+            alt='Character'
             style={{
               width: '101px',
               height: '98px',
@@ -56,19 +54,14 @@ export default function WriteLetterButtons({
         </div>
 
         {/* 화살표 아이콘 (우측 하단) */}
-        <div className="absolute bottom-4 right-4">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-          >
+        <div className='absolute bottom-4 right-4'>
+          <svg width='18' height='18' viewBox='0 0 18 18' fill='none'>
             <path
-              d="M6.75 13.5L11.25 9L6.75 4.5"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              d='M6.75 13.5L11.25 9L6.75 4.5'
+              stroke='white'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
             />
           </svg>
         </div>
@@ -77,7 +70,7 @@ export default function WriteLetterButtons({
       {/* 상대에게 편지 보내기 */}
       <button
         onClick={onWriteToOther}
-        className="relative flex-1 rounded-lg overflow-hidden"
+        className='relative flex-1 rounded-lg overflow-hidden'
         style={{
           width: '160px',
           height: '160px',
@@ -86,11 +79,9 @@ export default function WriteLetterButtons({
         }}
       >
         {/* 상단 태그 */}
-        <div
-          className="absolute top-3 left-3 right-0 flex justify-center"
-        >
+        <div className='absolute top-3 left-3 right-0 flex justify-center'>
           <div
-            className="px-2.5 py-1 rounded-lg"
+            className='px-2.5 py-1 rounded-lg'
             style={{
               backgroundColor: '#F55449',
             }}
@@ -109,10 +100,10 @@ export default function WriteLetterButtons({
         </div>
 
         {/* 이모지 일러스트 */}
-        <div className="absolute" style={{ left: '-15px', bottom: '-20px' }}>
+        <div className='absolute' style={{ left: '-15px', bottom: '-20px' }}>
           <img
-            src="/Charactor.png"
-            alt="Character"
+            src='/Charactor.png'
+            alt='Character'
             style={{
               width: '101px',
               height: '98px',
@@ -121,19 +112,14 @@ export default function WriteLetterButtons({
         </div>
 
         {/* 화살표 아이콘 (우측 하단) */}
-        <div className="absolute bottom-4 right-4">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-          >
+        <div className='absolute bottom-4 right-4'>
+          <svg width='18' height='18' viewBox='0 0 18 18' fill='none'>
             <path
-              d="M6.75 13.5L11.25 9L6.75 4.5"
-              stroke="#F55449"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              d='M6.75 13.5L11.25 9L6.75 4.5'
+              stroke='#F55449'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
             />
           </svg>
         </div>

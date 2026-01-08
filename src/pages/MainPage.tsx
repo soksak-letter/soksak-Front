@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import LetterCarousel from '../components/LetterCarousel';
-import QuestionCard from '../components/QuestionCard';
-import WriteLetterButtons from '../components/WriteLetterButtons';
-import LetterJourney from '../components/LetterJourney';
+import LetterCarousel from '../components/letters/LetterCarousel';
+import QuestionCard from '../components/mainpage/QuestionCard';
+import WriteLetterButtons from '../components/mainpage/WriteLetterButtons';
+import LetterJourney from '../components/mainpage/LetterJourney';
 import type { Letter } from '../types/letter';
 
 const MainPage = () => {
@@ -42,98 +42,77 @@ const MainPage = () => {
   };
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className='min-h-dvh bg-white'>
       {/* 오늘의 질문 섹션 */}
       <section>
         <QuestionCard
           question={`당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?`}
-          timeLeft="13시간 32초"
-          profileImageUrl="https://via.placeholder.com/47x48"
+          timeLeft='13시간 32초'
+          profileImageUrl='https://via.placeholder.com/47x48'
         />
       </section>
 
       {/* 편지 쓰기 버튼 섹션 */}
       <section>
-        <WriteLetterButtons
-          onWriteToSelf={handleWriteToSelf}
-          onWriteToOther={handleWriteToOther}
-        />
+        <WriteLetterButtons onWriteToSelf={handleWriteToSelf} onWriteToOther={handleWriteToOther} />
       </section>
 
       {/* 편지 여행 섹션 */}
       <section>
         <LetterJourney
-          userName="개굴"
-          weekLabel="1월 2주차"
+          userName='개굴'
+          weekLabel='1월 2주차'
           receivedCount={16}
           sentCount={12}
           totalCount={32}
-          progressMessage="새벽별처럼 빛나는 금성에 도착했어요! 8통의 마음을 더 보내면 지구에 닿을 수 있어요."
+          progressMessage='새벽별처럼 빛나는 금성에 도착했어요! 8통의 마음을 더 보내면 지구에 닿을 수 있어요.'
         />
       </section>
 
       {/* 공개 편지 섹션 */}
-      <section className="pt-2.5 pb-2.5">
+      <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
-        <div className="flex items-center justify-between px-4 py-1.5">
-          <h2 className="text-base font-semibold text-[#171717]">공개 편지</h2>
-          <button className="flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors">
+        <div className='flex items-center justify-between px-4 py-1.5'>
+          <h2 className='text-base font-semibold text-[#171717]'>공개 편지</h2>
+          <button className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'>
             <span>전체보기</span>
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              className="rotate-180"
-            >
+            <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>
               <path
-                d="M7.5 9L4.5 6L7.5 3"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d='M7.5 9L4.5 6L7.5 3'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
               />
             </svg>
           </button>
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={publicLetters}
-          emptyMessage="현재 공개된 편지가 더이상 없어요."
-        />
+        <LetterCarousel letters={publicLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
       </section>
 
       {/* 친구 편지 섹션 */}
-      <section className="pt-2.5 pb-2.5">
+      <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
-        <div className="flex items-center justify-between px-4 py-1.5">
-          <h2 className="text-base font-semibold text-[#171717]">친구 편지</h2>
-          <button className="flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors">
+        <div className='flex items-center justify-between px-4 py-1.5'>
+          <h2 className='text-base font-semibold text-[#171717]'>친구 편지</h2>
+          <button className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'>
             <span>전체보기</span>
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              className="rotate-180"
-            >
+            <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>
               <path
-                d="M7.5 9L4.5 6L7.5 3"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d='M7.5 9L4.5 6L7.5 3'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
               />
             </svg>
           </button>
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={publicLetters}
-          emptyMessage="현재 공개된 편지가 더이상 없어요."
-        />
+        <LetterCarousel letters={publicLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
       </section>
     </div>
   );

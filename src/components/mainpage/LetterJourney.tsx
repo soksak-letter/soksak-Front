@@ -16,9 +16,9 @@ export default function LetterJourney({
   progressMessage,
 }: LetterJourneyProps) {
   return (
-    <div className="w-full px-4 py-2.5">
+    <div className='w-full px-4 py-2.5'>
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-3">
+      <div className='flex items-center justify-between mb-3'>
         <h3
           style={{
             fontFamily: 'Pretendard',
@@ -34,16 +34,16 @@ export default function LetterJourney({
 
       {/* 전체 컨테이너 */}
       <div
-        className="relative rounded-lg overflow-hidden px-4 py-2.5"
+        className='relative rounded-lg overflow-hidden px-4 py-2.5'
         style={{
           backgroundColor: '#FFF9F6', // rgb(255, 249, 246) - 피그마: rgb(0.999, 0.976, 0.966)
         }}
       >
         {/* 첫 번째 우표 스탬프 (오른쪽 상단) */}
-        <div className="absolute z-10" style={{ top: '-15px', right: '-15px' }}>
+        <div className='absolute z-10' style={{ top: '-15px', right: '-15px' }}>
           <img
-            src="/StampIcon.png"
-            alt="Stamp"
+            src='/StampIcon.png'
+            alt='Stamp'
             style={{
               width: '84px',
               height: '91px',
@@ -53,10 +53,10 @@ export default function LetterJourney({
         </div>
 
         {/* 두 번째 우표 스탬프 (왼쪽 하단) */}
-        <div className="absolute z-10" style={{ bottom: '-15px', left: '-15px' }}>
+        <div className='absolute z-10' style={{ bottom: '-15px', left: '-15px' }}>
           <img
-            src="/StampIcon.png"
-            alt="Stamp"
+            src='/StampIcon.png'
+            alt='Stamp'
             style={{
               width: '84px',
               height: '91px',
@@ -66,9 +66,9 @@ export default function LetterJourney({
         </div>
 
         {/* 기간 태그 */}
-        <div className="mb-3">
+        <div className='mb-3'>
           <div
-            className="inline-block px-2.5 py-0.5 rounded-lg"
+            className='inline-block px-2.5 py-0.5 rounded-lg'
             style={{
               backgroundColor: '#F55449', // rgb(245, 84, 73)
             }}
@@ -88,16 +88,16 @@ export default function LetterJourney({
         </div>
 
         {/* 통계 섹션 */}
-        <div className="mb-1">
+        <div className='mb-1'>
           {/* 받은/보낸 편지 */}
           <div
-            className="flex items-center gap-4 py-1.5"
+            className='flex items-center gap-4 py-1.5'
             style={{
               borderBottom: '1px solid #8C8C8C',
             }}
           >
             {/* 내가 받은 편지 */}
-            <div className="flex items-center gap-1.5">
+            <div className='flex items-center gap-1.5'>
               <span
                 style={{
                   fontFamily: 'Pretendard',
@@ -123,7 +123,7 @@ export default function LetterJourney({
             </div>
 
             {/* 내가 보낸 편지 */}
-            <div className="flex items-center gap-1.5">
+            <div className='flex items-center gap-1.5'>
               <span
                 style={{
                   fontFamily: 'Pretendard',
@@ -150,7 +150,7 @@ export default function LetterJourney({
           </div>
 
           {/* 총 편지 수 */}
-          <div className="flex items-center justify-center gap-1.5 py-1 mt-1">
+          <div className='flex items-center justify-center gap-1.5 py-1 mt-1'>
             <span
               style={{
                 fontFamily: 'Pretendard',
@@ -177,9 +177,9 @@ export default function LetterJourney({
         </div>
 
         {/* 진행 메시지 */}
-        <div className="flex items-center justify-center gap-2 mt-1">
+        <div className='flex items-center justify-center gap-2 mt-1'>
           <p
-            className="text-center"
+            className='text-center'
             style={{
               fontFamily: 'Pretendard',
               fontWeight: 400,
@@ -191,7 +191,7 @@ export default function LetterJourney({
           >
             {progressMessage}
           </p>
-          <div className="flex-shrink-0">
+          <div className='flex-shrink-0'>
             <PlanetIcon />
           </div>
         </div>
@@ -203,15 +203,10 @@ export default function LetterJourney({
 // 행성 아이콘 컴포넌트
 function PlanetIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
+    <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
       <path
-        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"
-        fill="#F55449"
+        d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z'
+        fill='#F55449'
       />
     </svg>
   );

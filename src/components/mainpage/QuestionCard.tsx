@@ -4,24 +4,20 @@ interface QuestionCardProps {
   profileImageUrl?: string;
 }
 
-export default function QuestionCard({
-  question,
-  timeLeft,
-  profileImageUrl,
-}: QuestionCardProps) {
+export default function QuestionCard({ question, timeLeft, profileImageUrl }: QuestionCardProps) {
   return (
     <div
-      className="w-full px-4 py-2.5"
+      className='w-full px-4 py-2.5'
       style={{
         backgroundColor: '#FAFAFA', // rgb(250, 250, 250) - 피그마: rgb(0.98, 0.98, 0.98)
       }}
     >
-      <div className="flex items-center gap-10">
+      <div className='flex items-center gap-10'>
         {/* 질문 텍스트 영역 */}
-        <div className="flex-1 flex flex-col gap-2">
+        <div className='flex-1 flex flex-col gap-2'>
           {/* 질문 */}
           <h2
-            className="whitespace-pre-line"
+            className='whitespace-pre-line'
             style={{
               fontFamily: 'Hallym Gothic',
               fontWeight: 500,
@@ -58,18 +54,14 @@ export default function QuestionCard({
         {/* 프로필 이미지 */}
         {profileImageUrl && (
           <div
-            className="flex-shrink-0 rounded-full overflow-hidden"
+            className='flex-shrink-0 rounded-full overflow-hidden'
             style={{
               width: '47px',
               height: '48px',
               border: '0.5px solid #E2E2E2',
             }}
           >
-            <img
-              src={profileImageUrl}
-              alt="프로필"
-              className="w-full h-full object-cover"
-            />
+            <img src={profileImageUrl} alt='프로필' className='w-full h-full object-cover' />
           </div>
         )}
       </div>

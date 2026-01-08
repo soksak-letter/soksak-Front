@@ -1,4 +1,5 @@
-import type { Letter } from '../types/letter';
+/* eslint-disable prettier/prettier */
+import type { Letter } from '../../types/letter';
 
 interface LetterCardProps {
   letter: Letter;
