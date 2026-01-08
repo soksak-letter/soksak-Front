@@ -1,6 +1,6 @@
 import type { Letter } from '../../types/letter';
 
-interface LetterCardProps {
+interface LetterItemProps {
   letter: Letter;
   onClick: () => void;
 }
@@ -21,7 +21,7 @@ const variantStyles = {
   },
 };
 
-export default function LetterCard({ letter, onClick }: LetterCardProps) {
+export default function LetterItem({ letter, onClick }: LetterItemProps) {
   const variant = letter.variant || 'blue';
   const colors = variantStyles[variant];
 
