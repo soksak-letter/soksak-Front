@@ -6,6 +6,12 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
 
+import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
+import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
+import OnboardingLetterIntroPage from './pages/onboarding/OnboardingLetterIntroPage';
+import OnboardingLetterWritePage from './pages/onboarding/OnboardingLetterWritePage';
+import OnboardingLetterGuidePage from './pages/onboarding/OnboardingLetterGuidePage';
+
 import FriendRequestPage from './pages/friend/FriendRequestPage';
 import FriendInboxPage from './pages/friend/FriendInboxPage';
 import FriendPostPage from './pages/friend/FriendPostPage';
@@ -17,7 +23,6 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -27,7 +32,11 @@ const router = createBrowserRouter([
       {
         element: <AppShellLayout />,
         children: [
-          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          { path: 'onboarding/profile', element: <OnboardingProfileSelectPage /> },
+          { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> },
+          { path: 'onboarding/letter-intro', element: <OnboardingLetterIntroPage /> },
+          { path: 'onboarding/letter-write', element: <OnboardingLetterWritePage /> },
+          { path: 'onboarding/letter-guide', element: <OnboardingLetterGuidePage /> },
 
           { path: 'friend/post', element: <FriendPostPage /> },
           { path: 'friend/draft', element: <FriendDraftPage /> },
