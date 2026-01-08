@@ -7,6 +7,7 @@ interface LetterPreviewCardProps {
   content: string;
   likes: number;
   variant?: LetterPreviewVariant;
+  isLikedInitial?: boolean;
   onLike?: () => void;
 }
 
@@ -27,11 +28,11 @@ export default function LetterPreviewCard({
   content,
   likes,
   variant = 'blue',
+  isLikedInitial = false,
   onLike,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-
+  const [isLiked, setIsLiked] = useState(isLikedInitial);
   const backgroundColor = variantColors[variant];
   const titleColor = variantTitleColors[variant];
 
