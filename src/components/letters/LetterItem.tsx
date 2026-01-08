@@ -1,82 +1,111 @@
 import type { Letter } from '../../types/letter';
 
-interface LetterItemProps {
+interface LetterCardProps {
   letter: Letter;
   onClick: () => void;
 }
 
+// 피그마 디자인에서 추출한 정확한 색상값
 const variantStyles = {
   blue: {
-    bg: 'bg-blue-100',
-    border: 'border-blue-300',
-    flap: 'bg-blue-200',
-    flapBorder: 'border-blue-400',
-    shadow: 'shadow-blue-200/50',
+    bg: '#E2F3FE', // rgb(226, 243, 254) - 피그마: rgb(0.884, 0.953, 0.996)
+    line: '#AEDEFA', // rgb(174, 222, 250) - 피그마: rgb(0.682, 0.871, 0.988)
   },
   pink: {
-    bg: 'bg-pink-100',
-    border: 'border-pink-300',
-    flap: 'bg-pink-200',
-    flapBorder: 'border-pink-400',
-    shadow: 'shadow-pink-200/50',
+    bg: '#FFC8C6', // rgb(255, 200, 198) - 피그마: rgb(0.999, 0.786, 0.776)
+    line: '#FFA39E', // rgb(255, 163, 158) - 피그마: rgb(0.999, 0.639, 0.621)
   },
   yellow: {
-    bg: 'bg-yellow-100',
-    border: 'border-yellow-300',
-    flap: 'bg-yellow-200',
-    flapBorder: 'border-yellow-400',
-    shadow: 'shadow-yellow-200/50',
+    bg: '#F3EFB9', // rgb(243, 239, 185) - 피그마: rgb(0.951, 0.936, 0.747)
+    line: '#D9D6AA', // rgb(217, 214, 170) - 피그마: rgb(0.854, 0.840, 0.666)
   },
 };
 
-export default function LetterItem({ letter, onClick }: LetterItemProps) {
+export default function LetterCard({ letter, onClick }: LetterCardProps) {
   const variant = letter.variant || 'blue';
-  const styles = variantStyles[variant];
+  const colors = variantStyles[variant];
 
   return (
     <button
       onClick={onClick}
-      className='relative w-full transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+      className='relative w-full transition-all duration-300 ease-out hover:scale-105 focus:outline-none'
       aria-label={`${letter.title} 편지 열기`}
-      style={{ aspectRatio: '1.5 / 1' }}
+      style={{
+        width: '130px',
+        height: '100px',
+      }}
     >
       {/* 편지봉투 본체 */}
       <div
-        className={`relative ${styles.bg} ${styles.border} border-2 rounded-lg p-4 shadow-lg ${styles.shadow} overflow-hidden h-full`}
+        className='relative rounded-lg overflow-hidden h-full'
+        style={{
+          backgroundColor: colors.bg,
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        }}
       >
-        {/* 봉투 윗부분 삼각형 플랩 */}
-        <div className='absolute top-0 left-0 right-0 h-0'>
-          <div
-            className={`absolute top-0 left-0 w-0 h-0 border-l-[calc(50%-1px)] border-l-transparent border-r-[calc(50%-1px)] border-r-transparent border-t-[40px] ${styles.flapBorder}`}
-            style={{
-              borderTopColor: 'inherit',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
+        {/* 봉투 플랩 라인 (사선) */}
+        <svg
+          className='absolute'
+          style={{
+            left: '2.5px',
+            top: '2.5px',
+            width: '125px',
+            height: '45px',
+          }}
+          viewBox='0 0 125 45'
+          fill='none'
+        >
+          <path
+            d='M0 0 L62.5 45 L125 0'
+            stroke={colors.line}
+            strokeWidth='1'
+            strokeLinecap='round'
+            fill='none'
           />
-          <div
-            className={`absolute top-0 left-0 w-0 h-0 border-l-[50%] border-l-transparent border-r-[50%] border-r-transparent border-t-[38px] ${styles.flap}`}
-            style={{
-              left: '50%',
-              transform: 'translateX(-50%)',
-              top: '2px',
-            }}
-          />
-        </div>
+        </svg>
 
         {/* 편지 내용 영역 - 오른쪽 하단 */}
-        <div className='absolute bottom-3 right-3 z-10 text-right'>
-          {/* 제목 - 5자 제한 */}
-          <h3 className='text-sm font-semibold text-gray-800 mb-1'>
-            {letter.title.length > 5 ? `${letter.title.slice(0, 5)}...` : letter.title}
+        <div
+          className='absolute flex flex-col items-end'
+          style={{
+            bottom: '12px',
+            right: '12px',
+            width: '78px',
+          }}
+        >
+          {/* 제목 */}
+          <h3
+            className='text-sm font-semibold text-right w-full overflow-hidden'
+            style={{
+              color: '#171717',
+              fontSize: '14px',
+              lineHeight: '23.8px',
+              fontWeight: 600,
+              fontFamily: 'Pretendard',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {letter.title}
           </h3>
 
           {/* 날짜 */}
-          <p className='text-xs text-gray-600'>{letter.date}</p>
+          <p
+            className='text-xs text-right w-full overflow-hidden'
+            style={{
+              color: '#171717',
+              fontSize: '12px',
+              lineHeight: '19.2px',
+              fontWeight: 500,
+              fontFamily: 'Pretendard',
+              marginTop: '0px',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {letter.date}
+          </p>
         </div>
-
-        {/* 봉투 테두리 라인 효과 */}
-        <div className='absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-30'></div>
       </div>
     </button>
   );

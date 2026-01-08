@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import LetterTextBox from '@/components/LetterTextBox';
+import LetterTextBox from '@/components/letters/LetterTextBox';
 import BackHeader from '@/components/common/headers/BackHeader';
 
 type LetterValue = {

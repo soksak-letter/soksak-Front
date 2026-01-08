@@ -5,6 +5,7 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import MainPage from './pages/main/Mainpage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -66,6 +67,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Homepage /> },
+          { path: 'main', element: <MainPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
