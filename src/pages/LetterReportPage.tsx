@@ -25,17 +25,41 @@ const LetterReportPage = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   // 사유 선택 토글 핸들러
   const handleReasonToggle = (reason: string) => {
-    setSelectedReasons((prev) =>
-      prev.includes(reason) ? prev.filter((r) => r !== reason) : [...prev, reason],
-    );
+    setSelectedReasons((prev) => {
+      const newReasons = prev.includes(reason)
+        ? prev.filter((r) => r !== reason)
+        : [...prev, reason];
+
+      if (newReasons.length === 0) setIsBlocked(false);
+      return newReasons;
+    });
   };
+  // ▼ [추가됨] 차단하기 토글 핸들러
+  const handleBlockToggle = (nextState: boolean) => {
+    // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
+    if (nextState && selectedReasons.length === 0) {
+      // setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
+      // setIsToastVisible(true); // 토스트 띄우기
+      return; // 상태 변경 안 하고 함수 종료 (즉, 분홍색으로 안 바뀜)
+    }
+
+    // 사유가 있으면 정상적으로 토글 상태 변경
+    setIsBlocked(nextState);
+  };
+
   const handleSubmit = () => {
+    // 선택된 사유가 0개이면 안내창 띄우기
+    if (selectedReasons.length === 0) {
+      // setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
+      // setIsToastVisible(true); // 토스트 띄우기
+      return;
+    }
     setIsCompleted(true); // 완료 화면으로 전환
 
     // 3초 뒤 메인으로 이동
     setTimeout(() => {
       navigate('/'); // 이동할 경로
-    }, 30000);
+    }, 3000);
   };
   if (isCompleted) {
     return (
@@ -100,10 +124,15 @@ const LetterReportPage = () => {
         <span className='mr-3 ty-body5 text-[#171717]'>차단하기</span>
         <ToggleSwitch
           checked={isBlocked}
-          onCheckedChange={setIsBlocked}
+          onCheckedChange={handleBlockToggle}
           className={!isBlocked ? '!bg-[#CBCCCD] [&>span]:!bg-[#E5E6E6]' : ''}
         />
       </div>
+      {/* <Toast
+        message={toastMessage}
+        isVisible={isToastVisible}
+        onClose={() => setIsToastVisible(false)}
+      /> */}
     </div>
   );
 };
