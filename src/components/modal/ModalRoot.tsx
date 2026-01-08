@@ -1,5 +1,7 @@
 import ExitConfirmModal from '@/modals/ExitConfirmModal';
 import OnboardingSkipConfirmModal from '@/modals/OnboardingSkipConfirmModal';
+import FriendAddedModal from '@/modals/FriendAddedModal';
+
 import { useModalStore } from '@/stores/modalStore';
 
 export default function ModalRoot() {
@@ -11,6 +13,9 @@ export default function ModalRoot() {
 
     case 'onboardingSkipConfirm':
       return <OnboardingSkipConfirmModal />;
+
+    case 'friendAdded':
+      return <FriendAddedModal />;
 
     default:
       return null;

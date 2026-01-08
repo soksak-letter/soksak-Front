@@ -2,8 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import AppShellLayout from './layouts/AppShellLayout';
-import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
-import BottomSheetTestPage from './pages/BottomSheetTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
@@ -14,8 +12,17 @@ import OnboardingLetterIntroPage from './pages/onboarding/OnboardingLetterIntroP
 import OnboardingLetterWritePage from './pages/onboarding/OnboardingLetterWritePage';
 import OnboardingLetterGuidePage from './pages/onboarding/OnboardingLetterGuidePage';
         
+import FriendRequestPage from './pages/friend/FriendRequestPage';
+import FriendInboxPage from './pages/friend/FriendInboxPage';
+import FriendPostPage from './pages/friend/FriendPostPage';
+import FriendDraftPage from './pages/friend/FriendDraftPage';
+import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
+
 import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
+import SelfDraftPage from './pages/letter/SelfDraftPage';
+import LetterDecoPage from './pages/letter/LetterDecoPage';
+
 
 
 const router = createBrowserRouter([
@@ -34,6 +41,10 @@ const router = createBrowserRouter([
           { path: 'onboarding/letter-write', element: <OnboardingLetterWritePage /> },
           { path: 'onboarding/letter-guide', element: <OnboardingLetterGuidePage /> },
 
+          { path: 'friend/post', element: <FriendPostPage /> },
+          { path: 'friend/draft', element: <FriendDraftPage /> },
+
+          // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
           {
             path: 'letter/anon-draft',
             element: <AnonDraftPage />,
@@ -42,7 +53,14 @@ const router = createBrowserRouter([
             path: 'letter/other-draft',
             element: <OtherDraftPage />,
           },
-
+          {
+            path: 'letter/self-draft',
+            element: <SelfDraftPage />,
+          },
+          {
+            path: 'letter/:mode-decorate',
+            element: <LetterDecoPage />,
+          },
         ],
       },
 
@@ -50,14 +68,12 @@ const router = createBrowserRouter([
       {
         element: <AppShellWithTab />,
         children: [{ index: true, element: <Homepage /> }],
-      },
-      {
-        path: '/test/letter-carousel',
-        element: <LetterCarouselTestPage />,
-      },
-      {
-        path: '/test/bottom-sheet',
-        element: <BottomSheetTestPage />,
+        children: [
+          { index: true, element: <Homepage /> },
+          { path: 'friend/request', element: <FriendRequestPage /> },
+          { path: 'friend/inbox', element: <FriendInboxPage /> },
+          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
+        ],
       },
     ],
   },

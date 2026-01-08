@@ -1,12 +1,19 @@
 import { create } from 'zustand';
 
-export type ModalType = 'exitConfirm' | 'onboardingSkipConfirm' | null;
+export type ModalType = 'exitConfirm' | 'onboardingSkipConfirm' | 'friendAdded' | null;
 
 export type ModalPayload = {
+  // exitConfirm
   onConfirmExit?: () => void;
 
   // 온보딩 건너뛰기 확인에서 쓸 콜백
   onConfirmSkip?: () => void;
+
+  // friendAdded
+  friendName?: string;
+  onConfirm?: () => void;
+  onWriteLetter?: () => void;
+
 };
 
 interface ModalState {
