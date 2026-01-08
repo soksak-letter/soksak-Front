@@ -7,17 +7,26 @@ type Props = {
   title: string;
   rightElement?: React.ReactNode; // 완료 버튼 등 우측 요소가 필요할 때만 넣기
   titleClassName?: string; // 타이틀 위치/스타일 추가
+  onBack?: () => void; // 조건부 뒤로가기를 위해 추가
 };
 
-const BackHeader = ({ title, rightElement, titleClassName }: Props) => {
+const BackHeader = ({ title, rightElement, titleClassName, onBack }: Props) => {
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+      return;
+    }
+    navigate(-1);
+  };
 
   return (
     <Header className='h-[68px]'>
       {/* 1. 뒤로가기 버튼 (왼쪽 고정) */}
       <button
         type='button'
-        onClick={() => navigate(-1)}
+        onClick={handleBack}
         aria-label='뒤로 가기'
         className='absolute left-4' // absolute로 위치 고정
       >
