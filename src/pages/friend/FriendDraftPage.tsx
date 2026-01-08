@@ -73,7 +73,7 @@ export default function FriendDraftPage() {
         {/* 공개 토글 */}
         <div className='mt-6 flex items-center justify-between'>
           <p className='text-[14px] font-medium text-[#171717]'>오늘 하루 동안 편지 공개하기</p>
-          <ToggleSwitch checked={isPublic} onChange={setIsPublic} />
+          <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
         </div>
 
         {/* 안내 문구 */}
