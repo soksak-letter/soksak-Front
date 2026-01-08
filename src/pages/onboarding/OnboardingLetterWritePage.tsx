@@ -1,4 +1,3 @@
-// src/pages/OnboardingLetterWritePage.tsx
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,7 +36,7 @@ export default function OnboardingLetterWritePage() {
     <div className='flex min-h-dvh flex-col'>
       <BackHeader title='나에게 보내는 편지' />
 
-      <div className='flex min-h-dvh flex-col px-5 pt-4 pb-6'>
+      <div className='flex flex-1 flex-col px-5 pt-4 pb-6'>
         <h2 className='text-base font-semibold text-[#171717]'>
           3일 뒤, 나는 어떤 모습으로 달라져 있을까요?
         </h2>
