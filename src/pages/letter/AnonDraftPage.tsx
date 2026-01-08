@@ -1,6 +1,6 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-import LetterTextBox from '@/components/LetterTextBox';
+import LetterTextBox from '@/components/letters/LetterTextBox';
 import useCountdown from '@/hooks/useCountdown';
 import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';

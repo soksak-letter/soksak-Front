@@ -7,7 +7,7 @@ import { MdCalendarToday } from 'react-icons/md';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-import LetterTextBox from '@/components/LetterTextBox';
+import LetterTextBox from '@/components/letters/LetterTextBox';
 
 type DateValue = { year: number; month: number; day: number };
 

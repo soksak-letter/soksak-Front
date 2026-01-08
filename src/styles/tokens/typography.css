@@ -51,6 +51,39 @@
       url('../assets/fonts/Pretendard-Bold.woff2') format('woff2');
   }
 
+  /* ===== Nanum Fonts ===== */
+  @font-face {
+    font-family: 'NanumBaeEunHyeCe';
+    font-weight: 400;
+    src:
+      local('Nanum BaeEunHye'),
+      url('../../assets/fonts/NanumBaeEunHyeCe.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumBiSangCe';
+    font-weight: 400;
+    src:
+      local('Nanum BiSang'),
+      url('../../assets/fonts/NanumBiSangCe.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumGangInHanWiRo';
+    font-weight: 400;
+    src:
+      local('Nanum GangInHanWiRo'),
+      url('../../assets/fonts/NanumGangInHanWiRo.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumABbaGeurSsi';
+    font-weight: 400;
+    src:
+      local('Nanum ABbaGeurSsi'),
+      url('../../assets/fonts/NanumABbaGeurSsi.woff2') format('woff2');
+  }
+
   :root {
     --font-pretendard:
       Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,

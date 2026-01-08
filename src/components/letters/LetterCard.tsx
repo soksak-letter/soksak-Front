@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react';
 // 임의로 만든 letter
 // 디자인 확정 후 수정 필요
 
-const LetterPreviewCard = () => {
+const LetterCard = () => {
   const paperStyle: CSSProperties = {
     // 종이 배경색
     backgroundColor: '#E6E2F2',
@@ -30,4 +30,4 @@ const LetterPreviewCard = () => {
   );
 };
 
-export default LetterPreviewCard;
+export default LetterCard;

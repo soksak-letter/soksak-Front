@@ -1,6 +1,6 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
-import LetterTextBox from '@/components/LetterTextBox';
+import LetterTextBox from '@/components/letters/LetterTextBox';
 import { useState } from 'react';
 import Question from '@/assets/icons/Question.svg?react';
 import { useNavigate } from 'react-router-dom';
