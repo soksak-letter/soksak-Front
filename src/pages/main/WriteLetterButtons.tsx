@@ -23,7 +23,7 @@ export default function WriteLetterButtons({
         {/* 상단 태그 */}
         <div className='absolute top-3.5 left-5 right-0 flex justify-center'>
           <div
-            className='px-2.5 py-1 rounded-lg'
+            className='px-3 py-1 rounded-2xl'
             style={{
               backgroundColor: '#FFFFFF',
             }}
@@ -49,6 +49,7 @@ export default function WriteLetterButtons({
             style={{
               width: '101px',
               height: '98px',
+              transform: 'rotate(-0.2rad)',
             }}
           />
         </div>
@@ -81,7 +82,7 @@ export default function WriteLetterButtons({
         {/* 상단 태그 */}
         <div className='absolute top-3 left-3 right-0 flex justify-center'>
           <div
-            className='px-2.5 py-1 rounded-lg'
+            className='px-3 py-1.5 rounded-2xl'
             style={{
               backgroundColor: '#F55449',
             }}
@@ -107,6 +108,7 @@ export default function WriteLetterButtons({
             style={{
               width: '101px',
               height: '98px',
+              transform: 'rotate(-0.2rad)',
             }}
           />
         </div>

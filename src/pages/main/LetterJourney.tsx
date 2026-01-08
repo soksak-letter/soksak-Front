@@ -1,3 +1,6 @@
+import { IoPlanet } from 'react-icons/io5';
+import StampIcon from '../../assets/icons/StampIcon.svg';
+
 interface LetterJourneyProps {
   userName: string;
   weekLabel: string;
@@ -34,15 +37,16 @@ export default function LetterJourney({
 
       {/* 전체 컨테이너 */}
       <div
-        className='relative rounded-lg overflow-hidden px-4 py-2.5'
+        className='relative rounded-lg overflow-hidden px-4 py-4'
         style={{
           backgroundColor: '#FFF9F6', // rgb(255, 249, 246) - 피그마: rgb(0.999, 0.976, 0.966)
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         }}
       >
         {/* 첫 번째 우표 스탬프 (오른쪽 상단) */}
-        <div className='absolute z-10' style={{ top: '-15px', right: '-15px' }}>
+        <div className='absolute z-10' style={{ top: '-15px', right: '-40px' }}>
           <img
-            src='/src/assets/icons/StampIcon.svg'
+            src={StampIcon}
             alt='Stamp'
             style={{
               width: '84px',
@@ -54,23 +58,23 @@ export default function LetterJourney({
         </div>
 
         {/* 두 번째 우표 스탬프 (왼쪽 하단) */}
-        <div className='absolute z-10' style={{ bottom: '-15px', left: '-15px' }}>
+        <div className='absolute z-10' style={{ bottom: '20px', left: '-50px' }}>
           <img
-            src='/src/assets/icons/StampIcon.svg'
+            src={StampIcon}
             alt='Stamp'
             style={{
               width: '84px',
               height: '91px',
-              transform: 'rotate(-0.194rad)',
+              transform: 'rotate(-0.4rad)',
               opacity: 0.2,
             }}
           />
         </div>
 
         {/* 기간 태그 */}
-        <div className='mb-3'>
+        <div className='mb-[5px]'>
           <div
-            className='inline-block px-2.5 py-0.5 rounded-lg'
+            className='inline-block px-2.5 py-0.5 rounded-2xl'
             style={{
               backgroundColor: '#F55449', // rgb(245, 84, 73)
             }}
@@ -90,12 +94,12 @@ export default function LetterJourney({
         </div>
 
         {/* 통계 섹션 */}
-        <div className='mb-1'>
+        <div className='mb-1 flex flex-col items-center'>
           {/* 받은/보낸 편지 */}
           <div
             className='flex items-center gap-4 py-1.5'
             style={{
-              borderBottom: '1px solid #8C8C8C',
+              borderBottom: '1px solid #FFC9C6',
             }}
           >
             {/* 내가 받은 편지 */}
@@ -189,27 +193,16 @@ export default function LetterJourney({
               lineHeight: '19.2px',
               color: '#595959',
               maxWidth: '219px',
+              whiteSpace: 'pre-line',
             }}
           >
             {progressMessage}
           </p>
           <div className='flex-shrink-0'>
-            <PlanetIcon />
+            <IoPlanet size={24} color='#F55449' />
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-// 행성 아이콘 컴포넌트
-function PlanetIcon() {
-  return (
-    <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-      <path
-        d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z'
-        fill='#F55449'
-      />
-    </svg>
   );
 }

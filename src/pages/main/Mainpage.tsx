@@ -68,7 +68,7 @@ const MainPage = () => {
           receivedCount={16}
           sentCount={12}
           totalCount={32}
-          progressMessage='새벽별처럼 빛나는 금성에 도착했어요! 8통의 마음을 더 보내면 지구에 닿을 수 있어요.'
+          progressMessage={`새벽별처럼 빛나는 금성에 도착했어요!\n8통의 마음을 더 보내면 지구에 닿을 수 있어요.`}
         />
       </section>
 
