@@ -37,7 +37,8 @@ export default function FriendPostPage() {
       <BackHeader title={`${friendName}님과 나눈 편지`} />
 
       <main className='px-5 pb-[110px]'>
-        <div className='mt-2 text-[13px] text-[#6F6F6F]'>파란수박님과 이어진 질문</div>
+        {/* <div className='mt-2 text-[13px] text-[#6F6F6F]'>파란수박님과 이어진 질문</div> */}
+        <div className='mt-2 text-[13px] text-[#6F6F6F]'>{friendName}님과 이어진 질문</div>
         <h2 className='mt-1 text-[20px] font-semibold leading-[30px] text-[#171717]'>
           당신의 인생에 가장 큰 영감을
           <br />
