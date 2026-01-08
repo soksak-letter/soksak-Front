@@ -7,7 +7,6 @@ interface LetterPreviewCardProps {
   content: string;
   likes: number;
   variant?: LetterPreviewVariant;
-  isExpandable?: boolean;
   onLike?: () => void;
 }
 
@@ -28,7 +27,6 @@ export default function LetterPreviewCard({
   content,
   likes,
   variant = 'blue',
-  isExpandable = false,
   onLike,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -36,6 +34,9 @@ export default function LetterPreviewCard({
 
   const backgroundColor = variantColors[variant];
   const titleColor = variantTitleColors[variant];
+
+  // 글자 수가 230자 이상인 경우 펼치기 버튼 표시
+  const isExpandable = content.length >= 230;
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -128,7 +129,10 @@ export default function LetterPreviewCard({
 
         {/* 좋아요 */}
         <div className='flex items-center gap-1'>
-          <button onClick={handleLike} className='flex items-center justify-center w-[22px] h-[22px]'>
+          <button
+            onClick={handleLike}
+            className='flex items-center justify-center w-[22px] h-[22px]'
+          >
             <svg width='22' height='22' viewBox='0 0 22 22' fill='none'>
               <path
                 d='M11 19.5L9.55 18.2C5.4 14.5 2.75 12.14 2.75 9.25C2.75 6.89 4.49 5.15 6.85 5.15C8.18 5.15 9.46 5.77 10.34 6.74H11.66C12.54 5.77 13.82 5.15 15.15 5.15C17.51 5.15 19.25 6.89 19.25 9.25C19.25 12.14 16.6 14.5 12.45 18.2L11 19.5Z'

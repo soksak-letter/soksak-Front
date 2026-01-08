@@ -65,7 +65,7 @@ export default function FeedPage() {
       id: '6',
       title: '우리 엄마',
       content:
-        '엄마는 언제나 나를 위해 희생하시는 분이다. 엄마의 사랑은 정말 무조건적이고 따뜻하다. 엄마처럼 누군가를 사랑할 수 있는 사람이 되고 싶다. 엄마가 해주시는 음식을 먹을 때마다 행복하고, 엄마와 대화할 때면 마음이 편안해진다. 엄마는 나의 영원한 롤모델이다.',
+        '엄마는 언제나 나를 위해 희생하시는 분이다. 엄마의 사랑은 정말 무조건적이고 따뜻하다. 엄마처럼 누군가를 사랑할 수 있는 사람이 되고 싶다. 엄마가 해주시는 음식을 먹을 때마다 행복하고, 엄마와 대화할 때면 마음이 편안해진다. 엄마는 나의 영원한 롤모델이다.엄마는 언제나 나를 위해 희생하시는 분이다. 엄마의 사랑은 정말 무조건적이고 따뜻하다. 엄마처럼 누군가를 사랑할 수 있는 사람이 되고 싶다. 엄마가 해주시는 음식을 먹을 때마다 행복하고, 엄마와 대화할 때면 마음이 편안해진다. 엄마는 나의 영원한 롤모델이다.',
       likes: 124,
       variant: 'yellow',
       isExpandable: true,
@@ -137,7 +137,6 @@ export default function FeedPage() {
             content={letter.content}
             likes={letter.likes}
             variant={letter.variant}
-            isExpandable={letter.isExpandable}
             onLike={() => handleLike(letter.id)}
           />
         ))}
