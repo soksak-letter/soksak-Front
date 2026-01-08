@@ -1,12 +1,13 @@
 import BackHeader from '@/components/common/headers/BackHeader';
-import LetterPreviewCard from '@/components/LetterPreviewCard';
+import LetterPreviewCard from '@/components/letters/LetterCard';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+type Mode = 'anon' | 'other' | 'self';
 
 function LetterDecoPage() {
   // safeMode - 엣지포인트 처리 위해 만들어놓음.
   // TODO : 에러 페이지 제작 후 그쪽으로 이동하도록 고려
   const { mode } = useParams<{ mode?: string }>();
-  const safeMode: Mode = mode === 'anon' || mode === 'other' || mode === 'self' ? mode : 'anon';
 
   const navigate = useNavigate();
 
