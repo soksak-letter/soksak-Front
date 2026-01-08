@@ -5,15 +5,19 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 type Mode = 'anon' | 'other' | 'self';
 
 function LetterDecoPage() {
-  // safeMode - 엣지포인트 처리 위해 만들어놓음.
-  // TODO : 에러 페이지 제작 후 그쪽으로 이동하도록 고려
   const { mode } = useParams<{ mode?: string }>();
-  const safeMode: Mode = mode === 'anon' || mode === 'other' || mode === 'self' ? mode : 'anon';
+  const { state } = useLocation();
+  const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
 
   const navigate = useNavigate();
 
-  const { state } = useLocation();
-  const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
+  // 유효하지 않은 mode인 경우 이전 페이지로 이동 또는 에러 처리
+  const safeMode = ['anon', 'other', 'self'].includes(mode ?? '') ? (mode as Mode) : null;
+  if (!safeMode) {
+    // TODO : 에러 페이지 제작 후 navigate('/error') 로 변경
+    navigate(-1);
+    return null;
+  }
 
   const handleBack = () => {
     navigate(-1);
