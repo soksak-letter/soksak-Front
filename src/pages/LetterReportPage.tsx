@@ -78,7 +78,7 @@ const LetterReportPage = () => {
             </p>
           </div>
           {/* 신고 사유 버튼 그리드 */}
-          <div className='grid grid-cols-3 gap-y-3 gap-x-2 mb-8 place-items-center'>
+          <div className='grid grid-cols-3 gap-y-[12px] gap-x-[8px] mb-8 place-items-center'>
             {reasons.map((reason) => {
               const isSelected = selectedReasons.includes(reason);
               return (
@@ -86,7 +86,7 @@ const LetterReportPage = () => {
                   key={reason}
                   selected={isSelected}
                   onClick={() => handleReasonToggle(reason)}
-                  className='!w-full !h-[34px] !text-[13px] !px-3 ' // 그리드 칸에 꽉 차게 하려면 추가, 아니면 제거
+                  className='!w-full !h-[34px] !text-[13px] !px-3 '
                 >
                   {reason}
                 </SelectButton>
