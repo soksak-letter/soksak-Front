@@ -10,7 +10,7 @@ type Props = {
 const Toast = ({ message, isVisible, onClose }: Props) => {
   useEffect(() => {
     if (isVisible) {
-      // 3초 뒤에 자동으로 사라짐
+      // 1초 뒤에 자동으로 사라짐
       const timer = setTimeout(() => {
         onClose();
       }, 1000);
