@@ -1,7 +1,9 @@
 import { FcGoogle } from 'react-icons/fc';
 import { SiNaver } from 'react-icons/si';
+import { useNavigate } from 'react-router-dom';
 
 const WelcomePage = () => {
+  const navigate = useNavigate();
   return (
     <div className='w-[375px] h-screen mx-auto flex flex-col items-center px-6 relative'>
       {/* 상단 로고 및 타이틀 영역 */}
@@ -39,6 +41,7 @@ const WelcomePage = () => {
       {/* 메인 버튼 영역 (로그인 / 회원가입) */}
       <div className='w-full space-y-3 mb-10'>
         <button
+          onClick={() => navigate('/auth/signin')}
           className='w-full h-[52px] bg-[var(--color-primary-500)] text-[var(--color-bg-primary)] text-ty-body3 font-meduim 
         rounded-lg hover:bg-[#E4473F] transition-colors'
         >
