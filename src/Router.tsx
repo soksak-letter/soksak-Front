@@ -11,7 +11,7 @@ import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSel
 import OnboardingLetterIntroPage from './pages/onboarding/OnboardingLetterIntroPage';
 import OnboardingLetterWritePage from './pages/onboarding/OnboardingLetterWritePage';
 import OnboardingLetterGuidePage from './pages/onboarding/OnboardingLetterGuidePage';
-        
+
 import FriendRequestPage from './pages/friend/FriendRequestPage';
 import FriendInboxPage from './pages/friend/FriendInboxPage';
 import FriendPostPage from './pages/friend/FriendPostPage';
@@ -23,8 +23,6 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 
-
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -34,7 +32,6 @@ const router = createBrowserRouter([
       {
         element: <AppShellLayout />,
         children: [
-
           { path: 'onboarding/profile', element: <OnboardingProfileSelectPage /> },
           { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> },
           { path: 'onboarding/letter-intro', element: <OnboardingLetterIntroPage /> },
@@ -67,7 +64,6 @@ const router = createBrowserRouter([
       // 프레임 + 탭바
       {
         element: <AppShellWithTab />,
-        children: [{ index: true, element: <Homepage /> }],
         children: [
           { index: true, element: <Homepage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
