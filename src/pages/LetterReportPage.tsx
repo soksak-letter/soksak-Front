@@ -56,7 +56,7 @@ const LetterReportPage = () => {
   const handleSubmit = () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
-      setToastMessage('신고 사유를 선택해주세요.'); // 안내 메시지 설정
+      setToastMessage('신고 사유를 선택해주세요.');
       setIsToastVisible(true); // 토스트 띄우기
       return;
     }
@@ -70,9 +70,7 @@ const LetterReportPage = () => {
   if (isCompleted) {
     return (
       <div className='w-[375px] h-screen mx-auto  flex flex-col justify-center items-center'>
-        {/* 아이콘이나 이미지가 있다면 여기에 추가 */}
         <div className='flex flex-col items-center text-center gap-6'>
-          {/* 텍스트 스타일은 원하시는 대로 ty-클래스를 사용하세요 */}
           <p className='ty-title2 text-meduim text-[var(--color-dim)] mb-4'>신고가 완료됐어요.</p>
           <SleepIcon className='mb-8 ml-[30px]' />
           <p className='ty-body3 text-regular text-[#595959] mb-2'>
