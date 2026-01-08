@@ -23,7 +23,8 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import WelcomePage from './pages/login/WelcomePage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
-import SigninPage from './pages/login/SigninPage';
+import SignInPage from './pages/login/SigninPage';
+import SignUpPage from './pages/login/SignupPage';
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
           },
           {
             path: '/auth/signin',
-            element: <SigninPage />,
+            element: <SignInPage />,
+          },
+          {
+            path: '/auth/signup',
+            element: <SignUpPage />,
           },
         ],
       },

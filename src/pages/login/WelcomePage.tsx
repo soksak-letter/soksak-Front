@@ -47,7 +47,10 @@ const WelcomePage = () => {
         >
           로그인
         </button>
-        <button className='w-full h-[52px] bg-[var(--color-bg-primary)] border border-[var(--color-primary-400)] text-[#F5544C] text-ty-body3 font-meduim rounded-lg hover:bg-red-50 transition-colors'>
+        <button
+          onClick={() => navigate('/auth/signup')}
+          className='w-full h-[52px] bg-[var(--color-bg-primary)] border border-[var(--color-primary-400)] text-[#F5544C] text-ty-body3 font-meduim rounded-lg hover:bg-red-50 transition-colors'
+        >
           회원가입
         </button>
       </div>

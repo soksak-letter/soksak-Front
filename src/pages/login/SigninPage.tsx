@@ -2,12 +2,12 @@ import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
 
-const SigninPage = () => {
+const SignInPage = () => {
   const navigate = useNavigate();
 
   // 페이지 이동 핸들러
-  const handleFindId = () => navigate('/find-id'); // 아이디 찾기 페이지 경로
-  const handleFindPw = () => navigate('/find-password'); // 비밀번호 찾기 페이지 경로
+  const handleFindId = () => navigate('/auth/email-find'); // 아이디 찾기 페이지 경로
+  const handleFindPw = () => navigate('/auth/pw-find'); // 비밀번호 찾기 페이지 경로
   const handleLogin = () => {
     // 로그인 로직 처리
     console.log('로그인 시도');
@@ -51,4 +51,4 @@ const SigninPage = () => {
     </div>
   );
 };
-export default SigninPage;
+export default SignInPage;
