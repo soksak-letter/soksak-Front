@@ -51,7 +51,8 @@ export default function FriendPostPage() {
             <button
               key={p.id}
               type='button'
-              onClick={() => navigate(`/posts/${p.id}`)} // 상세 라우트 없으면 나중에 바꿔
+              //   onClick={() => navigate(`/posts/${p.id}`)}
+              // 추후 확정되면 다시 정의
               className='text-left'
             >
               {/* 봉투 자리 */}
