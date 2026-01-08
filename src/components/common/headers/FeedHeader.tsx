@@ -25,6 +25,7 @@ export default function FeedHeader({ title = '공개 편지' }: FeedHeaderProps)
       <button
         onClick={handleBack}
         className='absolute left-4 flex items-center justify-center'
+        aria-label='뒤로가기'
         style={{
           width: '18px',
           height: '18px',
