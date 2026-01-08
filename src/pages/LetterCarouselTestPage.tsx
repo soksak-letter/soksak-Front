@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LetterCarousel from '../components/LetterCarousel';
+import LetterCarousel from '../components/letters/LetterCarousel';
 import type { Letter } from '../types/letter';
 
 export default function LetterCarouselTestPage() {

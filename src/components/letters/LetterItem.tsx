@@ -1,4 +1,4 @@
-import type { Letter } from '../types/letter';
+import type { Letter } from '../../types/letter';
 
 interface LetterCardProps {
   letter: Letter;

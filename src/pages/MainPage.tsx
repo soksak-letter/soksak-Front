@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LetterCarousel from '../components/LetterCarousel';
+import LetterCarousel from '../components/letters/LetterCarousel';
 import QuestionCard from '../components/QuestionCard';
 import WriteLetterButtons from '../components/WriteLetterButtons';
 import LetterJourney from '../components/LetterJourney';

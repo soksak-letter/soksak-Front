@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Letter } from '../types/letter';
-import LetterCard from './LetterCard';
+import type { Letter } from '../../types/letter';
+import LetterItem from './LetterItem';
 import EmptyStateCard from './EmptyStateCard';
 
 interface LetterCarouselProps {
@@ -213,7 +213,7 @@ export default function LetterCarousel({
                 className="flex-shrink-0"
                 style={{ width: `${CARD_WIDTH}px` }}
               >
-                <LetterCard
+                <LetterItem
                   letter={letter}
                   onClick={() => handleCardClick(letter)}
                 />
