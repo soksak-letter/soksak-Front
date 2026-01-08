@@ -1,4 +1,4 @@
-import QuestionCard from '../../pages/main/QuestionCard';
+import QuestionCard from '../common/QuestionCard';
 
 interface QuestionSectionProps {
   question: string;

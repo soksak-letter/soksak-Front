@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
-import QuestionCard from './QuestionCard';
+import QuestionCard from '../../components/common/QuestionCard';
 import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
 import type { Letter } from '../../types/letter';
