@@ -78,7 +78,7 @@ const MainPage = () => {
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='text-base font-semibold text-[#171717]'>공개 편지</h2>
           <button
-            onClick={() => navigate('/feed')}
+            onClick={() => navigate('/feed/public')}
             className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
           >
             <span>전체보기</span>
@@ -103,7 +103,10 @@ const MainPage = () => {
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='text-base font-semibold text-[#171717]'>친구 편지</h2>
-          <button className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'>
+          <button
+            onClick={() => navigate('/feed/friend')}
+            className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
+          >
             <span>전체보기</span>
             <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>
               <path

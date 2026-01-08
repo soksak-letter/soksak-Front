@@ -144,10 +144,7 @@ export default function FeedPage() {
       </section>
 
       {/* 플로팅 버튼 */}
-      <FloatingButton
-        text='나도 편지 작성하기'
-        navigateTo='/write'
-      />
+      <FloatingButton text='나도 편지 작성하기' navigateTo='/write' />
     </div>
   );
 }

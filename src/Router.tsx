@@ -24,7 +24,8 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 
-import FeedPage from './pages/feed/FeedPage';
+import FeedPage from './pages/feed/PublicFeedPage';
+import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 const router = createBrowserRouter([
   {
@@ -61,7 +62,8 @@ const router = createBrowserRouter([
             path: 'letter/:mode-decorate',
             element: <LetterDecoPage />,
           },
-          { path: 'feed', element: <FeedPage /> },
+          { path: 'feed/public', element: <FeedPage /> },
+          { path: 'feed/friend', element: <FriendFeedPage /> },
         ],
       },
 
