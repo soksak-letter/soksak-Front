@@ -1,14 +1,19 @@
-import BackHeader from '@/components/common/headers/BackHeader';
-import ToggleSwitch from '@/components/common/ToggleSwitch';
-import LetterTextBox from '@/components/letters/LetterTextBox';
-import useCountdown from '@/hooks/useCountdown';
-import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useModalStore } from '@/stores/modalStore';
+import useCountdown from '@/hooks/useCountdown';
+import { MdCalendarToday } from 'react-icons/md';
+
+import BackHeader from '@/components/common/headers/BackHeader';
+import ToggleSwitch from '@/components/common/ToggleSwitch';
+import LetterTextBox from '@/components/letters/LetterTextBox';
+
+type DateValue = { year: number; month: number; day: number };
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-const AnonDraftPage = () => {
+const SelfDraftPage = () => {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
 
@@ -17,6 +22,17 @@ const AnonDraftPage = () => {
     content: '',
   });
   const [isPublic, setIsPublic] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [pickedDate, setPickedDate] = useState<DateValue>(() => {
+    const now = new Date();
+    return { year: now.getFullYear(), month: now.getMonth(), day: now.getDate() };
+  });
+
+  const openSheet = () => setIsOpen(true);
+  //   const closeSheet = () => setIsOpen(false);
+
+  const label = `${pickedDate.year}.${pickedDate.month + 1}.${pickedDate.day}`;
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
@@ -38,7 +54,7 @@ const AnonDraftPage = () => {
     // 1. title 최소/최대 글자 수 조건 확인
     // 2. content 최소/최대 글자 수 조건 확인
     // 3. 조건 안 맞으면 토스트/에러 처리
-    navigate('/letter/anon-decorate', {
+    navigate('/letter/self-decorate', {
       state: {
         title: letter.title,
         content: letter.content,
@@ -48,8 +64,9 @@ const AnonDraftPage = () => {
 
   return (
     <div className='flex flex-col'>
+      {/* TODO: 편지 꾸미기 기능 구현 시 스타일 편집 페이지로 이동 */}
       <BackHeader
-        title='타인에게 보내는 편지'
+        title='나에게 보내는 편지'
         rightElement={
           <button type='submit' onClick={handleSubmit}>
             꾸미기
@@ -68,6 +85,19 @@ const AnonDraftPage = () => {
           <span className='text-black ml-1'>후에 질문이 사라져요.</span>
         </div>
       </div>
+
+      {/* TODO : 디자인 미확정 */}
+      <div className='flex items-center justify-end p-5 -mt-5 gap-1'>
+        <span className='text-[var(--color-text-alternative)] font-medium text-[14px]'>
+          {label}에 받을게요.
+        </span>
+        <button type='button' className='border border-none' onClick={openSheet}>
+          <MdCalendarToday className='text-[var(--color-status-caution)]' />
+        </button>
+      </div>
+
+      {/* TODO : 데이트 피커 바텀시트 추가 */}
+
       <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
@@ -86,4 +116,4 @@ const AnonDraftPage = () => {
   );
 };
 
-export default AnonDraftPage;
+export default SelfDraftPage;

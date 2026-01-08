@@ -2,13 +2,13 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import AppShellLayout from './layouts/AppShellLayout';
-import LetterCarouselTestPage from './pages/LetterCarouselTestPage';
-import BottomSheetTestPage from './pages/BottomSheetTestPage';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
 import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
+import SelfDraftPage from './pages/letter/SelfDraftPage';
+import LetterDecoPage from './pages/letter/LetterDecoPage';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,7 @@ const router = createBrowserRouter([
         element: <AppShellLayout />,
         children: [
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
           {
             path: 'letter/anon-draft',
             element: <AnonDraftPage />,
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
           {
             path: 'letter/other-draft',
             element: <OtherDraftPage />,
+          },
+          {
+            path: 'letter/self-draft',
+            element: <SelfDraftPage />,
+          },
+          {
+            path: 'letter/:mode-decorate',
+            element: <LetterDecoPage />,
           },
         ],
       },
@@ -38,14 +47,6 @@ const router = createBrowserRouter([
           { index: true, element: <Homepage /> },
           // { path: 'friends/search', element: <FriendSearchPage /> },
         ],
-      },
-      {
-        path: '/test/letter-carousel',
-        element: <LetterCarouselTestPage />,
-      },
-      {
-        path: '/test/bottom-sheet',
-        element: <BottomSheetTestPage />,
       },
     ],
   },
