@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import clsx from 'clsx';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import { Button } from '@/components/common/Button';
 import { useModalStore } from '@/stores/modalStore';
 import { useNavigate } from 'react-router-dom';
+import FriendTopTabs from '@/components/FriendTopTabs';
 
 type TabKey = 'inbox' | 'request';
 
@@ -62,7 +62,14 @@ export default function FriendRequestPage() {
 
       <main className='px-5 pb-24'>
         {/* 상단 탭(친구 목록 / 친구 신청) */}
-        <FriendTopTabs value={tab} onChange={setTab} />
+        <FriendTopTabs
+          value='request'
+          onChange={(tab) => {
+            if (tab === 'inbox') {
+              navigate('/friend/inbox');
+            }
+          }}
+        />
 
         {/* 본문 */}
         {tab === 'request' ? (
@@ -139,39 +146,6 @@ export default function FriendRequestPage() {
  * 내부 컴포넌트들
  * ----------------------------- */
 
-function FriendTopTabs({ value, onChange }: { value: TabKey; onChange: (v: TabKey) => void }) {
-  return (
-    <div className='mt-3'>
-      <div className='grid grid-cols-2 rounded-md bg-[#E5E6E6]'>
-        <button
-          type='button'
-          onClick={() => onChange('inbox')}
-          className={clsx(
-            'h-[40px] rounded-md text-sm font-medium transition',
-            value === 'inbox'
-              ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
-              : 'text-[#8C8C8C]',
-          )}
-        >
-          친구 목록
-        </button>
-        <button
-          type='button'
-          onClick={() => onChange('request')}
-          className={clsx(
-            'h-[40px] rounded-md text-sm font-medium transition',
-            value === 'request'
-              ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
-              : 'text-[#8C8C8C]',
-          )}
-        >
-          친구 신청
-        </button>
-      </div>
-    </div>
-  );
-}
-
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
@@ -186,6 +160,14 @@ function RequestRow({ name, right }: { name: string; right: React.ReactNode }) {
     <div className='w-[343px] h-[80px] flex items-center justify-between rounded-xl  bg-white px-4 py-4 shadow-[0_0_10px_rgba(0,0,0,0.04)] '>
       <p className='text-sm font-semibold text-[#171717]'>{name}</p>
       {right}
+    </div>
+  );
+}
+
+function EmptyState({ text }: { text: string }) {
+  return (
+    <div className='rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-8 text-center text-sm text-[#9B9B9B]'>
+      {text}
     </div>
   );
 }
