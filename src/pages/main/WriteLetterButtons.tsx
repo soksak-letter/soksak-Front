@@ -1,3 +1,5 @@
+import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg';
+
 interface WriteLetterButtonsProps {
   onWriteToSelf: () => void;
   onWriteToOther: () => void;
@@ -44,7 +46,7 @@ export default function WriteLetterButtons({
         {/* 이모지 일러스트 */}
         <div className='absolute' style={{ left: '-15px', bottom: '-20px' }}>
           <img
-            src='/src/assets/icons/HappyModalIcon.svg'
+            src={HappyModalIcon}
             alt='Character'
             style={{
               width: '101px',
@@ -103,7 +105,7 @@ export default function WriteLetterButtons({
         {/* 이모지 일러스트 */}
         <div className='absolute' style={{ left: '-15px', bottom: '-20px' }}>
           <img
-            src='/src/assets/icons/HappyModalIcon.svg'
+            src={HappyModalIcon}
             alt='Character'
             style={{
               width: '101px',
