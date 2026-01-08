@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FeedHeader from '../../components/common/headers/FeedHeader';
 import QuestionSection from '../../components/feed/QuestionSection';
 import LetterPreviewCard from '../../components/feed/LetterPreviewCard';
 import type { LetterPreviewVariant } from '../../components/feed/LetterPreviewCard';
@@ -113,6 +114,12 @@ export default function FeedPage() {
 
   return (
     <div className='min-h-dvh' style={{ backgroundColor: '#FAFAFA' }}>
+      {/* 고정 상단바 */}
+      <FeedHeader title='공개 편지' />
+
+      {/* 상단바 높이만큼 여백 */}
+      <div style={{ height: '50px' }} />
+
       {/* 상단 질문 섹션 */}
       <QuestionSection
         question={`당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?`}
