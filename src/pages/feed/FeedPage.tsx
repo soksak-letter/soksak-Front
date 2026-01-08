@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FeedHeader from '../../components/common/headers/FeedHeader';
 import QuestionSection from '../../components/feed/QuestionSection';
 import LetterPreviewCard from '../../components/feed/LetterPreviewCard';
+import FloatingButton from '../../components/common/FloatingButton';
 import type { LetterPreviewVariant } from '../../components/feed/LetterPreviewCard';
 
 interface FeedLetter {
@@ -141,6 +142,12 @@ export default function FeedPage() {
           />
         ))}
       </section>
+
+      {/* 플로팅 버튼 */}
+      <FloatingButton
+        text='나도 편지 작성하기'
+        navigateTo='/write'
+      />
     </div>
   );
 }
