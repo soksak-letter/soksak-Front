@@ -22,6 +22,7 @@ import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
+import LetterReportPage from './pages/LetterReportPage';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,8 @@ const router = createBrowserRouter([
             path: 'letter/:mode-decorate',
             element: <LetterDecoPage />,
           },
+          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          { path: 'letter/report', element: <LetterReportPage /> },
         ],
       },
 
