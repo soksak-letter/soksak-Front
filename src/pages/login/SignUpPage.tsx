@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    // 로그인 로직 처리
-    console.log('로그인 시도');
-    navigate('/'); // 로그인 성공 시 메인으로 이동
+  const handleProfile = () => {
+    // 회원가입 종료  시 로직 처리
+    console.log('회원가입 종료 프로필 셋업');
+    navigate('auth/profile-setup'); // 회원가입 종료 시 프로필셋업으로 이동
   };
 
   return (
@@ -16,7 +16,7 @@ const SignUpPage = () => {
       <div className='[&>*]:!bg-[#FAFAFA]'>
         <BackHeader title='회원가입' />
       </div>
-      <div className='flex flex-col px-[16px] py-[10px] gap-[8px] '>
+      <div className='flex flex-col px-[16px] py-[10px] gap-[8px]'>
         <p className='ty-title3 w-[343px] h-[29px]'>기본정보</p>
         <p className='ty-body4 w-[343px] h-[24px]'>이메일</p>
         <div className='flex flex-row gap-[8px] w-[343px] h-[75px]'>
@@ -79,6 +79,18 @@ const SignUpPage = () => {
             휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.
           </p>
         </div>
+        <div className='flex flex-col gap-[8px] w-[343px] h-[236px]'>
+          <p className='ty-title3 w-[343px] h-[29px]'>약관동의</p>
+          <p className='px-[3px] ty-detail text-[var(--color-text-assistive)]'>
+            비밀번호를 다시 입력해주세요.
+          </p>
+        </div>
+      </div>
+
+      <div className='flex flex-col px-[16px] py-[10px]'>
+        <Button onClick={handleProfile} className='w-[342px] h-[48px]'>
+          다음
+        </Button>
       </div>
     </div>
   );
