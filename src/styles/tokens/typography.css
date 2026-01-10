@@ -1,16 +1,12 @@
 @layer base {
-  /*
-  TODO: HallymGothic
-  - 웹폰트 원본(ttf/woff) 및 라이선스 확인 필요
-  - 디자이너 전달 후 재적용 예정
-
+  /* ===== HallymGothic ===== */
   @font-face {
     font-family: 'HallymGothic';
     font-weight: 700;
     src:
       local('Hallym Gothic Bold'),
-      url('../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
-      url('../assets/fonts/HallymGothic-Bold.woff') format('woff');
+      url('../assets/fonts/hallymGothic-bold.woff2') format('woff2'),
+      url('../assets/fonts/hallymGothic-bold.woff') format('woff');
   }
 
   @font-face {
@@ -18,10 +14,9 @@
     font-weight: 500;
     src:
       local('Hallym Gothic Medium'),
-      url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
-      url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
+      url('../assets/fonts/hallymGothic-medium.woff2') format('woff2'),
+      url('../assets/fonts/hallymGothic-medium.woff') format('woff');
   }
-  */
 
   /* ===== Pretendard ===== */
   @font-face {
@@ -89,38 +84,30 @@
       Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
       sans-serif;
 
-    /*
-    TODO: HallymGothic 적용 시에만 활성화
     --font-hallym:
       'HallymGothic', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
       'Helvetica Neue', Arial, sans-serif;
-    */
   }
 }
 
 @layer components {
-  /* ===== Typography Utilities ===== */
-  /* Tailwind v4 환경에서 커스텀 text-* 유틸은 @apply로 인식되지 않음
-     → font-size / line-height는 순수 CSS로 직접 선언 */
-
-  /* ===== (원래 Hallym 영역) 지금은 Pretendard로 대체 ===== */
   .ty-largeTitle {
     @apply font-bold;
-    font-family: var(--font-pretendard);
+    font-family: var(--font-hallym);
     font-size: 32px;
     line-height: 1.2;
   }
 
   .ty-title1 {
     @apply font-medium;
-    font-family: var(--font-pretendard);
+    font-family: var(--font-hallym);
     font-size: 22px;
     line-height: 1.2;
   }
 
   .ty-title2 {
     @apply font-medium;
-    font-family: var(--font-pretendard);
+    font-family: var(--font-hallym);
     font-size: 20px;
     line-height: 1.2;
   }
