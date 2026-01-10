@@ -91,6 +91,7 @@
 }
 
 @layer components {
+  /* ===== HallymGothic ===== */
   .ty-largeTitle {
     @apply font-bold;
     font-family: var(--font-hallym);
