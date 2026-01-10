@@ -23,8 +23,9 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import WelcomePage from './pages/login/WelcomePage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
-import SignInPage from './pages/login/SigninPage';
-import SignUpPage from './pages/login/SignupPage';
+import SignInPage from './pages/login/SignInPage';
+import SignUpPage from './pages/login/SignUpPage';
+import LetterReportPage from './pages/LetterReportPage';
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,8 @@ const router = createBrowserRouter([
             path: '/auth/signup',
             element: <SignUpPage />,
           },
+          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          { path: 'letter/report', element: <LetterReportPage /> },
         ],
       },
 
