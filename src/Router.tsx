@@ -20,8 +20,11 @@ import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
+import WelcomePage from './pages/login/WelcomePage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
+import SignInPage from './pages/login/SignInPage';
+import SignUpPage from './pages/login/SignUpPage';
 import LetterReportPage from './pages/LetterReportPage';
 
 const router = createBrowserRouter([
@@ -52,12 +55,24 @@ const router = createBrowserRouter([
             element: <OtherDraftPage />,
           },
           {
+            path: '/auth/login_entry',
+            element: <WelcomePage />,
+          },
+          {
             path: 'letter/self-draft',
             element: <SelfDraftPage />,
           },
           {
             path: 'letter/:mode-decorate',
             element: <LetterDecoPage />,
+          },
+          {
+            path: '/auth/signin',
+            element: <SignInPage />,
+          },
+          {
+            path: '/auth/signup',
+            element: <SignUpPage />,
           },
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
           { path: 'letter/report', element: <LetterReportPage /> },
