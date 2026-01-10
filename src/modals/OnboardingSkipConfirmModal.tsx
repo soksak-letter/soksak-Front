@@ -20,7 +20,7 @@ export default function OnboardingSkipConfirmModal() {
       >
         {/* 본문 */}
         <div className='px-6 py-6 pt-8 text-center flex flex-col items-center justify-center gap-3'>
-          <p className='text-[18px] font-semibold text-[#000] leading-[28.8px]'>
+          <p className='ty-body2 text-(--color-text-strong) leading-[28.8px]'>
             선택을 건너뛰면 개인화된 관련 질문을
             <br />
             받을 수 없어요. 그래도 건너뛰시겠어요?
@@ -32,7 +32,7 @@ export default function OnboardingSkipConfirmModal() {
           <button
             type='button'
             onClick={handleContinue}
-            className='h-14 bg-[#B1B3B4] text-white text-[16px] font-medium'
+            className='h-14 bg-(--color-grey-300) text-white ty-body3'
           >
             계속 선택하기
           </button>
@@ -40,7 +40,7 @@ export default function OnboardingSkipConfirmModal() {
           <button
             type='button'
             onClick={handleSkip}
-            className='h-14 bg-[#F5544C] text-white text-[16px] font-medium'
+            className='h-14 bg-(--color-primary-500) text-white ty-body3'
           >
             건너뛰기
           </button>
