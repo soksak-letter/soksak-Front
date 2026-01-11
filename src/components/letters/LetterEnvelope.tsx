@@ -6,7 +6,7 @@ type LetterEnvelopeProps = {
 export default function LetterEnvelope({ paperColor, className }: LetterEnvelopeProps) {
   return (
     <div
-      className={['relative overflow-hidden', className].filter(Boolean)}
+      className={['relative overflow-hidden', className].filter(Boolean).join(' ')}
       style={{
         width: 326,
         height: 183,
