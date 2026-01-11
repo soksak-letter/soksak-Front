@@ -40,7 +40,6 @@ const router = createBrowserRouter([
           { path: 'onboarding/letter-guide', element: <OnboardingLetterGuidePage /> },
 
           { path: 'friend/post', element: <FriendPostPage /> },
-          { path: 'friend/draft', element: <FriendDraftPage /> },
 
           // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
           {
@@ -54,6 +53,10 @@ const router = createBrowserRouter([
           {
             path: 'letter/self-draft',
             element: <SelfDraftPage />,
+          },
+          {
+            path: 'letter/friend-draft',
+            element: <FriendDraftPage />,
           },
           {
             path: 'letter/:mode-decorate',
