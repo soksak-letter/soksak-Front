@@ -32,7 +32,7 @@ function LetterDecoPage() {
   };
 
   const handleSubmit = () => {
-    openModal('LetterSendingConfirm', {
+    openModal('letterSendingConfirm', {
       onConfirmSending: () => navigate('/'),
     });
   };
@@ -42,7 +42,7 @@ function LetterDecoPage() {
       <BackHeader
         title='꾸미기'
         rightElement={
-          <button type='submit' onClick={handleSubmit}>
+          <button type='button' onClick={handleSubmit}>
             완료
           </button>
         }

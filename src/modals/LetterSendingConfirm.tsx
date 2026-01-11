@@ -15,7 +15,7 @@ export default function LetterSendingConfirm() {
   return (
     <ModalFrame>
       <div
-        className='w-[340px] max-w-[92vw] overflow-hidden rounded-xl bg-[#F2F2F2] shadow-[0_30px_80px_rgba(0,0,0,0.55)]'
+        className='w-[320px] max-w-[92vw] overflow-hidden rounded-xl bg-[#F2F2F2] shadow-[0_30px_80px_rgba(0,0,0,0.55)]'
         onClick={(e) => e.stopPropagation()}
       >
         {/* 본문 */}

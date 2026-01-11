@@ -4,7 +4,7 @@ export type ModalType =
   | 'exitConfirm'
   | 'onboardingSkipConfirm'
   | 'friendAdded'
-  | 'LetterSendingConfirm'
+  | 'letterSendingConfirm'
   | null;
 
 export type ModalPayload = {
@@ -19,7 +19,7 @@ export type ModalPayload = {
   onConfirm?: () => void;
   onWriteLetter?: () => void;
 
-  // LetterSendingConfirm
+  // letterSendingConfirm
   onConfirmSending?: () => void;
 };
 
