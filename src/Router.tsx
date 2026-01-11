@@ -23,6 +23,7 @@ import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
+import LetterSendingPage from './pages/letter/LetterSendingPage';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
           { path: 'letter/self-draft', element: <SelfDraftPage /> },
           { path: 'letter/friend-draft', element: <FriendDraftPage /> },
           { path: 'letter/:mode/decorate', element: <LetterDecoPage /> },
+          { path: 'letter/sending', element: <LetterSendingPage /> },
 
           { path: 'letter/report', element: <LetterReportPage /> },
         ],
