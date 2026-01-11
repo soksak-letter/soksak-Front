@@ -6,7 +6,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DAY_MS = 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 const AnonDraftPage = () => {
   const navigate = useNavigate();
