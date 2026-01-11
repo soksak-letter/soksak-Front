@@ -1,12 +1,12 @@
-// src/pages/friend/FriendDraftPage.tsx
 import { useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader'; // 경로 맞춰줘
 import ToggleSwitch from '@/components/common/ToggleSwitch'; // 이미 있다고 했던 토글
 
-import Question from '@/assets/icons/Question.svg?react';
+import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
+import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
 export default function FriendDraftPage() {
   const navigate = useNavigate();
@@ -24,7 +24,6 @@ export default function FriendDraftPage() {
     content: '',
   });
   const [isPublic, setIsPublic] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
 
   const handleSubmit = () => {
     // TODO:
@@ -50,33 +49,13 @@ export default function FriendDraftPage() {
         }
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-3'>
-        <div className='flex items-center gap-2'>
-          <button
-            type='button'
-            className='flex items-center w-[14px] h-[14px]'
-            onClick={() => setIsClicked((v) => !v)}
-          >
-            <Question />
-          </button>
-          <span className='text-[12px] text-[var(--color-text-assistive)]'>
-            오늘의 질문이 궁금하다면?
-          </span>
-        </div>
-        <div
-          className={`flex flex-col items-start transition-opacity duration-200 ${isClicked ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className='flex flex-col items-start -ml-2 -mt-1'>
-            {/* 꼬리 */}
-            <div className='ml-[9px] h-0 w-0 border-x-[6px] border-x-transparent border-b-[8px] border-b-[#E5E6E6]' />
-            {/* 본문 */}
-            <div
-              className='max-w-[340px] rounded-[10px] bg-[#E5E6E6] px-3 py-2
-                      text-[12px] font-medium leading-[160%] text-[var(--color-text-normal)] shadow-sm'
-            >
-              {dailyQuestion}
-            </div>
-          </div>
-        </div>
+        <DailyQuestionBox
+          question={dailyQuestion}
+          Icon={BsQuestionCircle}
+          iconClassName='w-[14px] h-[14px] text-[var(--color-text-assistive)]'
+          bubbleBgColor='#414141'
+          bubbleClassName='text-white'
+        />
       </div>
       <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />

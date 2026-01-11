@@ -46,8 +46,8 @@ const DailyQuestionBox = ({
           />
           {/* 본문 */}
           <div
-            className='max-w-[340px] rounded-[10px] px-3 py-2
-                     text-[12px] font-medium leading-[160%] text-[var(--color-text-normal)] shadow-sm'
+            className={`max-w-[340px] rounded-[8px] px-3 py-2
+                     text-[12px] leading-[160%] text-[var(--color-text-normal)] shadow-sm ${bubbleClassName}`}
             style={{ backgroundColor: bubbleBgColor }}
           >
             {question}
