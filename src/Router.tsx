@@ -42,27 +42,12 @@ const router = createBrowserRouter([
           { path: 'friend/post', element: <FriendPostPage /> },
 
           // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
-          {
-            path: 'letter/anon-draft',
-            element: <AnonDraftPage />,
-          },
-          {
-            path: 'letter/other-draft',
-            element: <OtherDraftPage />,
-          },
-          {
-            path: 'letter/self-draft',
-            element: <SelfDraftPage />,
-          },
-          {
-            path: 'letter/friend-draft',
-            element: <FriendDraftPage />,
-          },
-          {
-            path: 'letter/:mode-decorate',
-            element: <LetterDecoPage />,
-          },
-          // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
+          { path: 'letter/anon-draft', element: <AnonDraftPage /> },
+          { path: 'letter/other-draft', element: <OtherDraftPage /> },
+          { path: 'letter/self-draft', element: <SelfDraftPage /> },
+          { path: 'letter/friend-draft', element: <FriendDraftPage /> },
+          { path: 'letter/:mode/decorate', element: <LetterDecoPage /> },
+
           { path: 'letter/report', element: <LetterReportPage /> },
         ],
       },
