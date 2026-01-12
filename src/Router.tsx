@@ -26,6 +26,7 @@ import LetterDecoPage from './pages/letter/LetterDecoPage';
 import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
 import LetterReportPage from './pages/LetterReportPage';
+import ProfileSetUp from './pages/login/ProfileSetUp';
 
 const router = createBrowserRouter([
   {
@@ -59,20 +60,25 @@ const router = createBrowserRouter([
             element: <WelcomePage />,
           },
           {
-            path: 'letter/self-draft',
-            element: <SelfDraftPage />,
-          },
-          {
-            path: 'letter/:mode-decorate',
-            element: <LetterDecoPage />,
-          },
-          {
             path: '/auth/signin',
             element: <SignInPage />,
           },
           {
             path: '/auth/signup',
             element: <SignUpPage />,
+          },
+          {
+            path: '/auth/profile-setup',
+            element: <ProfileSetUp />,
+          },
+
+          {
+            path: 'letter/self-draft',
+            element: <SelfDraftPage />,
+          },
+          {
+            path: 'letter/:mode-decorate',
+            element: <LetterDecoPage />,
           },
           // { path: 'onboarding/topic-select', element: <OnboardingTopicSelectPage /> }
           { path: 'letter/report', element: <LetterReportPage /> },

@@ -16,11 +16,11 @@ const SignUpPage = () => {
     if (!isFormValid) return;
 
     console.log('회원가입 약관 동의 완료');
-    navigate('auth/profile-setup');
+    navigate('/auth/profile-setup');
   };
 
   return (
-    <div className='w-[375px] bg-[#FAFAFA]! mx-auto flex flex-col '>
+    <div className='w-[375px] h-auto bg-[#FAFAFA]! mx-auto flex flex-col '>
       <div className='[&>*]:!bg-[#FAFAFA]'>
         <BackHeader title='회원가입' />
       </div>
@@ -88,8 +88,8 @@ const SignUpPage = () => {
           </p>
         </div>
         {/* 약관 동의 영역 */}
-        <p className='ty-title3 mb-[16px] w-[343px] h-[29px] '>이용약관 동의</p>
-        <div className='flex flex-col gap-[8px] w-[343px] h-[236px]'>
+        <p className='ty-title3 mb-[16px] w-[343px] h-[29px]'>이용약관 동의</p>
+        <div className='flex flex-col gap-[8px] w-[343px] h-[236px] mb-[23px]'>
           {/* 전체 동의 영역 */}
           <div className=' w-[343px] h-[108px] cursor-pointer' onClick={handleAllCheck}>
             <div className='flex flex-row items-center w-[112px] h-[24px]'>
@@ -129,7 +129,7 @@ const SignUpPage = () => {
         </div>
       </div>
 
-      <div className='flex flex-col px-[16px] py-[10px]'>
+      <div className='mt-auto flex justify-center pt-4 py-[10px] gap-[10px]'>
         <Button
           onClick={handleProfile}
           disabled={!isFormValid} // 필수 항목 미동의 시 비활성
