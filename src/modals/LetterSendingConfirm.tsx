@@ -1,9 +1,11 @@
 import ModalFrame from '@/components/modal/ModalFrame';
 import { useModalStore } from '@/stores/modalStore';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
+import { useLocation } from 'react-router-dom';
 
 export default function LetterSendingConfirm() {
   const { closeModal, payload } = useModalStore();
+  const { pathname } = useLocation();
 
   const handleStay = () => closeModal();
 
@@ -11,6 +13,16 @@ export default function LetterSendingConfirm() {
     payload?.onConfirmSending?.();
     closeModal();
   };
+
+  const getTargetText = () => {
+    if (pathname.includes('/letter/other-draft') || pathname.includes('/letter/anon-draft'))
+      return '익명 편지를';
+    if (pathname.includes('/letter/self-draft')) return '나에게 편지를';
+    if (pathname.includes('/letter/friend-draft')) return '친구에게 편지를';
+    return '편지를';
+  };
+
+  const targetText = getTargetText();
 
   return (
     <ModalFrame>
@@ -21,7 +33,7 @@ export default function LetterSendingConfirm() {
         {/* 본문 */}
         <div className='px-6 py-6 pt-8 text-center flex flex-col items-center justify-center gap-3'>
           <p className='text-[18px] font-semibold text-[#000] leading-[28.8px]'>
-            익명 편지를
+            {targetText}
             <br />
             이대로 보내시겠어요?
           </p>
