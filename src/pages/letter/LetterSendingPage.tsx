@@ -50,6 +50,13 @@ const LetterSendingPage = () => {
         </>
       );
     }
+    return (
+      <>
+        {sender}님의 소중한 편지가
+        <br />
+        누군가에게 전달되고 있어요.
+      </>
+    );
   };
 
   const TargetText = getTargetText();
