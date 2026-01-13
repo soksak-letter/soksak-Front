@@ -48,7 +48,7 @@ const router = createBrowserRouter([
           { path: 'letter/self-draft', element: <SelfDraftPage /> },
           { path: 'letter/friend-draft', element: <FriendDraftPage /> },
           { path: 'letter/:mode/decorate', element: <LetterDecoPage /> },
-          { path: 'letter/sending', element: <LetterSendingPage /> },
+          { path: 'letter/:mode/sending', element: <LetterSendingPage /> },
 
           { path: 'letter/report', element: <LetterReportPage /> },
         ],

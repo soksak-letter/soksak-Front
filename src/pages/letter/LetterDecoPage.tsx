@@ -33,7 +33,7 @@ function LetterDecoPage() {
 
   const handleSubmit = () => {
     openModal('letterSendingConfirm', {
-      onConfirmSending: () => navigate('/letter/sending'),
+      onConfirmSending: () => navigate(`/letter/${safeMode}/sending`),
     });
   };
 
