@@ -5,8 +5,8 @@
     font-weight: 700;
     src:
       local('Hallym Gothic Bold'),
-      url('../assets/fonts/hallymGothic-bold.woff2') format('woff2'),
-      url('../assets/fonts/hallymGothic-bold.woff') format('woff');
+      url('../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Bold.woff') format('woff');
   }
 
   @font-face {
@@ -14,8 +14,8 @@
     font-weight: 500;
     src:
       local('Hallym Gothic Medium'),
-      url('../assets/fonts/hallymGothic-medium.woff2') format('woff2'),
-      url('../assets/fonts/hallymGothic-medium.woff') format('woff');
+      url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
+      url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
   }
 
   /* ===== Pretendard ===== */
