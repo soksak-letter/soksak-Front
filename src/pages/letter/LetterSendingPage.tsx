@@ -1,8 +1,8 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { useLocation } from 'react-router-dom';
 
-import stampEx1 from '@/assets/test/stampEx1.svg?react';
-import stampEx2 from '@/assets/test/stampEx2.svg?react';
+import stampEx1 from '@/assets/test/stampEx1.svg';
+import stampEx2 from '@/assets/test/stampEx2.svg';
 
 const LetterSendingPage = () => {
   const { pathname } = useLocation();
@@ -18,8 +18,8 @@ const LetterSendingPage = () => {
   ];
 
   const testStamps = [
-    { id: 'stamp-1', img: stampEx1 },
-    { id: 'stamp-2', img: stampEx2 },
+    { id: 'stamp-1', src: stampEx1 },
+    { id: 'stamp-2', src: stampEx2 },
   ];
 
   const getTargetText = () => {
@@ -59,7 +59,8 @@ const LetterSendingPage = () => {
       <p className='ty-title2 text-center'>{TargetText}</p>
       <LetterEnvelope
         paperColor={testPapers[1].color}
-        stampColor={}
+        stampSrc={testStamps[0].src}
+        stampAlt='우표 이미지'
         className='-rotate-4 shadow-lg'
       />
       <p className='ty-body3 text-center'>평균 24시간 이내로 편지에 답장을 받아요.</p>
