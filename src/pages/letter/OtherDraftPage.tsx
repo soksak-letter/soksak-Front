@@ -4,7 +4,7 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
-import Question from '../../assets/icons/Question.svg?react';
+import { BsQuestionCircleFill } from 'react-icons/bs';
 
 const OtherDraftPage = () => {
   const navigate = useNavigate();
@@ -50,9 +50,9 @@ const OtherDraftPage = () => {
         </div>
 
         <DailyQuestionBox
-          Icon={Question}
+          Icon={BsQuestionCircleFill}
           question={dailyQuestion}
-          iconClassName='text-[var(--color-text-assistive)]'
+          iconClassName='text-(--color-primary-500)'
           bubbleBgColor='#E5E6E6'
           bubbleClassName='text-[var(--color-text-normal)]'
         />
