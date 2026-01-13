@@ -49,7 +49,9 @@ function LetterDecoPage() {
         onBack={handleBack}
       />
 
-      <p className='p-5 text-[20px] font-medium leading-[120%]'>편지를 마음껏 꾸며보세요.</p>
+      <div className='p-5'>
+        <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
+      </div>
 
       {/* TODO : 편지지 디자인 확정 후 수정 */}
       {/* 편지 미리보기 Wrapper */}
@@ -60,11 +62,13 @@ function LetterDecoPage() {
         {/* 텍스트 레이어 (겹침) */}
         <div className='absolute inset-0 flex flex-col px-3 pt-4 pb-3'>
           {/* 제목 */}
-          <h3 className='text-[12px] font-semibold text-black/80 mb-2 line-clamp-2'>{title}</h3>
+          <div className='mb-2 line-clamp-2'>
+            <p className='ty-title3'>{title}</p>
+          </div>
           {/* 내용 */}
-          <p className='flex-1 text-[11px] leading-5 text-black/60 whitespace-pre-wrap overflow-hidden'>
-            {content}
-          </p>
+          <div className='flex-1 whitespace-pre-wrap overflow-hidden'>
+            <p className='ty-body5'>{content}</p>
+          </div>
         </div>
       </div>
 
