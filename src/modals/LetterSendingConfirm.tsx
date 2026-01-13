@@ -32,7 +32,7 @@ export default function LetterSendingConfirm() {
       >
         {/* 본문 */}
         <div className='px-6 py-6 pt-8 text-center flex flex-col items-center justify-center gap-3'>
-          <p className='text-[18px] font-semibold text-[#000] leading-[28.8px]'>
+          <p className='ty-title3'>
             {targetText}
             <br />
             이대로 보내시겠어요?
@@ -45,7 +45,7 @@ export default function LetterSendingConfirm() {
           <button
             type='button'
             onClick={handleStay}
-            className='h-14 bg-[#B1B3B4] text-white text-[16px] font-medium'
+            className='h-14 bg-[#B1B3B4] ty-body3 text-(--color-white)'
           >
             계속 꾸미기
           </button>
@@ -53,7 +53,7 @@ export default function LetterSendingConfirm() {
           <button
             type='button'
             onClick={handleSubmit}
-            className='h-14 bg-[#F5544C] text-white text-[16px] font-medium'
+            className='h-14 bg-[#F5544C] ty-body3 text-(--color-white)'
           >
             이대로 전송하기
           </button>
