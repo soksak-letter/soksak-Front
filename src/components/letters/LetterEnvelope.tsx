@@ -1,9 +1,10 @@
 type LetterEnvelopeProps = {
   paperColor: string;
+  stampColor: string;
   className?: string;
 };
 
-export default function LetterEnvelope({ paperColor, className }: LetterEnvelopeProps) {
+export default function LetterEnvelope({ paperColor, stampColor, className }: LetterEnvelopeProps) {
   return (
     <div
       className={['relative overflow-hidden', className].filter(Boolean).join(' ')}
