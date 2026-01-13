@@ -13,15 +13,13 @@ const LetterSendingPage = () => {
 
   return (
     <div className='flex flex-col items-center justify-center gap-10 min-h-dvh'>
-      <p className='text-[20px] font-medium leading-[150%] text-center'>
+      <p className='ty-title2 text-center'>
         {sender}님의 소중한 편지가
         <br />
         {receiver}님에게 전송되고 있어요
       </p>
       <LetterEnvelope paperColor={testPapers[1].color} className='-rotate-4 shadow-lg' />
-      <p className='text-[16] font-medium leading-[150%] text-center'>
-        평균 24시간 이내로 편지에 답장을 받아요.
-      </p>
+      <p className='ty-body3 text-center'>평균 24시간 이내로 편지에 답장을 받아요.</p>
     </div>
   );
 };

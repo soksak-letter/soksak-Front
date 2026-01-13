@@ -3,7 +3,7 @@ import OnboardingSkipConfirmModal from '@/modals/OnboardingSkipConfirmModal';
 import FriendAddedModal from '@/modals/FriendAddedModal';
 
 import { useModalStore } from '@/stores/modalStore';
-import LetterSendingConfirm from '@/modals/LetterSendingConfirm';
+import LetterSendingConfirm from '@/modals/LetterSendingConfirmModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
