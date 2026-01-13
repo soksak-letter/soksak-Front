@@ -52,9 +52,9 @@ export default function FriendDraftPage() {
         <DailyQuestionBox
           question={dailyQuestion}
           Icon={BsQuestionCircle}
-          iconClassName='w-[14px] h-[14px] text-[var(--color-text-assistive)]'
+          iconClassName='text-(--color-text-assistive)'
           bubbleBgColor='#414141'
-          bubbleClassName='text-white'
+          bubbleClassName='var(--color-white)' // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
         />
       </div>
       <div className='px-4'>

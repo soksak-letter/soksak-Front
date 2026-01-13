@@ -12,7 +12,7 @@ type DailyQuestionBoxProps = {
 const DailyQuestionBox = ({
   question,
   Icon,
-  iconClassName = 'w-[14px] h-[14px]',
+  iconClassName = 'text-(--color-text-normal)', // only css 토큰
   bubbleBgColor = '#E5E6E6',
   bubbleClassName = '',
 }: DailyQuestionBoxProps) => {
@@ -21,16 +21,10 @@ const DailyQuestionBox = ({
   return (
     <>
       <div className='flex items-center gap-2'>
-        <button
-          type='button'
-          className={`flex items-center ${iconClassName}`}
-          onClick={() => setIsClicked((v) => !v)}
-        >
+        <button type='button' className='flex items-center' onClick={() => setIsClicked((v) => !v)}>
           <Icon className={iconClassName} />
         </button>
-        <span className='text-[12px] text-[var(--color-text-assistive)]'>
-          오늘의 질문이 궁금하다면?
-        </span>
+        <span className='ty-detail text-(--color-text-assistive)'>오늘의 질문이 궁금하다면?</span>
       </div>
 
       {isClicked && (
@@ -43,8 +37,11 @@ const DailyQuestionBox = ({
             />
             {/* 본문 */}
             <div
-              className={`max-w-[340px] rounded-[8px] px-3 py-2 text-[12px] leading-[160%] text-[var(--color-text-normal)] shadow-sm ${bubbleClassName}`}
-              style={{ backgroundColor: bubbleBgColor }}
+              className='max-w-[340px] rounded-[8px] px-3 py-2 leading-[160%] shadow-sm ty-detail'
+              style={{
+                backgroundColor: bubbleBgColor,
+                color: `${bubbleClassName}`,
+              }}
             >
               {question}
             </div>
