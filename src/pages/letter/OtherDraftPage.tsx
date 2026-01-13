@@ -55,7 +55,7 @@ const OtherDraftPage = () => {
           Icon={BsQuestionCircleFill}
           question={dailyQuestion}
           iconClassName='text-(--color-primary-500)'
-          bubbleBgColor='text-(--color-grey-100)'
+          bubbleBgColor='var(--color-grey-100)'
           bubbleClassName='text-(--color-text-normal)'
         />
 
