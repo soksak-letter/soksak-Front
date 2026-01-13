@@ -19,7 +19,7 @@ const ProfileSetUp = () => {
   const isValid = validationResult.success;
 
   //온보딩으로(다음 클릭시)
-  const handleProfile = () => {
+  const handleOnboading = () => {
     if (!isValid) return;
     console.log('프로필 설정 완료', nickname);
     navigate('/onboarding/profile');
@@ -113,7 +113,7 @@ const ProfileSetUp = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleProfile} disabled={!isValid}>
+        <Button onClick={handleOnboading} disabled={!isValid}>
           시작하기
         </Button>
       </div>

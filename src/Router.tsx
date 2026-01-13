@@ -27,6 +27,7 @@ import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
 import LetterReportPage from './pages/LetterReportPage';
 import ProfileSetUp from './pages/login/ProfileSetUp';
+import TermCheckPage from './pages/login/TermsCheckPage';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
           {
             path: '/auth/signup',
             element: <SignUpPage />,
+          },
+          {
+            path: '/auth/terms',
+            element: <TermCheckPage />,
           },
           {
             path: '/auth/profile-setup',

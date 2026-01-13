@@ -88,7 +88,7 @@ const SignUpPage = () => {
           </p>
         </div>
         {/* 약관 동의 영역 */}
-        <p className='ty-title3 mb-[16px] w-[343px] h-[29px]'>이용약관 동의</p>
+        <p className='ty-title3 mb-[10px] w-[343px] h-[29px]'>이용약관 동의</p>
         <div className='flex flex-col gap-[8px] w-[343px] h-[236px] mb-[23px]'>
           {/* 전체 동의 영역 */}
           <div className=' w-[343px] h-[108px] cursor-pointer' onClick={handleAllCheck}>
