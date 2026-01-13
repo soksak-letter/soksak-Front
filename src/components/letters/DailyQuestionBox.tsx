@@ -26,7 +26,7 @@ const DailyQuestionBox = ({
           className={`flex items-center ${iconClassName}`}
           onClick={() => setIsClicked((v) => !v)}
         >
-          <Icon />
+          <Icon className={iconClassName} />
         </button>
         <span className='text-[12px] text-[var(--color-text-assistive)]'>
           오늘의 질문이 궁금하다면?
