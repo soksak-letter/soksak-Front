@@ -5,8 +5,8 @@
     font-weight: 700;
     src:
       local('Hallym Gothic Bold'),
-      url('../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
-      url('../assets/fonts/HallymGothic-Bold.woff') format('woff');
+      url('../../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/HallymGothic-Bold.woff') format('woff');
   }
 
   @font-face {
@@ -14,8 +14,8 @@
     font-weight: 500;
     src:
       local('Hallym Gothic Medium'),
-      url('../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
-      url('../assets/fonts/HallymGothic-Medium.woff') format('woff');
+      url('../../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
+      url('../../assets/fonts/HallymGothic-Medium.woff') format('woff');
   }
 
   /* ===== Pretendard ===== */
@@ -24,8 +24,8 @@
     font-weight: 400;
     src:
       local('Pretendard Regular'),
-      url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
-      url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Regular.woff') format('woff'),
+      url('../../assets/fonts/Pretendard-Regular.woff2') format('woff2');
   }
 
   @font-face {
@@ -33,8 +33,8 @@
     font-weight: 500;
     src:
       local('Pretendard Medium'),
-      url('../assets/fonts/Pretendard-Medium.woff') format('woff'),
-      url('../assets/fonts/Pretendard-Medium.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Medium.woff') format('woff'),
+      url('../../assets/fonts/Pretendard-Medium.woff2') format('woff2');
   }
 
   @font-face {
@@ -42,8 +42,8 @@
     font-weight: 700;
     src:
       local('Pretendard Bold'),
-      url('../assets/fonts/Pretendard-Bold.woff') format('woff'),
-      url('../assets/fonts/Pretendard-Bold.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Bold.woff') format('woff'),
+      url('../../assets/fonts/Pretendard-Bold.woff2') format('woff2');
   }
 
   /* ===== Nanum Fonts ===== */
