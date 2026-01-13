@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import BackHeader from '@/components/common/headers/BackHeader'; // 경로 맞춰줘
-import ToggleSwitch from '@/components/common/ToggleSwitch'; // 이미 있다고 했던 토글
+import BackHeader from '@/components/common/headers/BackHeader';
+import ToggleSwitch from '@/components/common/ToggleSwitch';
 
 import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
@@ -11,8 +11,8 @@ import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 export default function FriendDraftPage() {
   const navigate = useNavigate();
 
-  // const params = useParams();
   // TODO : friendId는 추후 닉네임 불러올 때 Id로 가져올 거라서 연동 후 사용
+  // const params = useParams();
   // const friendId = params.friendId ?? '1';
 
   // TODO: friendName은 실제 데이터로 교체
