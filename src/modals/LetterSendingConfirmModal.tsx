@@ -17,7 +17,7 @@ export default function LetterSendingConfirm() {
   const getTargetText = () => {
     if (pathname.includes('/letter/other/decorate') || pathname.includes('/letter/anon/decorate'))
       return '익명 편지를';
-    if (pathname.includes('/letter/self/decorate')) return '이대로 미래의 나에게 편지를';
+    if (pathname.includes('/letter/self/decorate')) return '미래의 나에게 편지를';
     if (pathname.includes('/letter/friend/decorate')) return '친구에게 편지를';
     return '편지를';
   };
