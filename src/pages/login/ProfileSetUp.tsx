@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
-import { validate } from '@/styles/utilities/validate';
+import { validate } from '@/utils/validate';
 
 const ProfileSetUp = () => {
   const navigate = useNavigate();
