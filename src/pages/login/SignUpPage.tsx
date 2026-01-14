@@ -86,9 +86,11 @@ const SignUpPage = () => {
               outline-none focus:border-[var(--color-secondary-800)] ${getEmailBorderColor()}`}
             />
             <Button
-              color='grey'
+              color={
+                isEmailUnique || !form.email || !validations.email.success ? 'grey' : 'primary'
+              }
               size='small'
-              className={`w-[80px] h-[48px] ${isEmailUnique ? 'bg-blue-100 text-blue-600' : ''}`}
+              className='w-[80px] h-[48px]'
               onClick={handleCheckEmailDuplicate}
               // [핵심 변경] 중복확인 완료됐거나, 빈값이거나, 형식이 틀리면 버튼 비활성화
               disabled={isEmailUnique || !form.email || !validations.email.success}
