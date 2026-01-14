@@ -22,6 +22,8 @@ const useSignUpForm = () => {
   });
   // 이메일 중복 확인 완료 여부
   const [isEmailUnique, setIsEmailUnique] = useState(false);
+  //아이디 중복확인 완료 여부
+  const [isUsernameUnique, setIsUsernameUnique] = useState(false);
   //포커스 상태 관리ㄴ
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
@@ -60,21 +62,34 @@ const useSignUpForm = () => {
   // 핸들러 로직
 
   const handleFocus = (field: string) => () => setFocusedField(field);
-  const handleBlur = () => setFocusedField(null);
+  /**
+   * [공통 Blur 핸들러]
+   * 아이디가 아닌 다른 필드들은 그냥 포커스만 해제
+   * //const handleBlur = () => setFocusedField(null);
+   */
+  const handleBlur = () => {
+    setFocusedField(null);
+  };
 
   /**
    * [공통 핸들러] 공백 제거 및 유효성 검사를 수행
-   * 사용법: onChange={handleNoSpaceChange('username', validate.username)}
+   * 사용법: onChange={handleNoSpaceChange('username')}
    * * @param field - 업데이트할 form 필드명 (예: 'username', 'name')
    * @param validator - (선택) 해당 필드의 유효성 검사 함수
    */
-  const handleNoSpaceChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 공백 제거
-    const cleanValue = removeWhitespace(e.target.value);
-    // 폼 상태 업데이트
-    setForm((prev) => ({ ...prev, [field]: cleanValue }));
-  };
+  const handleNoSpaceChange =
+    (field: string, maxLength?: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      // 공백 제거
+      const cleanValue = removeWhitespace(e.target.value);
+      // [추가된 로직] maxLength가 설정되어 있고, 입력값이 그보다 길면 업데이트 안 함(무시)
+      if (maxLength && cleanValue.length > maxLength) {
+        return;
+      }
+      // 폼 상태 업데이트
+      setForm((prev) => ({ ...prev, [field]: cleanValue }));
+    };
 
+  // --- [이메일 관련 로직 ] ---
   /**
    * [이메일 전용 핸들러]
    * 이메일 값이 변경되면 중복 확인 상태(isEmailUnique)를 초기화해야 함
@@ -93,7 +108,6 @@ const useSignUpForm = () => {
   const handleCheckEmailDuplicate = () => {
     // 이메일이 비어있거나 형식이 올바르지 않으면 중단
     if (!form.email || !validations.email.success) {
-      alert('올바른 이메일 형식을 입력해주세요.');
       return;
     }
     // **********TODO: API 호출***************
@@ -101,13 +115,67 @@ const useSignUpForm = () => {
 
     if (isAvailable) {
       setIsEmailUnique(true);
-      alert('사용 가능한 이메일입니다.');
+
+      setValidations((prev) => ({
+        ...prev,
+        email: { success: true, message: '사용할 수 있는 이메일입니다.' },
+      }));
     } else {
       setIsEmailUnique(false);
       setValidations((prev) => ({
         ...prev,
-        email: { success: false, message: '이미 사용 중인 이메일입니다.' },
+        email: { success: false, message: '사용할 수 없는 이메일입니다.' },
       }));
+    }
+  };
+
+  // --- [아이디 관련 로직 ] ---
+
+  /**
+   * 아이디 변경 핸들러
+   * - 타이핑 중에는 중복확인 상태를 false로 초기화
+   */
+  const handleUsernameChange = (maxLength: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const cleanValue = removeWhitespace(e.target.value);
+    if (cleanValue.length > maxLength) return;
+
+    setForm((prev) => ({ ...prev, username: cleanValue }));
+    setIsUsernameUnique(false); // 수정하면 다시 검사해야 함
+  };
+
+  /**
+   * 아이디 중복 확인 (API 호출)
+   * - handleUsernameBlur 내부에서 호출됨
+   */
+  const checkUsernameDuplicate = async () => {
+    // TODO:
+    // API 호출
+    // const response = await api.checkUsername(form.username);
+    const isAvailable = true; // 테스트용: true면 사용 가능, false면 중복
+
+    if (isAvailable) {
+      setIsUsernameUnique(true);
+      // 성공 시 메시지는 "사용 가능한 아이디입니다" 유지
+    } else {
+      setIsUsernameUnique(false);
+      // 실패 시 validations 강제 업데이트 (빨간색 에러 표시)
+      setValidations((prev) => ({
+        ...prev,
+        username: { success: false, message: '이미 사용 중인 아이디입니다.' },
+      }));
+    }
+  };
+
+  /**
+   * 아이디 Blur 핸들러
+   * - 포커스가 떠날 때 유효하다면 중복 체크 실행
+   */
+  const handleUsernameBlur = () => {
+    setFocusedField(null); // 포커스 해제
+
+    // 값이 있고 && 정규식 검사를 통과했을 때만 API 호출
+    if (form.username && validations.username.success) {
+      checkUsernameDuplicate();
     }
   };
 
@@ -118,17 +186,20 @@ const useSignUpForm = () => {
   // 모든 에러 메시지가 비어있는지(유효성 검사 통과) 확인
   const hasNoErrors = Object.values(validations).every((val) => val.success);
   // 최종 제출 가능 조건: 빈카 없음 & 에러 없음 & 이메일 중복확인 완료
-  const canSubmitWithoutTerms = isFormFilled && hasNoErrors && isEmailUnique; // 약관은 UI에서 합침
+  const canSubmitWithoutTerms = isFormFilled && hasNoErrors && isEmailUnique && isUsernameUnique; // 약관은 UI에서 합침
 
   return {
     form, // 입력 데이터
     validations, // 에러 메시지
     isEmailUnique, // 이메일 중복 확인 상태
     focusedField,
+    isUsernameUnique,
     handleFocus, //focus
-    handleBlur,
+    handleBlur, //공통 blur
+    handleUsernameBlur, // 아이디 전용 Blur
     handleNoSpaceChange, // 공통 입력 핸들러
     handleEmailChange, // 이메일 입력 핸들러
+    handleUsernameChange, // 아이디 전용 Change
     handleCheckEmailDuplicate, // 이메일 중복체크 함수
     canSubmitWithoutTerms, //제풀가능려부
   };

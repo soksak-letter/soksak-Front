@@ -12,11 +12,15 @@ import useSignUpForm from '@/hooks/useSignUpForm';
 // 1.이메일 중복시 처리
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const {
     form, // 입력 데이터
     validations, // 에러 메시지
     isEmailUnique, // 이메일 중복 확인 상태
     focusedField,
+    handleUsernameChange, // 추가됨
+    handleUsernameBlur,
     handleFocus, //focus
     handleBlur,
     handleNoSpaceChange, // 공통 입력 핸들러
@@ -25,7 +29,6 @@ const SignUpPage = () => {
     canSubmitWithoutTerms, //제풀가능려부
   } = useSignUpForm();
 
-  const navigate = useNavigate();
   // 전체동의 관리하는 커스텀 훅
   const {
     agreements,
@@ -44,6 +47,20 @@ const SignUpPage = () => {
 
     console.log('회원가입 약관 동의 완료');
     navigate('/auth/profile-setup');
+  };
+
+  // [추가] 이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
+  const getEmailBorderColor = () => {
+    if (!form.email) return 'border-[var(--color-grey-100)]'; // 빈값: 회색
+    if (!validations.email.success) return 'border-[#F33326]'; // 정규식 에러 or 중복 에러: 빨강
+    if (isEmailUnique) return 'border-[#3DC061]'; // 중복확인 완료: 초록
+    return 'border-[var(--color-secondary-800)]'; // 정규식은 맞지만 확인 안 함: 회색
+  };
+  const getEmailMessageColor = () => {
+    if (!form.email) return 'text-transparent';
+    if (!validations.email.success) return 'text-[#F33326]';
+    if (isEmailUnique) return 'text-[#3DC061]';
+    return 'text-[var(--color-secondary-800)]'; // 확인 안 함: 파란색(안내) or 회색
   };
 
   return (
@@ -66,14 +83,15 @@ const SignUpPage = () => {
               placeholder='이메일'
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px]  rounded-lg 
-              outline-none focus:border-[var(--color-secondary-800)] ${getBorderColor(validations.email.success, form.email)}`}
+              outline-none focus:border-[var(--color-secondary-800)] ${getEmailBorderColor()}`}
             />
             <Button
               color='grey'
               size='small'
-              className={`w-[80px] h-[48px] ${isEmailUnique ? '' : 'bg-blue-100 text-blue-600'}`}
+              className={`w-[80px] h-[48px] ${isEmailUnique ? 'bg-blue-100 text-blue-600' : ''}`}
               onClick={handleCheckEmailDuplicate}
-              disabled={isEmailUnique}
+              // [핵심 변경] 중복확인 완료됐거나, 빈값이거나, 형식이 틀리면 버튼 비활성화
+              disabled={isEmailUnique || !form.email || !validations.email.success}
             >
               중복확인
             </Button>
@@ -82,13 +100,15 @@ const SignUpPage = () => {
           {/* 메시지 영역 */}
           <p
             className={`px-[3px] mt-1 ty-detail 
-            ${focusedField === 'email' ? 'text-[#3B82F6]' : getMessageColor(validations.email.success, form.email)}`}
+            ${focusedField === 'email' ? 'text-[var(--color-text-assistive)]' : getEmailMessageColor()}`}
           >
             {focusedField === 'email'
-              ? '이메일 형식을 입력하고 중복확인을 해주세요.'
-              : form.email
-                ? validations.email.message
-                : '-'}
+              ? ''
+              : !validations.email.success
+                ? validations.email.message //"사용할 수 없는 이메일입니다"
+                : isEmailUnique
+                  ? validations.email.message // "사용할 수 있는 이메일입니다."
+                  : ''}
           </p>
         </div>
 
@@ -99,18 +119,18 @@ const SignUpPage = () => {
             type='text'
             value={form.username}
             // 커링 함수 사용: 함수를 실행해서 반환된 핸들러를 onChange에 전달
-            onChange={handleNoSpaceChange('username')}
+            onChange={handleUsernameChange(16)}
             onKeyDown={blockSpaceKey}
             onFocus={handleFocus('username')}
-            onBlur={handleBlur}
+            onBlur={handleUsernameBlur}
             placeholder='아이디'
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-secondary-800)] ${getBorderColor(validations.username.success, form.username)}`}
           />
           <p
-            className={`px-[3px] mt-1 ty-detail ${
+            className={`px-[3px] ty-detail ${
               focusedField === 'username'
-                ? 'text-[#3B82F6]'
+                ? 'text-[var(--color-text-assistive)]'
                 : getMessageColor(validations.username.success, form.username)
             }`}
           >
@@ -119,7 +139,7 @@ const SignUpPage = () => {
               ? '영문과 숫자만 사용 가능합니다.'
               : form.username
                 ? validations.username.message
-                : '-'}
+                : ''}
           </p>
         </div>
         {/* 비밀번호 */}
@@ -130,7 +150,7 @@ const SignUpPage = () => {
             <input
               type='text'
               value={form.password}
-              onChange={handleNoSpaceChange('password')}
+              onChange={handleNoSpaceChange('password', 16)}
               onKeyDown={blockSpaceKey}
               onFocus={handleFocus('password')}
               onBlur={handleBlur}
@@ -138,18 +158,15 @@ const SignUpPage = () => {
               className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
                 focus:border-[var(--color-secondary-800)] outline-none ${getBorderColor(validations.password.success, form.password)}`}
             />
-            <p className='px-[3px] ty-detail text-[var(--color-text-assistive)]'>
-              비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.
-            </p>
             <p
-              className={`px-[3px] mt-1 ty-detail 
+              className={`px-[3px]  ty-detail 
               ${focusedField === 'password' ? 'text-[#3B82F6]' : getMessageColor(validations.password.success, form.password)}`}
             >
               {focusedField === 'password'
-                ? '영문, 숫자를 포함하여 8~16자리까지 입력 가능합니다.'
+                ? '비밀번호는 영문, 숫자를 포함하여 8~16자리까지 입력 가능합니다.'
                 : form.password
                   ? validations.password.message
-                  : '-'}
+                  : '비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.'}
             </p>
           </div>
           {/* 비밀번호 확인 */}
@@ -157,7 +174,7 @@ const SignUpPage = () => {
             <input
               type='password'
               value={form.passwordConfirm}
-              onChange={handleNoSpaceChange('passwordConfirm')}
+              onChange={handleNoSpaceChange('passwordConfirm', 16)}
               onKeyDown={blockSpaceKey}
               onFocus={handleFocus('passwordConfirm')}
               onBlur={handleBlur}
@@ -165,19 +182,16 @@ const SignUpPage = () => {
               className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] 
                 rounded-lg outline-none focus:border-[var(--color-secondary-800)] ${getBorderColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
             />
-            <p className='px-[3px] ty-detail text-[var(--color-text-assistive)]'>
-              비밀번호를 다시 입력해주세요.
-            </p>
             {/* [수정] 안내 문구 하나로 통합 */}
             <p
-              className={`px-[3px] mt-1 ty-detail 
-              ${focusedField === 'passwordConfirm' ? 'text-[#3B82F6]' : getMessageColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
+              className={`px-[3px] ty-detail 
+              ${focusedField === 'passwordConfirm' ? 'text-[var(--color-text-assistive)]' : getMessageColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
             >
               {focusedField === 'passwordConfirm'
                 ? '비밀번호를 다시 입력해주세요.'
                 : form.passwordConfirm
                   ? validations.passwordConfirm.message
-                  : '-'}
+                  : '비밀번호를 다시 입력해주세요.'}
             </p>
           </div>
         </div>
@@ -198,7 +212,7 @@ const SignUpPage = () => {
           <p
             className={`px-[3px] mt-1 ty-detail ${getMessageColor(validations.name.success, form.name)}`}
           >
-            {form.name ? validations.name.message : '-'}
+            {form.name ? validations.name.message : ''}
           </p>
         </div>
         {/* 5. 휴대폰 번호 */}
@@ -215,18 +229,15 @@ const SignUpPage = () => {
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
               outline-none focus:border-[var(--color-secondary-800)] ${getBorderColor(validations.phone.success, form.phone)}`}
           />
-          <p className='px-[3px] ty-detail text-[var(--color-text-assistive)]'>
-            휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.
-          </p>
           <p
-            className={`px-[3px] mt-1 ty-detail 
-            ${focusedField === 'phone' ? 'text-[#3B82F6]' : getMessageColor(validations.phone.success, form.phone)}`}
+            className={`px-[3px] ty-detail 
+            ${focusedField === 'phone' ? 'text-[var(--color-text-assistive)]' : getMessageColor(validations.phone.success, form.phone)}`}
           >
             {focusedField === 'phone'
-              ? "'-' 없이 숫자만 입력해 주세요."
+              ? '휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.'
               : form.phone
                 ? validations.phone.message
-                : '-'}
+                : '휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.'}
           </p>
         </div>
 
