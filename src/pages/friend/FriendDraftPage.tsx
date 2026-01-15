@@ -8,10 +8,6 @@ import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
-import { BsQuestionCircle } from 'react-icons/bs';
-import LetterTextBox from '@/components/letters/LetterTextBox';
-import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
-
 export default function FriendDraftPage() {
   const navigate = useNavigate();
 
