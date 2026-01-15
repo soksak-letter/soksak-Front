@@ -34,6 +34,7 @@ export default function FriendDraftPage() {
       state: {
         title: letter.title,
         content: letter.content,
+        isPublic: Boolean,
       },
     });
   };

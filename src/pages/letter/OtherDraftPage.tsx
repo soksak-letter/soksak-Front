@@ -54,7 +54,7 @@ const OtherDraftPage = () => {
           question={dailyQuestion}
           iconClassName='text-[var(--color-text-assistive)]'
           bubbleBgColor='#E5E6E6'
-          bubbleClassName='text-[var(--color-text-normal)]'
+          bubbleTextStyle='text-[var(--color-text-normal)]'
         />
 
         <div>
