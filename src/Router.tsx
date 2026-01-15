@@ -7,6 +7,11 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 // import Homepage from './pages/Homepage';
 import MainPage from './pages/main/Mainpage';
 
+import WelcomePage from './pages/login/WelcomePage';
+import SignInPage from './pages/login/SignInPage';
+import SignUpPage from './pages/login/SignUpPage';
+import TermsCheckPage from './pages/login/TermsCheckPage';
+
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
 import OnboardingLetterIntroPage from './pages/onboarding/OnboardingLetterIntroPage';
@@ -18,6 +23,11 @@ import FriendInboxPage from './pages/friend/FriendInboxPage';
 import FriendPostPage from './pages/friend/FriendPostPage';
 import FriendDraftPage from './pages/friend/FriendDraftPage';
 import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
+
+import AnonDraftPage from './pages/letter/AnonDraftPage';
+import OtherDraftPage from './pages/letter/OtherDraftPage';
+
+import SelfDraftPage from './pages/letter/SelfDraftPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
@@ -34,6 +44,7 @@ import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
+import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -78,15 +89,15 @@ const router = createBrowserRouter([
             path: 'auth',
             children: [
               { index: true, element: <Navigate to='welcome' replace /> },
-              // { path: 'welcome', element: <WelcomePage /> },
-              // { path: 'signin', element: <SignInPage /> },
+              { path: 'welcome', element: <WelcomePage /> },
+              { path: 'signin', element: <SignInPage /> },
               // { path: 'email-find', element: <EmailFindPage /> },
               // { path: 'email-verify', element: <EmailVerifyPage /> },
               // { path: 'pw-find', element: <PwFindPage /> },
               // { path: 'pw-reset', element: <PwResetPage /> },
-              // { path: 'signup', element: <SignupPage /> },
-              // { path: 'profile-setup', element: <ProfileSetupPage /> },
-              // { path: 'terms', element: <TermCheckPage /> },
+              { path: 'signup', element: <SignUpPage /> },
+              { path: 'profile-setup', element: <ProfileSetUpPage /> },
+              { path: 'terms', element: <TermsCheckPage /> },
             ],
           },
 
