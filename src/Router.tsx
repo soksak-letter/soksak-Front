@@ -10,7 +10,7 @@ import MainPage from './pages/main/Mainpage';
 import WelcomePage from './pages/login/WelcomePage';
 import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
-import TermCheckPage from './pages/login/TermsCheckPage';
+import TermsCheckPage from './pages/login/TermsCheckPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -97,7 +97,7 @@ const router = createBrowserRouter([
               // { path: 'pw-reset', element: <PwResetPage /> },
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
-              { path: 'terms', element: <TermCheckPage /> },
+              { path: 'terms', element: <TermsCheckPage /> },
             ],
           },
 
