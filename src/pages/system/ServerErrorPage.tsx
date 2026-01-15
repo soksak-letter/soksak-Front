@@ -21,7 +21,7 @@ export default function ServerErrorPage() {
       <SleepIcon className='mb-2 ml-3.5 h-[96px] w-[93px]' />
 
       <div className='mb-8 text-center'>
-        <p className='mb-2 ty-titile2 text-(--color-text-strong)'>
+        <p className='mb-2 ty-title2 text-(--color-text-strong)'>
           현재 서비스 이용이
           <br /> 원활하지 않습니다.
         </p>
