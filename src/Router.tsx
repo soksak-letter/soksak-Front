@@ -5,6 +5,7 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 import Homepage from './pages/Homepage';
+import MainPage from './pages/main/Mainpage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -25,6 +26,9 @@ import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 
+import FeedPage from './pages/feed/PublicFeedPage';
+import FriendFeedPage from './pages/feed/FriendFeedPage';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,14 +47,21 @@ const router = createBrowserRouter([
           { path: 'friend/post', element: <FriendPostPage /> },
 
           // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
+
+       
+          { path: 'feed/public', element: <FeedPage /> },
+          { path: 'feed/friend', element: <FriendFeedPage /> },
+
           { path: 'letter/anon-draft', element: <AnonDraftPage /> },
           { path: 'letter/other-draft', element: <OtherDraftPage /> },
           { path: 'letter/self-draft', element: <SelfDraftPage /> },
+          
           { path: 'letter/friend-draft', element: <FriendDraftPage /> },
           { path: 'letter/:mode/decorate', element: <LetterDecoPage /> },
           { path: 'letter/:mode/sending', element: <LetterSendingPage /> },
 
           { path: 'letter/report', element: <LetterReportPage /> },
+
         ],
       },
 
@@ -59,6 +70,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Homepage /> },
+          { path: 'main', element: <MainPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
