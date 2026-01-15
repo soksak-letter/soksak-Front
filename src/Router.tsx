@@ -6,6 +6,12 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 //
 // import Homepage from './pages/Homepage';
 
+
+import Homepage from './pages/Homepage';
+import MainPage from './pages/main/Mainpage';
+
+import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
+import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
 import OnboardingLetterIntroPage from './pages/onboarding/OnboardingLetterIntroPage';
 import OnboardingLetterWritePage from './pages/onboarding/OnboardingLetterWritePage';
 import OnboardingLetterGuidePage from './pages/onboarding/OnboardingLetterGuidePage';
@@ -18,6 +24,7 @@ import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
+
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import LetterDraftRoute from './pages/letter/LetterDraftRoute';
@@ -28,6 +35,12 @@ import NetworkErrorPage from './pages/system/NetworkErrorPage';
 import ForbiddenPage from './pages/system/ForbiddenPage';
 import NotFoundPage from './pages/system/NotFoundPage';
 import ErrorPage from './pages/system/ErrorPage';
+        
+import FeedPage from './pages/feed/PublicFeedPage';
+import FriendFeedPage from './pages/feed/FriendFeedPage';
+        
+import LetterSendingPage from './pages/letter/LetterSendingPage';
+        
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
