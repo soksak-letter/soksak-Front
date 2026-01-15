@@ -5,9 +5,6 @@ import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
 // import Homepage from './pages/Homepage';
-
-
-import Homepage from './pages/Homepage';
 import MainPage from './pages/main/Mainpage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
@@ -24,9 +21,6 @@ import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
-
-import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
-import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import LetterDraftRoute from './pages/letter/LetterDraftRoute';
 
 import LoadingPage from './pages/system/LoadingPage';
@@ -35,12 +29,11 @@ import NetworkErrorPage from './pages/system/NetworkErrorPage';
 import ForbiddenPage from './pages/system/ForbiddenPage';
 import NotFoundPage from './pages/system/NotFoundPage';
 import ErrorPage from './pages/system/ErrorPage';
-        
+
 import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
-        
+
 import LetterSendingPage from './pages/letter/LetterSendingPage';
-        
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -56,7 +49,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Navigate to='/home/main' replace /> },
-          // { path: 'home/main', element: <Mainpage /> },
+          { path: 'home/main', element: <MainPage /> },
           // { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> },
           // { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
           // { path: 'letter/10-end', element: <LetterTenEndPage /> },
@@ -109,8 +102,8 @@ const router = createBrowserRouter([
             ],
           },
 
-          // { path: 'feed/public-all', element: <FeedPage /> },
-          // { path: 'feed/friend-all', element: <FriendFeedPage /> },
+          { path: 'feed/public-all', element: <FeedPage /> },
+          { path: 'feed/friend-all', element: <FriendFeedPage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
@@ -121,7 +114,7 @@ const router = createBrowserRouter([
             children: [
               { path: 'draft', element: <LetterDraftRoute /> },
               { path: 'decorate', element: <LetterDecoPage /> },
-              // { path: 'sending', element: <TODOPage /> },
+              { path: 'sending', element: <LetterSendingPage /> },
               // { path: 'sent-transition', element: <TODOPage /> },
             ],
           },
