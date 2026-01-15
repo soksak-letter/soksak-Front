@@ -10,7 +10,7 @@ import MainPage from './pages/main/Mainpage';
 import WelcomePage from './pages/login/WelcomePage';
 import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
-import ProfileSetUp from './pages/login/ProfileSetUp';
+import ProfileSetUp from './pages/login/ProfileSetUpPage';
 import TermCheckPage from './pages/login/TermsCheckPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
@@ -45,6 +45,7 @@ import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
+import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -95,8 +96,8 @@ const router = createBrowserRouter([
               // { path: 'email-verify', element: <EmailVerifyPage /> },
               // { path: 'pw-find', element: <PwFindPage /> },
               // { path: 'pw-reset', element: <PwResetPage /> },
-              { path: 'signup', element: <SignupPage /> },
-              { path: 'profile-setup', element: <ProfileSetupPage /> },
+              { path: 'signup', element: <SignUpPage /> },
+              { path: 'profile-setup', element: <ProfileSetUpPage /> },
               { path: 'terms', element: <TermCheckPage /> },
             ],
           },
@@ -111,7 +112,6 @@ const router = createBrowserRouter([
               { path: 'letter-write', element: <OnboardingLetterWritePage /> },
               { path: 'letter-guide', element: <OnboardingLetterGuidePage /> },
             ],
-
           },
 
           { path: 'feed/public-all', element: <FeedPage /> },

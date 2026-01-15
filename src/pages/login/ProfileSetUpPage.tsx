@@ -6,7 +6,7 @@ import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
 
-const ProfileSetUp = () => {
+const ProfileSetUpPage = () => {
   const navigate = useNavigate();
   //  닉네임 입력 상태 관리
   const [nickname, setNickname] = useState('');
@@ -120,4 +120,4 @@ const ProfileSetUp = () => {
     </div>
   );
 };
-export default ProfileSetUp;
+export default ProfileSetUpPage;
