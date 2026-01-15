@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <AppShellWithTab />,
         children: [
           { index: true, element: <Navigate to='/home/main' replace /> },
-          { path: 'home/main', element: <Mainpage /> },
+          // { path: 'home/main', element: <Mainpage /> },
           // { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> },
           // { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
           // { path: 'letter/10-end', element: <LetterTenEndPage /> },
@@ -72,15 +72,15 @@ const router = createBrowserRouter([
             path: 'auth',
             children: [
               { index: true, element: <Navigate to='welcome' replace /> },
-              { path: 'welcome', element: <WelcomePage /> },
-              { path: 'signin', element: <SignInPage /> },
+              // { path: 'welcome', element: <WelcomePage /> },
+              // { path: 'signin', element: <SignInPage /> },
               // { path: 'email-find', element: <EmailFindPage /> },
               // { path: 'email-verify', element: <EmailVerifyPage /> },
               // { path: 'pw-find', element: <PwFindPage /> },
               // { path: 'pw-reset', element: <PwResetPage /> },
-              { path: 'signup', element: <SignupPage /> },
-              { path: 'profile-setup', element: <ProfileSetupPage /> },
-              { path: 'terms', element: <TermCheckPage /> },
+              // { path: 'signup', element: <SignupPage /> },
+              // { path: 'profile-setup', element: <ProfileSetupPage /> },
+              // { path: 'terms', element: <TermCheckPage /> },
             ],
           },
 
@@ -96,8 +96,8 @@ const router = createBrowserRouter([
             ],
           },
 
-          { path: 'feed/public-all', element: <FeedPage /> },
-          { path: 'feed/friend-all', element: <FriendFeedPage /> },
+          // { path: 'feed/public-all', element: <FeedPage /> },
+          // { path: 'feed/friend-all', element: <FriendFeedPage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
