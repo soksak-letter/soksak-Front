@@ -25,7 +25,7 @@ const sizeMap: Record<ButtonSize, string> = {
   small3: 'h-[44px] w-[72px] px-3 text-base',
 
   // 서버/네트워크 오류 페이지용 CTA
-  cta150: 'h-[48px] w-[150px] px-4 text-sm',
+  cta150: 'h-[48px] w-[150px] px-4 text-base',
 };
 
 const colorMap: Record<ButtonColor, { normal: string; selected: string }> = {
