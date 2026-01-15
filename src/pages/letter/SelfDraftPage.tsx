@@ -64,7 +64,6 @@ const SelfDraftPage = () => {
 
   return (
     <div className='flex flex-col'>
-      {/* TODO: 편지 꾸미기 기능 구현 시 스타일 편집 페이지로 이동 */}
       <BackHeader
         title='나에게 보내는 편지'
         rightElement={
