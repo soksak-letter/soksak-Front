@@ -8,6 +8,10 @@ import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
+import { BsQuestionCircle } from 'react-icons/bs';
+import LetterTextBox from '@/components/letters/LetterTextBox';
+import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
+
 export default function FriendDraftPage() {
   const navigate = useNavigate();
 
@@ -30,11 +34,10 @@ export default function FriendDraftPage() {
     // 1. title 최소/최대 글자 수 조건 확인
     // 2. content 최소/최대 글자 수 조건 확인
     // 3. 조건 안 맞으면 토스트/에러 처리
-    navigate('/letter/friend-decorate', {
+    navigate('/letter/friend/decorate', {
       state: {
         title: letter.title,
         content: letter.content,
-        isPublic: Boolean,
       },
     });
   };
