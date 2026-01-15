@@ -10,7 +10,6 @@ import MainPage from './pages/main/Mainpage';
 import WelcomePage from './pages/login/WelcomePage';
 import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
-import ProfileSetUp from './pages/login/ProfileSetUpPage';
 import TermCheckPage from './pages/login/TermsCheckPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
