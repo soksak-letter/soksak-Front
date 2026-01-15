@@ -20,9 +20,9 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
   const prevTranslateRef = useRef(0);
   const dragResetTimeoutRef = useRef<number | null>(null);
 
-  // 카드 하나의 너비: 375px의 40% = 150px
-  const CARD_WIDTH = 150;
-  const CARD_GAP = 12;
+  // 카드 크기: 피그마 디자인 기준 130px
+  const CARD_WIDTH = 130;
+  const CARD_GAP = 13; // 피그마에서 확인한 간격
   const CARD_WITH_GAP = CARD_WIDTH + CARD_GAP;
 
   // currentIndex 변경 시 transform 업데이트
@@ -169,10 +169,10 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
   // 빈 상태
   if (letters.length === 0) {
     return (
-      <div className='w-full py-6'>
+      <div className='w-full py-1.5'>
         <div className='relative w-full'>
           <div className='overflow-hidden'>
-            <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `${CARD_GAP}px` }}>
+            <div style={{ width: `${CARD_WIDTH}px`, marginLeft: `16px` }}>
               <EmptyStateCard message={emptyMessage} />
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
   }
 
   return (
-    <div className='w-full py-6'>
+    <div className='w-full py-1.5'>
       <div className='relative w-full'>
         {/* 캐러셀 컨테이너 */}
         <div
@@ -200,7 +200,7 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
             className='flex transition-transform duration-300 ease-out'
             style={{
               gap: `${CARD_GAP}px`,
-              paddingLeft: `${CARD_GAP}px`,
+              paddingLeft: `16px`,
             }}
           >
             {letters.map((letter) => (
@@ -212,8 +212,8 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
         </div>
 
         {/* 인디케이터 */}
-        {letters.length > 1 && (
-          <div className='flex justify-center gap-2 mt-6'>
+        {/* {letters.length > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
             {letters.map((_, index) => (
               <button
                 key={index}
@@ -223,13 +223,15 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
                   currentTranslateRef.current = prevTranslateRef.current;
                 }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'bg-blue-500 w-6' : 'bg-gray-300 hover:bg-gray-400'
+                  index === currentIndex
+                    ? 'bg-blue-500 w-6'
+                    : 'bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`${index + 1}번째 페이지로 이동`}
               />
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

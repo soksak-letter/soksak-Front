@@ -33,12 +33,12 @@ const AnonDraftPage = () => {
     navigate(-1);
   };
 
+  // TODO:
+  // 1. title 최소/최대 글자 수 조건 확인
+  // 2. content 최소/최대 글자 수 조건 확인
+  // 3. 조건 안 맞으면 토스트/에러 처리
   const handleSubmit = () => {
-    // TODO:
-    // 1. title 최소/최대 글자 수 조건 확인
-    // 2. content 최소/최대 글자 수 조건 확인
-    // 3. 조건 안 맞으면 토스트/에러 처리
-    navigate('/letter/anon-decorate', {
+    navigate('/letter/anon/decorate', {
       state: {
         title: letter.title,
         content: letter.content,
@@ -51,7 +51,7 @@ const AnonDraftPage = () => {
       <BackHeader
         title='타인에게 보내는 편지'
         rightElement={
-          <button type='submit' onClick={handleSubmit}>
+          <button type='button' onClick={handleSubmit}>
             꾸미기
           </button>
         }

@@ -3,6 +3,7 @@ import OnboardingSkipConfirmModal from '@/modals/OnboardingSkipConfirmModal';
 import FriendAddedModal from '@/modals/FriendAddedModal';
 
 import { useModalStore } from '@/stores/modalStore';
+import LetterSendingConfirm from '@/modals/LetterSendingConfirmModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
@@ -16,6 +17,9 @@ export default function ModalRoot() {
 
     case 'friendAdded':
       return <FriendAddedModal />;
+
+    case 'letterSendingConfirm':
+      return <LetterSendingConfirm />;
 
     default:
       return null;
