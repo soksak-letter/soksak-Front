@@ -23,6 +23,8 @@ import AnonDraftPage from './pages/letter/AnonDraftPage';
 import OtherDraftPage from './pages/letter/OtherDraftPage';
 import SelfDraftPage from './pages/letter/SelfDraftPage';
 import LetterDecoPage from './pages/letter/LetterDecoPage';
+import LetterReportPage from './pages/LetterReportPage';
+import LetterSendingPage from './pages/letter/LetterSendingPage';
 
 import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
@@ -43,27 +45,23 @@ const router = createBrowserRouter([
           { path: 'onboarding/letter-guide', element: <OnboardingLetterGuidePage /> },
 
           { path: 'friend/post', element: <FriendPostPage /> },
-          { path: 'friend/draft', element: <FriendDraftPage /> },
 
           // TODO : 'letter'로 이동했을 때 엣지케이스 처리 필요
-          {
-            path: 'letter/anon-draft',
-            element: <AnonDraftPage />,
-          },
-          {
-            path: 'letter/other-draft',
-            element: <OtherDraftPage />,
-          },
-          {
-            path: 'letter/self-draft',
-            element: <SelfDraftPage />,
-          },
-          {
-            path: 'letter/:mode-decorate',
-            element: <LetterDecoPage />,
-          },
+
+       
           { path: 'feed/public', element: <FeedPage /> },
           { path: 'feed/friend', element: <FriendFeedPage /> },
+
+          { path: 'letter/anon-draft', element: <AnonDraftPage /> },
+          { path: 'letter/other-draft', element: <OtherDraftPage /> },
+          { path: 'letter/self-draft', element: <SelfDraftPage /> },
+          
+          { path: 'letter/friend-draft', element: <FriendDraftPage /> },
+          { path: 'letter/:mode/decorate', element: <LetterDecoPage /> },
+          { path: 'letter/:mode/sending', element: <LetterSendingPage /> },
+
+          { path: 'letter/report', element: <LetterReportPage /> },
+
         ],
       },
 

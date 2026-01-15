@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 
-export type ModalType = 'exitConfirm' | 'onboardingSkipConfirm' | 'friendAdded' | null;
+export type ModalType =
+  | 'exitConfirm'
+  | 'onboardingSkipConfirm'
+  | 'friendAdded'
+  | 'letterSendingConfirm'
+  | null;
 
 export type ModalPayload = {
   // exitConfirm
@@ -14,6 +19,8 @@ export type ModalPayload = {
   onConfirm?: () => void;
   onWriteLetter?: () => void;
 
+  // letterSendingConfirm
+  onConfirmSending?: () => void;
 };
 
 interface ModalState {
