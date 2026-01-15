@@ -39,24 +39,28 @@ const useSignUpForm = () => {
   });
   // useEffect에서 validate 함수의 리턴값을 '그대로' State에 넣음
   useEffect(() => {
-    const newValidations = { ...validations };
+    setValidations((prev) => {
+      const newValidations = { ...prev };
 
-    // 각 필드별로 validate 실행 후 결과(객체)를 바로 저장
-    if (form.email) newValidations.email = validate.email(form.email);
-    if (form.username) newValidations.username = validate.username(form.username);
-    if (form.password) newValidations.password = validate.password(form.password);
-    if (form.passwordConfirm)
-      newValidations.passwordConfirm = validate.passwordConfirm(
-        form.password,
-        form.passwordConfirm,
-      );
-    if (form.name) newValidations.name = validate.name(form.name);
-    if (form.phone) newValidations.phone = validate.phone(form.phone);
+      // 각 필드별로 validate 실행 후 결과(객체)를 바로 저장
+      if (form.email) newValidations.email = validate.email(form.email);
+      if (form.username) newValidations.username = validate.username(form.username);
+      if (form.password) newValidations.password = validate.password(form.password);
+      if (form.passwordConfirm) {
+        newValidations.passwordConfirm = validate.passwordConfirm(
+          form.password,
+          form.passwordConfirm,
+        );
+      }
+      if (form.name) newValidations.name = validate.name(form.name);
+      if (form.phone) newValidations.phone = validate.phone(form.phone);
 
-    // 값 변경 감지 (JSON.stringify로 비교)
-    if (JSON.stringify(validations) !== JSON.stringify(newValidations)) {
-      setValidations(newValidations);
-    }
+      // 값 변경 감지 (JSON.stringify로 비교)
+      if (JSON.stringify(prev) !== JSON.stringify(newValidations)) {
+        return newValidations;
+      }
+      return prev;
+    });
   }, [form]);
 
   // 핸들러 로직

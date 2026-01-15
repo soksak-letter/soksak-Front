@@ -128,7 +128,7 @@ export const validate = {
 
   /**
    * 닉네임 검사
-   * @returns { isValidFormat, isValidLength, errorMessage }
+   * @returns {{ success: boolean, message: string }}
    */
   nickname: (nickname: string) => {
     const isFormatValid = REGEX.NICKNAME.test(nickname);

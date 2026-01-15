@@ -42,14 +42,14 @@ const WelcomePage = () => {
       <div className='w-full space-y-3 mb-10'>
         <button
           onClick={() => navigate('/auth/signin')}
-          className='w-full h-[52px] bg-[var(--color-primary-500)] text-[var(--color-bg-primary)] text-ty-body3 font-meduim 
+          className='w-full h-[52px] bg-[var(--color-primary-500)] text-[var(--color-bg-primary)] text-ty-body3
         rounded-lg hover:bg-[#E4473F] transition-colors'
         >
           로그인
         </button>
         <button
           onClick={() => navigate('/auth/signup')}
-          className='w-full h-[52px] bg-[var(--color-bg-primary)] border border-[var(--color-primary-400)] text-[#F5544C] text-ty-body3 font-meduim rounded-lg hover:bg-red-50 transition-colors'
+          className='w-full h-[52px] bg-[var(--color-bg-primary)] border border-[var(--color-primary-400)] text-[#F5544C] text-ty-body3 rounded-lg hover:bg-red-50 transition-colors'
         >
           회원가입
         </button>

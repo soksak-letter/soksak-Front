@@ -150,7 +150,7 @@ const SignUpPage = () => {
           {/* 비밀번호 입력 */}
           <div className='flex flex-col gap-[8px] w-[343px] h-[75px]'>
             <input
-              type='text'
+              type='password'
               value={form.password}
               onChange={handleNoSpaceChange('password', 16)}
               onKeyDown={blockSpaceKey}
@@ -253,7 +253,7 @@ const SignUpPage = () => {
               <span className='ty-body4'>전체 동의합니다.</span>
             </div>
 
-            <p className='px-[3px] px-[28px] mt-[8px] ty-detail text-[var(--color-text-assistive)]'>
+            <p className='px-[3px] mt-[8px] ty-detail text-[var(--color-text-assistive)]'>
               전체 동의는 필수 및 선택 항목에 대한 동의가 포함되어 있으며, 개별적으로도 동의를
               선택하실 수 있습니다. 선택항목에 대한 동의를 거부하시는 경우에도 회원가입 및 일반적인
               서비스를 이용할 수 있습니다.

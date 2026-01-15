@@ -57,7 +57,7 @@ const router = createBrowserRouter([
             element: <OtherDraftPage />,
           },
           {
-            path: '/auth/login_entry',
+            path: '/auth/login-entry',
             element: <WelcomePage />,
           },
           {
