@@ -16,7 +16,7 @@ export default function ForbiddenPage() {
       <SadModalIcon className='mb-6 h-[80px] w-[82px]' />
 
       <div className='mb-8 text-center'>
-        <p className='mb-4 ty-titile2 text-(--color-text-strong)'>접근 권한이 없는 페이지입니다.</p>
+        <p className='mb-4 ty-title2 text-(--color-text-strong)'>접근 권한이 없는 페이지입니다.</p>
         <p className='ty-body5 text-(--color-text-strong)'>
           잘못 들어온 것 같아요. 메인으로 이동할까요?
         </p>

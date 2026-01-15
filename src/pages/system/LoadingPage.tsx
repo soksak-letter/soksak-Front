@@ -9,7 +9,7 @@ export default function LoadingPage() {
     <div className='flex h-screen flex-col items-center justify-center bg-white'>
       <LoadingDots fillIntervalMs={350} />
 
-      <SleepIcon className='mt-6 ml-3.5 h-[93px] w-[96px]' />
+      <SleepIcon className='h-[93px] w-[96px] mt-6 ml-3.5' />
 
       <p className='mt-4 ty-title2'>로딩 중...</p>
     </div>

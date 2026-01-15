@@ -16,7 +16,7 @@ export default function ErrorPage() {
       <SadModalIcon className='mb-6 h-[87px] w-[82px]' />
 
       <div className='mb-8 text-center'>
-        <p className='mb-4 ty-titile2 text-(--color-text-strong)'>문제가 발생했어요.</p>
+        <p className='mb-4 ty-title2 text-(--color-text-strong)'>문제가 발생했어요.</p>
         <p className='ty-body5 text-(--color-text-strong)'>
           잠시 후 다시 시도해 주세요.
           <br />

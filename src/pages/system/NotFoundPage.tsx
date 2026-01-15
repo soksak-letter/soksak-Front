@@ -16,7 +16,7 @@ export default function NotFoundPage() {
       <SadModalIcon className='mb-6 h-[87px] w-[82px]' />
 
       <div className='mb-8 text-center'>
-        <p className='mb-4 ty-titile2 text-(--color-text-strong)'>페이지를 찾을 수 없습니다.</p>
+        <p className='mb-4 ty-title2 text-(--color-text-strong)'>페이지를 찾을 수 없습니다.</p>
         <p className='ty-body5 text-(--color-text-strong)'>
           요청하신 페이지가 없거나 이동되었어요.
           <br />

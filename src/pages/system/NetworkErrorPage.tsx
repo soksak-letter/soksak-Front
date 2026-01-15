@@ -21,7 +21,7 @@ export default function NetworkErrorPage() {
       <SadModalIcon className='mb-6 h-[87px] w-[82px]' />
 
       <div className='mb-8 text-center'>
-        <p className='mb-4 ty-titile2 text-(--color-text-strong)'>네트워크 연결 오류입니다.</p>
+        <p className='mb-4 ty-title2 text-(--color-text-strong)'>네트워크 연결 오류입니다.</p>
         <p className='ty-body5 text-(--color-text-strong)'>
           현재 네트워크에 연결되어 있지 않습니다.
           <br />
