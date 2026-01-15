@@ -4,7 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 type ButtonColor = 'primary' | 'white' | 'grey' | 'black';
-type ButtonSize = 'large' | 'medium' | 'small' | 'small2' | 'small3';
+type ButtonSize = 'large' | 'medium' | 'small' | 'small2' | 'small3' | 'cta150';
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: ButtonColor;
@@ -22,7 +22,10 @@ const sizeMap: Record<ButtonSize, string> = {
   medium: 'h-[56px] w-[160px] px-4 text-sm',
   small: 'h-[48px] w-[95px] px-3 text-sm',
   small2: 'h-[44px] w-[100px] px-3 text-sm',
-  small3: 'h-[44px] w-[72px] px-3 text-xs',
+  small3: 'h-[44px] w-[72px] px-3 text-base',
+
+  // 서버/네트워크 오류 페이지용 CTA
+  cta150: 'h-[48px] w-[150px] px-4 text-sm',
 };
 
 const colorMap: Record<ButtonColor, { normal: string; selected: string }> = {
