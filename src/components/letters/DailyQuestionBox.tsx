@@ -6,7 +6,7 @@ type DailyQuestionBoxProps = {
   Icon: React.ComponentType<{ className?: string }>;
   iconClassName?: string;
   bubbleBgColor?: string;
-  bubbleStyle?: string;
+  bubbleTextStyle?: string;
 };
 
 const DailyQuestionBox = ({
@@ -14,7 +14,7 @@ const DailyQuestionBox = ({
   Icon,
   iconClassName = 'text-(--color-text-normal)', // only css 토큰
   bubbleBgColor = '#E5E6E6',
-  bubbleStyle = '',
+  bubbleTextStyle = '',
 }: DailyQuestionBoxProps) => {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -40,7 +40,7 @@ const DailyQuestionBox = ({
               className='max-w-[340px] rounded-[8px] px-3 py-2 leading-[160%] shadow-sm ty-detail'
               style={{
                 backgroundColor: bubbleBgColor,
-                color: `${bubbleStyle}`, // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
+                color: `${bubbleTextStyle}`, // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
               }}
             >
               {question}

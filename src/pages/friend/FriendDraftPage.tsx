@@ -54,7 +54,7 @@ export default function FriendDraftPage() {
           Icon={BsQuestionCircle}
           iconClassName='text-(--color-text-assistive)'
           bubbleBgColor='#414141'
-          bubbleStyle='var(--color-white)' // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
+          bubbleTextStyle='var(--color-white)' // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
         />
       </div>
       <div className='px-4'>
