@@ -5,13 +5,19 @@ export default function MainPageSkeleton() {
   return (
     <div className='min-h-dvh bg-white animate-pulse'>
       {/* 오늘의 질문 섹션 스켈레톤 */}
-      <QuestionCardSkeleton />
+      <section>
+        <QuestionCardSkeleton />
+      </section>
 
       {/* 편지 쓰기 버튼 섹션 스켈레톤 */}
-      <WriteLetterButtonsSkeleton />
+      <section>
+        <WriteLetterButtonsSkeleton />
+      </section>
 
       {/* 편지 여행 섹션 스켈레톤 */}
-      <LetterJourneySkeleton />
+      <section>
+        <LetterJourneySkeleton />
+      </section>
 
       {/* 공개 편지 섹션 스켈레톤 */}
       <LetterSectionSkeleton />
@@ -29,19 +35,13 @@ function QuestionCardSkeleton() {
       <div className='flex items-center gap-10'>
         {/* 질문 텍스트 영역 */}
         <div className='flex-1 flex flex-col gap-2'>
-          {/* 질문 텍스트 */}
-          <div className='space-y-2'>
-            <div className='h-6 bg-gray-200 rounded w-full' />
-            <div className='h-6 bg-gray-200 rounded w-4/5' />
+          {/* 질문 텍스트 (fontSize: 20px, lineHeight: 24px, 2줄) */}
+          <div className='space-y-1'>
+            <div className='bg-gray-200 rounded w-3/4' style={{ height: '48px' }} />
           </div>
-          {/* 타이머 */}
-          <div className='h-5 bg-gray-200 rounded w-48 mt-1' />
+          {/* 타이머 (fontSize: 16px, lineHeight: 25.6px) */}
+          <div className='bg-gray-200 rounded' style={{ height: '26px', width: '200px' }} />
         </div>
-        {/* 프로필 이미지 */}
-        <div
-          className='flex-shrink-0 rounded-full bg-gray-200'
-          style={{ width: '47px', height: '48px' }}
-        />
       </div>
     </div>
   );
@@ -52,9 +52,15 @@ function WriteLetterButtonsSkeleton() {
   return (
     <div className='w-full flex gap-3 px-4 py-2.5'>
       {/* 나에게 편지 보내기 버튼 */}
-      <div className='flex-1 rounded-lg bg-gray-200' style={{ width: '160px', height: '160px' }} />
+      <div
+        className='flex-1 rounded-lg bg-gray-200'
+        style={{ height: '160px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}
+      />
       {/* 상대에게 편지 보내기 버튼 */}
-      <div className='flex-1 rounded-lg bg-gray-200' style={{ width: '160px', height: '160px' }} />
+      <div
+        className='flex-1 rounded-lg bg-gray-200'
+        style={{ height: '160px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}
+      />
     </div>
   );
 }
@@ -63,50 +69,19 @@ function WriteLetterButtonsSkeleton() {
 function LetterJourneySkeleton() {
   return (
     <div className='w-full px-4 py-2.5'>
-      {/* 헤더 */}
+      {/* 헤더 (fontSize: 16px, lineHeight: 25.6px) */}
       <div className='flex items-center justify-between mb-3'>
-        <div className='h-6 bg-gray-200 rounded w-32' />
+        <div className='bg-gray-200 rounded' style={{ height: '26px', width: '120px' }} />
       </div>
 
-      {/* 전체 컨테이너 */}
+      {/* 전체 컨테이너 - 통계 섹션 전체를 박스로 덮음 (px-4 py-4 + 내부 콘텐츠 높이) */}
       <div
-        className='relative rounded-lg overflow-hidden px-4 py-4'
+        className='rounded-lg bg-gray-200'
         style={{
-          backgroundColor: '#FFF9F6',
+          height: '176px',
           boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         }}
-      >
-        {/* 기간 태그 */}
-        <div className='mb-[5px]'>
-          <div className='h-6 bg-gray-200 rounded-2xl w-20' />
-        </div>
-
-        {/* 통계 섹션 */}
-        <div className='mb-1 flex flex-col items-center'>
-          {/* 받은/보낸 편지 */}
-          <div
-            className='flex items-center gap-4 py-1.5 w-full justify-center'
-            style={{ borderBottom: '1px solid #FFC9C6' }}
-          >
-            <div className='h-5 bg-gray-200 rounded w-24' />
-            <div className='h-5 bg-gray-200 rounded w-24' />
-          </div>
-
-          {/* 총 편지 수 */}
-          <div className='flex items-center justify-center gap-1.5 py-1 mt-1'>
-            <div className='h-6 bg-gray-200 rounded w-40' />
-          </div>
-        </div>
-
-        {/* 진행 메시지 */}
-        <div className='flex items-center justify-center gap-2 mt-1'>
-          <div className='space-y-1'>
-            <div className='h-4 bg-gray-200 rounded w-52' />
-            <div className='h-4 bg-gray-200 rounded w-48' />
-          </div>
-          <div className='flex-shrink-0 w-6 h-6 bg-gray-200 rounded-full' />
-        </div>
-      </div>
+      />
     </div>
   );
 }
@@ -115,16 +90,15 @@ function LetterJourneySkeleton() {
 function LetterSectionSkeleton() {
   return (
     <section className='pt-2.5 pb-2.5'>
-      {/* 헤더 */}
+      {/* 헤더 (text-base = 16px font-semibold) */}
       <div className='flex items-center justify-between px-4 py-1.5'>
-        <div className='h-5 bg-gray-200 rounded w-20' />
-        <div className='h-4 bg-gray-200 rounded w-16' />
+        <div className='bg-gray-200 rounded' style={{ height: '26px', width: '119px' }} />
       </div>
 
       {/* 편지 캐러셀 스켈레톤 */}
       <div className='w-full py-1.5'>
         <div className='overflow-hidden'>
-          <div className='flex gap-[13px] pl-4'>
+          <div className='flex' style={{ gap: '13px', paddingLeft: '16px' }}>
             {[1, 2, 3].map((i) => (
               <LetterCardSkeleton key={i} />
             ))}
@@ -140,7 +114,7 @@ function LetterCardSkeleton() {
   return (
     <div
       className='flex-shrink-0 rounded-lg bg-gray-200'
-      style={{ width: '130px', height: '180px' }}
+      style={{ width: '130px', height: '100px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}
     />
   );
 }
