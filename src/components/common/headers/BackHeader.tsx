@@ -34,10 +34,12 @@ const BackHeader = ({ title, rightElement, titleClassName, onBack }: Props) => {
       </button>
 
       {/* 2. 타이틀 (중앙) */}
-      <h1 className={`text-lg font-semibold ${titleClassName}`}>{title}</h1>
+      <h1 className={`ty-title3 ${titleClassName}`}>{title}</h1>
 
       {/* 3. 우측 요소 (있으면 렌더링) */}
-      {rightElement && <div className='absolute right-4 text-sm font-semibold'>{rightElement}</div>}
+      {rightElement && (
+        <div className='absolute right-4 ty-body4 text-(--color-text-normal)'>{rightElement}</div>
+      )}
     </Header>
   );
 };
