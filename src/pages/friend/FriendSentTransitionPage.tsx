@@ -1,4 +1,5 @@
 import { Button } from '@/components/common/Button';
+import LetterEndedEnvelope from '@/assets/icons/LetterEndedEnvelope.svg?react';
 
 export default function FriendSentTransitionPage() {
   // mock data, 앞 페이지에 props로 넘기면 사용하기
@@ -18,6 +19,7 @@ export default function FriendSentTransitionPage() {
         <link>우리가 나눴던 대화 다시보기</link>
       </div>
       <div>
+        <LetterEndedEnvelope />
         <Button>친구 신청</Button>
         <Button>후기 남기기</Button>
       </div>
