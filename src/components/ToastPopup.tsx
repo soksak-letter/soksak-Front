@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { FaCheckCircle } from 'react-icons/fa';
-import { TbAlertCircleFilled } from 'react-icons/tb';
+import { Icon } from '@iconify/react';
 
 export type ToastStatus = 'success' | 'error';
 
@@ -11,8 +10,15 @@ export type ToastPopupProps = {
 };
 
 const ICON_MAP: Record<ToastStatus, ReactNode> = {
-  success: <FaCheckCircle size={24} className='text-(--color-primary-500)' />,
-  error: <TbAlertCircleFilled size={24} className='text-(--color-primary-500)' />,
+  success: (
+    <Icon icon='lets-icons:check-fill' className='text-(--color-primary-500) w-[24px] h-[24px]' />
+  ),
+  error: (
+    <Icon
+      icon='zondicons:exclamation-solid'
+      className='text-(--color-primary-500) w-[24px] h-[24px]'
+    />
+  ),
 };
 
 const ToastPopup = ({ status, message }: ToastPopupProps) => {
