@@ -24,10 +24,6 @@ import FriendPostPage from './pages/friend/FriendPostPage';
 import FriendDraftPage from './pages/friend/FriendDraftPage';
 import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
-import AnonDraftPage from './pages/letter/AnonDraftPage';
-import OtherDraftPage from './pages/letter/OtherDraftPage';
-import SelfDraftPage from './pages/letter/SelfDraftPage';
-
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
 import LetterDraftRoute from './pages/letter/LetterDraftRoute';
