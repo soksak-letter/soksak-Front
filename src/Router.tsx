@@ -8,7 +8,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import MainPage from './pages/main/Mainpage';
 
 import WelcomePage from './pages/login/WelcomePage';
-import SignInPage from './pages/login/SignInPage';
+import SignInPage from './pages/login/SigninPage';
 import SignUpPage from './pages/login/SignUpPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
