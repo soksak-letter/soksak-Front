@@ -11,24 +11,22 @@ export type ToastPopupProps = {
 
 const ICON_MAP: Record<ToastStatus, ReactNode> = {
   success: (
-    <Icon icon='lets-icons:check-fill' className='text-(--color-primary-500) w-[24px] h-[24px]' />
+    <Icon
+      icon='lets-icons:check-fill'
+      className='text-[var(--color-primary-500)] w-[24px] h-[24px]'
+    />
   ),
   error: (
     <Icon
       icon='zondicons:exclamation-solid'
-      className='text-(--color-primary-500) w-[24px] h-[24px]'
+      className='text-[var(--color-primary-500)] w-[24px] h-[24px]'
     />
   ),
 };
 
 const ToastPopup = ({ status, message }: ToastPopupProps) => {
   return (
-    <div
-      className={`
-        flex items-center gap-2 px-4 py-3 rounded-lg shadow-md
-        ${status === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}
-      `}
-    >
+    <div className='flex items-center w-[343px] h-[56px] gap-2 px-4 py-3 rounded-lg shadow-md bg-[var(--color-primary-100)]'>
       {ICON_MAP[status]}
       <span className='text-sm font-medium'>{message}</span>
     </div>

@@ -1,12 +1,19 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
+import ToastPopup, { type ToastPopupProps } from '@/components/ToastPopup';
 import useCountdown from '@/hooks/useCountdown';
 import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+type ToastState = null | ToastPopupProps;
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+const LIMIT = {
+  TITLE: { MIN: 3, MAX: 20 },
+  CONTENT: { MIN: 1, MAX: 500 },
+} as const;
 
 const AnonDraftPage = () => {
   const navigate = useNavigate();
@@ -17,11 +24,31 @@ const AnonDraftPage = () => {
     content: '',
   });
   const [isPublic, setIsPublic] = useState(false);
+  const [toast, setToast] = useState<ToastState>(null);
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
 
   const { isExpired, mmss } = useCountdown(deadlineMs);
+
+  const showToast = (message: string, status: 'error' | 'success' = 'error') => {
+    setToast({ message, status });
+    window.setTimeout(() => setToast(null), 3000);
+  };
+
+  const validate = () => {
+    const title = letter.title.trim();
+    const content = letter.content.trim();
+
+    if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
+    if (title.length > LIMIT.TITLE.MAX)
+      return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
+    if (content.length < LIMIT.CONTENT.MIN) return '내용을 작성해 주세요!';
+    if (content.length > LIMIT.CONTENT.MAX)
+      return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
+
+    return null;
+  };
 
   const handleBack = () => {
     if (isExpired) {
@@ -33,11 +60,13 @@ const AnonDraftPage = () => {
     navigate(-1);
   };
 
-  // TODO:
-  // 1. title 최소/최대 글자 수 조건 확인
-  // 2. content 최소/최대 글자 수 조건 확인
-  // 3. 조건 안 맞으면 토스트/에러 처리
   const handleSubmit = () => {
+    const errorMsg = validate();
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
     navigate('/letter/anon/decorate', {
       state: {
         title: letter.title,
@@ -47,7 +76,7 @@ const AnonDraftPage = () => {
   };
 
   return (
-    <div className='flex flex-col'>
+    <div className='relative flex flex-col'>
       <BackHeader
         title='타인에게 보내는 편지'
         rightElement={
@@ -82,6 +111,11 @@ const AnonDraftPage = () => {
         <br />
         상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
       </p>
+      {toast && (
+        <div className='fixed top-4 left-1/2 -translate-x-1/2 z-[9999]'>
+          <ToastPopup status={toast.status} message={toast.message} />
+        </div>
+      )}
     </div>
   );
 };
