@@ -7,7 +7,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type ToastState = null | ToastPopupProps;
+type ToastState = null | Pick<ToastPopupProps, 'status' | 'message'>;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const LIMIT = {
@@ -25,15 +25,24 @@ const AnonDraftPage = () => {
   });
   const [isPublic, setIsPublic] = useState(false);
   const [toast, setToast] = useState<ToastState>(null);
+  const [toastVisible, setToastVisible] = useState(false);
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
+  const toastTimerRef = useRef<number | null>(null);
 
   const { isExpired, mmss } = useCountdown(deadlineMs);
 
   const showToast = (message: string, status: 'error' | 'success' = 'error') => {
     setToast({ message, status });
-    window.setTimeout(() => setToast(null), 3000);
+    setToastVisible(true);
+
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+
+    toastTimerRef.current = window.setTimeout(() => {
+      setToastVisible(false); // 먼저 애니메이션
+      window.setTimeout(() => setToast(null), 300); // 애니메이션 끝나고 제거
+    }, 3000);
   };
 
   const validate = () => {
@@ -112,8 +121,16 @@ const AnonDraftPage = () => {
         상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
       </p>
       {toast && (
-        <div className='fixed top-4 left-1/2 -translate-x-1/2 z-[9999]'>
-          <ToastPopup status={toast.status} message={toast.message} />
+        <div className='fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999]'>
+          <ToastPopup
+            status={toast.status}
+            message={toast.message}
+            visible={toastVisible}
+            onClose={() => {
+              setToastVisible(false);
+              window.setTimeout(() => setToast(null), 300);
+            }}
+          />
         </div>
       )}
     </div>
