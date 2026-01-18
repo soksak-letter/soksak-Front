@@ -92,7 +92,7 @@ const useFindAccount = (type: FindType) => {
       // --- [MOCK API] ---
       const mockApiCall = new Promise<{ status: number }>((resolve) => {
         setTimeout(() => {
-          if (email === 'sucess@test.com')
+          if (email === 'success@test.com')
             resolve({ status: 200 }); // 간단한 성공 조건
           else resolve({ status: 404 });
         }, 1000);

@@ -9,11 +9,9 @@ const IdVerifyPage = () => {
   const { id, date } = location.state || { id: '-', date: '-' };
 
   return (
-    <div className='flex flex-col h-full'>
-      <div className='mb-6'>
-        <p className='text-[18px] font-bold text-[#171717]'>
-          회원님의 이메일 정보와 일치하는 아이디입니다.
-        </p>
+    <div className='relative flex flex-col h-full'>
+      <div className='mb-[32px]'>
+        <p className='ty-body2 text-[#171717]'>회원님의 이메일 정보와 일치하는 아이디입니다.</p>
       </div>
 
       <div className='w-full bg-[#FFF0F0] rounded-[12px] p-6 mb-8'>
@@ -29,11 +27,11 @@ const IdVerifyPage = () => {
         </div>
       </div>
 
-      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex  items-center gap-3 pb-4'>
-        <Button size='medium' color='primary' onClick={() => navigate('/auth/signin')}>
+      <div className='absolute bottom-[337px] left-0 right-0 flex gap-3'>
+        <Button className='flex-1' color='primary' onClick={() => navigate('/auth/signin')}>
           로그인하기
         </Button>
-        <Button size='medium' color='grey' onClick={() => navigate('/auth/pw-find')}>
+        <Button className='flex-1' color='grey' onClick={() => navigate('/auth/pw-find')}>
           비밀번호 재설정
         </Button>
       </div>

@@ -59,7 +59,7 @@ const PwResetPAge = () => {
   return (
     <div className='relative flex flex-col h-full'>
       {/* 설명 텍스트 */}
-      <div className='py-[16px] px-[10px]'>
+      <div className='mb-[16px]'>
         <p className='ty-body2'>비밀번호 재설정하기</p>
         <p className='ty-body4'>새로운 비밀번호를 입력해주세요.</p>
       </div>
@@ -107,7 +107,7 @@ const PwResetPAge = () => {
       </div>
 
       {/* 하단 버튼 */}
-      <div className='absolute top-[383px] px-[5px]'>
+      <div className='absolute bottom-[337px] left-0 right-0 px-[5px]'>
         <Button
           disabled={!isFormValid}
           color={!isFormValid ? 'grey' : 'primary'}
