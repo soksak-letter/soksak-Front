@@ -2,7 +2,8 @@ import { Button } from '@/components/common/Button';
 import LetterEndedEnvelope from '@/assets/icons/LetterEndedEnvelope.svg?react';
 
 export default function FriendSentTransitionPage() {
-  // mock data, 앞 페이지에 props로 넘기면 사용하기
+  // mock data
+  // TODO : 앞 페이지랑 props 연결하기
   const receiver = '파란수박';
 
   return (
