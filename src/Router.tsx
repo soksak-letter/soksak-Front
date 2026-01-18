@@ -8,7 +8,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import MainPage from './pages/main/Mainpage';
 
 import WelcomePage from './pages/login/WelcomePage';
-import SignInPage from './pages/login/SigninPage';
+import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
@@ -45,6 +45,9 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
+import FindAccountPage from './pages/login/FindAccountPAge';
+import EmailVerifyPage from './pages/login/IdVerifyPage';
+import IdVerifyPage from './pages/login/IdVerifyPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -91,9 +94,9 @@ const router = createBrowserRouter([
               { index: true, element: <Navigate to='welcome' replace /> },
               { path: 'welcome', element: <WelcomePage /> },
               { path: 'signin', element: <SignInPage /> },
-              // { path: 'email-find', element: <EmailFindPage /> },
-              // { path: 'email-verify', element: <EmailVerifyPage /> },
-              // { path: 'pw-find', element: <PwFindPage /> },
+              { path: 'id-find', element: <FindAccountPage /> },
+              { path: 'id-verify', element: <IdVerifyPage /> },
+              { path: 'pw-find', element: <FindAccountPage /> },
               // { path: 'pw-reset', element: <PwResetPage /> },
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
