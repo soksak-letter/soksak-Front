@@ -62,6 +62,7 @@ const router = createBrowserRouter([
           // { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
+          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
           // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
         ],
       },
@@ -142,7 +143,6 @@ const router = createBrowserRouter([
 
           { path: 'friend/draft', element: <FriendDraftPage /> },
           { path: 'friend/post/:letterId', element: <FriendPostPage /> },
-          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
 
           { path: 'report/weekly-report', element: <TODOPage /> },
           { path: 'report/keyword-letter-indi', element: <TODOPage /> },
