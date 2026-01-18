@@ -46,7 +46,6 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 import FindAccountPage from './pages/login/FindAccountPAge';
-import EmailVerifyPage from './pages/login/IdVerifyPage';
 import IdVerifyPage from './pages/login/IdVerifyPage';
 
 // ===== Placeholders =====
@@ -95,9 +94,9 @@ const router = createBrowserRouter([
               { path: 'welcome', element: <WelcomePage /> },
               { path: 'signin', element: <SignInPage /> },
               { path: 'id-find', element: <FindAccountPage /> },
-              { path: 'id-verify', element: <IdVerifyPage /> },
+              { path: 'id-verify', element: <FindAccountPage /> },
               { path: 'pw-find', element: <FindAccountPage /> },
-              // { path: 'pw-reset', element: <PwResetPage /> },
+              { path: 'pw-reset', element: <FindAccountPage /> },
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
               { path: 'terms', element: <TermsCheckPage /> },

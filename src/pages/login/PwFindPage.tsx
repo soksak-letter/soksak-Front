@@ -1,10 +1,8 @@
 import { Button } from '@/components/common/Button';
 import Toast from '@/components/common/Toast';
 import useFindAccount from '@/hooks/useFindAccount';
-import { useNavigate } from 'react-router-dom';
 
 const PwFindPage = () => {
-  const navigate = useNavigate();
   const {
     email,
     authCode,
@@ -20,6 +18,7 @@ const PwFindPage = () => {
     handleAuthRequest,
     handleVerifyCode,
     isFormatValid,
+    handleComplete,
   } = useFindAccount('pw');
 
   // 버튼 비활성화 조건
@@ -43,7 +42,7 @@ const PwFindPage = () => {
     return null;
   };
   return (
-    <div className='flex flex-col h-full'>
+    <div className='relative flex flex-col h-full'>
       {/* 설명 텍스트 */}
       <div className='mb-6'>
         <p className='ty-body2'>비밀번호 재설정을 위해 본인 인증이 필요해요.</p>
@@ -133,18 +132,13 @@ const PwFindPage = () => {
       <Toast isVisible={showToast} message='인증되었습니다.' onClose={closeToast} />
 
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='mt-[30px] px-[5px]'>
+      <div className='absolute top-1/2 px-[5px]'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화
           disabled={!isAuthVerified}
           color={!isAuthVerified ? 'grey' : 'primary'}
-          onClick={() => {
-            // 비밀번호 재설정은 인증 성공 시 '새 비밀번호 입력 페이지'로 이동해야 함
-            if (isAuthVerified) {
-              navigate('/auth/reset-password-input');
-            }
-          }}
+          onClick={handleComplete}
         >
           비밀번호 재설정
         </Button>

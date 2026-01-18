@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { validate } from '@/utils/validate'; // 기존 파일 재사용
 import { removeWhitespace } from '@/utils/inputUtils'; // 기존 파일 재사용
+import { useNavigate } from 'react-router-dom';
 
 // 타입을 'id' 또는 'pw'만 받도록 정의
 type FindType = 'id' | 'pw';
@@ -8,6 +9,7 @@ type FindType = 'id' | 'pw';
 type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 
 const useFindAccount = (type: FindType) => {
+  const navigate = useNavigate();
   // 1. 상태 관리
   const [email, setEmail] = useState('');
 
@@ -137,6 +139,27 @@ const useFindAccount = (type: FindType) => {
   const closeToast = () => {
     setShowToast(false);
   };
+
+  // 맨 하단 '아이디 찾기' 또는 '비밀번호 재설정' 버튼 클릭 시
+  const handleComplete = () => {
+    if (!isAuthVerified) return;
+
+    if (type === 'id') {
+      // 1. 아이디 찾기인 경우 -> 결과 화면 데이터를 세팅 (Mock Data)
+      // 실제로는 API 호출:const res = await api.findId(email);
+      const mockResult = {
+        id: 'gaegull_01',
+        date: '2026년 3월 5일',
+      };
+
+      // navigate로 페이지 이동하며 state 전달
+      navigate('/auth/id-verify', { state: mockResult });
+    } else {
+      // 2. 비밀번호 재설정인 경우 -> 재설정 페이지로 이동
+      navigate('/auth/pw-reset', { state: { email } }); // 이메일 넘겨줌
+      console.log('비밀번호 재설정 페이지로 이동');
+    }
+  };
   return {
     email,
     authCode,
@@ -152,6 +175,7 @@ const useFindAccount = (type: FindType) => {
     handleAuthRequest,
     handleVerifyCode, // 인증번호 확인
     isFormatValid: validation.success, // UI에서 버튼 활성화 여부로 사용
+    handleComplete, // 최종 완료 버튼 핸들러
   };
 };
 
