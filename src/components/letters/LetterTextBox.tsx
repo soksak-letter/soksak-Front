@@ -41,9 +41,6 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
     });
   };
 
-  const titleTooShort = value.title.length > 0 && value.title.length < LENGTH.TITLE.MIN;
-  const showTitleError = titleTouched && titleTooShort;
-
   return (
     <div className='flex flex-col'>
       <div className={`flex flex-col ${className ?? ''}`}>
@@ -56,10 +53,6 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
             placeholder='제목'
           />
         </div>
-
-        {showTitleError && (
-          <p className='mt-1 text-xs text-red-500'>제목은 최소 3자 이상 입력해주세요.</p>
-        )}
 
         <div className='flex-1 rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
           <textarea
