@@ -46,7 +46,6 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 import FindAccountPage from './pages/login/FindAccountPAge';
-import IdVerifyPage from './pages/login/IdVerifyPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;

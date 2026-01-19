@@ -19,23 +19,11 @@ const usePwResetForm = () => {
 
   // 유효성 검사 (useEffect)
   useEffect(() => {
-    setValidations((prev) => {
-      const newValidations = { ...prev };
-
-      if (form.password) newValidations.password = validate.password(form.password);
-      if (form.passwordConfirm) {
-        newValidations.passwordConfirm = validate.passwordConfirm(
-          form.password,
-          form.passwordConfirm,
-        );
-      }
-
-      // 값 변경 감지 (JSON.stringify로 비교)
-      if (JSON.stringify(prev) !== JSON.stringify(newValidations)) {
-        return newValidations;
-      }
-      return prev;
-    });
+    const newValidations = {
+      password: validate.password(form.password),
+      passwordConfirm: validate.passwordConfirm(form.password, form.passwordConfirm),
+    };
+    setValidations(newValidations);
   }, [form]);
 
   // 핸들러들 (handleFocus, handleBlur 등 복사)

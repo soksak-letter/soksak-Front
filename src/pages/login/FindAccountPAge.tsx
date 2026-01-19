@@ -4,6 +4,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import IdVerifyPage from './IdVerifyPage';
 import IdFindPage from './IdFindPage';
 import PwResetPage from './PwResetPage';
+import { useEffect, useState } from 'react';
+
+interface TabHistory {
+  path: string;
+  state: any;
+}
 
 const FindAccountPage = () => {
   const navigate = useNavigate();
@@ -16,10 +22,31 @@ const FindAccountPage = () => {
   const isVerifyPage = location.pathname.includes('id-verify');
   const isReset = location.pathname.includes('pw-reset');
 
-  // 탭 클릭 핸들러 (클릭 시 URL 이동 -> 리렌더링 -> 탭 스타일 변경됨)
+  // 각 탭의 "마지막 경로"와 "데이터(state)"를 기억하는 저장소
+  const [tabHistory, setTabHistory] = useState<{ id: TabHistory; pw: TabHistory }>({
+    id: { path: '/auth/id-find', state: null },
+    pw: { path: '/auth/pw-find', state: null },
+  });
+  // [핵심] 경로가 바뀔 때마다, 현재 탭의 마지막 상태를 업데이트
+  useEffect(() => {
+    if (isIdTab) {
+      setTabHistory((prev) => ({
+        ...prev,
+        id: { path: location.pathname, state: location.state },
+      }));
+    } else {
+      setTabHistory((prev) => ({
+        ...prev,
+        pw: { path: location.pathname, state: location.state },
+      }));
+    }
+  }, [location.pathname, location.state, isIdTab]);
+
+  // 탭 클릭 핸들러 (클릭 시 URL 이동 -> 리렌더링 -> 탭 스타일 변경됨 => "기억해둔 곳"으로 이동)
   const handleTabClick = (type: 'id' | 'pw') => {
-    if (type === 'id') navigate('/auth/id-find');
-    else navigate('/auth/pw-find');
+    if ((type === 'id' && isIdTab) || (type === 'pw' && !isIdTab)) return;
+    const target = tabHistory[type];
+    navigate(target.path, { state: target.state });
   };
 
   return (

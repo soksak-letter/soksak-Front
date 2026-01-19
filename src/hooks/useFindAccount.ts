@@ -44,7 +44,7 @@ const useFindAccount = (type: FindType) => {
     return () => clearInterval(timer);
   }, [isTimerActive, timeLeft]);
 
-  // 시간을 05:00 형식으로 변환하는 함수
+  // 시간을 5:00 형식으로 변환하는 함수
   const formatTime = (seconds: number) => {
     const min = Math.floor(seconds / 60);
     const sec = seconds % 60;
@@ -149,7 +149,7 @@ const useFindAccount = (type: FindType) => {
       // 실제로는 API 호출:const res = await api.findId(email);
       const mockResult = {
         id: 'gaegull_01',
-        date: '2026년 3월 5일',
+        date: '2024년 3월 5일',
       };
 
       // navigate로 페이지 이동하며 state 전달

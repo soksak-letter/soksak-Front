@@ -140,7 +140,7 @@ const PwFindPage = () => {
       <Toast isVisible={showToast} message='인증되었습니다.' onClose={closeToast} />
 
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='absolute bottom-[337px] left-0 right-0 px-[5px]'>
+      <div className='absolute absolute bottom-[300px] w-full px-[5px] flex justify-center'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화
