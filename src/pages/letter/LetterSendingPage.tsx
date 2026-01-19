@@ -77,7 +77,7 @@ const LetterSendingPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [isFriendSending, navigate, openModal]);
+  }, [isFriendSending, navigate, openModal, showToast]);
 
   const getTargetText = () => {
     if (pathname.includes('/letter/other/sending') || pathname.includes('/letter/anon/sending')) {
