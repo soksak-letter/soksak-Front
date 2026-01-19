@@ -14,7 +14,7 @@ export default function FriendSentTransitionPage() {
   const handleFriendRequest = () => {
     openModal('friendRequest', {
       // TODO : 친구 신청 후 화면 재설정
-      onConfirmFriendRequest: () => navigate('/friend'),
+      onConfirmFriendRequest: () => navigate('/friend/inbox'),
     });
   };
 
