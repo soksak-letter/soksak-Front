@@ -35,7 +35,7 @@ const PwFindPage = () => {
     if (isAuthVerified)
       return <p className='ty-detail text-[var(--color-status-positive)] mt-1'>인증되었습니다.</p>;
     if (apiStatus === 'error')
-      return <p className='y-detail text-[var(--color-status-alert)] mt-1'>{serverMessage}</p>;
+      return <p className='ty-detail text-[var(--color-status-alert)] mt-1'>{serverMessage}</p>;
     if (apiStatus === 'success')
       return (
         <p className='ty-detail text-[var(--color-status-positive)] mt-1'>
@@ -104,7 +104,7 @@ const PwFindPage = () => {
 
         {/* 2. 인증번호 입력 영역 (이메일 발송 성공 시에만 노출) */}
         {apiStatus === 'success' && (
-          <div className='flex-col gap-[8px]'>
+          <div className='flex flex-col gap-[8px]'>
             <div className='flex gap-2'>
               <div className='relative flex-1'>
                 <input
