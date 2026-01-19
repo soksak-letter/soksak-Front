@@ -52,13 +52,13 @@ const SignUpPage = () => {
   // [추가] 이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
   const getEmailBorderColor = () => {
     if (!form.email) return 'border-[var(--color-grey-100)]'; // 빈값: 회색
-    if (!validations.email.success) return 'border-[#F33326]'; // 정규식 에러 or 중복 에러: 빨강
+    if (!validations.email.success) return 'border-[var(--color-status-alert)]'; // 정규식 에러 or 중복 에러: 빨강
     if (isEmailUnique) return 'border-[#3DC061]'; // 중복확인 완료: 초록
     return 'border-[var(--color-secondary-800)]'; // 정규식은 맞지만 확인 안 함: 회색
   };
   const getEmailMessageColor = () => {
     if (!form.email) return 'text-transparent';
-    if (!validations.email.success) return 'text-[#F33326]';
+    if (!validations.email.success) return 'text-[var(--color-status-alert)]';
     if (isEmailUnique) return 'text-[#3DC061]';
     return 'text-[var(--color-secondary-800)]'; // 확인 안 함: 파란색(안내) or 회색
   };

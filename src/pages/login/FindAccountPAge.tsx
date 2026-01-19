@@ -60,11 +60,11 @@ const FindAccountPage = () => {
         {/* 아이디 찾기 탭 */}
         <button
           onClick={() => handleTabClick('id')}
-          className={`flex-1 text-[16px] font-medium transition-colors border-b-2 
+          className={`flex-1 ty-body2 transition-colors border-b-2 
             ${
               isIdTab
-                ? 'text-[#F5544C] border-[#F5544C]' // 활성 상태 (빨강)
-                : 'text-[#8C8C8C] border-transparent' // 비활성 상태 (회색)
+                ? 'text-[var(--color-primary-500)] border-[var(--color-primary-500)]' // 활성 상태 (빨강)
+                : 'text-[var(--color-text-assistive)] border-transparent' // 비활성 상태 (회색)
             }`}
         >
           아이디 찾기
@@ -73,8 +73,8 @@ const FindAccountPage = () => {
         {/* 비밀번호 재설정 탭 */}
         <button
           onClick={() => handleTabClick('pw')}
-          className={`flex-1 text-[16px] font-medium transition-colors border-b-2
-            ${!isIdTab ? 'text-[#F5544C] border-[#F5544C]' : 'text-[#8C8C8C] border-transparent'}`}
+          className={`flex-1 ty-body2 transition-colors border-b-2
+            ${!isIdTab ? 'text-var(--color-primary-500)] border-[var(--color-primary-500)]' : 'text-[var(--color-text-assistive)] border-transparent'}`}
         >
           비밀번호 재설정
         </button>

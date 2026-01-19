@@ -30,13 +30,18 @@ const IdFindPage = () => {
   // 3. API 상태가 idle이면 형식 검사 에러 메시지 (빨강) - 필요시에만 노출
   // 메시지 렌더링 (이메일 입력창 하단)
   const renderMessage = () => {
-    if (isAuthVerified) return <p className='text-[#3DC061] text-sm mt-1'>인증되었습니다.</p>;
+    if (isAuthVerified)
+      return <p className='text-[var(--color-status-positive)] text-sm mt-1'>인증되었습니다.</p>;
     if (apiStatus === 'error')
-      return <p className='text-[#F33326] text-sm mt-1'>{serverMessage}</p>;
+      return <p className='text-[var(--color-status-alert)] text-sm mt-1'>{serverMessage}</p>;
     if (apiStatus === 'success')
-      return <p className='text-[#3DC061] text-sm mt-1'>인증번호가 발송되었습니다.</p>;
+      return (
+        <p className='text-[var(--color-status-positive)] text-sm mt-1'>
+          인증번호가 발송되었습니다.
+        </p>
+      );
     if (email.length > 0 && !validation.success)
-      return <p className='text-[#F33326] text-sm mt-1'>{validation.message}</p>;
+      return <p className='text-[var(--color-status-alert)] text-sm mt-1'>{validation.message}</p>;
     return null;
   };
   return (
@@ -111,7 +116,7 @@ const IdFindPage = () => {
                 />
                 {/* 타이머 (인풋창 내부 우측) */}
                 {!isAuthVerified && (
-                  <span className='absolute right-4 top-1/2 transform -translate-y-1/2 text-[#F5544C] text-[14px] font-medium'>
+                  <span className='absolute right-4 top-1/2 transform -translate-y-1/2 ty-body5 text-[var(--color-status-alert)] '>
                     {formattedTime}
                   </span>
                 )}
@@ -123,13 +128,15 @@ const IdFindPage = () => {
                 onClick={handleVerifyCode}
                 disabled={authCode.length < 6}
                 className={`
-              ${authCode.length === 6 ? 'bg-[#9CA3AF] text-white' : 'bg-[#E5E6E6] text-[#8C8C8C]'}
+              ${authCode.length === 6 ? 'bg-[var(--color-grey-300)] text-[var(--color-white)]' : 'bg-[var(--color-grey-300)] text-[var(--color-white)]'}
             `}
               >
                 확인
               </Button>
             </div>
-            <p className='text-[#3DC061] text-sm mt-1 '>{isAuthVerified ? '인증되었습니다' : ''}</p>
+            <p className='text-[var(--color-status-positive)] ty-detail '>
+              {isAuthVerified ? '인증되었습니다' : ''}
+            </p>
           </div>
         )}
       </div>

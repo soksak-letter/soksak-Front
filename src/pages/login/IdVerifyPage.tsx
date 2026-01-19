@@ -11,18 +11,20 @@ const IdVerifyPage = () => {
   return (
     <div className='relative flex flex-col h-full'>
       <div className='mb-[32px]'>
-        <p className='ty-body2 text-[#171717]'>회원님의 이메일 정보와 일치하는 아이디입니다.</p>
+        <p className='ty-body2 text-[var(--color-text-normal)]'>
+          회원님의 이메일 정보와 일치하는 아이디입니다.
+        </p>
       </div>
 
-      <div className='w-full bg-[#FFF0F0] rounded-[12px] p-6 mb-8'>
+      <div className='w-full bg-[var(--color-primary-100)] rounded-[12px] p-6 mb-8'>
         <div className='flex flex-col gap-4'>
           <div>
-            <p className='text-[13px] text-[#595959] mb-1'>아이디</p>
-            <p className='text-[16px] font-bold text-[#171717]'>{id}</p>
+            <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>아이디</p>
+            <p className='ty-body4 text-[var(--color-text-normal)]'>{id}</p>
           </div>
           <div>
-            <p className='text-[13px] text-[#595959] mb-1'>가입일</p>
-            <p className='text-[16px] font-bold text-[#171717]'>{date}</p>
+            <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>가입일</p>
+            <p className='ty-body4 text-[var(--color-text-normal)]'>{date}</p>
           </div>
         </div>
       </div>
