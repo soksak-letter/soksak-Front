@@ -5,10 +5,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect } from 'react';
 
-type Mode = 'anon' | 'other' | 'self' | 'friend';
+type Target = 'anon' | 'other' | 'self' | 'friend';
 
 function LetterDecoPage() {
-  const { mode } = useParams<{ mode?: string }>();
+  const { target } = useParams<{ target?: string }>();
   const { state } = useLocation();
   const { openModal } = useModalStore();
 
@@ -16,12 +16,13 @@ function LetterDecoPage() {
 
   const navigate = useNavigate();
 
-  // 유효하지 않은 mode인 경우 이전 페이지로 이동 또는 에러 처리
-  const safeMode = ['anon', 'other', 'self', 'friend'].includes(mode ?? '') ? (mode as Mode) : null;
+  // 유효하지 않은 target인 경우 이전 페이지로 이동 또는 에러 처리
+  const safeMode = ['anon', 'other', 'self', 'friend'].includes(target ?? '')
+    ? (target as Target)
+    : null;
   useEffect(() => {
     if (!safeMode) {
-      // TODO : 에러 페이지 제작 후 navigate('/error') 로 변경
-      navigate(-1);
+      navigate('/error/404');
     }
   }, [safeMode, navigate]);
 
