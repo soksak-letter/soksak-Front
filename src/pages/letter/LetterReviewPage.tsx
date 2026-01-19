@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom'; TODO
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
@@ -25,7 +25,7 @@ const MOODS: Array<{
 
 export default function LetterReviewPage() {
   const navigate = useNavigate();
-  //   const { letterId } = useParams<{ letterId: string }>();
+  //   const { letterId } = useParams<{ letterId: string }>(); TODO
 
   const [mood, setMood] = useState<ReviewMood | null>(null);
   const [temp, setTemp] = useState<number>(0);
@@ -37,7 +37,7 @@ export default function LetterReviewPage() {
   const handleSubmit = async () => {
     if (!canSubmit) return;
 
-    // await postLetterReview({ letterId, mood, temperature: temp });
+    // await postLetterReview({ letterId, mood, temperature: temp }); TODO
     navigate(-1);
   };
 
