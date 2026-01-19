@@ -24,7 +24,11 @@ export default function LetterSendingFailedModal() {
       >
         {/* 본문 */}
         <div className='px-6 py-6 pt-8 text-center flex flex-col items-center justify-center gap-4'>
-          <p className='text-[18px] font-semibold text-[#000] leading-[28.8px]'></p>
+          <p className='text-[18px] font-semibold text-[#000] leading-[28.8px]'>
+            전송에 실패했어요.
+            <br />
+            다시 시도하시겠습니까?
+          </p>
 
           <SadModalIcon />
         </div>

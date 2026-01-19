@@ -40,7 +40,6 @@ const LetterSendingPage = () => {
 
     const sendLetter = async () => {
       try {
-        if (import.meta.env.DEV) throw new Error('mock fail');
         // TODO : 실제 전송 API 호출
 
         if (cancelled) return;
@@ -67,8 +66,10 @@ const LetterSendingPage = () => {
         navigate('/home/main', { replace: true });
       } catch (e) {
         if (cancelled) return;
+        // TODO : 전역 상태 store 만든 후 편지 전송 실패 처리 리팩토링
+        // 아래 모달은 여기서 띄우면 안됨.
+        // 이전 페이지로 이동한 뒤 모달을 띄우고 싶으나, navigate는 언마운트 후 리렌더링이 됨
         openModal('letterSendingFailed');
-        navigate(-1);
       }
     };
     sendLetter();
