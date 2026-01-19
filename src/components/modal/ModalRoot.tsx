@@ -5,6 +5,7 @@ import FriendAddedModal from '@/modals/FriendAddedModal';
 import { useModalStore } from '@/stores/modalStore';
 import LetterSendingConfirm from '@/modals/LetterSendingConfirmModal';
 import FriendRequestModal from '@/modals/FriendRequestModal';
+import FriendRequestFailedModal from '@/modals/FriendRequestFailedModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
@@ -24,6 +25,9 @@ export default function ModalRoot() {
 
     case 'friendRequest':
       return <FriendRequestModal />;
+
+    case 'friendRequestFailed':
+      return <FriendRequestFailedModal />;
 
     default:
       return null;
