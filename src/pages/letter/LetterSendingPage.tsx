@@ -1,11 +1,15 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import stampEx1 from '@/assets/test/stampEx1.svg';
 import stampEx2 from '@/assets/test/stampEx2.svg';
+import { useEffect } from 'react';
+import { useModalStore } from '@/stores/modalStore';
 
 const LetterSendingPage = () => {
   const { pathname } = useLocation();
+  const { openModal } = useModalStore();
+  const navigate = useNavigate();
 
   const sender = '개굴';
   const receiver = '파란수박';
@@ -21,6 +25,34 @@ const LetterSendingPage = () => {
     { id: 'stamp-1', src: stampEx1 },
     { id: 'stamp-2', src: stampEx2 },
   ];
+
+  const isFriendSending = pathname.includes('/letter/friend/sending');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const sendLetter = async () => {
+      try {
+        // TODO : 실제 전송 API 호출
+
+        if (cancelled) return;
+
+        if (isFriendSending) {
+          // TODO : 10회 주고받았는지 확인하는 API/값
+          // 아래는 mock data
+          const isTenTimes = true;
+
+          if (isTenTimes) {
+            navigate('/friend/sent-transition', { replace: true });
+            return;
+          }
+        }
+      } catch (e) {
+        if (cancelled) return;
+        openModal('letterSendingFailed');
+      }
+    };
+  });
 
   const getTargetText = () => {
     if (pathname.includes('/letter/other/sending') || pathname.includes('/letter/anon/sending')) {

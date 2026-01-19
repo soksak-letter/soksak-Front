@@ -3,7 +3,7 @@ import { useModalStore } from '@/stores/modalStore';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 import { useLocation } from 'react-router-dom';
 
-export default function LetterSendingConfirm() {
+export default function LetterSendingConfirmModal() {
   const { closeModal, payload } = useModalStore();
   const { pathname } = useLocation();
 
