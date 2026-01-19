@@ -24,11 +24,6 @@ import FriendPostPage from './pages/friend/FriendPostPage';
 import FriendDraftPage from './pages/friend/FriendDraftPage';
 import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
-import AnonDraftPage from './pages/letter/AnonDraftPage';
-import OtherDraftPage from './pages/letter/OtherDraftPage';
-
-import SelfDraftPage from './pages/letter/SelfDraftPage';
-
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
 import LetterDraftRoute from './pages/letter/LetterDraftRoute';
@@ -45,7 +40,10 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
+
 import FindAccountPage from './pages/login/FindAccountPAge';
+import LetterReviewPage from './pages/letter/LetterReviewPage';
+
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -68,6 +66,7 @@ const router = createBrowserRouter([
           // { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
+          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
           // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
         ],
       },
@@ -137,7 +136,7 @@ const router = createBrowserRouter([
           { path: 'letter/reply/:letterId', element: <TODOPage /> },
 
           { path: 'letter/report', element: <LetterReportPage /> },
-          // { path: 'letter/review/:letterId', element: <TODOPage /> },
+          { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
 
           // { path: 'letter/post-self', element: <TODOPage /> },
           // { path: 'letter/loading', element: <TODOPage /> },
@@ -148,7 +147,6 @@ const router = createBrowserRouter([
 
           { path: 'friend/draft', element: <FriendDraftPage /> },
           { path: 'friend/post/:letterId', element: <FriendPostPage /> },
-          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
 
           { path: 'report/weekly-report', element: <TODOPage /> },
           { path: 'report/keyword-letter-indi', element: <TODOPage /> },
