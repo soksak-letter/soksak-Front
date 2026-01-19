@@ -61,10 +61,7 @@ const AnonDraftPage = () => {
     }, 3000);
   };
 
-  const validate = () => {
-    const title = letter.title.trim();
-    const content = letter.content.trim();
-
+  const validate = (title: string, content: string) => {
     if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
     if (title.length > LIMIT.TITLE.MAX)
       return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
@@ -86,7 +83,10 @@ const AnonDraftPage = () => {
   };
 
   const handleSubmit = () => {
-    const errorMsg = validate();
+    const title = letter.title.trim();
+    const content = letter.content.trim();
+    const errorMsg = validate(title, content);
+
     if (errorMsg) {
       showToast(errorMsg, 'error');
       return;
@@ -94,8 +94,8 @@ const AnonDraftPage = () => {
 
     navigate('/letter/anon/decorate', {
       state: {
-        title: letter.title,
-        content: letter.content,
+        title,
+        content,
       },
     });
   };
