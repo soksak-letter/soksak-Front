@@ -4,7 +4,7 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 import ToastPopup, { type ToastPopupProps } from '@/components/ToastPopup';
 import useCountdown from '@/hooks/useCountdown';
 import { useModalStore } from '@/stores/modalStore';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type ToastState = null | Pick<ToastPopupProps, 'status' | 'message'>;
@@ -30,18 +30,34 @@ const AnonDraftPage = () => {
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
   const toastTimerRef = useRef<number | null>(null);
+  const toastClearRef = useRef<number | null>(null);
 
   const { isExpired, mmss } = useCountdown(deadlineMs);
+
+  const clearToastTimers = () => {
+    if (toastTimerRef.current) {
+      window.clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = null;
+    }
+    if (toastClearRef.current) {
+      window.clearTimeout(toastClearRef.current);
+      toastClearRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => clearToastTimers();
+  }, []);
 
   const showToast = (message: string, status: 'error' | 'success' = 'error') => {
     setToast({ message, status });
     setToastVisible(true);
 
-    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    clearToastTimers();
 
     toastTimerRef.current = window.setTimeout(() => {
-      setToastVisible(false); // 먼저 애니메이션
-      window.setTimeout(() => setToast(null), 300); // 애니메이션 끝나고 제거
+      setToastVisible(false); // 애니메이션 먼저
+      toastClearRef.current = window.setTimeout(() => setToast(null), 300); // 애니메이션 끝나고 제거
     }, 3000);
   };
 
@@ -127,8 +143,9 @@ const AnonDraftPage = () => {
             message={toast.message}
             visible={toastVisible}
             onClose={() => {
+              clearToastTimers();
               setToastVisible(false);
-              window.setTimeout(() => setToast(null), 300);
+              toastClearRef.current = window.setTimeout(() => setToast(null), 300);
             }}
           />
         </div>
