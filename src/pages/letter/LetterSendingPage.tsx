@@ -40,6 +40,7 @@ const LetterSendingPage = () => {
 
     const sendLetter = async () => {
       try {
+        if (import.meta.env.DEV) throw new Error('mock fail');
         // TODO : 실제 전송 API 호출
 
         if (cancelled) return;
@@ -50,6 +51,7 @@ const LetterSendingPage = () => {
           const isTenTimes = true;
 
           if (isTenTimes) {
+            await delay(3000);
             navigate('/friend/sent-transition', { replace: true });
             return;
           }
@@ -57,6 +59,8 @@ const LetterSendingPage = () => {
 
         // TODO : 10회 미만일 때 성공 처리
         showToast('편지를 전송했어요!', 'success');
+        // 토스트 확인 + sending 페이지 확인 후 전송하기 위해 delay 설정
+        // 실제 서버 연결시, 3s 이상 걸릴 경우 sending 화면 지속되나?
         await delay(3000);
 
         if (cancelled) return;
