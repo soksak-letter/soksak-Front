@@ -24,7 +24,9 @@ const setupInterceptor = (instance: any) => {
       if (error.response?.status === 401) {
         // 인증 만료 → 온보딩
         // TODO: refresh token 로직
-        window.location.href = '/onboarding';
+        if (window.location.pathname !== '/onboarding') {
+          window.location.replace('/onboarding');
+        }
       }
       return Promise.reject(error);
     },
