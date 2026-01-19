@@ -3,7 +3,7 @@ import axios from 'axios';
 export const baseURL = import.meta.env.VITE_API_URL;
 
 if (!baseURL) {
-  console.error(
+  throw new Error(
     '[axiosInstance] VITE_API_URL 이 설정되어 있지 않습니다. .env.local 을 확인하세요.',
   );
 }
