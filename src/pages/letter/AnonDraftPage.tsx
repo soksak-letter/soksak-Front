@@ -1,13 +1,13 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
-import ToastPopup, { type ToastPopupProps } from '@/components/ToastPopup';
+import ToastPopup from '@/components/ToastPopup';
 import useCountdown from '@/hooks/useCountdown';
+import useToast from '@/hooks/useToast';
 import { useModalStore } from '@/stores/modalStore';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type ToastState = null | Pick<ToastPopupProps, 'status' | 'message'>;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const LIMIT = {
@@ -18,47 +18,30 @@ const LIMIT = {
 const AnonDraftPage = () => {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+  const { toast, visible, showToast, closeToast } = useToast({
+    duration: 3000,
+    exitMs: 300,
+  });
 
   const [letter, setLetter] = useState({
     title: '',
     content: '',
   });
   const [isPublic, setIsPublic] = useState(false);
-  const [toast, setToast] = useState<ToastState>(null);
-  const [toastVisible, setToastVisible] = useState(false);
 
   const startAtRef = useRef<number>(Date.now());
   const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
-  const toastTimerRef = useRef<number | null>(null);
-  const toastClearRef = useRef<number | null>(null);
 
   const { isExpired, mmss } = useCountdown(deadlineMs);
 
-  const clearToastTimers = () => {
-    if (toastTimerRef.current) {
-      window.clearTimeout(toastTimerRef.current);
-      toastTimerRef.current = null;
+  const handleBack = () => {
+    if (isExpired) {
+      openModal('exitConfirm', {
+        onConfirmExit: () => navigate(-1),
+      });
+      return;
     }
-    if (toastClearRef.current) {
-      window.clearTimeout(toastClearRef.current);
-      toastClearRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    return () => clearToastTimers();
-  }, []);
-
-  const showToast = (message: string, status: 'error' | 'success' = 'error') => {
-    setToast({ message, status });
-    setToastVisible(true);
-
-    clearToastTimers();
-
-    toastTimerRef.current = window.setTimeout(() => {
-      setToastVisible(false); // 애니메이션 먼저
-      toastClearRef.current = window.setTimeout(() => setToast(null), 300); // 애니메이션 끝나고 제거
-    }, 3000);
+    navigate(-1);
   };
 
   const validate = (title: string, content: string) => {
@@ -70,16 +53,6 @@ const AnonDraftPage = () => {
       return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
 
     return null;
-  };
-
-  const handleBack = () => {
-    if (isExpired) {
-      openModal('exitConfirm', {
-        onConfirmExit: () => navigate(-1),
-      });
-      return;
-    }
-    navigate(-1);
   };
 
   const handleSubmit = () => {
@@ -141,12 +114,8 @@ const AnonDraftPage = () => {
           <ToastPopup
             status={toast.status}
             message={toast.message}
-            visible={toastVisible}
-            onClose={() => {
-              clearToastTimers();
-              setToastVisible(false);
-              toastClearRef.current = window.setTimeout(() => setToast(null), 300);
-            }}
+            visible={visible}
+            onClose={closeToast}
           />
         </div>
       )}
