@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { IoShareOutline } from 'react-icons/io5';
 import iosGuideImage from '@/assets/img_ios_guide.png';
 
-export default function IosNotificationGuideModal() {
-  const navigate = useNavigate();
-  const close = () => navigate(-1);
+export default function IosNotificationGuideModal({ onClose }: { onClose: () => void }) {
+  // 모달은 닫기 로직을 부모가 가짐 -> onClose 사용하기
+  const close = () => onClose();
 
   const guideText = 'ty-body3 leading-[150%] tracking-[-0.01em] text-white';
 
@@ -63,7 +62,7 @@ export default function IosNotificationGuideModal() {
                   key={idx}
                   className={`${guideText} flex flex-col items-center text-center whitespace-pre-line`}
                 >
-                  <span className='inline-flex items-center justify-center w-[30px] h-[30px] rounded-md bg-[#F5544C] text-white font-bold text-[14px] leading-none'>
+                  <span className='inline-flex items-center justify-center w-[30px] h-[30px] rounded-md bg-[--color-primary-500] text-white font-bold text-[14px] leading-none'>
                     {idx + 1}
                   </span>
                   {/* 텍스트 영역 */}
@@ -96,7 +95,7 @@ export default function IosNotificationGuideModal() {
 
           <button
             type='button'
-            onClick={close}
+            onClick={onClose}
             className='mt-[34px] mb-[62px] block w-full text-center ty-body1 leading-[150%] tracking-[-0.01em] text-white underline underline-offset-2'
           >
             이해했어요
