@@ -87,7 +87,7 @@ const PwResetPage = () => {
       </div>
 
       {/* 하단 버튼 */}
-      <div className='absolute absolute bottom-[300px] w-full px-[5px] flex justify-center'>
+      <div className='absolute bottom-[300px] w-full px-[5px] flex justify-center'>
         <Button
           disabled={!canSubmit}
           color={!canSubmit ? 'grey' : 'primary'}
