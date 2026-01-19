@@ -3,7 +3,7 @@ import PwFindPage from './PwFindPage';
 import { useLocation, useNavigate } from 'react-router-dom';
 import IdVerifyPage from './IdVerifyPage';
 import IdFindPage from './IdFindPage';
-import PwResetPAge from './PwResetPage';
+import PwResetPage from './PwResetPage';
 
 const FindAccountPage = () => {
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ const FindAccountPage = () => {
 
         {/* 2. 비밀번호 재설정 영역 (PW 탭일 때만 보임) */}
         <div className={!isIdTab ? 'block h-full' : 'hidden'}>
-          {isReset ? <PwResetPAge /> : <PwFindPage />}
+          {isReset ? <PwResetPage /> : <PwFindPage />}
         </div>
       </div>
     </div>
