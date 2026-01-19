@@ -15,6 +15,7 @@ export default function FriendSentTransitionPage() {
   // mock data
   // TODO : 앞 페이지랑 props 연결하기
   const receiver = '파란수박';
+  const letterId = '1';
 
   const handleFriendRequest = () => {
     openModal('friendRequest', {
@@ -42,7 +43,7 @@ export default function FriendSentTransitionPage() {
       <section className='mt-15 flex flex-col items-center'>
         <LetterEndedEnvelope className='block' />
         <Link
-          to={`/friend/inbox`}
+          to={`/friend/post/${letterId}`}
           className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기
