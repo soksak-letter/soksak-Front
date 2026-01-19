@@ -132,7 +132,7 @@ const PwFindPage = () => {
                 onClick={handleVerifyCode}
                 disabled={authCode.length < 6}
                 className={`
-              ${authCode.length === 6 ? 'bg-[#9CA3AF] text-white' : 'bg-[#E5E6E6] text-[#8C8C8C]'}
+              ${authCode.length === 6 ? 'bg-[#9CA3AF] text-white' : 'bg-[var(--color-grey-100)] text-[#8C8C8C]'}
             `}
               >
                 확인

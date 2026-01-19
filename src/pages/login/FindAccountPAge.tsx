@@ -56,30 +56,39 @@ const FindAccountPage = () => {
       </div>
 
       {/* 탭 영역 */}
-      <div className='flex w-full h-[48px] bg-white'>
+      <div className='grid grid-cols-2'>
         {/* 아이디 찾기 탭 */}
         <button
+          type='button'
           onClick={() => handleTabClick('id')}
-          className={`flex-1 ty-body2 transition-colors border-b-2 
-            ${
-              isIdTab
-                ? 'text-[var(--color-primary-500)] border-[var(--color-primary-500)]' // 활성 상태 (빨강)
-                : 'text-[var(--color-text-assistive)] border-transparent' // 비활성 상태 (회색)
-            }`}
+          className={`flex-1 flex flex-col py-3 ty-body2 transition-colors
+      ${isIdTab ? 'text-[var(--color-primary-500)]' : 'text-[var(--color-text-assistive)]'}`}
         >
-          아이디 찾기
+          <span className='self-center pl-5'>아이디 찾기</span>
+
+          {/* 짧은 underline: 항상 존재, 색만 변경 */}
+          <div
+            className={`mt-2 h-[1.5px] w-[calc(100%-20px)] self-end transition-colors
+        ${isIdTab ? 'bg-[var(--color-primary-500)]' : 'bg-[var(--color-text-assistive)]'}`}
+          />
         </button>
 
         {/* 비밀번호 재설정 탭 */}
         <button
+          type='button'
           onClick={() => handleTabClick('pw')}
-          className={`flex-1 ty-body2 transition-colors border-b-2
-            ${!isIdTab ? 'text-var(--color-primary-500)] border-[var(--color-primary-500)]' : 'text-[var(--color-text-assistive)] border-transparent'}`}
+          className={`flex-1 flex flex-col pt-3 ty-body2 transition-colors
+      ${!isIdTab ? 'text-[var(--color-primary-500)]' : 'text-[var(--color-text-assistive)]'}`}
         >
-          비밀번호 재설정
+          <span className='self-center pr-5'>비밀번호 재설정</span>
+
+          {/* 짧은 underline: 항상 존재, 색만 변경 */}
+          <div
+            className={`mt-2 h-[1.5px] w-[calc(100%-20px)] self-start transition-colors
+        ${!isIdTab ? 'bg-[var(--color-primary-500)]' : 'bg-[var(--color-text-assistive)]'}`}
+          />
         </button>
       </div>
-
       {/* 컨텐츠 영역 (조건부 렌더링) */}
       <div className='flex-1 px-[16px] py-[16px] bg-white'>
         {/* 1. 아이디 찾기 영역 (ID 탭일 때만 보임) */}
