@@ -26,8 +26,8 @@ export const removeWhitespace = (text: string): string => {
  */
 export const getBorderColor = (isValid: boolean, value: string) => {
   if (!value) return 'border-[var(--color-grey-100)]'; // 입력 전 (회색)
-  if (!isValid) return 'border-[#F33326]'; // 에러 (빨강)
-  return 'border-[#3DC061]'; // 성공 (초록)
+  if (!isValid) return 'border-[var(--color-status-alert)]'; // 에러 (빨강)
+  return 'border-[var(--color-status-positive)]'; // 성공 (초록)
 };
 /**
  * [UI] 메시지 텍스트 색상 반환
@@ -37,6 +37,6 @@ export const getBorderColor = (isValid: boolean, value: string) => {
  */
 export const getMessageColor = (isValid: boolean, value: string) => {
   if (!value) return 'text-[var(--color-text-assistive)]';
-  if (!isValid) return 'text-[#F33326]';
-  return 'text-[#3DC061]';
+  if (!isValid) return 'text-[var(--color-status-alert)]';
+  return 'text-[var(--color-status-positive)]';
 };

@@ -6,7 +6,7 @@ const SignInPage = () => {
   const navigate = useNavigate();
 
   // 페이지 이동 핸들러
-  const handleFindId = () => navigate('/auth/email-find'); // 아이디 찾기 페이지 경로
+  const handleFindId = () => navigate('/auth/id-find'); // 아이디 찾기 페이지 경로
   const handleFindPw = () => navigate('/auth/pw-find'); // 비밀번호 찾기 페이지 경로
   const handleLogin = () => {
     // 로그인 로직 처리

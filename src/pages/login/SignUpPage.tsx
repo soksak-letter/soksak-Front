@@ -52,13 +52,13 @@ const SignUpPage = () => {
   // [추가] 이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
   const getEmailBorderColor = () => {
     if (!form.email) return 'border-[var(--color-grey-100)]'; // 빈값: 회색
-    if (!validations.email.success) return 'border-[#F33326]'; // 정규식 에러 or 중복 에러: 빨강
+    if (!validations.email.success) return 'border-[var(--color-status-alert)]'; // 정규식 에러 or 중복 에러: 빨강
     if (isEmailUnique) return 'border-[#3DC061]'; // 중복확인 완료: 초록
     return 'border-[var(--color-secondary-800)]'; // 정규식은 맞지만 확인 안 함: 회색
   };
   const getEmailMessageColor = () => {
     if (!form.email) return 'text-transparent';
-    if (!validations.email.success) return 'text-[#F33326]';
+    if (!validations.email.success) return 'text-[var(--color-status-alert)]';
     if (isEmailUnique) return 'text-[#3DC061]';
     return 'text-[var(--color-secondary-800)]'; // 확인 안 함: 파란색(안내) or 회색
   };
@@ -154,21 +154,21 @@ const SignUpPage = () => {
               value={form.password}
               onChange={handleNoSpaceChange('password', 16)}
               onKeyDown={blockSpaceKey}
-              onFocus={handleFocus('password')}
-              onBlur={handleBlur}
+              onFocus={handleFocus('password')} //입력시
+              onBlur={handleBlur} //입력완료 나가서
               placeholder='비밀번호'
               className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
                 focus:border-[var(--color-secondary-800)] outline-none ${getBorderColor(validations.password.success, form.password)}`}
             />
             <p
-              className={`px-[3px]  ty-detail 
-              ${focusedField === 'password' ? 'text-[#3B82F6]' : getMessageColor(validations.password.success, form.password)}`}
+              className={`px-[3px]  ty-detail mb-[4px] 
+              ${focusedField === 'password' ? 'text-[var(--color-text-assistive)]' : getMessageColor(validations.password.success, form.password)}`}
             >
               {focusedField === 'password'
-                ? '비밀번호는 영문, 숫자를 포함하여 8~16자리까지 입력 가능합니다.'
+                ? '비밀번호는 영문, 숫자 조합으로 8~16자까지 입력 가능합니다.'
                 : form.password
                   ? validations.password.message
-                  : '비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.'}
+                  : '비밀번호는 영문, 숫자 조합으로 8~16자까지 입력 가능합니다.'}
             </p>
           </div>
           {/* 비밀번호 확인 */}
@@ -184,7 +184,7 @@ const SignUpPage = () => {
               className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] 
                 rounded-lg outline-none focus:border-[var(--color-secondary-800)] ${getBorderColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
             />
-            {/* [수정] 안내 문구 하나로 통합 */}
+            {/*  안내 문구 하나로 통합 */}
             <p
               className={`px-[3px] ty-detail 
               ${focusedField === 'passwordConfirm' ? 'text-[var(--color-text-assistive)]' : getMessageColor(validations.passwordConfirm.success, form.passwordConfirm)}`}

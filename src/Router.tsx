@@ -40,7 +40,10 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
+
+import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
+
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -88,10 +91,10 @@ const router = createBrowserRouter([
               { index: true, element: <Navigate to='welcome' replace /> },
               { path: 'welcome', element: <WelcomePage /> },
               { path: 'signin', element: <SignInPage /> },
-              // { path: 'email-find', element: <EmailFindPage /> },
-              // { path: 'email-verify', element: <EmailVerifyPage /> },
-              // { path: 'pw-find', element: <PwFindPage /> },
-              // { path: 'pw-reset', element: <PwResetPage /> },
+              { path: 'id-find', element: <FindAccountPage /> },
+              { path: 'id-verify', element: <FindAccountPage /> },
+              { path: 'pw-find', element: <FindAccountPage /> },
+              { path: 'pw-reset', element: <FindAccountPage /> },
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
               { path: 'terms', element: <TermsCheckPage /> },
