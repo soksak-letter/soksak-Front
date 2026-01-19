@@ -8,7 +8,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import MainPage from './pages/main/Mainpage';
 
 import WelcomePage from './pages/login/WelcomePage';
-import SignInPage from './pages/login/SignInPage';
+import SignInPage from './pages/login/SigninPage';
 import SignUpPage from './pages/login/SignUpPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
@@ -23,11 +23,6 @@ import FriendInboxPage from './pages/friend/FriendInboxPage';
 import FriendPostPage from './pages/friend/FriendPostPage';
 import FriendDraftPage from './pages/friend/FriendDraftPage';
 import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
-
-import AnonDraftPage from './pages/letter/AnonDraftPage';
-import OtherDraftPage from './pages/letter/OtherDraftPage';
-
-import SelfDraftPage from './pages/letter/SelfDraftPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/LetterReportPage';
@@ -45,6 +40,7 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
+import LetterReviewPage from './pages/letter/LetterReviewPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -136,7 +132,7 @@ const router = createBrowserRouter([
           { path: 'letter/reply/:letterId', element: <TODOPage /> },
 
           { path: 'letter/report', element: <LetterReportPage /> },
-          // { path: 'letter/review/:letterId', element: <TODOPage /> },
+          { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
 
           // { path: 'letter/post-self', element: <TODOPage /> },
           // { path: 'letter/loading', element: <TODOPage /> },
