@@ -5,11 +5,17 @@ import stampEx1 from '@/assets/test/stampEx1.svg';
 import stampEx2 from '@/assets/test/stampEx2.svg';
 import { useEffect } from 'react';
 import { useModalStore } from '@/stores/modalStore';
+import useToast from '@/hooks/useToast';
+import ToastPopup from '@/components/ToastPopup';
 
 const LetterSendingPage = () => {
   const { pathname } = useLocation();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
+  const { toast, visible, showToast, closeToast } = useToast({
+    duration: 3000,
+    exitMs: 300,
+  });
 
   const sender = '개굴';
   const receiver = '파란수박';
@@ -30,6 +36,7 @@ const LetterSendingPage = () => {
 
   useEffect(() => {
     let cancelled = false;
+    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
     const sendLetter = async () => {
       try {
@@ -47,12 +54,25 @@ const LetterSendingPage = () => {
             return;
           }
         }
+
+        // TODO : 10회 미만일 때 성공 처리
+        showToast('편지를 전송했어요!', 'success');
+        await delay(3000);
+
+        if (cancelled) return;
+        navigate('/home/main', { replace: true });
       } catch (e) {
         if (cancelled) return;
         openModal('letterSendingFailed');
+        navigate(-1);
       }
     };
-  });
+    sendLetter();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isFriendSending, navigate, openModal]);
 
   const getTargetText = () => {
     if (pathname.includes('/letter/other/sending') || pathname.includes('/letter/anon/sending')) {
@@ -103,6 +123,18 @@ const LetterSendingPage = () => {
         className='-rotate-4 shadow-lg'
       />
       <p className='ty-body3 text-center'>평균 24시간 이내로 편지에 답장을 받아요.</p>
+
+      {/* 편지 전송 성공 Toast (친구/10회 미만) */}
+      {toast && (
+        <div className='fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999]'>
+          <ToastPopup
+            status={toast.status}
+            message={toast.message}
+            visible={visible}
+            onClose={closeToast}
+          />
+        </div>
+      )}
     </div>
   );
 };
