@@ -38,7 +38,9 @@ const BackHeader = ({ title, rightElement, titleClassName, onBack }: Props) => {
 
       {/* 3. 우측 요소 (있으면 렌더링) */}
       {rightElement && (
-        <div className='absolute right-4 ty-body4 text-(--color-text-normal)'>{rightElement}</div>
+        <div className='absolute right-4 ty-body4 text-[var(--color-text-normal)]'>
+          {rightElement}
+        </div>
       )}
     </Header>
   );
