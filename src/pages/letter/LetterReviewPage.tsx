@@ -128,7 +128,8 @@ export default function LetterReviewPage() {
                 className='flex flex-col items-center'
                 aria-pressed={selected}
               >
-                <div className='flex items-center justify-center w-[72px] h-[72px] rounded-full bg-[#E8F3FF]'>
+                {/* div는 레이아웃 전용 래퍼 */}
+                <div className='flex items-center justify-center rounded-full'>
                   <Icon className='w-[92px] h-[77.5px]' />
                 </div>
 
