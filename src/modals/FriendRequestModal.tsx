@@ -5,10 +5,8 @@ import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 export default function FriendRequestModal() {
   const { closeModal, payload } = useModalStore();
 
-  // mock data
-  const receiver = '파란수박';
+  const receiver = payload?.receiverName ?? '친구';
 
-  // TODO : 화면 설계서의 submit/stay 경로 확인
   const handleStay = () => closeModal();
 
   const handleSubmit = () => {

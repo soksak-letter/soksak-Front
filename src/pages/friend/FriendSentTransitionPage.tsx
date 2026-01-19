@@ -18,6 +18,7 @@ export default function FriendSentTransitionPage() {
 
   const handleFriendRequest = () => {
     openModal('friendRequest', {
+      receiverName: receiver,
       onConfirmFriendRequest: () => {
         setIsRequested(true);
         showToast('친구 신청이 완료되었습니다!', 'success');

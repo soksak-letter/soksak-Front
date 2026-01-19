@@ -25,6 +25,7 @@ export type ModalPayload = {
 
   // friendRequest
   onConfirmFriendRequest?: () => void;
+  receiverName?: string;
 };
 
 interface ModalState {
