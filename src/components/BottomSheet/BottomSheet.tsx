@@ -31,10 +31,7 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
   return (
     <>
       {/* 배경 오버레이 */}
-      <div
-        className='fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity'
-        onClick={onClose}
-      />
+      <div className='fixed inset-0 bg-black/70 z-40 transition-opacity' onClick={onClose} />
 
       {/* BottomSheet */}
       <div

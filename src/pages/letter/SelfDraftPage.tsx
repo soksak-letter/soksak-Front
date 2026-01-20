@@ -8,6 +8,8 @@ import { MdCalendarToday } from 'react-icons/md';
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
+import DatePickerWheel from '@/components/BottomSheet/contents/DatePickerWheel';
+import BottomSheet from '@/components/BottomSheet/BottomSheet';
 
 type DateValue = { year: number; month: number; day: number };
 
@@ -29,8 +31,11 @@ const SelfDraftPage = () => {
     return { year: now.getFullYear(), month: now.getMonth(), day: now.getDate() };
   });
 
-  const openSheet = () => setIsOpen(true);
-  //   const closeSheet = () => setIsOpen(false);
+  const openSheet = () => {
+    setPickedDate(pickedDate);
+    setIsOpen(true);
+  };
+  const closeSheet = () => setIsOpen(false);
 
   const label = `${pickedDate.year}.${pickedDate.month + 1}.${pickedDate.day}`;
 
@@ -94,6 +99,9 @@ const SelfDraftPage = () => {
           <span className='text-[var(--color-text-alternative)] ty-body5'>{label}에 받을게요.</span>
           <MdCalendarToday className='text-[var(--color-status-caution)]' />
         </button>
+        {isOpen && (
+          <BottomSheet isOpen={isOpen} onClose={closeSheet} children={<DatePickerWheel />} />
+        )}
       </div>
 
       {/* TODO : 데이트 피커 바텀시트 추가 */}
