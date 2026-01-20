@@ -37,21 +37,24 @@ export default function LetterInboxOtherPage() {
   const items = useMemo<InboxOtherLetterItem[]>(
     () => [
       {
-        id: 1,
+        letterId: 1,
+        threadId: 101,
         question: '당신의 인생에 가장 큰 영감을 주는 사람은 누구인가요?',
         senderName: '파란수박',
         receivedAt: '2026.1.3',
         isUnread: true,
       },
       {
-        id: 2,
+        letterId: 2,
+        threadId: 102,
         question: '요즘 가장 뿌듯했던 순간은 언제였나요?',
         senderName: '익명',
         receivedAt: '2026.1.2',
         isUnread: false,
       },
       {
-        id: 3,
+        letterId: 3,
+        threadId: 101,
         question: '최근에 스스로 칭찬해주고 싶은 일은 뭐였어요?',
         senderName: '파란수박',
         receivedAt: '2026.1.1',
@@ -78,10 +81,8 @@ export default function LetterInboxOtherPage() {
   const handleTabChange = (next: LetterInboxTabKey) => {
     setTab(next);
 
-    // 라우트 분기: received 탭은 "나에게 받은 편지함" 페이지로 이동시키는 식으로
-    // (프로젝트 라우팅에 맞게 경로만 바꿔주면 됨)
     if (next === 'received') {
-      navigate('/letter/inbox-received'); // TODO: 실제 라우트로 교체
+      navigate('/letter/inbox-self');
     }
   };
 
@@ -122,9 +123,9 @@ export default function LetterInboxOtherPage() {
         <div className='mt-4 space-y-[10px]'>
           {filtered.map((it) => (
             <button
-              key={it.id}
+              key={it.letterId}
               type='button'
-              onClick={() => handleOpenLetter(it.id)}
+              onClick={() => handleOpenLetter(it)}
               className='w-[343px] h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
             >
               <div className='flex items-start justify-between gap-3'>
