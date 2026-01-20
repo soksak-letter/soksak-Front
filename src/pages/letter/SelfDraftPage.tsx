@@ -114,10 +114,10 @@ const SelfDraftPage = () => {
         )}
       </div>
 
-      <div className='px-4 -mt-3'>
+      <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
-      <div className='flex items-center justify-end p-5 -mt-3 gap-2'>
+      <div className='flex items-center justify-end p-5 -mt-5 gap-2'>
         <span className='text-[var(--color-text-normal)] ty-body5'>
           오늘 하루 동안 편지 공개하기
         </span>
