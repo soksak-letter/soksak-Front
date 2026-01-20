@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface DatePickerWheelProps {
+  value?: { month: number; day: number; year: number };
   onDateChange?: (date: { month: number; day: number; year: number }) => void;
 }
 
@@ -21,8 +22,8 @@ const MONTHS = [
 
 const ITEM_HEIGHT = 44; // 각 항목의 높이 (픽셀)
 
-export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) {
-  const currentDate = new Date();
+export default function DatePickerWheel({ value, onDateChange }: DatePickerWheelProps) {
+  const currentDate = useMemo(() => new Date(), []);
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
   const [selectedDay, setSelectedDay] = useState(currentDate.getDate());
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());

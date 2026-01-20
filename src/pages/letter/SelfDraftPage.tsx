@@ -32,7 +32,6 @@ const SelfDraftPage = () => {
   });
 
   const openSheet = () => {
-    setPickedDate(pickedDate);
     setIsOpen(true);
   };
   const closeSheet = () => setIsOpen(false);
@@ -105,6 +104,7 @@ const SelfDraftPage = () => {
             onClose={closeSheet}
             children={
               <DatePickerWheel
+                value={pickedDate}
                 onDateChange={({ year, month, day }) => {
                   setPickedDate({ year, month, day });
                 }}
