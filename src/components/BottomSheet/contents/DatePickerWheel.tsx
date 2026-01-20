@@ -5,8 +5,18 @@ interface DatePickerWheelProps {
 }
 
 const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 const ITEM_HEIGHT = 44; // 각 항목의 높이 (픽셀)
@@ -44,7 +54,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   const handleScroll = (
     ref: React.RefObject<HTMLDivElement | null>,
     setter: (value: number) => void,
-    offset: number = 0
+    offset: number = 0,
   ) => {
     if (!ref.current) return;
 
@@ -84,28 +94,31 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
   };
 
   return (
-    <div className="relative">
+    <div className='relative'>
       {/* 선택 강조 바 */}
       <div
-        className="absolute left-0 right-0 bg-[#FEE8E7] pointer-events-none z-0"
+        className='absolute left-0 right-0 bg-[#FEE8E7] pointer-events-none z-0'
         style={{
           top: '50%',
           transform: 'translateY(-50%)',
-          height: `${ITEM_HEIGHT}px`
+          height: `${ITEM_HEIGHT}px`,
         }}
       />
 
-      <div className="flex justify-center gap-4 relative z-10">
+      <div className='flex justify-center gap-4 relative z-10'>
         {/* 월 선택기 */}
-        <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '140px' }}>
+        <div
+          className='relative overflow-hidden'
+          style={{ height: `${ITEM_HEIGHT * 5}px`, width: '140px' }}
+        >
           <div
             ref={monthRef}
-            className="overflow-y-scroll scrollbar-hide"
+            className='overflow-y-scroll scrollbar-hide'
             style={{
               height: `${ITEM_HEIGHT * 5}px`,
               scrollSnapType: 'y mandatory',
               paddingTop: `${ITEM_HEIGHT * 2}px`,
-              paddingBottom: `${ITEM_HEIGHT * 2}px`
+              paddingBottom: `${ITEM_HEIGHT * 2}px`,
             }}
             onScroll={() => handleScroll(monthRef, setSelectedMonth)}
           >
@@ -118,7 +131,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
                   className={`flex items-center justify-center cursor-pointer transition-colors ${getItemClass(index === selectedMonth, position)}`}
                   style={{
                     height: `${ITEM_HEIGHT}px`,
-                    scrollSnapAlign: 'center'
+                    scrollSnapAlign: 'center',
                   }}
                   onClick={() => {
                     setSelectedMonth(index);
@@ -133,15 +146,18 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
         </div>
 
         {/* 일 선택기 */}
-        <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '60px' }}>
+        <div
+          className='relative overflow-hidden'
+          style={{ height: `${ITEM_HEIGHT * 5}px`, width: '60px' }}
+        >
           <div
             ref={dayRef}
-            className="overflow-y-scroll scrollbar-hide"
+            className='overflow-y-scroll scrollbar-hide'
             style={{
               height: `${ITEM_HEIGHT * 5}px`,
               scrollSnapType: 'y mandatory',
               paddingTop: `${ITEM_HEIGHT * 2}px`,
-              paddingBottom: `${ITEM_HEIGHT * 2}px`
+              paddingBottom: `${ITEM_HEIGHT * 2}px`,
             }}
             onScroll={() => handleScroll(dayRef, setSelectedDay, 1)}
           >
@@ -154,7 +170,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
                   className={`flex items-center justify-center cursor-pointer transition-colors ${getItemClass(day === selectedDay, position)}`}
                   style={{
                     height: `${ITEM_HEIGHT}px`,
-                    scrollSnapAlign: 'center'
+                    scrollSnapAlign: 'center',
                   }}
                   onClick={() => {
                     setSelectedDay(day);
@@ -169,15 +185,18 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
         </div>
 
         {/* 연도 선택기 */}
-        <div className="relative overflow-hidden" style={{ height: `${ITEM_HEIGHT * 5}px`, width: '80px' }}>
+        <div
+          className='relative overflow-hidden'
+          style={{ height: `${ITEM_HEIGHT * 5}px`, width: '80px' }}
+        >
           <div
             ref={yearRef}
-            className="overflow-y-scroll scrollbar-hide"
+            className='overflow-y-scroll scrollbar-hide'
             style={{
               height: `${ITEM_HEIGHT * 5}px`,
               scrollSnapType: 'y mandatory',
               paddingTop: `${ITEM_HEIGHT * 2}px`,
-              paddingBottom: `${ITEM_HEIGHT * 2}px`
+              paddingBottom: `${ITEM_HEIGHT * 2}px`,
             }}
             onScroll={() => handleScroll(yearRef, (index) => setSelectedYear(years[index]))}
           >
@@ -190,7 +209,7 @@ export default function DatePickerWheel({ onDateChange }: DatePickerWheelProps) 
                   className={`flex items-center justify-center cursor-pointer transition-colors ${getItemClass(year === selectedYear, position)}`}
                   style={{
                     height: `${ITEM_HEIGHT}px`,
-                    scrollSnapAlign: 'center'
+                    scrollSnapAlign: 'center',
                   }}
                   onClick={() => {
                     setSelectedYear(year);
