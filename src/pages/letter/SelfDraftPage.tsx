@@ -74,23 +74,24 @@ const SelfDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <p className='text-black font-medium text-[20px] leading-[120%] w-[251px]'>
+        <p className='ty-title2'>
           당신의 인생에 가장 큰 영감을
           <br />
           주는 사람은 누구인가요?
         </p>
-        <div className='flex items-center text-[16px] leading-[160%] font-semibold'>
+        <div className='flex items-center ty-body2'>
           <span className='text-[#F2261C]'>{mmss}</span>
-          <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+          <span className='ml-1'>후에 질문이 사라져요.</span>
         </div>
       </div>
 
-      {/* TODO : 디자인 미확정 */}
       <div className='flex items-center justify-end p-5 -mt-5 gap-1'>
-        <span className='text-[var(--color-text-alternative)] font-medium text-[14px]'>
-          {label}에 받을게요.
-        </span>
-        <button type='button' className='border border-none' onClick={openSheet}>
+        <button
+          type='button'
+          className='flex items-center gap-1 border-0 bg-transparent p-0'
+          onClick={openSheet}
+        >
+          <span className='text-[var(--color-text-alternative)] ty-body5'>{label}에 받을게요.</span>
           <MdCalendarToday className='text-[var(--color-status-caution)]' />
         </button>
       </div>
@@ -101,12 +102,12 @@ const SelfDraftPage = () => {
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
       <div className='flex items-center justify-end p-5 -mt-3 gap-2'>
-        <span className='text-[var(--color-text-normal)] text-[14px] font-medium'>
+        <span className='text-[var(--color-text-normal)] ty-body5'>
           오늘 하루 동안 편지 공개하기
         </span>
         <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
       </div>
-      <p className='flex p-5 text-[12px] text-[var(--color-text-assistive)] leading-[160%] font-medium'>
+      <p className='flex p-5 ty-detailMedium text-[var(--color-text-assistive)]'>
         비방의 언어가 담기면 자동으로 필터링 돼요.
         <br />
         상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
