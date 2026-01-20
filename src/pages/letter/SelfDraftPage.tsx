@@ -90,7 +90,7 @@ const SelfDraftPage = () => {
         </div>
       </div>
 
-      <div className='flex items-center justify-end p-5 -mt-5 gap-1'>
+      <div className='flex items-center justify-end p-5 -mt-7 gap-1'>
         <button
           type='button'
           className='flex items-center gap-1 border-0 bg-transparent p-0'
@@ -100,13 +100,21 @@ const SelfDraftPage = () => {
           <MdCalendarToday className='text-[var(--color-status-caution)]' />
         </button>
         {isOpen && (
-          <BottomSheet isOpen={isOpen} onClose={closeSheet} children={<DatePickerWheel />} />
+          <BottomSheet
+            isOpen={isOpen}
+            onClose={closeSheet}
+            children={
+              <DatePickerWheel
+                onDateChange={({ year, month, day }) => {
+                  setPickedDate({ year, month, day });
+                }}
+              />
+            }
+          />
         )}
       </div>
 
-      {/* TODO : 데이트 피커 바텀시트 추가 */}
-
-      <div className='px-4'>
+      <div className='px-4 -mt-3'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
       </div>
       <div className='flex items-center justify-end p-5 -mt-3 gap-2'>
@@ -115,7 +123,7 @@ const SelfDraftPage = () => {
         </span>
         <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
       </div>
-      <p className='flex p-5 ty-detailMedium text-[var(--color-text-assistive)]'>
+      <p className='flex p-5 -mt-3 ty-detailMedium text-[var(--color-text-assistive)]'>
         비방의 언어가 담기면 자동으로 필터링 돼요.
         <br />
         상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
