@@ -2,6 +2,7 @@ import { axiosInstance } from '@/api/axios';
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
 import type { SignInRequest, SignInResponse } from '@/types/dto/auth';
+import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +15,17 @@ const SignInPage = () => {
   // 페이지 이동 핸들러
   const handleFindId = () => navigate('/auth/id-find'); // 아이디 찾기 페이지 경로
   const handleFindPw = () => navigate('/auth/pw-find'); // 비밀번호 찾기 페이지 경로
+  /**
+   * [비밀번호 입력 핸들러]
+   * - 공백 제거
+   * - 16자 초과 입력 방지 (maxLength가 있어도 붙여넣기 등을 위해 안전장치 추가)
+   */
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const cleanValue = removeWhitespace(e.target.value);
+    if (cleanValue.length > 16) return; // 16자 넘으면 업데이트 안 함
+    setPassword(cleanValue);
+  };
+
   const handleLogin = async () => {
     // 1) 유효성 검사
     if (!username || !password) {
@@ -21,9 +33,16 @@ const SignInPage = () => {
       return;
     }
 
+    // 2) 길이 검사 (8자 미만 차단)
+    // 입력 단계에서는 1글자부터 쳐야 하므로 막을 수 없지만, 제출 시점에 막습니다.
+    if (password.length < 8) {
+      alert('비밀번호는 8자 이상 16자 이하로 입력해주세요.');
+      return;
+    }
+
     // 2) 보낼 데이터 준비 (SignInRequest 타입 준수)
     const requestData: SignInRequest = {
-      username: username, // 변경된 필드명
+      username: username,
       password: password,
     };
 
@@ -71,14 +90,16 @@ const SignInPage = () => {
           type='text'
           placeholder='아이디'
           value={username} // state: username
-          onChange={(e) => setUserName(e.target.value)}
+          onChange={(e) => setUserName(removeWhitespace(e.target.value))}
           className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
         />
         <input
-          type='text'
+          type='password'
           value={password} // state: password
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder='비밀번호(영문,숫자 포함 최대 16자리)'
+          onChange={handlePasswordChange}
+          onKeyDown={blockSpaceKey} // 스페이스바 입력 차단
+          maxLength={16} // HTML 속성으로 16자 제한
+          placeholder='비밀번호(영문, 숫자 조합으로 8~16자리)'
           className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
         />
         <Button onClick={handleLogin} className='w-[342px] h-[48px]'>
