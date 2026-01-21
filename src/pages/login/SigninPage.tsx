@@ -46,20 +46,19 @@ const SignInPage = () => {
         localStorage.setItem('accessToken', jwtAccessToken);
         localStorage.setItem('refreshToken', jwtRefreshToken);
 
-        console.log('토큰 저장 완료! 메인으로 이동합니다.');
-        //navigate('/');
+        console.log('토큰 저장 완료! 메인으로 이동');
+        navigate('/');
       } else {
         // 200 OK지만 실패 로직 (예: 비밀번호 불일치 등 서버가 정의한 에러)
         console.warn('[로그인 실패] 이유:', error?.reason);
-        alert(error?.reason || '로그인에 실패했습니다.');
       }
     } catch (err: any) {
       console.error(' [통신 에러]:', err);
       if (err.response) {
         // 서버가 400, 500 등을 보냈을 때
-        alert(err.response.data?.error?.reason || '서버 오류가 발생했습니다.');
+        console.log(err.response.data?.error?.reason || '서버 오류가 발생했습니다.');
       } else {
-        alert('네트워크 연결을 확인해주세요.');
+        console.log('네트워크 연결을 확인해주세요.');
       }
     }
   };

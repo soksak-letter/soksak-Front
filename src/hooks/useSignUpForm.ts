@@ -124,30 +124,35 @@ const useSignUpForm = () => {
 
       // 3. 성공 여부 판단 (서버 응답 구조에 따라 로직 처리)
       if (response.resultType === 'SUCCESS') {
-        const isExists = response.success.exists; // true면 이미 존재(사용불가)
+        // 서버가 200을 줬다면 성공으로 처리
+        // 사용 가능
+        setIsEmailUnique(true);
+        setValidations((prev) => ({
+          ...prev,
+          email: { success: true, message: '사용할 수 있는 이메일입니다.' },
+        }));
+      }
+    } catch (error: any) {
+      const errorResponse = error.response?.data;
+      const errorCode = errorResponse?.error?.errorCode; // "USER_409_01" 등
+      const errorMessage = errorResponse?.error?.reason; // "이미 soksak에서..."
 
-        if (!isExists) {
-          // 사용 가능
-          setIsEmailUnique(true);
-          setValidations((prev) => ({
-            ...prev,
-            email: { success: true, message: '사용할 수 있는 이메일입니다.' },
-          }));
-        } else {
-          // 이미 존재함
+      // 2. 409 Conflict (중복) 처리
+      if (error.response?.status === 409) {
+        // 🎯 [핵심] 이메일 중복 코드인지 확인 (USER_409_01)
+        if (errorCode === 'USER_409_01') {
           setIsEmailUnique(false);
           setValidations((prev) => ({
             ...prev,
-            email: { success: false, message: '이미 가입된 이메일입니다.' },
+            email: { success: false, message: errorMessage || '이미 가입된 이메일입니다.' },
           }));
+          return; // 처리 완료했으니 종료
         }
-      } else {
-        // API 레벨 실패 (resultType === 'FAIL')
-        console.error('이메일 확인 실패:', response.error);
-        alert(response.error?.reason || '중복 확인 중 오류가 발생했습니다.');
       }
-    } catch (error) {
+
+      // 3. 그 외 에러 처리
       console.error('API 호출 에러:', error);
+      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -173,18 +178,40 @@ const useSignUpForm = () => {
     // TODO:
     // API 호출
     // const response = await api.checkUsername(form.username);
-    const isAvailable = true; // 테스트용: true면 사용 가능, false면 중복
+    if (!form.username) return;
 
-    if (isAvailable) {
-      setIsUsernameUnique(true);
-      // 성공 시 메시지는 "사용 가능한 아이디입니다" 유지
-    } else {
-      setIsUsernameUnique(false);
-      // 실패 시 validations 강제 업데이트 (빨간색 에러 표시)
-      setValidations((prev) => ({
-        ...prev,
-        username: { success: false, message: '이미 사용 중인 아이디입니다.' },
-      }));
+    try {
+      // API 호출 (함수명은 예시입니다)
+      const response = await postCheckUsernameExists({ username: form.username });
+
+      // 성공 시 (200)
+      if (response.resultType === 'SUCCESS') {
+        setIsUsernameUnique(true);
+        setValidations((prev) => ({
+          ...prev,
+          username: { success: true, message: '사용 가능한 아이디입니다.' },
+        }));
+      }
+    } catch (error: any) {
+      const errorResponse = error.response?.data;
+      const errorCode = errorResponse?.error?.errorCode;
+      const errorMessage = errorResponse?.error?.reason;
+
+      if (error.response?.status === 409) {
+        // 🎯 [핵심] 아이디 중복 코드인지 확인 (USER_409_02 로 가정)
+        // 만약 서버 코드가 '401_02'라면 문자열 그대로 비교하면 됩니다.
+        if (errorCode === 'USER_409_02' || errorCode === 'USER_401_02') {
+          setIsUsernameUnique(false);
+          setValidations((prev) => ({
+            ...prev,
+            username: { success: false, message: errorMessage || '이미 사용 중인 아이디입니다.' },
+          }));
+          return;
+        }
+      }
+      // 3. 그 외 에러 처리
+      console.error('API 호출 에러:', error);
+      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
