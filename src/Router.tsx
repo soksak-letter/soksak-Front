@@ -8,7 +8,7 @@ import AppShellWithTab from './layouts/AppShellWithTab';
 import MainPage from './pages/main/Mainpage';
 
 import WelcomePage from './pages/login/WelcomePage';
-import SignInPage
+import SignInPage from './pages/login/SignInPage';
 import SignUpPage from './pages/login/SignUpPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
@@ -43,7 +43,6 @@ import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
 import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
-
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
