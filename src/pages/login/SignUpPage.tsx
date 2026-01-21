@@ -5,8 +5,15 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
 import useTermsAgree from '@/hooks/useTermsAgree';
 import TermItem from '@/components/TermItem';
-import { blockSpaceKey, getBorderColor, getMessageColor } from '@/utils/inputUtils';
+import {
+  blockSpaceKey,
+  formatPhoneNumber,
+  getBorderColor,
+  getMessageColor,
+} from '@/utils/inputUtils';
 import useSignUpForm from '@/hooks/useSignUpForm';
+import { postSignup } from '@/api/auth';
+import type { SignUpRequest } from '@/types/dto/auth';
 
 // Todo:
 // 1.이메일 중복시 처리
@@ -41,12 +48,49 @@ const SignUpPage = () => {
   // 최종 제출 버튼 활성화 조건
   const canSubmit = canSubmitWithoutTerms && isTermsAgreed;
 
-  const handleProfile = () => {
-    // 훅에서 계산된 유효성 검사 결과
+  /**
+   * [API 연결] 회원가입 요청 핸들러
+   */
+  const handleSignupSubmit = async () => {
     if (!canSubmit) return;
 
-    console.log('회원가입 약관 동의 완료');
-    navigate('/auth/profile-setup');
+    // 1. 요청 데이터(Request Body) 생성
+    // 훅에서 가져온 form 데이터와 약관 동의 상태를 합침
+    const requestBody: SignUpRequest = {
+      email: form.email,
+      username: form.username,
+      name: form.name,
+      phoneNumber: formatPhoneNumber(form.phone),
+      password: form.password,
+      termsAgreed: agreements.terms, // 필수 약관
+      privacyAgreed: agreements.privacy, // 필수 개인정보
+      ageOver14Agreed: agreements.age, // 필수 14세
+      marketingAgreed: agreements.marketing, // 선택 마케팅
+    };
+
+    try {
+      console.log('회원가입 요청 시작:', requestBody);
+
+      // 2. API 호출
+      const response = await postSignup(requestBody);
+
+      // 3. 결과 콘솔 출력
+      console.log('회원가입 Response:', response);
+
+      // 4. 성공 시 처리
+      if (response.resultType === 'SUCCESS') {
+        alert('회원가입이 완료되었습니다!');
+        // 성공 시 다음 페이지(프로필 설정)로 이동
+        //navigate('/auth/profile-setup');
+      } else {
+        // 실패 시 처리 (에러 메시지 출력)
+        console.error('회원가입 실패:', response.error);
+        alert(response.error?.reason || '회원가입에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('네트워크 또는 서버 에러:', error);
+      alert('서버와 통신 중 오류가 발생했습니다.');
+    }
   };
 
   // [추가] 이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
@@ -287,7 +331,7 @@ const SignUpPage = () => {
 
       <div className='mt-auto flex justify-center pt-4 py-[10px] gap-[10px]'>
         <Button
-          onClick={handleProfile}
+          onClick={handleSignupSubmit}
           disabled={!canSubmit} // 필수 항목 미동의 시 비활성
           className={`w-[342px] h-[48px] ${!canSubmit ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
         >

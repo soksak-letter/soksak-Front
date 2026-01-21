@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { validate } from '@/utils/validate';
 import { removeWhitespace } from '@/utils/inputUtils';
+import { postCheckEmailExists } from '@/api/auth';
 
 // 검사 결과 타입 정의
 interface ValidationResult {
@@ -109,27 +110,44 @@ const useSignUpForm = () => {
    * [이메일 중복 확인]
    * API를 호출하여 이메일 사용 가능 여부를 판단
    */
-  const handleCheckEmailDuplicate = () => {
+  const handleCheckEmailDuplicate = async () => {
     // 이메일이 비어있거나 형식이 올바르지 않으면 중단
     if (!form.email || !validations.email.success) {
       return;
     }
-    // **********TODO: API 호출***************
-    const isAvailable = true; // ***************(테스트용) 항상 통과한다고 가정***************
+    try {
+      // 1. API 호출
+      const response = await postCheckEmailExists({ email: form.email });
 
-    if (isAvailable) {
-      setIsEmailUnique(true);
+      // 2. 콘솔에 응답 출력
+      console.log('이메일 중복확인 Response:', response);
 
-      setValidations((prev) => ({
-        ...prev,
-        email: { success: true, message: '사용할 수 있는 이메일입니다.' },
-      }));
-    } else {
-      setIsEmailUnique(false);
-      setValidations((prev) => ({
-        ...prev,
-        email: { success: false, message: '사용할 수 없는 이메일입니다.' },
-      }));
+      // 3. 성공 여부 판단 (서버 응답 구조에 따라 로직 처리)
+      if (response.resultType === 'SUCCESS') {
+        const isExists = response.success.exists; // true면 이미 존재(사용불가)
+
+        if (!isExists) {
+          // 사용 가능
+          setIsEmailUnique(true);
+          setValidations((prev) => ({
+            ...prev,
+            email: { success: true, message: '사용할 수 있는 이메일입니다.' },
+          }));
+        } else {
+          // 이미 존재함
+          setIsEmailUnique(false);
+          setValidations((prev) => ({
+            ...prev,
+            email: { success: false, message: '이미 가입된 이메일입니다.' },
+          }));
+        }
+      } else {
+        // API 레벨 실패 (resultType === 'FAIL')
+        console.error('이메일 확인 실패:', response.error);
+        alert(response.error?.reason || '중복 확인 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('API 호출 에러:', error);
     }
   };
 
