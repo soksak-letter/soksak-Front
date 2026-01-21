@@ -43,6 +43,6 @@ export const postSignin = async (body: SignInRequest) => {
  * 응답으로 새로운 AccessToken을 받습니다 (RefreshTokenResult)
  */
 export const postRefreshToken = async () => {
-  const { data } = await axiosInstance.post<RefreshTokenResponse>('/v1/auth/refresh');
+  const { data } = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh');
   return data;
 };

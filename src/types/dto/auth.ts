@@ -35,7 +35,7 @@ export type SignUpResponse = CommonResponse<SignUpResult>;
 //로그인
 // 1. 내가 서버로 보낼 데이터 (Request)
 export interface SignInRequest {
-  userName: string;
+  username: string;
   password: string;
 }
 
