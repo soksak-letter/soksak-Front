@@ -1,5 +1,5 @@
-import type { LoginRequest, SignUpRequest, SignUpResponse } from "@/types/dto/response";
-import { axiosInstance } from "./api";
+import type { LoginRequest, SignUpRequest, SignUpResponse } from "@/types/dto/common";
+import { axiosInstance } from "./axios";
 
 
 // 회원가입 API 함수
