@@ -26,20 +26,8 @@ const SignInPage = () => {
     setPassword(cleanValue);
   };
 
+  const canSubmit = username && password && password.length >= 8;
   const handleLogin = async () => {
-    // 1) 유효성 검사
-    if (!username || !password) {
-      alert('아이디와 비밀번호를 모두 입력해주세요.');
-      return;
-    }
-
-    // 2) 길이 검사 (8자 미만 차단)
-    // 입력 단계에서는 1글자부터 쳐야 하므로 막을 수 없지만, 제출 시점에 막습니다.
-    if (password.length < 8) {
-      alert('비밀번호는 8자 이상 16자 이하로 입력해주세요.');
-      return;
-    }
-
     // 2) 보낼 데이터 준비 (SignInRequest 타입 준수)
     const requestData: SignInRequest = {
       username: username,
@@ -102,7 +90,7 @@ const SignInPage = () => {
           placeholder='비밀번호(영문, 숫자 조합으로 8~16자리)'
           className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
         />
-        <Button onClick={handleLogin} className='w-[342px] h-[48px]'>
+        <Button onClick={handleLogin} disabled={!canSubmit} className='w-[342px] h-[48px]'>
           로그인
         </Button>
         <div className='w-[342px] flex justify-end items-end gap-3 mb-10'>
