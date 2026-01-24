@@ -3,19 +3,25 @@ import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig 
 
 // 1. 토큰 재발급 관리 변수
 let isRefreshing = false;
-let refreshSubscribers: Array<(token: string) => void> = [];
+let refreshSubscribers: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
 
 // 2. 대기 중인 요청들을 처리하는 함수
 const onRefreshed = (accessToken: string) => {
-  refreshSubscribers.forEach((callback) => callback(accessToken));
+  refreshSubscribers.forEach(({ resolve }) => resolve(accessToken));
   refreshSubscribers = [];
 };
-
+const onRefreshFailed = (error: unknown) => {
+  refreshSubscribers.forEach(({ reject }) => reject(error));
+  refreshSubscribers = [];
+};
 export const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 if (!baseURL) {
   throw new Error(
-    '[axiosInstance] VITE_API_URL 이 설정되어 있지 않습니다. .env.local 을 확인하세요.',
+    '[axiosInstance] VITE_API_BASE_URL 이 설정되어 있지 않습니다. .env.local 을 확인하세요.',
   );
 }
 
@@ -23,7 +29,7 @@ export const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
 });
-// 1. [추가] Request Interceptor (요청 보내기 전 가로채기)-모든 요청 헤더에 토큰 심기
+// 1. Request Interceptor (요청 보내기 전 가로채기)-모든 요청 헤더에 토큰 심기
 // 이게 없으면 로그인을 해도 서버는 토큰 없다고 생각하고 401을 뱉음
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -51,12 +57,13 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       const { status } = error.response;
 
-      // [변경] 401 에러 처리 로직이 대폭 강화되었습니다.
+      //  401 에러 처리 로직
       if (status === 401) {
         // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신도 실패)
-        // -> 이때 비로소 [기존 코드]처럼 온보딩으로 쫓아냅니다.
+        // ->  온보딩으로 쫓아냅니다.
         if (originalRequest.url?.includes('/auth/refresh')) {
           localStorage.clear();
+          onRefreshFailed(error);
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';
           }
@@ -64,12 +71,15 @@ axiosInstance.interceptors.response.use(
         }
 
         // Case B: 이미 다른 요청이 리프레시를 하고 있는 경우
-        // -> [추가] 대기열(subscribers)에 줄 서게 합니다. (동시성 제어)
+        // -> 대기열(subscribers)에 줄 서게 함 (동시성 제어)
         if (isRefreshing) {
-          return new Promise((resolve) => {
-            refreshSubscribers.push((token: string) => {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-              resolve(axiosInstance(originalRequest));
+          return new Promise((resolve, reject) => {
+            refreshSubscribers.push({
+              resolve: (token: string) => {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                resolve(axiosInstance(originalRequest));
+              },
+              reject,
             });
           });
         }
@@ -120,8 +130,9 @@ axiosInstance.interceptors.response.use(
         } catch (refreshError) {
           // 갱신 실패 시 (네트워크 에러 or 위에서 throw한 에러) -> [기존 코드]처럼 온보딩으로 이동
           isRefreshing = false; // [중요] 상태 초기화
-          refreshSubscribers = []; // 대기열 비우기
+          onRefreshFailed(refreshError);
           localStorage.clear();
+
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';
           }

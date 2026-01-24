@@ -54,7 +54,7 @@ const SignInPage = () => {
         localStorage.setItem('refreshToken', jwtRefreshToken);
 
         console.log('토큰 저장 완료! 메인으로 이동');
-        navigate('/');
+        //navigate('/');
       } else {
         // 200 OK지만 실패 로직 (예: 비밀번호 불일치 등 서버가 정의한 에러)
         console.warn('[로그인 실패] 이유:', error?.reason);

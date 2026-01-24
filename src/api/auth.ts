@@ -25,7 +25,7 @@ export const postSignup = async (body: SignUpRequest) => {
  * @param body 이메일 중복확인 입력 정보 (이메일)
  */
 export const postCheckEmailExists = async (body: EmailExistsRequest) => {
-  const { data } = await axiosInstance.post<EmailExistsResponse>('auth/email/exists', body);
+  const { data } = await axiosInstance.post<EmailExistsResponse>('/auth/email/exists', body);
   return data;
 };
 /**
