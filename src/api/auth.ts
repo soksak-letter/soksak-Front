@@ -33,7 +33,7 @@ export const postCheckEmailExists = async (body: EmailExistsRequest) => {
 
 /**
  * 아이디 중복 확인 API
- * @param body 이메일 중복확인 입력 정보 (이메일)
+ * @param body 아이디 중복확인 입력 정보 (아이디)
  */
 export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
   const { data } = await axiosInstance.post<UsernameExistsResponse>('/auth/username/exists', body);

@@ -96,17 +96,13 @@ axiosInstance.interceptors.response.use(
           }
 
           // 2. 헤더에 리프레시 토큰을 담아서 요청
-          const { data } = await axios.post<RefreshTokenResponse>(
-            `${baseURL}/auth/refresh`,
-            {}, // Body는 비워둠 (Swagger에 바디 내용이 없음)
-            {
-              withCredentials: true,
-              headers: {
-                // 여기서 AccessToken 대신 RefreshToken을 꽂아서 보냄
-                Authorization: `Bearer ${storedRefreshToken}`,
-              },
+          const { data } = await axios.get<RefreshTokenResponse>(`${baseURL}/auth/refresh`, {
+            withCredentials: true,
+            headers: {
+              // 여기서 AccessToken 대신 RefreshToken을 꽂아서 보냄
+              Authorization: `Bearer ${storedRefreshToken}`,
             },
-          );
+          });
 
           // 성공 시 로직
           if (data.resultType === 'SUCCESS' && data.success) {

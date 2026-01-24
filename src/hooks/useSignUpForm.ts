@@ -45,7 +45,7 @@ const useSignUpForm = () => {
 
       // 각 필드별로 validate 실행 후 결과(객체)를 바로 저장
       if (form.email) newValidations.email = validate.email(form.email);
-      if (form.username) newValidations.username = validate.username(form.username);
+      //if (form.username) newValidations.username = validate.username(form.username);
       if (form.password) newValidations.password = validate.password(form.password);
       if (form.passwordConfirm) {
         newValidations.passwordConfirm = validate.passwordConfirm(
@@ -168,6 +168,11 @@ const useSignUpForm = () => {
 
     setForm((prev) => ({ ...prev, username: cleanValue }));
     setIsUsernameUnique(false); // 수정하면 다시 검사해야 함
+    //입력시 유효성 검사 수행
+    setValidations((prev) => ({
+      ...prev,
+      username: validate.username(cleanValue),
+    }));
   };
 
   /**
