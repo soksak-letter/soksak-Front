@@ -6,6 +6,8 @@ import type {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
+  UsernameExistsRequest,
+  UsernameExistsResponse,
 } from '@/types/dto/auth';
 import { axiosInstance } from './axios'; // axios 설정 파일 경로
 

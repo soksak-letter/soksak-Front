@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { validate } from '@/utils/validate';
 import { removeWhitespace } from '@/utils/inputUtils';
-import { postCheckEmailExists } from '@/api/auth';
+import { postCheckEmailExists, postCheckUsernameExists } from '@/api/auth';
 
 // 검사 결과 타입 정의
 interface ValidationResult {
@@ -139,8 +139,8 @@ const useSignUpForm = () => {
 
       // 2. 409 Conflict (중복) 처리
       if (error.response?.status === 409) {
-        // 🎯 [핵심] 이메일 중복 코드인지 확인 (USER_409_01)
-        if (errorCode === 'USER_409_01') {
+        // 🎯 [핵심] 이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
+        if (errorCode === 'USER_EMAIL_DUPLICATED') {
           setIsEmailUnique(false);
           setValidations((prev) => ({
             ...prev,
@@ -195,9 +195,8 @@ const useSignUpForm = () => {
       const errorMessage = errorResponse?.error?.reason;
 
       if (error.response?.status === 409) {
-        // 🎯 [핵심] 아이디 중복 코드인지 확인 (USER_409_02 로 가정)
-        // 만약 서버 코드가 '401_02'라면 문자열 그대로 비교하면 됩니다.
-        if (errorCode === 'USER_409_02' || errorCode === 'USER_401_02') {
+        // 🎯 [핵심] 아이디 중복 코드인지 확인 (USER_USERNAME_DUPLICATED 로)
+        if (errorCode === 'USER_USERNAME_DUPLICATED') {
           setIsUsernameUnique(false);
           setValidations((prev) => ({
             ...prev,

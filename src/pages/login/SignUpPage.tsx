@@ -93,7 +93,7 @@ const SignUpPage = () => {
     }
   };
 
-  // [추가] 이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
+  //  이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
   const getEmailBorderColor = () => {
     if (!form.email) return 'border-[var(--color-grey-100)]'; // 빈값: 회색
     if (!validations.email.success) return 'border-[var(--color-status-alert)]'; // 정규식 에러 or 중복 에러: 빨강

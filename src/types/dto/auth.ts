@@ -60,6 +60,18 @@ export interface EmailExistsResult {
 }
 export type EmailExistsResponse = CommonResponse<EmailExistsResult>;
 
+//아이디 중복확인
+// 1. 내가 서버로 보낼 데이터 (Request)
+export interface UsernameExistsRequest {
+  username: string;
+}
+
+//서버가 응답으로 줄 데이터 (Response DTO)
+export interface UsernameExistsResult {
+  exists: boolean;
+}
+export type UsernameExistsResponse = CommonResponse<UsernameExistsResult>;
+
 // Refresh Token Response
 //서버가 응답으로 줄 데이터 (Response DTO)
 export interface RefreshTokenResult {
