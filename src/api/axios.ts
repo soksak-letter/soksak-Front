@@ -62,11 +62,15 @@ axiosInstance.interceptors.response.use(
         // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신도 실패)
         // ->  온보딩으로 쫓아냅니다.
         if (originalRequest.url?.includes('/auth/refresh')) {
+          isRefreshing = false;
           localStorage.clear();
           onRefreshFailed(error);
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';
           }
+          return Promise.reject(error);
+        }
+        if (originalRequest._retry) {
           return Promise.reject(error);
         }
 

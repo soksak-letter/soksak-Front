@@ -111,14 +111,15 @@ const useSignUpForm = () => {
    * API를 호출하여 이메일 사용 가능 여부를 판단
    */
   const handleCheckEmailDuplicate = async () => {
+    const emailAtRequest = form.email;
     // 이메일이 비어있거나 형식이 올바르지 않으면 중단
-    if (!form.email || !validations.email.success) {
+    if (!emailAtRequest || !validations.email.success) {
       return;
     }
     try {
       // 1. API 호출
-      const response = await postCheckEmailExists({ email: form.email });
-
+      const response = await postCheckEmailExists({ email: emailAtRequest });
+      if (form.email !== emailAtRequest) return;
       // 2. 콘솔에 응답 출력
       console.log('이메일 중복확인 Response:', response);
 
@@ -180,11 +181,13 @@ const useSignUpForm = () => {
    * - handleUsernameBlur 내부에서 호출됨
    */
   const checkUsernameDuplicate = async () => {
-    if (!form.username) return;
+    const usernameAtRequest = form.username;
+    if (!usernameAtRequest) return;
 
     try {
       // API 호출
-      const response = await postCheckUsernameExists({ username: form.username });
+      const response = await postCheckUsernameExists({ username: usernameAtRequest });
+      if (form.username !== usernameAtRequest) return;
 
       // 성공 시 (200)
       if (response.resultType === 'SUCCESS') {

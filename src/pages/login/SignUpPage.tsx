@@ -14,6 +14,7 @@ import {
 import useSignUpForm from '@/hooks/useSignUpForm';
 import { postSignup } from '@/api/auth';
 import type { SignUpRequest } from '@/types/dto/auth';
+import ServerErrorPage from '../system/ServerErrorPage';
 
 // Todo:
 // 1.이메일 중복시 처리
@@ -79,17 +80,16 @@ const SignUpPage = () => {
 
       // 4. 성공 시 처리
       if (response.resultType === 'SUCCESS') {
-        alert('회원가입이 완료되었습니다!');
         // 성공 시 다음 페이지(프로필 설정)로 이동
-        //navigate('/auth/profile-setup');
+        navigate('/auth/profile-setup');
       } else {
         // 실패 시 처리 (에러 메시지 출력)
         console.error('회원가입 실패:', response.error);
-        alert(response.error?.reason || '회원가입에 실패했습니다.');
+        console.log(response.error?.reason || '회원가입에 실패했습니다.');
       }
     } catch (error) {
       console.error('네트워크 또는 서버 에러:', error);
-      alert('서버와 통신 중 오류가 발생했습니다.');
+      navigate('/error/500');
     }
   };
 
