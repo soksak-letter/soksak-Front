@@ -175,13 +175,10 @@ const useSignUpForm = () => {
    * - handleUsernameBlur 내부에서 호출됨
    */
   const checkUsernameDuplicate = async () => {
-    // TODO:
-    // API 호출
-    // const response = await api.checkUsername(form.username);
     if (!form.username) return;
 
     try {
-      // API 호출 (함수명은 예시입니다)
+      // API 호출
       const response = await postCheckUsernameExists({ username: form.username });
 
       // 성공 시 (200)
