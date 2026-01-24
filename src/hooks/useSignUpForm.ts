@@ -132,6 +132,16 @@ const useSignUpForm = () => {
           ...prev,
           email: { success: true, message: '사용할 수 있는 이메일입니다.' },
         }));
+      } else {
+        setIsEmailUnique(false); // 확실하게 "통과 못 함"
+        setValidations((prev) => ({
+          ...prev,
+          email: {
+            success: false,
+            // 서버가 보내준 에러 메시지가 있으면 보여주고, 없으면 기본 메시지 출력
+            message: response.error?.reason || '이메일 확인에 실패했습니다.',
+          },
+        }));
       }
     } catch (error: any) {
       const errorResponse = error.response?.data;
@@ -202,6 +212,16 @@ const useSignUpForm = () => {
         setValidations((prev) => ({
           ...prev,
           username: { success: true, message: '사용 가능한 아이디입니다.' },
+        }));
+      } else {
+        setIsUsernameUnique(false); // 확실하게 "통과 못 함"
+        setValidations((prev) => ({
+          ...prev,
+          email: {
+            success: false,
+            // 서버가 보내준 에러 메시지가 있으면 보여주고, 없으면 기본 메시지 출력
+            message: response.error?.reason || '이메일 확인에 실패했습니다.',
+          },
         }));
       }
     } catch (error: any) {

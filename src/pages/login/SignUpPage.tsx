@@ -74,12 +74,10 @@ const SignUpPage = () => {
     };
 
     try {
-      console.log('회원가입 요청 시작:', requestBody);
-
-      // 2. API 호출
+      //  API 호출
       const response = await postSignup(requestBody);
 
-      // 3. 결과 콘솔 출력
+      // 결과 콘솔 출력
       console.log('회원가입 Response:', response);
 
       // 4. 성공 시 처리
