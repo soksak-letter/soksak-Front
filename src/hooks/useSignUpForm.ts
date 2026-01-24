@@ -217,10 +217,10 @@ const useSignUpForm = () => {
         setIsUsernameUnique(false); // 확실하게 "통과 못 함"
         setValidations((prev) => ({
           ...prev,
-          email: {
+          username: {
             success: false,
             // 서버가 보내준 에러 메시지가 있으면 보여주고, 없으면 기본 메시지 출력
-            message: response.error?.reason || '이메일 확인에 실패했습니다.',
+            message: response.error?.reason || '아이디 확인에 실패했습니다.',
           },
         }));
       }
