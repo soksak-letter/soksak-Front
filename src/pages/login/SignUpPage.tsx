@@ -14,12 +14,13 @@ import {
 import useSignUpForm from '@/hooks/useSignUpForm';
 import { postSignup } from '@/api/auth';
 import type { SignUpRequest } from '@/types/dto/auth';
-import ServerErrorPage from '../system/ServerErrorPage';
+import { useState } from 'react';
 
 // Todo:
 // 1.이메일 중복시 처리
 
 const SignUpPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -53,7 +54,10 @@ const SignUpPage = () => {
    * [API 연결] 회원가입 요청 핸들러
    */
   const handleSignupSubmit = async () => {
-    if (!canSubmit) return;
+    if (!canSubmit || isSubmitting) return;
+
+    // 버튼 잠금 시작
+    setIsSubmitting(true);
 
     // 1. 요청 데이터(Request Body) 생성
     // 훅에서 가져온 form 데이터와 약관 동의 상태를 합침
@@ -90,6 +94,9 @@ const SignUpPage = () => {
     } catch (error) {
       console.error('네트워크 또는 서버 에러:', error);
       navigate('/error/500');
+    } finally {
+      // 성공하든 실패하든, 무조건 마지막엔 버튼 잠금 해제
+      setIsSubmitting(false);
     }
   };
 
@@ -333,7 +340,7 @@ const SignUpPage = () => {
         <Button
           onClick={handleSignupSubmit}
           disabled={!canSubmit} // 필수 항목 미동의 시 비활성
-          className={`w-[342px] h-[48px] ${!canSubmit ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
+          className={`w-[342px] h-[48px] ${!canSubmit || isSubmitting ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
         >
           다음
         </Button>

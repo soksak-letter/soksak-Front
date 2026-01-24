@@ -1,7 +1,6 @@
 import type {
   EmailExistsRequest,
   EmailExistsResponse,
-  RefreshTokenResponse,
   SignInRequest,
   SignInResponse,
   SignUpRequest,
@@ -45,15 +44,5 @@ export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
  */
 export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
-  return data;
-};
-
-/**
- * 토큰 재발급 (Refresh) API
- * 보통 쿠키에 담긴 리프레시 토큰을 사용하므로 body가 없는 경우가 많습니다.
- * 응답으로 새로운 AccessToken을 받습니다 (RefreshTokenResult)
- */
-export const getRefreshToken = async () => {
-  const { data } = await axiosInstance.get<RefreshTokenResponse>('/auth/refresh');
   return data;
 };

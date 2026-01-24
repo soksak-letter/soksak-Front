@@ -153,7 +153,14 @@ const useSignUpForm = () => {
 
       // 3. 그 외 에러 처리
       console.error('API 호출 에러:', error);
-      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setIsEmailUnique(false);
+      setValidations((prev) => ({
+        ...prev,
+        email: {
+          success: false,
+          message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+        },
+      }));
     }
   };
 
@@ -215,7 +222,14 @@ const useSignUpForm = () => {
       }
       // 3. 그 외 에러 처리
       console.error('API 호출 에러:', error);
-      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setIsUsernameUnique(false);
+      setValidations((prev) => ({
+        ...prev,
+        username: {
+          success: false,
+          message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+        },
+      }));
     }
   };
 
