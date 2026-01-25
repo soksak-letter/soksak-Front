@@ -63,7 +63,8 @@ axiosInstance.interceptors.response.use(
         // ->  온보딩으로 쫓아냅니다.
         if (originalRequest.url?.includes('/auth/refresh')) {
           isRefreshing = false;
-          localStorage.clear();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken'); //clear 대신
           onRefreshFailed(error);
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';
@@ -131,7 +132,8 @@ axiosInstance.interceptors.response.use(
           // 갱신 실패 시 (네트워크 에러 or 위에서 throw한 에러) -> [기존 코드]처럼 온보딩으로 이동
           isRefreshing = false; // [중요] 상태 초기화
           onRefreshFailed(refreshError);
-          localStorage.clear();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken'); //clear 대신
 
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';
