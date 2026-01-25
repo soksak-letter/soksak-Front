@@ -1,5 +1,5 @@
 import { Button } from '@/components/common/Button';
-import Toast from '@/components/common/Toast';
+import ToastPopup from '@/components/ToastPopup';
 import useFindAccount from '@/hooks/useFindAccount';
 
 const IdFindPage = () => {
@@ -10,7 +10,8 @@ const IdFindPage = () => {
     apiStatus,
     serverMessage,
     isAuthVerified,
-    showToast, // 토스트 보임 여부
+    toastState, // { message, status } 또는 null
+    toastVisible, // boolean
     closeToast, // 토스트 닫기 함수
     formattedTime,
     handleEmailChange,
@@ -31,17 +32,19 @@ const IdFindPage = () => {
   // 메시지 렌더링 (이메일 입력창 하단)
   const renderMessage = () => {
     if (isAuthVerified)
-      return <p className='text-[var(--color-status-positive)] text-sm mt-1'>인증되었습니다.</p>;
+      return <p className='text-[var(--color-status-positive)] ty-detail mt-1'>인증되었습니다.</p>;
     if (apiStatus === 'error')
-      return <p className='text-[var(--color-status-alert)] text-sm mt-1'>{serverMessage}</p>;
+      return <p className='text-[var(--color-status-alert)] ty-detail mt-1'>{serverMessage}</p>;
     if (apiStatus === 'success')
       return (
-        <p className='text-[var(--color-status-positive)] text-sm mt-1'>
+        <p className='ty-detail text-[var(--color-status-positive)] mt-1'>
           인증번호가 발송되었습니다.
         </p>
       );
     if (email.length > 0 && !validation.success)
-      return <p className='text-[var(--color-status-alert)] text-sm mt-1'>{validation.message}</p>;
+      return (
+        <p className='ty-detail text-[var(--color-status-alert)] mt-1'>{validation.message}</p>
+      );
     return null;
   };
   return (
@@ -54,7 +57,7 @@ const IdFindPage = () => {
 
       <div className='flex flex-col gap-[8px]'>
         {/* 이메일 입력 & 인증 요청 버튼 */}
-        <div>
+        <div className='flex flex-col gap-[4px]'>
           <div className='flex flex-row gap-[8px]'>
             <input
               type='email'
@@ -100,7 +103,7 @@ const IdFindPage = () => {
 
         {/* 2. 인증번호 입력 영역 (이메일 발송 성공 시에만 노출) */}
         {apiStatus === 'success' && (
-          <div className='flex-col gap-[8px]'>
+          <div className='flex flex-col gap-[4px]'>
             <div className='flex gap-2'>
               <div className='relative flex-1'>
                 <input
@@ -124,12 +127,9 @@ const IdFindPage = () => {
 
               <Button
                 size='small'
-                color='black'
+                color={authCode.length === 6 ? 'black' : 'grey'}
                 onClick={handleVerifyCode}
                 disabled={authCode.length < 6}
-                className={`
-              ${authCode.length === 6 ? 'bg-[var(--color-grey-300)] text-[var(--color-white)]' : 'bg-[var(--color-grey-300)] text-[var(--color-white)]'}
-            `}
               >
                 확인
               </Button>
@@ -141,11 +141,18 @@ const IdFindPage = () => {
         )}
       </div>
 
-      {/* [수정] Toast 컴포넌트 사용 */}
-      <Toast isVisible={showToast} message='인증되었습니다.' onClose={closeToast} />
-
+      {toastState && (
+        <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
+          <ToastPopup
+            status={toastState.status} // 'success' | 'error'
+            message={toastState.message} // 메세지 텍스트
+            visible={toastVisible} // 애니메이션용 visibility
+            onClose={closeToast} // 강제 닫기 (클릭 시)
+          />
+        </div>
+      )}
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='absolute bottom-[300px] w-full px-[5px] flex justify-center'>
+      <div className='absolute bottom-[270px] w-full px-[5px] flex justify-center'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화

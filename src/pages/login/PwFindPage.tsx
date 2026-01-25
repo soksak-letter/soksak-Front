@@ -1,5 +1,5 @@
 import { Button } from '@/components/common/Button';
-import Toast from '@/components/common/Toast';
+import ToastPopup from '@/components/ToastPopup';
 import useFindAccount from '@/hooks/useFindAccount';
 
 const PwFindPage = () => {
@@ -10,7 +10,8 @@ const PwFindPage = () => {
     apiStatus,
     serverMessage,
     isAuthVerified,
-    showToast, // 토스트 보임 여부
+    toastState, // { message, status } 또는 null
+    toastVisible, // boolean
     closeToast, // 토스트 닫기 함수
     formattedTime,
     handleEmailChange,
@@ -58,7 +59,7 @@ const PwFindPage = () => {
 
       <div className='flex flex-col gap-[8px]'>
         {/* 이메일 입력 & 인증 요청 버튼 */}
-        <div>
+        <div className='flex flex-col gap-[4px]'>
           <div className='flex flex-row gap-[8px]'>
             <input
               type='email'
@@ -104,7 +105,7 @@ const PwFindPage = () => {
 
         {/* 2. 인증번호 입력 영역 (이메일 발송 성공 시에만 노출) */}
         {apiStatus === 'success' && (
-          <div className='flex flex-col gap-[8px]'>
+          <div className='flex flex-col gap-[4px]'>
             <div className='flex gap-2'>
               <div className='relative flex-1'>
                 <input
@@ -128,17 +129,14 @@ const PwFindPage = () => {
 
               <Button
                 size='small'
-                color='black'
+                color={authCode.length === 6 ? 'black' : 'grey'}
                 onClick={handleVerifyCode}
                 disabled={authCode.length < 6}
-                className={`
-              ${authCode.length === 6 ? 'bg-[#9CA3AF] text-white' : 'bg-[var(--color-grey-100)] text-[#8C8C8C]'}
-            `}
               >
                 확인
               </Button>
             </div>
-            <p className='y-detail text-[var(--color-status-positive)] mt-1 '>
+            <p className='ty-detail text-[var(--color-status-positive)] '>
               {isAuthVerified ? '인증되었습니다' : ''}
             </p>
           </div>
@@ -146,7 +144,16 @@ const PwFindPage = () => {
       </div>
 
       {/* [수정] Toast 컴포넌트 사용 */}
-      <Toast isVisible={showToast} message='인증되었습니다.' onClose={closeToast} />
+      {toastState && (
+        <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
+          <ToastPopup
+            status={toastState.status} // 'success' | 'error'
+            message={toastState.message} // 메세지 텍스트
+            visible={toastVisible} // 애니메이션용 visibility
+            onClose={closeToast} // 강제 닫기 (클릭 시)
+          />
+        </div>
+      )}
 
       {/* 하단 아이디 찾기 버튼 */}
       <div className='absolute bottom-[300px] w-full px-[5px] flex justify-center'>
