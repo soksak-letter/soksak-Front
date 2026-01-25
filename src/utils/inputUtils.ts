@@ -40,3 +40,17 @@ export const getMessageColor = (isValid: boolean, value: string) => {
   if (!isValid) return 'text-[var(--color-status-alert)]';
   return 'text-[var(--color-status-positive)]';
 };
+
+/**
+ * [Format] 전화번호 하이픈(-) 포맷팅 함수
+ * - 용도: 서버 전송 전(Submit 시) 데이터 가공용
+ * - 예: "01012345678" -> "010-1234-5678"
+ */
+export const formatPhoneNumber = (phone: string) => {
+  // 숫자만 남김 (혹시 모를 공백/특수문자 제거)
+  const numbers = phone.replace(/[^0-9]/g, '');
+
+  // 01012345678 (11자리) -> 010-1234-5678
+  // 021234567 (9자리 서울) -> 02-123-4567
+  return numbers.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+};
