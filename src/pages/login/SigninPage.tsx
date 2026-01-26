@@ -79,7 +79,7 @@ const SignInPage = () => {
           placeholder='아이디'
           value={username} // state: username
           onChange={(e) => setUserName(removeWhitespace(e.target.value))}
-          className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
+          className='w-[342px] h-[48px] border-[1px] bg-[var(--color-bg-primary)] px-4 outline-none focus:border-[var(--color-grey-800)] border-[var(--color-grey-100)] rounded-lg'
         />
         <input
           type='password'
@@ -88,7 +88,7 @@ const SignInPage = () => {
           onKeyDown={blockSpaceKey} // 스페이스바 입력 차단
           maxLength={16} // HTML 속성으로 16자 제한
           placeholder='비밀번호(영문, 숫자 조합으로 8~16자리)'
-          className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
+          className='w-[342px] h-[48px] border-[1px] bg-[var(--color-bg-primary)] px-4 outline-none focus:border-[var(--color-grey-800)] focus:border-[1px] border-[var(--color-grey-100)] rounded-lg'
         />
         <Button onClick={handleLogin} disabled={!canSubmit} className='w-[342px] h-[48px]'>
           로그인
