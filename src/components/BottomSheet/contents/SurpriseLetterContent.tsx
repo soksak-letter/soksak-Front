@@ -26,10 +26,16 @@ const timePeriodOptions: TimePeriodOption[] = [
   { id: '1year', label: '1년 후' },
 ];
 
-export default function SurpriseLetterContent({ onSelectionChange }: SurpriseLetterContentProps = {}) {
+export default function SurpriseLetterContent({
+  onSelectionChange,
+}: SurpriseLetterContentProps = {}) {
   const [selectedTab, setSelectedTab] = useState<TabType>('surprise');
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('3months');
-  const [selectedDate, setSelectedDate] = useState<{ month: number; day: number; year: number } | null>(null);
+  const [selectedDate, setSelectedDate] = useState<{
+    month: number;
+    day: number;
+    year: number;
+  } | null>(null);
 
   useEffect(() => {
     if (selectedTab === 'surprise') {
@@ -40,9 +46,9 @@ export default function SurpriseLetterContent({ onSelectionChange }: SurpriseLet
   }, [selectedTab, selectedPeriod, selectedDate, onSelectionChange]);
 
   return (
-    <div className="p-4">
+    <div className='p-4'>
       {/* 탭 선택 */}
-      <div className="flex gap-1 mb-4">
+      <div className='flex gap-1 mb-4'>
         <button
           onClick={() => setSelectedTab('surprise')}
           className={`flex-1 py-2.5 px-2.5 rounded-lg text-[15px] font-medium transition-all ${
@@ -67,7 +73,7 @@ export default function SurpriseLetterContent({ onSelectionChange }: SurpriseLet
 
       {/* 시간 선택 - '깜짝편지로 받기' 탭이 선택되었을 때만 표시 */}
       {selectedTab === 'surprise' && (
-        <div className="grid grid-cols-2 gap-x-1 gap-y-2">
+        <div className='grid grid-cols-2 gap-x-1 gap-y-2'>
           {timePeriodOptions.map((option) => (
             <button
               key={option.id}
@@ -86,7 +92,7 @@ export default function SurpriseLetterContent({ onSelectionChange }: SurpriseLet
 
       {/* 직접 선택 내용 - '직접 선택하기' 탭이 선택되었을 때 표시 */}
       {selectedTab === 'manual' && (
-        <div className="py-4">
+        <div className='py-4'>
           <DatePickerWheel onDateChange={setSelectedDate} />
         </div>
       )}
