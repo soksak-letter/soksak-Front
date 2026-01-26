@@ -33,7 +33,7 @@ const PwResetPage = () => {
       </div>
 
       <div className='flex flex-col h-[180px] gap-[8px]'>
-        {/* 이메일 입력 & 인증 요청 버튼 */}
+        {/* 비밀번호 입력 창 */}
         <div className='flex flex-col gap-[8px]'>
           {/* 1. 비밀번호 입력 */}
           <div className='flex flex-col gap-[8px]'>
@@ -89,7 +89,7 @@ const PwResetPage = () => {
       </div>
 
       {/* 하단 버튼 */}
-      <div className='flex w-full px-[5px] flex justify-center'>
+      <div className='flex w-full px-[5px] justify-center'>
         <Button
           disabled={!canSubmit}
           color={!canSubmit ? 'grey' : 'primary'}

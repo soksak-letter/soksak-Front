@@ -156,7 +156,7 @@ const IdFindPage = () => {
         </div>
       )}
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='flex w-full px-[5px] flex justify-center'>
+      <div className='flex w-full px-[5px] justify-center'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화

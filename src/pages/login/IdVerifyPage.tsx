@@ -31,7 +31,7 @@ const IdVerifyPage = () => {
         </div>
       </div>
 
-      <div className='flex w-full px-[5px] gap-[8px] flex justify-center'>
+      <div className='flex w-full px-[5px] gap-[8px] justify-center'>
         <Button className='flex-1' color='primary' onClick={() => navigate('/auth/signin')}>
           로그인하기
         </Button>
