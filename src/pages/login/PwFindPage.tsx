@@ -67,6 +67,8 @@ const PwFindPage = () => {
               type='email'
               value={email}
               onChange={handleEmailChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder='이메일'
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg border-[var(--color-grey-100)]
@@ -76,7 +78,7 @@ const PwFindPage = () => {
                 apiStatus === 'success'
                   ? 'border-[var(--color-status-positive)] focus:border-[var(--color-status-positive)]'
                   : // 2. 에러 (레드): API 오류 또는 형식 틀림
-                    apiStatus === 'error' || (email.length > 0 && !validation.success)
+                    apiStatus === 'error' || (email.length > 0 && !validation.success && !isFocused)
                     ? 'border-[var(--color-status-alert)]'
                     : // 3. 입력값 있음 (블루): 입력 중이거나, 입력 후 포커스 떼도 유지
                       email.length > 0
@@ -145,7 +147,7 @@ const PwFindPage = () => {
         )}
       </div>
 
-      {/* [수정] Toast 컴포넌트 사용 */}
+      {/* Toast 컴포넌트 사용 */}
       {toastState && (
         <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
           <ToastPopup
