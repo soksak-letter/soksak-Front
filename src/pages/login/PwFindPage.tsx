@@ -140,7 +140,7 @@ const PwFindPage = () => {
                 확인
               </Button>
             </div>
-            <p className='ty-detail text-[var(--color-status-positive)] '>
+            <p className='ty-detail text-[var(--color-status-positive)]'>
               {isAuthVerified ? '인증되었습니다' : ''}
             </p>
           </div>

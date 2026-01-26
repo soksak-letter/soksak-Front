@@ -101,7 +101,7 @@ const ProfileSetUpPage = () => {
               <div
                 className='absolute -top-[8px] left-[5px] w-0 h-2.5
                 border-l-[6px] border-r-[6px] border-b-[8px]
-                border-l-transparent border-r-transparent border-[var(--color-grey-100)] '
+                border-l-transparent border-r-transparent border-b-[var(--color-grey-100)] '
               ></div>
 
               {/* 말풍선 본문 */}
