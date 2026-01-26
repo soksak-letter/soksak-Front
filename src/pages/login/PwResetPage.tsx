@@ -45,7 +45,7 @@ const PwResetPage = () => {
               onFocus={handleFocus('password')}
               onBlur={handleBlur}
               placeholder='비밀번호'
-              className={`w-full h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg outline-none 
+              className={`w-full h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)]
                ${getBorderColor(validations.password.success, form.password)}`}
             />
             {/* 하단 메시지 (에러가 있으면 에러 메시지, 없으면 기본 가이드) */}
@@ -70,7 +70,7 @@ const PwResetPage = () => {
               onFocus={handleFocus('passwordConfirm')}
               onBlur={handleBlur}
               placeholder='비밀번호 확인'
-              className={`w-full h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg outline-none 
+              className={`w-full h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)]
               ${getBorderColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
             />
             {/* 하단 메시지 */}

@@ -1,8 +1,10 @@
 import { Button } from '@/components/common/Button';
 import ToastPopup from '@/components/ToastPopup';
 import useFindAccount from '@/hooks/useFindAccount';
+import { useState } from 'react';
 
 const IdFindPage = () => {
+  const [isFocused, setIsFocused] = useState(false);
   const {
     email,
     authCode,
@@ -41,7 +43,7 @@ const IdFindPage = () => {
           인증번호가 발송되었습니다.
         </p>
       );
-    if (email.length > 0 && !validation.success)
+    if (email.length > 0 && !validation.success && !isFocused)
       return (
         <p className='ty-detail text-[var(--color-status-alert)] mt-1'>{validation.message}</p>
       );
@@ -63,22 +65,24 @@ const IdFindPage = () => {
               type='email'
               value={email}
               onChange={handleEmailChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder='이메일'
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg border-[var(--color-grey-100)]
-              outline-none focus:border-[var(--color-secondary-800)] 
+              outline-none  
               ${
                 // 1. 성공 (그린): 존재하는 이메일일 때
                 apiStatus === 'success'
                   ? 'border-[var(--color-status-positive)] focus:border-[var(--color-status-positive)]'
                   : // 2. 에러 (레드): API 오류 또는 형식 틀림
-                    apiStatus === 'error' || (email.length > 0 && !validation.success)
+                    apiStatus === 'error' || (email.length > 0 && !validation.success && !isFocused)
                     ? 'border-[var(--color-status-alert)]'
-                    : // 3. 입력값 있음 (블루): 입력 중이거나, 입력 후 포커스 떼도 유지
+                    : // 3. 입력값 있음 (블랙): 입력 중이거나, 입력 후 포커스 떼도 유지
                       email.length > 0
-                      ? 'border-[var(--color-secondary-800)] focus:border-[var(--color-secondary-800)]'
-                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블루)
-                        'border-[var(--color-grey-100)] focus:border-[var(--color-secondary-800)]'
+                      ? 'border-[var(--color-secondary-800)] focus:border-[var(--color-grey-800)]'
+                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블랙)
+                        'border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)]'
               }`}
             />
             <Button
@@ -111,7 +115,7 @@ const IdFindPage = () => {
                   value={authCode}
                   onChange={handleAuthCodeChange}
                   placeholder='인증번호 6자리 입력'
-                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-secondary-800)] ${
+                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)] ${
                     !isAuthVerified
                       ? 'border-[var(--color-grey-100)]'
                       : 'border-[var(--color-status-positive)]'
