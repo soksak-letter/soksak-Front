@@ -46,26 +46,31 @@ export default function SurpriseLetterContent({
   }, [selectedTab, selectedPeriod, selectedDate, onSelectionChange]);
 
   return (
-    <div className='p-4'>
+    <div className='p-4 mb-3'>
       {/* 탭 선택 */}
-      <div className='flex gap-1 mb-4'>
+      <div className='flex items-center gap-2 rounded-lg bg-[var(--color-grey-100)] p-0.5'>
         <button
+          type='button'
           onClick={() => setSelectedTab('surprise')}
-          className={`flex-1 py-2.5 px-2.5 rounded-lg text-[15px] font-medium transition-all ${
+          className={[
+            'flex-1 h-[44px] rounded-[10px] ty-body4 transition-all',
             selectedTab === 'surprise'
-              ? 'bg-white text-[#F55454] border border-[#F55454]'
-              : 'bg-[#F0F0F0] text-[#8C8C8C] border border-transparent'
-          }`}
+              ? 'bg-white text-[var(--color-primary-500)] border border-[var(--color-primary-500)]'
+              : 'bg-transparent text-[var(--color-text-assistive)] border border-transparent',
+          ].join(' ')}
         >
           깜짝 편지로 받기
         </button>
+
         <button
+          type='button'
           onClick={() => setSelectedTab('manual')}
-          className={`flex-1 py-2.5 px-2.5 rounded-lg text-[15px] font-medium transition-all ${
+          className={[
+            'flex-1 h-[44px] rounded-[10px] ty-body4 transition-all',
             selectedTab === 'manual'
-              ? 'bg-white text-[#F55454] border border-[#F55454]'
-              : 'bg-[#F0F0F0] text-[#8C8C8C] border border-transparent'
-          }`}
+              ? 'bg-white text-[var(--color-primary-500)] border border-[var(--color-primary-500)]'
+              : 'bg-transparent text-[var(--color-text-assistive)] border border-transparent',
+          ].join(' ')}
         >
           직접 선택하기
         </button>
@@ -73,27 +78,27 @@ export default function SurpriseLetterContent({
 
       {/* 시간 선택 - '깜짝편지로 받기' 탭이 선택되었을 때만 표시 */}
       {selectedTab === 'surprise' && (
-        <div className='grid grid-cols-2 gap-x-1 gap-y-2'>
-          {timePeriodOptions.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setSelectedPeriod(option.id)}
-              className={`py-2.5 px-2.5 rounded text-[15px] font-medium transition-all ${
-                selectedPeriod === option.id
-                  ? 'bg-[#FEE8E7] text-[#F43E3A] border border-[#FEE8E7]'
-                  : 'bg-white text-[#171717] border border-[#DEDEDE]'
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className='py-4'>
+          <DatePickerWheel onDateChange={setSelectedDate} />
         </div>
       )}
 
       {/* 직접 선택 내용 - '직접 선택하기' 탭이 선택되었을 때 표시 */}
       {selectedTab === 'manual' && (
-        <div className='py-4'>
-          <DatePickerWheel onDateChange={setSelectedDate} />
+        <div className='grid grid-cols-2 gap-x-1 gap-y-1 mt-5'>
+          {timePeriodOptions.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setSelectedPeriod(option.id)}
+              className={`py-2.5 px-2.5 rounded ty-body5 transition-all ${
+                selectedPeriod === option.id
+                  ? 'bg-[var(--color-primary-100)] text-[var(--color-primary-500)]'
+                  : 'bg-white text-[var(--color-text-normal)] border border-[var(--color-grey-100)]'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       )}
     </div>
