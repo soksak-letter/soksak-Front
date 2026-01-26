@@ -8,12 +8,10 @@ import { MdCalendarToday } from 'react-icons/md';
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
-import DatePickerWheel from '@/components/BottomSheet/contents/DatePickerWheel';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import SurpriseLetterContent from '@/components/BottomSheet/contents/SurpriseLetterContent';
 
 type DateValue = { year: number; month: number; day: number };
-type SheetMode = 'surprise' | 'manual';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -32,7 +30,6 @@ const SelfDraftPage = () => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth(), day: now.getDate() };
   });
-  const [sheetMode, setSheetMode] = useState<SheetMode>('surprise');
 
   const openSheet = () => {
     setIsOpen(true);

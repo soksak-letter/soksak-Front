@@ -1,9 +1,11 @@
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useModalStore } from '@/stores/modalStore';
+import { useEffect, useState } from 'react';
+
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
-import { useModalStore } from '@/stores/modalStore';
-import { useEffect } from 'react';
+import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
+import BottomSheet from '@/components/BottomSheet/BottomSheet';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -11,10 +13,16 @@ function LetterDecoPage() {
   const { target } = useParams<{ target?: string }>();
   const { state } = useLocation();
   const { openModal } = useModalStore();
+  const navigate = useNavigate();
 
   const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
 
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+  const closeSheet = () => setIsOpen(false);
 
   // 유효하지 않은 target인 경우 이전 페이지로 이동 또는 에러 처리
   const safeMode = ['anon', 'other', 'self', 'friend'].includes(target ?? '')
@@ -49,11 +57,9 @@ function LetterDecoPage() {
         }
         onBack={handleBack}
       />
-
       <div className='p-5'>
         <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
       </div>
-
       {/* TODO : 편지지 디자인 확정 후 수정 */}
       {/* 편지 미리보기 Wrapper */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
@@ -72,8 +78,11 @@ function LetterDecoPage() {
           </div>
         </div>
       </div>
-
-      {/* TODO : 바텀시트 추가 */}
+      {isOpen && (
+        <BottomSheet isOpen={isOpen} onClose={closeSheet}>
+          <LetterStyleContent />
+        </BottomSheet>
+      )}{' '}
     </div>
   );
 }
