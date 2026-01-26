@@ -79,7 +79,13 @@ function LetterDecoPage() {
         </div>
       </div>
       {isOpen && (
-        <BottomSheet isOpen={isOpen} onClose={closeSheet}>
+        <BottomSheet
+          isOpen={isOpen}
+          onClose={closeSheet}
+          overlay={false}
+          closeOnOutside={false}
+          height={362}
+        >
           <LetterStyleContent />
         </BottomSheet>
       )}{' '}

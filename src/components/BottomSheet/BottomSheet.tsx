@@ -5,34 +5,52 @@ interface BottomSheetProps {
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
+
+  overlay?: boolean;
+  closeOnOutside?: boolean;
+  height?: number | string;
 }
 
-export default function BottomSheet({ isOpen, onClose, children, title }: BottomSheetProps) {
+export default function BottomSheet({
+  isOpen,
+  onClose,
+  children,
+  title,
+  overlay = true,
+  closeOnOutside = true,
+  height,
+}: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const resolvedHeight = typeof height === 'number' ? `${height}px` : height;
+
+  const HANDLE_H = 44;
+  const TITLE_H = title ? 52 : 0;
 
   useEffect(() => {
+    if (!isOpen) return;
+    if (!closeOnOutside) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, closeOnOutside, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <>
-      {/* 배경 오버레이 */}
-      <div className='fixed inset-0 bg-black/70 z-40 transition-opacity' onClick={onClose} />
-
+      {/* 배경 오버레이 옵션 */}
+      {overlay && (
+        <div
+          className='fixed inset-0 bg-black/70 z-40 transition-opacity'
+          onClick={closeOnOutside ? onClose : undefined}
+        />
+      )}
       {/* BottomSheet */}
       <div
         ref={sheetRef}
@@ -40,7 +58,8 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
         style={{
           width: '375px',
           maxWidth: '100vw',
-          maxHeight: '90vh',
+          height: resolvedHeight ?? 'auto',
+          maxHeight: resolvedHeight ? resolvedHeight : '90vh',
           animation: 'slideUp 0.3s ease-out',
         }}
       >
@@ -57,7 +76,15 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
         )}
 
         {/* 컨텐츠 */}
-        <div className='overflow-y-auto' style={{ maxHeight: 'calc(90vh - 80px)' }}>
+        <div
+          className='overflow-y-auto'
+          style={{
+            height: resolvedHeight
+              ? `calc(${resolvedHeight} - ${HANDLE_H}px - ${TITLE_H}px)`
+              : 'auto',
+            maxHeight: resolvedHeight ? undefined : 'calc(90vh - 80px)',
+          }}
+        >
           {children}
         </div>
       </div>
