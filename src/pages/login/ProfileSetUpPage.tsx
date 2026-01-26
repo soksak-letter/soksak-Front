@@ -28,8 +28,9 @@ const ProfileSetUpPage = () => {
   // 테두리 색상 결정
   const getBorderColor = () => {
     if (nickname.length === 0) return 'border-[var(--color-grey-100)]';
-    if (!isValid) return 'border-[#F5544C] focus:border-[#F5544C]'; // 실패: 빨강
-    return 'border-[#007AFF] focus:border-[#007AFF]'; // 성공: 파란
+    if (!isValid)
+      return 'border-[var(--color-status-alert)] focus:border-[var(--color-status-alert)]'; // 실패: 빨강
+    return 'border-[var(--color-secondary-800)] focus:border-[var(--color-grey-800)]'; // 성공: 파란
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +52,7 @@ const ProfileSetUpPage = () => {
           <div className='w-[128px] h-[128px] bg-[var(--color-primary-100)] rounded-full mb-3'></div>
           <button
             type='button'
-            className='absolute bottom-2 right-3 w-8 h-8 bg-[#F5544C] rounded-full flex items-center justify-center border-2 border-[#FAFAFA] text-white'
+            className='absolute bottom-2 right-3 w-8 h-8 bg-[var(--color-primary-500)] rounded-full flex items-center justify-center border-2 border-[#FAFAFA] text-white'
             aria-label='프로필 사진 변경'
           >
             <FaCamera size={14} />
@@ -68,7 +69,7 @@ const ProfileSetUpPage = () => {
           onChange={handleNicknameChange}
           placeholder='닉네임'
           className={`w-full h-[48px] px-4 rounded-lg border 
-          bg-white text-[16px] text-[#171717] placeholder-[#8C8C8C] 
+          bg-white text-[16px] text-[var(--color-text-normal)] placeholder-[var(--color-text-assistive)] 
           outline-none
           ${getBorderColor()}`}
           // 스페이스바(Space) 키가 눌리면 동작 취소(preventDefault)
@@ -100,11 +101,11 @@ const ProfileSetUpPage = () => {
               <div
                 className='absolute -top-[8px] left-[5px] w-0 h-2.5
                 border-l-[6px] border-r-[6px] border-b-[8px]
-                border-l-transparent border-r-transparent border-b-[#E5E6E6] '
+                border-l-transparent border-r-transparent border-b-[var(--color-grey-100)] '
               ></div>
 
               {/* 말풍선 본문 */}
-              <div className='bg-[#E5E6E6] px-2.5 py-1.5 rounded-lg w-max '>
+              <div className='bg-[var(--color-grey-100)] px-2.5 py-1.5 rounded-lg w-max '>
                 <p className='ty-detail'>지금 정한 닉네임은 나와 친구에게만 보입니다!</p>
               </div>
             </div>

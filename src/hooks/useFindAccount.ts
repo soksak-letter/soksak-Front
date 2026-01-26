@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { validate } from '@/utils/validate'; // 기존 파일 재사용
 import { removeWhitespace } from '@/utils/inputUtils'; // 기존 파일 재사용
 import { useNavigate } from 'react-router-dom';
+import useToast from './useToast';
 
 // 타입을 'id' 또는 'pw'만 받도록 정의
 type FindType = 'id' | 'pw';
@@ -27,7 +28,10 @@ const useFindAccount = (type: FindType) => {
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 작동 여부
 
   // --- [토스트 상태] ---
-  const [showToast, setShowToast] = useState(false);
+  const { toast, visible, showToast, closeToast } = useToast({
+    duration: 3000, // 필요에 따라 조절
+    exitMs: 300,
+  });
 
   // --- [타이머 로직] ---
   useEffect(() => {
@@ -128,18 +132,13 @@ const useFindAccount = (type: FindType) => {
     if (authCode === '123456') {
       setIsAuthVerified(true);
       setIsTimerActive(false); // 인증 성공하면 타이머 멈춤
-      setShowToast(true); // 토스트 켜기!
+      showToast('인증되었습니다.', 'success'); // useToast의 showToast 함수 호출
       setServerMessage(''); // 최종 성공 메시지
     } else {
       setIsAuthVerified(false);
-      alert('인증번호가 일치하지 않습니다.'); // 또는 별도 에러 상태 관리
+      showToast('인증번호가 일치하지 않습니다.', 'error'); // 또는 별도 에러 상태 관리
     }
   };
-  // 토스트 닫기 핸들러 (컴포넌트에 전달용)
-  const closeToast = () => {
-    setShowToast(false);
-  };
-
   // 맨 하단 '아이디 찾기' 또는 '비밀번호 재설정' 버튼 클릭 시
   const handleComplete = () => {
     if (!isAuthVerified) return;
@@ -168,7 +167,8 @@ const useFindAccount = (type: FindType) => {
     serverMessage, // 서버로부터 받은 메시지 (또는 에러 메시지)
     isAuthVerified, // 최종 인증 완료 여부
     formattedTime: formatTime(timeLeft), // 05:00 형식 시간
-    showToast, // 상태 전달
+    toastState: toast, // { message, status } 객체
+    toastVisible: visible, // boolean
     closeToast, // 닫기 함수 전달
     handleEmailChange,
     handleAuthCodeChange,
