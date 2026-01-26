@@ -80,10 +80,10 @@ const PwFindPage = () => {
                   : // 2. 에러 (레드): API 오류 또는 형식 틀림
                     apiStatus === 'error' || (email.length > 0 && !validation.success && !isFocused)
                     ? 'border-[var(--color-status-alert)]'
-                    : // 3. 입력값 있음 (블루): 입력 중이거나, 입력 후 포커스 떼도 유지
+                    : // 3. 입력값 있음 (블랙): 입력 중이거나, 입력 후 포커스 떼도 유지
                       email.length > 0
                       ? 'border-[var(--color-secondary-800)] focus:border-[var(--color-grey-800)]'
-                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블루)
+                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블랙)
                         'border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)]'
               }`}
             />
