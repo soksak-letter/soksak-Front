@@ -16,20 +16,22 @@ const IdVerifyPage = () => {
         </p>
       </div>
 
-      <div className='w-full bg-[var(--color-primary-100)] rounded-[12px] p-6 mb-8'>
-        <div className='flex flex-col gap-4'>
-          <div>
-            <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>아이디</p>
-            <p className='ty-body4 text-[var(--color-text-normal)]'>{id}</p>
-          </div>
-          <div>
-            <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>가입일</p>
-            <p className='ty-body4 text-[var(--color-text-normal)]'>{date}</p>
+      <div className='flex flex-col h-[190px]'>
+        <div className='w-full bg-[var(--color-primary-100)] rounded-[12px] p-6 mb-8'>
+          <div className='flex flex-col gap-4'>
+            <div>
+              <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>아이디</p>
+              <p className='ty-body4 text-[var(--color-text-normal)]'>{id}</p>
+            </div>
+            <div>
+              <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>가입일</p>
+              <p className='ty-body4 text-[var(--color-text-normal)]'>{date}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className='absolute bottom-[300px] w-full px-[5px] flex justify-center gap-3'>
+      <div className='flex w-full px-[5px] gap-[8px] flex justify-center'>
         <Button className='flex-1' color='primary' onClick={() => navigate('/auth/signin')}>
           로그인하기
         </Button>

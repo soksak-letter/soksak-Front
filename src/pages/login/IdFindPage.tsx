@@ -55,7 +55,7 @@ const IdFindPage = () => {
         <p className='ty-body4'>이메일로 전송받은 인증번호를 확인해주세요.</p>
       </div>
 
-      <div className='flex flex-col gap-[8px]'>
+      <div className='flex flex-col h-[180px] gap-[8px]'>
         {/* 이메일 입력 & 인증 요청 버튼 */}
         <div className='flex flex-col gap-[4px]'>
           <div className='flex flex-row gap-[8px]'>
@@ -152,7 +152,7 @@ const IdFindPage = () => {
         </div>
       )}
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='absolute bottom-[270px] w-full px-[5px] flex justify-center'>
+      <div className='flex w-full px-[5px] flex justify-center'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화
