@@ -23,7 +23,7 @@ export default function BottomSheet({
   const sheetRef = useRef<HTMLDivElement>(null);
   const resolvedHeight = typeof height === 'number' ? `${height}px` : height;
 
-  const HANDLE_H = 44;
+  const HANDLE_H = 10;
   const TITLE_H = title ? 52 : 0;
 
   useEffect(() => {
@@ -61,11 +61,12 @@ export default function BottomSheet({
           height: resolvedHeight ?? 'auto',
           maxHeight: resolvedHeight ? resolvedHeight : '90vh',
           animation: 'slideUp 0.3s ease-out',
+          boxShadow: '0 -4px 15px rgba(0, 0, 0, 0.12)',
         }}
       >
         {/* 드래그 핸들 */}
-        <div className='flex justify-center pt-3 pb-2'>
-          <div className='w-10 h-1 bg-gray-300 rounded-full' />
+        <div className='flex justify-center pt-3 pb-1'>
+          <div className='w-14 h-1 bg-[var(--color-text-assistive)] rounded-full' />
         </div>
 
         {/* 헤더 */}

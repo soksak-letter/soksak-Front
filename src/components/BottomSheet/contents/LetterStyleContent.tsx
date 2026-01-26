@@ -97,31 +97,33 @@ export default function LetterStyleContent({ onStyleChange }: LetterStyleContent
   return (
     <div className='p-4'>
       {/* 탭 선택 */}
-      <div className='flex justify-center gap-24 mb-6'>
-        <button
-          onClick={() => setSelectedTab('font')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'font' ? 'text-black border-b-2 border-black' : 'text-black opacity-40'
-          }`}
-        >
-          글씨체
-        </button>
-        <button
-          onClick={() => setSelectedTab('paper')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'paper' ? 'text-black border-b-2 border-black' : 'text-black opacity-50'
-          }`}
-        >
-          편지지
-        </button>
-        <button
-          onClick={() => setSelectedTab('stamp')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'stamp' ? 'text-black border-b-2 border-black' : 'text-black opacity-50'
-          }`}
-        >
-          우표
-        </button>
+      <div className='sticky top-0 z-10 bg-white pt-1'>
+        <div className='flex justify-center gap-22 mb-6'>
+          <button
+            onClick={() => setSelectedTab('font')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'font' ? 'text-[var(--color-primary-500)]' : 'text-black opacity-40'
+            }`}
+          >
+            글씨체
+          </button>
+          <button
+            onClick={() => setSelectedTab('paper')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'paper' ? 'text-[var(--color-primary-500)] ' : 'text-black opacity-50'
+            }`}
+          >
+            편지지
+          </button>
+          <button
+            onClick={() => setSelectedTab('stamp')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'stamp' ? 'text-[var(--color-primary-500)] ' : 'text-black opacity-50'
+            }`}
+          >
+            우표
+          </button>
+        </div>
       </div>
 
       {/* 글씨체 목록 뷰 */}
