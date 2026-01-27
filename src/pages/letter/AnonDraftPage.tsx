@@ -62,6 +62,8 @@ const AnonDraftPage = () => {
       (error as Error)?.message ||
       '네트워크 연결을 확인해주세요.';
 
+    console.log('error obj:', error);
+    console.log('toast msg:', message);
     showToast(message, 'error');
 
     const id = window.setTimeout(() => {

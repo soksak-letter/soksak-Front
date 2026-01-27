@@ -5,5 +5,6 @@ export function useDailyQuestion() {
   return useQuery({
     queryKey: ['daily-question'],
     queryFn: getDailyQuestion,
+    retry: false,
   });
 }
