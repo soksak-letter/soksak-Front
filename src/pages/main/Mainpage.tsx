@@ -56,13 +56,11 @@ const MainPage = () => {
   }, [friendLettersData]);
 
   const handleWriteToSelf = () => {
-    console.log('나에게 편지 쓰기');
-    // 실제로는 페이지 이동 또는 모달 열기
+    navigate('/letter/self/draft');
   };
 
   const handleWriteToOther = () => {
-    console.log('상대에게 편지 쓰기');
-    // 실제로는 페이지 이동 또는 모달 열기
+    navigate('/letter/anon/draft');
   };
 
   if (summaryLoading) {

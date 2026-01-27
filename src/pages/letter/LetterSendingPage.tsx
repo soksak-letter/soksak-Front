@@ -51,6 +51,7 @@ const LetterSendingPage = () => {
 
           if (isTenTimes) {
             await delay(3000);
+            if (cancelled) return;
             navigate('/friend/sent-transition', { replace: true });
             return;
           }
