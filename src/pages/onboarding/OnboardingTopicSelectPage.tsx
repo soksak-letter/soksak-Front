@@ -1,20 +1,41 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { SelectButton } from '@/components/common/SelectButton';
-import { ONBOARDING_TOPICS } from '@/constants/onboardingTopics';
 import { Button } from '@/components/common/Button';
 import CautionIcon from '@/assets/icons/CautionIcon.svg?react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAllInterests } from '@/hooks/onboarding/useAllInterests';
+import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
+import { useSaveInterests } from '@/hooks/onboarding/useSaveInterests';
+import { getInterestEmoji } from '@/constants/interestUiMap';
 
 export default function OnboardingTopicSelectPage() {
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // mode: onboarding(default) | edit
+  const mode = new URLSearchParams(location.search).get('mode') === 'edit' ? 'edit' : 'onboarding';
+  const isEdit = mode === 'edit';
+
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
+  const { data: allItems } = useAllInterests();
+
+  // 재진입 프리셋(로그인 상태면 true)
+  const { data: myItems } = useMyInterests(true);
+
+  const saveInterests = useSaveInterests();
+
+  // 내 관심사 프리셋 적용
+  useEffect(() => {
+    if (!myItems) return;
+    setSelectedIds(new Set(myItems.map((x) => x.id)));
+  }, [myItems]);
 
   const selectedCount = selectedIds.size;
-  const isNextEnabled = selectedCount >= 3;
+  const isNextEnabled = selectedCount >= 3 && !saveInterests.isPending;
 
-  const toggleTopic = (id: string) => {
+  const toggleTopic = (id: number) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -29,36 +50,63 @@ export default function OnboardingTopicSelectPage() {
   const handleNext = () => {
     if (!isNextEnabled) return;
 
-    console.log('선택된 토픽:', selectedArray);
-    // TODO: store 저장
-    navigate('/onboarding/letter-intro');
+    saveInterests.mutate(
+      { interestIds: selectedArray },
+      {
+        onSuccess: (res) => {
+          if (res.resultType === 'SUCCESS') {
+            if (isEdit) {
+              navigate('/my/my-page', { replace: true });
+            } else {
+              navigate('/onboarding/letter-intro');
+            }
+            return;
+          }
+
+          // 이미 온보딩 완료 사용자
+          if (res.error.errorCode === '409') {
+            // TODO: 에러코드 화이트리스트 필요(자유 문자열로 들어옴)
+            if (isEdit) {
+              navigate('/my/my-page', { replace: true });
+            } else {
+              navigate('/', { replace: true });
+            }
+            return;
+          }
+
+          // TODO: 프로젝트 토스트 방식으로 교체
+          console.log(res.error.reason);
+        },
+      },
+    );
   };
 
   return (
     <div className='flex min-h-dvh flex-col px-5 pt-6'>
-      <h1 className='mb-2 text-xl font-semibold'>
+      <h1 className='mb-2 ty-title2'>
         <span className='block'>요즘 어떤 고민이 있나요?</span>
         <span className='block'>관련 주제로 질문을 보내드려요.</span>
       </h1>
-      <p className='mb-6 flex items-center gap-1.5 text-[12px] text-gray-400'>
+      <p className='mb-6 flex items-center gap-1.5 ty-detail text-[var(--color-text-assistive)]'>
         <CautionIcon className='h-[14px] w-[14px] shrink-0' />
         제공한 정보는 오늘의 질문 개인화를 위해서만 활용됩니다.
       </p>
 
       <div className='flex flex-wrap gap-2'>
-        {ONBOARDING_TOPICS.map((topic) => {
-          const selected = selectedIds.has(topic.id);
+        {(allItems ?? []).map((it) => {
+          const selected = selectedIds.has(it.id);
+          const emoji = getInterestEmoji(it.id);
 
           return (
             <SelectButton
-              key={topic.id}
+              key={it.id}
               selected={selected}
               size='large'
-              onClick={() => toggleTopic(topic.id)}
+              onClick={() => toggleTopic(it.id)}
               className={clsx('gap-1 px-3')}
             >
-              <span>{topic.label}</span>
-              <span aria-hidden>{topic.emoji}</span>
+              <span>{it.name}</span>
+              <span aria-hidden>{emoji}</span>
             </SelectButton>
           );
         })}
