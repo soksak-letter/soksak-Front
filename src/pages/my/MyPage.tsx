@@ -141,6 +141,7 @@ const MyPage = () => {
         <section className='bg-white rounded-xl p-4'>
           <button
             type='button'
+            onClick={() => navigate('/my/inquiry')}
             className='w-full text-left ty-body5 text-[var(--color-text-normal)]'
           >
             1:1 문의

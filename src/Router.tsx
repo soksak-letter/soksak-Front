@@ -53,6 +53,7 @@ import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
 import MyPage from './pages/my/MyPage';
+import InquiryPage from './pages/my/InquiryPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -173,6 +174,7 @@ const router = createBrowserRouter([
           { path: 'my/my-page', element: <MyPage /> },
           { path: 'my/limits', element: <TODOPage /> },
           { path: 'my/complain', element: <TODOPage /> },
+          { path: 'my/inquiry', element: <InquiryPage /> },
 
           // 404 처리
           { path: '*', element: <NotFoundPage /> },
