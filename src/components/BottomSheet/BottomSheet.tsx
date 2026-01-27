@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -8,9 +8,9 @@ interface BottomSheetProps {
 
   overlay?: boolean;
   closeOnOutside?: boolean;
-  height?: number | string;
+  height?: number;
   draggable?: boolean;
-  minHeight?: number | string;
+  minHeight?: number;
 }
 
 export default function BottomSheet({
@@ -22,26 +22,20 @@ export default function BottomSheet({
   closeOnOutside = true,
   height,
   draggable = false,
-  minHeight = 180,
+  minHeight = 100,
 }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
-  const resolvedHeight = typeof height === 'number' ? `${height}px` : height;
-  const hasFixedHeight = typeof height === 'number';
 
   const HANDLE_H = 10;
   const TITLE_H = title ? 52 : 0;
 
-  const maxHeightPx = useMemo(() => {
-    if (typeof height === 'number') return height;
+  const hasFixedHeight = typeof height === 'number';
 
-    if (typeof height === 'string') {
-      // px
-      const match = height.match(/^(\d+)px$/);
-      if (match) return Number(match[1]);
-    }
-  }, [height]);
-
-  const [currentHeight, setCurrentHeight] = useState<number | null>(hasFixedHeight ? height : null);
+  // 고정 높이 모드에서 max는 height 자체
+  const maxHeightPx = useMemo(() => (hasFixedHeight ? height : 0), [hasFixedHeight, height]);
+  // currentHeight는 height를 props로 받았을 때 의미 있다.
+  const [currentHeight, setCurrentHeight] = useState<number>(() => (hasFixedHeight ? height : 0));
+  const [isDragging, setIsDragging] = useState(false);
 
   // 꾸미기 페이지 첫 진입시 바텀시트는 최대 높이로 열린다.
   useEffect(() => {
@@ -57,9 +51,7 @@ export default function BottomSheet({
     if (!closeOnOutside) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) {
-        onClose();
-      }
+      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) onClose();
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -70,14 +62,15 @@ export default function BottomSheet({
   const dragRef = useRef<{ startY: number; startH: number } | null>(null);
 
   const onPointerDownHandle = (e: React.PointerEvent) => {
-    if (!draggable) return;
+    if (!draggable || !hasFixedHeight) return;
 
+    setIsDragging(true);
     dragRef.current = { startY: e.clientY, startH: currentHeight };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const onPointerMoveHandle = (e: React.PointerEvent) => {
-    if (!draggable) return;
+    if (!draggable || !hasFixedHeight) return;
     if (!dragRef.current) return;
 
     const dy = dragRef.current.startY - e.clientY; // 위로 드래그하면 +
@@ -88,7 +81,9 @@ export default function BottomSheet({
   };
 
   const onPointerUpHandle = (e: React.PointerEvent) => {
-    if (!draggable) return;
+    if (!draggable || !hasFixedHeight) return;
+
+    setIsDragging(false);
     dragRef.current = null;
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
@@ -96,6 +91,10 @@ export default function BottomSheet({
   };
 
   if (!isOpen) return null;
+
+  const contentHeight = hasFixedHeight
+    ? Math.max(0, currentHeight - HANDLE_H - TITLE_H)
+    : undefined;
 
   return (
     <>
@@ -121,7 +120,7 @@ export default function BottomSheet({
       >
         {/* 드래그 핸들 */}
         <div
-          className='flex justify-center pt-3 pb-1'
+          className='flex justify-center py-3 cursor-grab'
           onPointerDown={onPointerDownHandle}
           onPointerMove={onPointerMoveHandle}
           onPointerUp={onPointerUpHandle}
@@ -140,10 +139,8 @@ export default function BottomSheet({
         <div
           className='overflow-y-auto'
           style={{
-            height: resolvedHeight
-              ? `calc(${resolvedHeight} - ${HANDLE_H}px - ${TITLE_H}px)`
-              : 'auto',
-            maxHeight: resolvedHeight ? undefined : 'calc(90vh - 80px)',
+            height: contentHeight,
+            overflow: isDragging ? 'hidden' : 'auto',
           }}
         >
           {children}
