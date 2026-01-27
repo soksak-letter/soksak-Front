@@ -49,8 +49,8 @@ export const postVerificationCodesConfirm = async (
  * (이메일 인증 완료 후 호출하여 아이디를 받아옴)
  * @param query { email: string }
  */
-export const getFindId = async (body: FindIdRequest) => {
-  const { data } = await axiosInstance.get<FindIdResponse>('/auth/find-id', { data: body });
+export const postFindId = async (body: FindIdRequest) => {
+  const { data } = await axiosInstance.post<FindIdResponse>('/auth/find-id', body);
   return data;
 };
 
@@ -60,7 +60,12 @@ export const getFindId = async (body: FindIdRequest) => {
  * @param body { email: string }
  */
 
-export const postresetpassword = async (body: ResetPasswordRequest) => {
-  const { data } = await axiosInstance.patch<ResetPasswordResponse>('/auth/reset-password', body);
+export const patchResetPassword = async (body: ResetPasswordRequest, token: string) => {
+  const { data } = await axiosInstance.patch<ResetPasswordResponse>('/auth/reset-password', body, {
+    headers: {
+      // 스웨거에 'Bearer Token'이 필요하다고 되어있으므로 추가해야 합니다.
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return data;
 };

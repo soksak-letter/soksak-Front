@@ -4,7 +4,7 @@ import { removeWhitespace } from '@/utils/inputUtils'; // 기존 파일 재사�
 import { useNavigate } from 'react-router-dom';
 import useToast from './useToast';
 import {
-  getFindId,
+  postFindId,
   postVerificationCodes,
   postVerificationCodesConfirm,
   type FindAccountType,
@@ -164,7 +164,7 @@ const useFindAccount = (type: FindType) => {
     if (type === 'id') {
       // 1. 아이디 찾기인 경우 -> 결과 화면 데이터를 세팅 (Mock Data)
       try {
-        const response = await getFindId({ email });
+        const response = await postFindId({ email });
         if (response.resultType === 'SUCCESS') {
           // 결과 페이지로 데이터 전달
           navigate('/auth/id-verify', {
