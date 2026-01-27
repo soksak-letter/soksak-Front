@@ -150,7 +150,7 @@ const useSignUpForm = () => {
 
       // 2. 409 Conflict (중복) 처리
       if (error.response?.status === 409) {
-        // 🎯 [핵심] 이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
+        //  이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
         if (errorCode === 'USER_EMAIL_DUPLICATED') {
           setIsEmailUnique(false);
           setValidations((prev) => ({
