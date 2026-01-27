@@ -3,6 +3,12 @@ import { validate } from '@/utils/validate'; // 기존 파일 재사용
 import { removeWhitespace } from '@/utils/inputUtils'; // 기존 파일 재사용
 import { useNavigate } from 'react-router-dom';
 import useToast from './useToast';
+import {
+  getFindId,
+  postVerificationCodes,
+  postVerificationCodesConfirm,
+  type FindAccountType,
+} from '@/api/findAccount';
 
 // 타입을 'id' 또는 'pw'만 받도록 정의
 type FindType = 'id' | 'pw';
@@ -11,21 +17,27 @@ type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 
 const useFindAccount = (type: FindType) => {
   const navigate = useNavigate();
-  // 1. 상태 관리
+  //  상태 관리
   const [email, setEmail] = useState('');
 
-  // 유효성 검사 결과 (형식 검사용)
+  // 유효성 검사 결과 (형식 검사용)s
   const [validation, setValidation] = useState({ success: false, message: '' });
 
   // API 요청 상태 (서버 통신 상태 및 결과)
   const [apiStatus, setApiStatus] = useState<ApiStatus>('idle'); // 이메일 전송 상태
   const [serverMessage, setServerMessage] = useState('');
 
+  // UI용 type('id', 'pw')을 API용 type('find-id', 'reset-password')으로 변환
+  const apiType: FindAccountType = type === 'id' ? 'find-id' : 'reset-password';
+
   // --- [인증번호 관련 상태 (NEW)] ---
   const [authCode, setAuthCode] = useState(''); // 입력한 인증번호
   const [isAuthVerified, setIsAuthVerified] = useState(false); // 인증번호 확인 완료 여부
   const [timeLeft, setTimeLeft] = useState(300); // 타이머 (5분 = 300초)
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 작동 여부
+
+  // 비밀번호 재설정 시 서버에서 줄 수도 있는 토큰 저장용
+  const [resetToken, setResetToken] = useState<string | undefined>(undefined);
 
   // --- [토스트 상태] ---
   const { toast, visible, showToast, closeToast } = useToast({
@@ -90,31 +102,19 @@ const useFindAccount = (type: FindType) => {
 
     try {
       // [API 호출 시]
-      // type이 'id'면 아이디 찾기 API, 'pw'면 비번 찾기 API 호출
-      // const url = type === 'id' ? '/auth/id-find/email' : '/auth/find-pw/email';
-      // await api.post(url, { email });
-      // --- [MOCK API] ---
-      const mockApiCall = new Promise<{ status: number }>((resolve) => {
-        setTimeout(() => {
-          if (email === 'success@test.com')
-            resolve({ status: 200 }); // 간단한 성공 조건
-          else resolve({ status: 404 });
-        }, 1000);
-      });
-      const response = await mockApiCall;
-      // ------------------
+      const response = await postVerificationCodes(apiType, { email });
 
-      if (response.status === 200) {
+      if (response.resultType === 'SUCCESS') {
         setApiStatus('success');
         setServerMessage('인증번호가 발송되었습니다.'); // 사진 속 초록 글씨
 
         // 타이머 리셋 및 시작
-        setTimeLeft(300); // 5분
+        setTimeLeft(response.success.expiredInSeconds || 300); // 5분
         setIsTimerActive(true);
         setAuthCode(''); // 인증번호 입력칸 비우기
       } else {
         setApiStatus('error');
-        setServerMessage('가입되지 않은 이메일입니다.');
+        setServerMessage(response.error.reason || '가입되지 않은 이메일입니다.');
         setIsTimerActive(false);
       }
     } catch (error) {
@@ -125,38 +125,69 @@ const useFindAccount = (type: FindType) => {
   };
 
   // 4. 인증번호 확인 (확인 버튼 클릭 시)
-  const handleVerifyCode = () => {
-    // --- [MOCK 인증 로직] ---
-    // 실제로는 API 호출 필요:
-    //const url = type === 'id' ? '/auth/find-id/verify' : '/auth/find-pw/verify';
-    if (authCode === '123456') {
-      setIsAuthVerified(true);
-      setIsTimerActive(false); // 인증 성공하면 타이머 멈춤
-      showToast('인증되었습니다.', 'success'); // useToast의 showToast 함수 호출
-      setServerMessage(''); // 최종 성공 메시지
-    } else {
-      setIsAuthVerified(false);
-      showToast('인증번호가 일치하지 않습니다.', 'error'); // 또는 별도 에러 상태 관리
+  const handleVerifyCode = async () => {
+    try {
+      const response = await postVerificationCodesConfirm(apiType, {
+        email,
+        code: authCode,
+      });
+      if (response.resultType === 'SUCCESS') {
+        const { verified, jwtAccessToken } = response.success;
+        if (verified) {
+          setIsAuthVerified(true);
+          setIsTimerActive(false); // 인증 성공하면 타이머 멈춤
+          showToast('인증되었습니다.', 'success'); // useToast의 showToast 함수 호출
+          setServerMessage(''); // 최종 성공 메시지
+          // 비밀번호 재설정용 토큰이 왔다면 저장
+          if (jwtAccessToken) {
+            setResetToken(jwtAccessToken);
+          }
+        } else {
+          setIsAuthVerified(false);
+          showToast('인증번호가 일치하지 않습니다.', 'error'); // 또는 별도 에러 상태 관리
+        }
+      } else {
+        showToast(response.error.reason || '인증 실패', 'error');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast('인증 확인 중 오류가 발생했습니다.', 'error');
     }
   };
   // 맨 하단 '아이디 찾기' 또는 '비밀번호 재설정' 버튼 클릭 시
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (!isAuthVerified) return;
+
+    // [중요] 이메일 값이 비어있으면 400 에러가 뜹니다. 확인용 로그.
+    console.log('아이디 찾기 요청 이메일:', email);
 
     if (type === 'id') {
       // 1. 아이디 찾기인 경우 -> 결과 화면 데이터를 세팅 (Mock Data)
-      // 실제로는 API 호출:const res = await api.findId(email);
-      const mockResult = {
-        id: 'gaegull_01',
-        date: '2024년 3월 5일',
-      };
-
-      // navigate로 페이지 이동하며 state 전달
-      navigate('/auth/id-verify', { state: mockResult });
+      try {
+        const response = await getFindId({ email });
+        if (response.resultType === 'SUCCESS') {
+          // 결과 페이지로 데이터 전달
+          navigate('/auth/id-verify', {
+            state: {
+              id: response.success.username,
+              date: response.success.createdAt,
+            },
+          });
+        } else {
+          showToast(response.error.reason || '회원 정보를 찾을 수 없습니다.', 'error');
+        }
+      } catch (error: any) {
+        // 에러 확인용 로그
+        console.error('API Error:', error);
+        if (error.response?.status === 400) {
+          showToast('입력값 형식 오류 (GET with Body 확인 필요)', 'error');
+        } else {
+          showToast('서버 오류가 발생했습니다.', 'error');
+        }
+      }
     } else {
       // 2. 비밀번호 재설정인 경우 -> 재설정 페이지로 이동
-      navigate('/auth/pw-reset', { state: { email } }); // 이메일 넘겨줌
-      console.log('비밀번호 재설정 페이지로 이동');
+      navigate('/auth/pw-reset', { state: { email, token: resetToken } }); // 이메일 넘겨줌
     }
   };
   return {
