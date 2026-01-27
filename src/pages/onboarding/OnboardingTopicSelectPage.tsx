@@ -65,6 +65,7 @@ export default function OnboardingTopicSelectPage() {
 
           // 이미 온보딩 완료 사용자
           if (res.error.errorCode === '409') {
+            // TODO: 에러코드 화이트리스트 필요(자유 문자열로 들어옴)
             if (isEdit) {
               navigate('/my/my-page', { replace: true });
             } else {
