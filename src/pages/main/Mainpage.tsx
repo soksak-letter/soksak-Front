@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from '../../components/common/QuestionCard';
@@ -7,6 +7,7 @@ import LetterJourney from './LetterJourney';
 import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
 import type { Letter } from '../../types/letter';
 import useTodayQuestion from '../../hooks/useTodayQuestion';
+import usePublicLetters from '../../hooks/usePublicLetters';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -14,30 +15,31 @@ const MainPage = () => {
   // 오늘의 질문 API 연동
   const { question, isLoading: questionLoading, timeLeft } = useTodayQuestion();
 
-  // 샘플 데이터 (실제로는 API에서 가져올 데이터)
-  const [publicLetters] = useState<Letter[]>([
-    {
-      id: '1',
-      title: '이지영 선생님',
-      date: '2025. 9. 17.',
-      variant: 'blue',
-      link: '/letter/1',
-    },
-    {
-      id: '2',
-      title: '요즘 아이돌에 빠져',
-      date: '2025. 6. 23.',
-      variant: 'pink',
-      link: '/letter/2',
-    },
-    {
-      id: '3',
-      title: '우리 아빠',
-      date: '2025. 12. 14.',
-      variant: 'yellow',
-      link: '/letter/3',
-    },
-  ]);
+  // 공개 편지 API 연동
+  const { letters: publicLettersData } = usePublicLetters({
+    questionId: question?.id ?? null,
+  });
+
+  // API 데이터를 Letter 타입으로 변환
+  const publicLetters: Letter[] = useMemo(() => {
+    // API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
+    const colorToVariant = (color?: string): Letter['variant'] => {
+      if (!color) return 'blue';
+      // Color_1~4: blue, Color_5~8: pink, 나머지: yellow 등 임시 매핑
+      const colorNum = parseInt(color.replace('Color_', ''), 10);
+      if (colorNum <= 4) return 'blue';
+      if (colorNum <= 8) return 'pink';
+      return 'yellow';
+    };
+
+    return (publicLettersData ?? []).map((item) => ({
+      id: String(item.id),
+      title: item.title,
+      date: item.deliveredAt ?? '',
+      variant: colorToVariant(item.design?.paper?.color),
+      link: `/letter/${item.id}`,
+    }));
+  }, [publicLettersData]);
 
   const handleWriteToSelf = () => {
     console.log('나에게 편지 쓰기');
