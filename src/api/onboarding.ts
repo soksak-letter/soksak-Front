@@ -3,7 +3,7 @@ import type {
   GetMyInterestsResponse,
   SaveBasicInfoRequest,
   SaveBasicInfoResponse,
-  SaveInterestsReqeust,
+  SaveInterestsRequest,
   SaveInterestsResponse,
 } from '@/types/dto/onboarding';
 import { axiosInstance } from './axios';
@@ -22,7 +22,7 @@ export const onboardingApi = {
   },
 
   /** 관심사 저장 */
-  saveInterests: async (payload: SaveInterestsReqeust) => {
+  saveInterests: async (payload: SaveInterestsRequest) => {
     const res = await axiosInstance.put<SaveInterestsResponse>(
       '/users/me/onboarding/interests',
       payload,

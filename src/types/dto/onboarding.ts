@@ -14,7 +14,7 @@ export type GetMyInterestsResponse = CommonResponse<{
   items: Interest[];
 }>;
 
-export interface SaveInterestsReqeust {
+export interface SaveInterestsRequest {
   interestIds: number[];
 }
 
