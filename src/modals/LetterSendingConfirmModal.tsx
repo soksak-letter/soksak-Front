@@ -7,7 +7,10 @@ export default function LetterSendingConfirmModal() {
   const { closeModal, payload } = useModalStore();
   const { pathname } = useLocation();
 
-  const handleStay = () => closeModal();
+  const handleStay = () => {
+    payload?.onConfirmCancelSending?.();
+    closeModal();
+  };
 
   const handleSubmit = () => {
     payload?.onConfirmSending?.();

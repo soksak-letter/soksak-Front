@@ -41,8 +41,11 @@ function LetterDecoPage() {
   };
 
   const handleSubmit = () => {
+    setIsOpen(false);
+
     openModal('letterSendingConfirm', {
       onConfirmSending: () => navigate(`/letter/${safeMode}/sending`),
+      onConfirmCancelSending: () => setIsOpen(true),
     });
   };
 

@@ -136,10 +136,7 @@ export default function LetterStyleContent({ onStyleChange }: LetterStyleContent
               className='w-full py-4 px-4 flex items-center justify-between border-b border-gray-200 hover:bg-gray-50 transition-colors'
             >
               <div className='text-left flex-shrink-0 w-32'>
-                <p
-                  className='text-[15px] font-medium text-black'
-                  style={{ fontFamily: font.fontFamily }}
-                >
+                <p className='ty-body5 text-black' style={{ fontFamily: font.fontFamily }}>
                   {font.name}
                 </p>
               </div>

@@ -24,6 +24,7 @@ export type ModalPayload = {
 
   // letterSendingConfirm
   onConfirmSending?: () => void;
+  onConfirmCancelSending?: () => void;
 
   // letterSendingFailed
   onConfirmSendingAgain?: () => void;
