@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 type LetterTextBoxValue = {
   title: string;
@@ -19,8 +19,6 @@ const LENGTH = {
 } as const;
 
 const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
-  const [titleTouched, setTitleTouched] = useState(false);
-
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextTitle = e.target.value;
     onChange({
@@ -48,7 +46,6 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
           <input
             value={value.title}
             onChange={handleTitleChange}
-            onBlur={() => setTitleTouched(true)}
             className='w-full py-1 bg-transparent text-[14px] font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
             placeholder='제목'
           />

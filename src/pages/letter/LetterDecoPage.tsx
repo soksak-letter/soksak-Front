@@ -95,6 +95,8 @@ function LetterDecoPage() {
           overlay={false}
           closeOnOutside={false}
           height={362}
+          draggable={true}
+          minHeight={180}
         >
           <LetterStyleContent selectedTab={selectedTab} onChangeTab={setSelectedTab} />
         </BottomSheet>
