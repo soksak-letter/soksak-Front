@@ -6,8 +6,10 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
 import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
+import LetterEnvelope from '@/components/letters/LetterEnvelope';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
+type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
   const { target } = useParams<{ target?: string }>();
@@ -18,6 +20,7 @@ function LetterDecoPage() {
   const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
 
   useEffect(() => {
     setIsOpen(true);
@@ -66,9 +69,18 @@ function LetterDecoPage() {
       {/* TODO : 편지지 디자인 확정 후 수정 */}
       {/* 편지 미리보기 Wrapper */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
-        {/* 편지지 배경 */}
-        <LetterCard />
-
+        {selectedTab === 'stamp' ? (
+          <div className='absolute inset-0 flex justify-center'>
+            <LetterEnvelope
+              paperColor='#FFF7E6'
+              stampSrc='https://via.placeholder.com/56x76.png?text=STAMP'
+              stampAlt='test'
+              className='mt-20 -rotate-4 shadow-sm'
+            />
+          </div>
+        ) : (
+          <LetterCard />
+        )}
         {/* 텍스트 레이어 (겹침) */}
         <div className='absolute inset-0 flex flex-col px-3 pt-4 pb-3'>
           {/* 제목 */}
@@ -89,7 +101,7 @@ function LetterDecoPage() {
           closeOnOutside={false}
           height={362}
         >
-          <LetterStyleContent />
+          <LetterStyleContent selectedTab={selectedTab} onChangeTab={setSelectedTab} />
         </BottomSheet>
       )}{' '}
     </div>
