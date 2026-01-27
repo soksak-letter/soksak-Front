@@ -95,69 +95,64 @@ export default function LetterInboxOtherPage() {
       <TitleHeader title='편지함' />
 
       <main className='px-5 pb-[95px]'>
-        <LetterInboxTabs value={tab} onChange={handleTabChange} />
-
-        {/* 검색 */}
-        <div className='mt-[16px] flex items-center gap-3'>
-          <div className='flex h-11 flex-1 w-[229px] items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
-            <AiOutlineSearch className='w-[20px] h-[20px] text-[var(--color-grey-500)]' />
-            <input
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder='키워드를 검색해보세요'
-              className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
-            />
-          </div>
-
-          <button
-            type='button'
-            onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
-            className='h-11 w-11 flex items-center justify-center'
-            aria-label='정렬 변경'
-          >
-            <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
-          </button>
-        </div>
-
-        {/* 리스트 */}
-        <div className='mt-4 space-y-[10px]'>
-          {filtered.map((it) => (
-            <button
-              key={it.letterId}
-              type='button'
-              onClick={() => handleOpenLetter(it)}
-              className='w-[343px] h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-            >
-              <div className='flex items-start justify-between gap-3'>
-                {/* 왼쪽 텍스트 */}
-                <div className='min-w-0'>
-                  <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
-                    {it.question}
-                  </p>
-
-                  <div className='mt-4 flex items-center gap-1'>
-                    <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
-                    {it.isUnread && (
-                      <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
-                    )}
-                  </div>
-                </div>
-
-                {/* 오른쪽 봉투 썸네일 자리 */}
-                <div className='h-12 w-16 shrink-0 rounded-xl bg-[#F2F2F2]' />
-              </div>
-
-              <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
-                {it.receivedAt}
-              </div>
-            </button>
-          ))}
-
-          {filtered.length === 0 && (
-            <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
-              검색 결과가 없어요
+        <div className='mx-auto w-full max-w-[343px]'>
+          <LetterInboxTabs value={tab} onChange={handleTabChange} />
+          {/* 검색 */}
+          <div className='mt-[16px] flex items-center gap-3'>
+            <div className='flex h-11 flex-1 w-[229px] items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
+              <AiOutlineSearch className='w-[20px] h-[20px] text-[var(--color-grey-500)]' />
+              <input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder='키워드를 검색해보세요'
+                className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
+              />
             </div>
-          )}
+            <button
+              type='button'
+              onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
+              className='h-11 w-11 flex items-center justify-center'
+              aria-label='정렬 변경'
+            >
+              <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
+            </button>
+          </div>
+          {/* 리스트 */}
+          <div className='mt-4 space-y-[10px]'>
+            {filtered.map((it) => (
+              <button
+                key={it.letterId}
+                type='button'
+                onClick={() => handleOpenLetter(it)}
+                className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+              >
+                <div className='flex items-start justify-between gap-3'>
+                  {/* 왼쪽 텍스트 */}
+                  <div className='min-w-0'>
+                    <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                      {it.question}
+                    </p>
+                    <div className='mt-4 flex items-center gap-1'>
+                      <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
+                      {it.isUnread && (
+                        <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
+                      )}
+                    </div>
+                  </div>
+                  {/* 오른쪽 봉투 썸네일 자리 */}
+                  <div className='h-12 w-16 shrink-0 rounded-xl bg-[#F2F2F2]' />
+                </div>
+                <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
+                  {it.receivedAt}
+                </div>
+              </button>
+            ))}
+            {filtered.length === 0 && (
+              <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+                검색 결과가 없어요
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
