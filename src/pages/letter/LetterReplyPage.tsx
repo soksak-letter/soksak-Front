@@ -48,7 +48,7 @@ export default function LetterReplyPage() {
   };
 
   return (
-    <div className='min-h-dvh bg-[var(--color-bg-500])'>
+    <div className='min-h-dvh bg-[var(--color-bg-500)]'>
       <BackHeader
         title={`${data.senderName}님의 편지`}
         rightElement={
