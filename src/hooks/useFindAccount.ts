@@ -182,6 +182,10 @@ const useFindAccount = (type: FindType) => {
       }
     } else {
       // 2. 비밀번호 재설정인 경우 -> 재설정 페이지로 이동
+      if (!resetToken) {
+        showToast('인증 정보를 확인할 수 없습니다. 다시 시도해주세요.', 'error');
+        return;
+      }
       navigate('/auth/pw-reset', { state: { email, token: resetToken } }); // 이메일 넘겨줌
     }
   };
