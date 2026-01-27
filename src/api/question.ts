@@ -1,4 +1,3 @@
-// src/api/question.ts
 import { axiosInstance } from '@/api/axios';
 
 export type DailyQuestionSuccess = {

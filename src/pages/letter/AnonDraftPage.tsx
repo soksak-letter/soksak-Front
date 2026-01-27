@@ -15,7 +15,7 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { data, isLoading, isError } = useDailyQuestion();
+  const { data, isLoading, isError, error } = useDailyQuestion();
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { toast, visible, showToast, closeToast } = useToast({
@@ -30,12 +30,13 @@ const AnonDraftPage = () => {
   const [isPublic, setIsPublic] = useState(false);
 
   const deadlineMs = useMemo(() => {
-    if (!data?.expiredAt) return Date.now();
+    if (!data?.expiredAt) return null;
     const t = new Date(data.expiredAt).getTime();
-    return Number.isNaN(t) ? Date.now() : t;
+    return Number.isNaN(t) ? null : t;
   }, [data?.expiredAt]);
 
-  const { isExpired, mmss } = useCountdown(deadlineMs);
+  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now());
+
   const handleBack = () => {
     if (isExpired) {
       openModal('exitConfirm', {
@@ -75,6 +76,8 @@ const AnonDraftPage = () => {
     });
   };
 
+  const questionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
   return (
     <div className='relative flex flex-col'>
       <BackHeader
@@ -87,15 +90,24 @@ const AnonDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <p className='text-black ty-title2 w-[251px]'>
-          당신의 인생에 가장 큰 영감을
-          <br />
-          주는 사람은 누구인가요?
-        </p>
-        <div className='flex items-center ty-body2'>
-          <span className='text-[#F2261C]'>{mmss}</span>
-          <span className='text-black ml-1'>후에 질문이 사라져요.</span>
-        </div>
+        {isLoading ? (
+          <>
+            {/* 질문 스켈레톤 */}
+            <div className='h-6 w-[260px] rounded bg-gray-200 animate-pulse' />
+            <div className='h-6 w-[210px] rounded bg-gray-200 animate-pulse' />
+
+            {/* 타이머 스켈레톤 */}
+            <div className='h-4 w-[160px] rounded bg-gray-200 animate-pulse mt-2' />
+          </>
+        ) : (
+          <>
+            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>{questionText}</p>
+            <div className='flex items-center ty-body2'>
+              <span className='text-[#F2261C]'>{mmss}</span>
+              <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+            </div>
+          </>
+        )}
       </div>
       <div className='px-4'>
         <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
