@@ -145,7 +145,7 @@ function PostCard({ item, onClick }: { item: PostItem; onClick?: () => void }) {
     <button type='button' onClick={onClick} className='text-left'>
       {/* 봉투 자리 */}
       <div className={`w-[138px] h-[98px] rounded-2xl ${envelopeBg(item.colorKey)}`} />
-
+      {/* TODO: envelopeBg 다른 페이지에는 paperColor로 되어 있음. 추후 통일 필요 */}
       <p className='mt-3 line-clamp-1 text-[14px] font-semibold text-[#171717]'>{item.title}</p>
       <p className='mt-1 text-[12px] text-[#6F6F6F]'>{item.dateText}</p>
     </button>
