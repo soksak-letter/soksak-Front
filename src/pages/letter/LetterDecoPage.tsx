@@ -80,7 +80,7 @@ function LetterDecoPage() {
           </div>
         ) : (
           <LetterCard
-            paperColor='#FAF9EE'
+            paperColor='#FAF9EE' // TODO : 편지지 svg로 받아와야 함. 이름 변경 필요
             font='Pretendard, sans-serif'
             title={title}
             content={content}
