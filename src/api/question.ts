@@ -1,22 +1,9 @@
 import { axiosInstance } from '@/api/axios';
-import type { ApiError } from '@/types/dto/common';
-
-export type DailyQuestionSuccess = {
-  id: number;
-  content: string;
-  expiredAt: string;
-};
-
-export type DailyQuestionResponse = {
-  resultType: 'SUCCESS' | 'FAIL';
-  error: ApiError | null;
-  success: DailyQuestionSuccess | null;
-};
+import type { DailyQuestionResponse, DailyQuestionSuccess } from '@/types/dto/question';
 
 export async function getDailyQuestion(): Promise<DailyQuestionSuccess> {
   const { data } = await axiosInstance.get<DailyQuestionResponse>('/questions/today');
 
-  // 실패 처리
   if (data.resultType !== 'SUCCESS' || !data.success) {
     throw (
       data.error ?? {

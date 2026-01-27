@@ -1,12 +1,10 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
-import ToastPopup from '@/components/ToastPopup';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
-import useToast from '@/hooks/useToast';
 import { useModalStore } from '@/stores/modalStore';
-import type { ApiError } from '@/types/dto/common';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,15 +17,9 @@ const AnonDraftPage = () => {
   const { data, isLoading, isError, error } = useDailyQuestion();
   const navigate = useNavigate();
   const { openModal } = useModalStore();
-  const { toast, visible, showToast, closeToast } = useToast({
-    duration: 3000,
-    exitMs: 300,
-  });
+  const { showToast } = useGlobalToast();
 
-  const [letter, setLetter] = useState({
-    title: '',
-    content: '',
-  });
+  const [letter, setLetter] = useState({ title: '', content: '' });
   const [isPublic, setIsPublic] = useState(false);
 
   const deadlineMs = useMemo(() => {
@@ -65,13 +57,16 @@ const AnonDraftPage = () => {
     if (!isError || handled.current) return;
     handled.current = true;
 
-    const apiError = error as unknown as ApiError;
+    const message =
+      (error as { reason?: string })?.reason ||
+      (error as Error)?.message ||
+      '네트워크 연결을 확인해주세요.';
 
-    showToast(apiError.reason, 'error');
+    showToast(message, 'error');
 
     const id = window.setTimeout(() => {
       navigate('/home/main', { replace: true });
-    }, 600);
+    }, 3000);
 
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
@@ -87,10 +82,7 @@ const AnonDraftPage = () => {
     }
 
     navigate('/letter/anon/decorate', {
-      state: {
-        title,
-        content,
-      },
+      state: { title, content },
     });
   };
 
@@ -141,16 +133,6 @@ const AnonDraftPage = () => {
         <br />
         상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
       </p>
-      {toast && (
-        <div className='fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999]'>
-          <ToastPopup
-            status={toast.status}
-            message={toast.message}
-            visible={visible}
-            onClose={closeToast}
-          />
-        </div>
-      )}
     </div>
   );
 };
