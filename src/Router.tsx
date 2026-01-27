@@ -52,6 +52,7 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
+import MyPage from './pages/my/MyPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -169,7 +170,7 @@ const router = createBrowserRouter([
           { path: 'report/keyword-letter', element: <TODOPage /> },
           { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
-          { path: 'my/my-page', element: <TODOPage /> },
+          { path: 'my/my-page', element: <MyPage /> },
           { path: 'my/limits', element: <TODOPage /> },
           { path: 'my/complain', element: <TODOPage /> },
 
