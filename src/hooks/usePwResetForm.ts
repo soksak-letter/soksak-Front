@@ -72,10 +72,8 @@ const usePwResetForm = () => {
       );
 
       if (response.resultType === 'SUCCESS') {
-        console.log('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
         navigate('/auth/signin'); // 로그인 페이지로 이동
       } else {
-        console.log(response.error.reason || '비밀번호 변경 실패');
       }
     } catch (error) {
       console.error(error);

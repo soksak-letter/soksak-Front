@@ -20,7 +20,7 @@ const useFindAccount = (type: FindType) => {
   //  상태 관리
   const [email, setEmail] = useState('');
 
-  // 유효성 검사 결과 (형식 검사용)s
+  // 유효성 검사 결과 (형식 검사용)
   const [validation, setValidation] = useState({ success: false, message: '' });
 
   // API 요청 상태 (서버 통신 상태 및 결과)
@@ -150,16 +150,12 @@ const useFindAccount = (type: FindType) => {
         showToast(response.error.reason || '인증 실패', 'error');
       }
     } catch (error) {
-      console.error(error);
       showToast('인증 확인 중 오류가 발생했습니다.', 'error');
     }
   };
   // 맨 하단 '아이디 찾기' 또는 '비밀번호 재설정' 버튼 클릭 시
   const handleComplete = async () => {
     if (!isAuthVerified) return;
-
-    // [중요] 이메일 값이 비어있으면 400 에러가 뜹니다. 확인용 로그.
-    console.log('아이디 찾기 요청 이메일:', email);
 
     if (type === 'id') {
       // 1. 아이디 찾기인 경우 -> 결과 화면 데이터를 세팅 (Mock Data)
@@ -174,15 +170,12 @@ const useFindAccount = (type: FindType) => {
               date: response.success.createdAt,
             },
           });
-          console.log(response.success.username);
         } else {
           showToast(response.error.reason || '회원 정보를 찾을 수 없습니다.', 'error');
         }
       } catch (error: any) {
-        // 에러 확인용 로그
-        console.error('API Error:', error);
         if (error.response?.status === 400) {
-          showToast('입력값 형식 오류 (GET with Body 확인 필요)', 'error');
+          showToast('입력값 형식 오류입니다. 다시 확인해주세요.', 'error');
         } else {
           showToast('서버 오류가 발생했습니다.', 'error');
         }
