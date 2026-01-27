@@ -10,6 +10,6 @@ import { axiosInstance } from './axios';
  */
 export const getHomeSummary = async () => {
   const { data } = await axiosInstance.get<HomeSummaryResponse>('/home/summary');
-  console.log('홈 요약 정보 API 응답:', data);
+  // console.log('홈 요약 정보 API 응답:', data);
   return data;
 };

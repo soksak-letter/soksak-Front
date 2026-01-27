@@ -19,13 +19,13 @@ export const getPublicLetters = async (params: PublicLettersParams) => {
       size: params.size ?? 10,
     },
   });
-  console.log('공개 편지 API 응답:', data);
+  // console.log('공개 편지 API 응답:', data);
   return data;
 };
 
 /**
  * 친구 편지 캐러셀 목록 조회 API
- * GET /letters/friends?questionId=...&cursor=...&size=...
+ * GET /letters/friends/public=...&cursor=...&size=...
  */
 export const getFriendLetters = async (params: FriendLettersParams) => {
   const { data } = await axiosInstance.get<FriendLettersResponse>('/letters/friends/public', {
@@ -35,6 +35,6 @@ export const getFriendLetters = async (params: FriendLettersParams) => {
       size: params.size ?? 10,
     },
   });
-  console.log('친구 편지 API 응답:', data);
+  // console.log('친구 편지 API 응답:', data);
   return data;
 };
