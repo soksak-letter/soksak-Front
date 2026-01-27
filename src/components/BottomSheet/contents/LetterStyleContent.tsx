@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 
 type StyleTab = 'font' | 'paper' | 'stamp';
 
+interface LetterStyleContentProps {
+  selectedTab: StyleTab;
+  onChangeTab: (tab: StyleTab) => void;
+  onStyleChange?: (style: { font: string; paper: string; stamp: string }) => void;
+}
+
 interface FontOption {
   id: string;
   name: string;
@@ -18,10 +24,6 @@ interface PaperOption {
 interface StampOption {
   id: string;
   preview: React.ReactNode;
-}
-
-interface LetterStyleContentProps {
-  onStyleChange?: (style: { font: string; paper: string; stamp: string }) => void;
 }
 
 const fontOptions: FontOption[] = [
@@ -83,8 +85,11 @@ const stampOptions: StampOption[] = [
   { id: 'stamp9', preview: <StampPreview type='plant' color='#C5E1A5' /> },
 ];
 
-export default function LetterStyleContent({ onStyleChange }: LetterStyleContentProps = {}) {
-  const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
+export default function LetterStyleContent({
+  selectedTab,
+  onChangeTab,
+  onStyleChange,
+}: LetterStyleContentProps) {
   const [selectedFont, setSelectedFont] = useState('font1');
   const [selectedPaper, setSelectedPaper] = useState('paper2');
   const [selectedStamp, setSelectedStamp] = useState('stamp1');
@@ -97,31 +102,33 @@ export default function LetterStyleContent({ onStyleChange }: LetterStyleContent
   return (
     <div className='p-4'>
       {/* 탭 선택 */}
-      <div className='flex justify-center gap-24 mb-6'>
-        <button
-          onClick={() => setSelectedTab('font')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'font' ? 'text-black border-b-2 border-black' : 'text-black opacity-40'
-          }`}
-        >
-          글씨체
-        </button>
-        <button
-          onClick={() => setSelectedTab('paper')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'paper' ? 'text-black border-b-2 border-black' : 'text-black opacity-50'
-          }`}
-        >
-          편지지
-        </button>
-        <button
-          onClick={() => setSelectedTab('stamp')}
-          className={`text-[16px] font-medium pb-2 transition-colors ${
-            selectedTab === 'stamp' ? 'text-black border-b-2 border-black' : 'text-black opacity-50'
-          }`}
-        >
-          우표
-        </button>
+      <div className='sticky top-0 z-10 bg-white pt-1'>
+        <div className='flex justify-center gap-22 mb-6'>
+          <button
+            onClick={() => onChangeTab('font')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'font' ? 'text-[var(--color-primary-500)]' : 'text-black opacity-40'
+            }`}
+          >
+            글씨체
+          </button>
+          <button
+            onClick={() => onChangeTab('paper')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'paper' ? 'text-[var(--color-primary-500)] ' : 'text-black opacity-50'
+            }`}
+          >
+            편지지
+          </button>
+          <button
+            onClick={() => onChangeTab('stamp')}
+            className={`ty-body3 pb-2 transition-colors ${
+              selectedTab === 'stamp' ? 'text-[var(--color-primary-500)] ' : 'text-black opacity-50'
+            }`}
+          >
+            우표
+          </button>
+        </div>
       </div>
 
       {/* 글씨체 목록 뷰 */}
@@ -134,10 +141,7 @@ export default function LetterStyleContent({ onStyleChange }: LetterStyleContent
               className='w-full py-4 px-4 flex items-center justify-between border-b border-gray-200 hover:bg-gray-50 transition-colors'
             >
               <div className='text-left flex-shrink-0 w-32'>
-                <p
-                  className='text-[15px] font-medium text-black'
-                  style={{ fontFamily: font.fontFamily }}
-                >
+                <p className='ty-body5 text-black' style={{ fontFamily: font.fontFamily }}>
                   {font.name}
                 </p>
               </div>

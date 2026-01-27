@@ -1,20 +1,31 @@
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useModalStore } from '@/stores/modalStore';
+import { useEffect, useState } from 'react';
+
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
-import { useModalStore } from '@/stores/modalStore';
-import { useEffect } from 'react';
+import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
+import BottomSheet from '@/components/BottomSheet/BottomSheet';
+import LetterEnvelope from '@/components/letters/LetterEnvelope';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
+type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
   const { target } = useParams<{ target?: string }>();
   const { state } = useLocation();
   const { openModal } = useModalStore();
+  const navigate = useNavigate();
 
   const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
 
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+  const closeSheet = () => setIsOpen(false);
 
   // 유효하지 않은 target인 경우 이전 페이지로 이동 또는 에러 처리
   const safeMode = ['anon', 'other', 'self', 'friend'].includes(target ?? '')
@@ -33,8 +44,11 @@ function LetterDecoPage() {
   };
 
   const handleSubmit = () => {
+    setIsOpen(false);
+
     openModal('letterSendingConfirm', {
       onConfirmSending: () => navigate(`/letter/${safeMode}/sending`),
+      onConfirmCancelSending: () => setIsOpen(true),
     });
   };
 
@@ -49,17 +63,24 @@ function LetterDecoPage() {
         }
         onBack={handleBack}
       />
-
       <div className='p-5'>
         <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
       </div>
-
       {/* TODO : 편지지 디자인 확정 후 수정 */}
       {/* 편지 미리보기 Wrapper */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
-        {/* 편지지 배경 */}
-        <LetterCard />
-
+        {selectedTab === 'stamp' ? (
+          <div className='absolute inset-0 flex justify-center'>
+            <LetterEnvelope
+              paperColor='#FFF7E6'
+              stampSrc='https://via.placeholder.com/56x76.png?text=STAMP'
+              stampAlt='test'
+              className='mt-20 -rotate-4 shadow-sm'
+            />
+          </div>
+        ) : (
+          <LetterCard />
+        )}
         {/* 텍스트 레이어 (겹침) */}
         <div className='absolute inset-0 flex flex-col px-3 pt-4 pb-3'>
           {/* 제목 */}
@@ -72,8 +93,17 @@ function LetterDecoPage() {
           </div>
         </div>
       </div>
-
-      {/* TODO : 바텀시트 추가 */}
+      {isOpen && (
+        <BottomSheet
+          isOpen={isOpen}
+          onClose={closeSheet}
+          overlay={false}
+          closeOnOutside={false}
+          height={362}
+        >
+          <LetterStyleContent selectedTab={selectedTab} onChangeTab={setSelectedTab} />
+        </BottomSheet>
+      )}{' '}
     </div>
   );
 }

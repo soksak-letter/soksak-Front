@@ -5,7 +5,9 @@ export type ModalType =
   | 'onboardingSkipConfirm'
   | 'friendAdded'
   | 'letterSendingConfirm'
+  | 'letterSendingFailed'
   | 'friendRequest'
+  | 'friendRequestFailed'
   | null;
 
 export type ModalPayload = {
@@ -22,10 +24,17 @@ export type ModalPayload = {
 
   // letterSendingConfirm
   onConfirmSending?: () => void;
+  onConfirmCancelSending?: () => void;
+
+  // letterSendingFailed
+  onConfirmSendingAgain?: () => void;
 
   // friendRequest
   onConfirmFriendRequest?: () => void;
   receiverName?: string;
+
+  // friendRequestFailed
+  onConfirmRequestAgain?: () => void;
 };
 
 interface ModalState {
