@@ -33,14 +33,14 @@ export default function OnboardingProfileSelectPage() {
 
   const saveBasicInfo = useSaveBasicInfo();
 
-  const isNextEnabled = gender !== null && job !== null;
+  const isNextEnabled = gender !== null && job !== null && !saveBasicInfo.isPending;
 
   const handleNext = () => {
     if (!isNextEnabled) return;
 
     const payload = {
-      gender: gender as Gender,
-      job: job as Job,
+      gender: gender,
+      job: job,
     };
 
     saveBasicInfo.mutate(payload, {
@@ -56,6 +56,7 @@ export default function OnboardingProfileSelectPage() {
 
         // 이미 온보딩 완료 사용자
         if (res.error.errorCode === '409') {
+          // TODO: 에러코드 화이트리스트 필요(자유 문자열로 들어옴)
           if (isEdit) {
             navigate('/my/my-page', { replace: true });
           } else {
@@ -66,6 +67,11 @@ export default function OnboardingProfileSelectPage() {
 
         // TODO: 토스트로 reason 노출
         console.log(res.error.reason);
+      },
+
+      onError: (error) => {
+        navigate('/error/network');
+        console.error('저장 실패:', error);
       },
     });
   };
