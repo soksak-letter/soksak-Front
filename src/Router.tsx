@@ -44,6 +44,7 @@ import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
 import SignInPage from './pages/login/SigninPage';
+import WeeklyReportPage from './pages/WeeklyReportPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
-          // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
+          { path: 'report/weekly-report', element: <WeeklyReportPage /> },
         ],
       },
 
@@ -148,7 +149,7 @@ const router = createBrowserRouter([
           { path: 'friend/draft', element: <FriendDraftPage /> },
           { path: 'friend/post/:letterId', element: <FriendPostPage /> },
 
-          { path: 'report/weekly-report', element: <TODOPage /> },
+          { path: 'report/keyword-letter', element: <TODOPage /> },
           { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
           { path: 'my/my-page', element: <TODOPage /> },
