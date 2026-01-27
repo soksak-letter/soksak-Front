@@ -44,7 +44,7 @@ export default function LetterReplyPage() {
   };
 
   const handleEnd = () => {
-    navigate(-1);
+    navigate(-1); // TODO: 여기 뒤로가기가 아니라 모달 떠야함. 모달 구현 필요
   };
 
   return (
@@ -64,13 +64,11 @@ export default function LetterReplyPage() {
 
       <main className='px-5 pb-[28px]'>
         <p className='mt-2 ty-body5 text-[var(--color-text-normal)]'>{data.sentAtText}</p>
-
         <p className='mt-2 ty-body5 text-[var(--color-text-normal)]'>내가 받았던 질문은</p>
-
         <h1 className='mt-1 whitespace-pre-line ty-title2 leading-[140%] text-[var(--color-text-normal)]'>
           {data.question}
         </h1>
-
+        {/* TODO: 컴포넌트 교체 필요 */}
         <section className='mt-5 rounded-md border border-[#E7E2CF] bg-[#FBF5DD] px-4 py-4'>
           <div
             className='whitespace-pre-line text-[14px] leading-[180%] text-[var(--color-text-normal)]'
@@ -84,7 +82,6 @@ export default function LetterReplyPage() {
             {data.content}
           </div>
         </section>
-
         <div className='mt-6 grid grid-cols-2 gap-3'>
           <Button className='w-full' color='grey' onClick={handleEnd}>
             편지 끝내기
