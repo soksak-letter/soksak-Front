@@ -126,6 +126,7 @@ const useFindAccount = (type: FindType) => {
 
   // 4. 인증번호 확인 (확인 버튼 클릭 시)
   const handleVerifyCode = async () => {
+    setResetToken(undefined);
     try {
       const response = await postVerificationCodesConfirm(apiType, {
         email,
@@ -138,10 +139,8 @@ const useFindAccount = (type: FindType) => {
           setIsTimerActive(false); // 인증 성공하면 타이머 멈춤
           showToast('인증되었습니다.', 'success'); // useToast의 showToast 함수 호출
           setServerMessage(''); // 최종 성공 메시지
+          setResetToken(jwtAccessToken);
           // 비밀번호 재설정용 토큰이 왔다면 저장
-          if (jwtAccessToken) {
-            setResetToken(jwtAccessToken);
-          }
         } else {
           setIsAuthVerified(false);
           showToast('인증번호가 일치하지 않습니다.', 'error'); // 또는 별도 에러 상태 관리
