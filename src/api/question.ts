@@ -7,5 +7,6 @@ import { axiosInstance } from './axios';
  */
 export const getTodayQuestion = async () => {
   const { data } = await axiosInstance.get<TodayQuestionResponse>('/questions/today');
+  console.log('오늘의 질문 API 응답:', data);
   return data;
 };

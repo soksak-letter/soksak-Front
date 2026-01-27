@@ -40,8 +40,8 @@ function useTodayQuestion(): UseTodayQuestionReturn {
     fetchQuestion();
   }, [fetchQuestion]);
 
-  // validUntil을 밀리초로 변환
-  const deadlineMs = question?.validUntil ? new Date(question.validUntil).getTime() : 0;
+  // expiredAt을 밀리초로 변환
+  const deadlineMs = question?.expiredAt ? new Date(question.expiredAt).getTime() : 0;
 
   const { mmss: timeLeft, isExpired } = useCountdown(deadlineMs, {
     onExpire: () => {
