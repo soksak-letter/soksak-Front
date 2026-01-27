@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from '../../components/common/QuestionCard';
 import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
+import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
 import type { Letter } from '../../types/letter';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   // 샘플 데이터 (실제로는 API에서 가져올 데이터)
   const [publicLetters] = useState<Letter[]>([
@@ -34,6 +36,14 @@ const MainPage = () => {
     },
   ]);
 
+  // 데이터 로딩 시뮬레이션 (실제로는 API 호출 완료 시 setIsLoading(false))
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleWriteToSelf = () => {
     console.log('나에게 편지 쓰기');
     // 실제로는 페이지 이동 또는 모달 열기
@@ -43,6 +53,10 @@ const MainPage = () => {
     console.log('상대에게 편지 쓰기');
     // 실제로는 페이지 이동 또는 모달 열기
   };
+
+  if (isLoading) {
+    return <MainPageSkeleton />;
+  }
 
   return (
     <div className='min-h-dvh bg-white'>
