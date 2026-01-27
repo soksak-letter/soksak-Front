@@ -7,7 +7,7 @@ import LetterJourney from './LetterJourney';
 import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
 import type { Letter } from '../../types/letter';
 import type { LetterItem } from '../../types/dto/letter';
-import useTodayQuestion from '../../hooks/useTodayQuestion';
+import useHomeSummary from '../../hooks/useHomeSummary';
 import usePublicLetters from '../../hooks/usePublicLetters';
 import useFriendLetters from '../../hooks/useFriendLetters';
 
@@ -33,17 +33,17 @@ const convertToLetter = (item: LetterItem): Letter => ({
 const MainPage = () => {
   const navigate = useNavigate();
 
-  // 오늘의 질문 API 연동
-  const { question, isLoading: questionLoading, timeLeft } = useTodayQuestion();
+  // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
+  const { data: homeSummary, isLoading: summaryLoading, timeLeft } = useHomeSummary();
 
   // 공개 편지 API 연동
   const { letters: publicLettersData } = usePublicLetters({
-    questionId: question?.id ?? null,
+    questionId: homeSummary?.todayQuestion?.id ?? null,
   });
 
   // 친구 편지 API 연동
   const { letters: friendLettersData } = useFriendLetters({
-    questionId: question?.id ?? null,
+    questionId: homeSummary?.todayQuestion?.id ?? null,
   });
 
   // API 데이터를 Letter 타입으로 변환
@@ -65,7 +65,7 @@ const MainPage = () => {
     // 실제로는 페이지 이동 또는 모달 열기
   };
 
-  if (questionLoading) {
+  if (summaryLoading) {
     return <MainPageSkeleton />;
   }
 
@@ -74,9 +74,9 @@ const MainPage = () => {
       {/* 오늘의 질문 섹션 */}
       <section>
         <QuestionCard
-          question={question?.content || ''}
+          question={homeSummary?.todayQuestion?.content || ''}
           timeLeft={timeLeft}
-          profileImageUrl='https://placehold.co/47x48'
+          profileImageUrl={homeSummary?.user?.profileImageUrl || 'https://placehold.co/47x48'}
         />
       </section>
 
@@ -88,12 +88,12 @@ const MainPage = () => {
       {/* 편지 여행 섹션 */}
       <section>
         <LetterJourney
-          userName='개굴'
-          weekLabel='1월 2주차'
-          receivedCount={16}
-          sentCount={12}
-          totalCount={32}
-          progressMessage={`새벽별처럼 빛나는 금성에 도착했어요!\n8통의 마음을 더 보내면 지구에 닿을 수 있어요.`}
+          userName={homeSummary?.user?.nickname || ''}
+          weekLabel={homeSummary?.letterStats?.reportPeriod || ''}
+          receivedCount={homeSummary?.letterStats?.stats?.receivedCount || 0}
+          sentCount={homeSummary?.letterStats?.stats?.sentCount || 0}
+          totalCount={homeSummary?.letterStats?.stats?.totalSentCount || 0}
+          progressMessage={homeSummary?.letterStats?.message || ''}
         />
       </section>
 
