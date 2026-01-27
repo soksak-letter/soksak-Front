@@ -59,13 +59,15 @@ export default function BottomSheet({
   }, [isOpen, closeOnOutside, onClose]);
 
   // 드래그 핸들러
-  const dragRef = useRef<{ startY: number; startH: number } | null>(null);
-
+  const dragRef = useRef<{
+    startY: number;
+    startHeight: number;
+  } | null>(null);
   const onPointerDownHandle = (e: React.PointerEvent) => {
     if (!draggable || !hasFixedHeight) return;
 
     setIsDragging(true);
-    dragRef.current = { startY: e.clientY, startH: currentHeight };
+    dragRef.current = { startY: e.clientY, startHeight: currentHeight };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
@@ -73,17 +75,18 @@ export default function BottomSheet({
     if (!draggable || !hasFixedHeight) return;
     if (!dragRef.current) return;
 
-    const dy = dragRef.current.startY - e.clientY; // 위로 드래그하면 +
-    const next = dragRef.current.startH + dy;
+    const { startY, startHeight } = dragRef.current;
 
-    const clamped = Math.max(minHeight, Math.min(maxHeightPx, next));
+    const deltaY = e.clientY - startY; // 아래로 +, 위로 -
+    const nextHeight = startHeight - deltaY;
+
+    const clamped = Math.max(minHeight, Math.min(height!, nextHeight));
     setCurrentHeight(clamped);
   };
 
   const onPointerUpHandle = (e: React.PointerEvent) => {
     if (!draggable || !hasFixedHeight) return;
 
-    setIsDragging(false);
     dragRef.current = null;
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
