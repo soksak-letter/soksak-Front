@@ -2,13 +2,19 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
+import { useBlockUser } from '@/hooks/useModeration';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const targetUserId = Number(searchParams.get('targetUserId')) || 0;
+
+  // 차단 훅
+  const { block, isLoading: isBlocking } = useBlockUser();
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
@@ -55,22 +61,45 @@ const LetterReportPage = () => {
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
+    console.log('[LetterReportPage] 차단 토글 변경:', nextState);
+    console.log('[LetterReportPage] 현재 선택된 사유:', selectedReasons);
+    console.log('[LetterReportPage] targetUserId:', targetUserId);
+
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
+      console.log('[LetterReportPage] 사유 없이 차단 시도 - 차단됨');
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
 
     // 사유가 있으면 정상적으로 토글 상태 변경
+    console.log('[LetterReportPage] 차단 상태 변경:', nextState);
     setIsBlocked(nextState);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
       return;
     }
+
+    // 차단하기가 활성화된 경우 차단 API 호출
+    if (isBlocked && targetUserId) {
+      console.log('[LetterReportPage] 차단 API 호출 시작, targetUserId:', targetUserId);
+      const { success, message } = await block(targetUserId);
+      console.log('[LetterReportPage] 차단 API 결과 - success:', success, ', message:', message);
+
+      if (!success) {
+        showToast(message, 'error');
+        return;
+      }
+      console.log('[LetterReportPage] 차단 성공! 메시지:', message);
+      showToast(message, 'success');
+    }
+
+    // TODO: 신고 API 연동 필요
+    console.log('[LetterReportPage] 신고 완료 처리');
     setIsCompleted(true); // 완료 화면으로 전환
   };
   if (isCompleted) {
@@ -91,7 +120,14 @@ const LetterReportPage = () => {
     <div className='w-[375px] h-screen relative mx-auto'>
       <div>
         <div className='flex justify-center items-center h-[77px]'>
-          <BackHeader title='신고' rightElement={<button onClick={handleSubmit}>완료</button>} />{' '}
+          <BackHeader
+            title='신고'
+            rightElement={
+              <button onClick={handleSubmit} disabled={isBlocking}>
+                {isBlocking ? '처리중...' : '완료'}
+              </button>
+            }
+          />{' '}
           {/*  헤더 */}
         </div>
         <div>
