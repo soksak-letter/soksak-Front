@@ -59,7 +59,7 @@ const MainPage = () => {
   }
 
   return (
-    <div className='min-h-dvh bg-white'>
+    <div className='min-h-dvh bg-white pb-24'>
       {/* 오늘의 질문 섹션 */}
       <section>
         <QuestionCard
