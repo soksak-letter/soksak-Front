@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from '../../components/common/QuestionCard';
@@ -6,10 +6,13 @@ import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
 import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
 import type { Letter } from '../../types/letter';
+import useTodayQuestion from '../../hooks/useTodayQuestion';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+
+  // 오늘의 질문 API 연동
+  const { question, isLoading: questionLoading, timeLeft } = useTodayQuestion();
 
   // 샘플 데이터 (실제로는 API에서 가져올 데이터)
   const [publicLetters] = useState<Letter[]>([
@@ -36,14 +39,6 @@ const MainPage = () => {
     },
   ]);
 
-  // 데이터 로딩 시뮬레이션 (실제로는 API 호출 완료 시 setIsLoading(false))
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleWriteToSelf = () => {
     console.log('나에게 편지 쓰기');
     // 실제로는 페이지 이동 또는 모달 열기
@@ -54,7 +49,7 @@ const MainPage = () => {
     // 실제로는 페이지 이동 또는 모달 열기
   };
 
-  if (isLoading) {
+  if (questionLoading) {
     return <MainPageSkeleton />;
   }
 
@@ -63,9 +58,9 @@ const MainPage = () => {
       {/* 오늘의 질문 섹션 */}
       <section>
         <QuestionCard
-          question={`당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?`}
-          timeLeft='13시간 32초'
-          profileImageUrl='https://via.placeholder.com/47x48'
+          question={question?.content || ''}
+          timeLeft={timeLeft}
+          profileImageUrl='https://placehold.co/47x48'
         />
       </section>
 
