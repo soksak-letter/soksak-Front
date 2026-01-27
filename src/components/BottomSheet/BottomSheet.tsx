@@ -26,6 +26,7 @@ export default function BottomSheet({
 }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const resolvedHeight = typeof height === 'number' ? `${height}px` : height;
+  const hasFixedHeight = typeof height === 'number';
 
   const HANDLE_H = 10;
   const TITLE_H = title ? 52 : 0;
@@ -38,18 +39,17 @@ export default function BottomSheet({
       const match = height.match(/^(\d+)px$/);
       if (match) return Number(match[1]);
     }
-
-    // 드래그 가능한 최대값, height가 명시되어있지 않으면 90vh
-    return Math.floor(window.innerHeight * 0.9);
   }, [height]);
 
-  const [currentHeight, setCurrentHeight] = useState<number>(Math.min(maxHeightPx, height));
+  const [currentHeight, setCurrentHeight] = useState<number | null>(hasFixedHeight ? height : null);
 
   // 꾸미기 페이지 첫 진입시 바텀시트는 최대 높이로 열린다.
   useEffect(() => {
     if (!isOpen) return;
-    setCurrentHeight(maxHeightPx);
-  }, [isOpen, maxHeightPx]);
+    if (!hasFixedHeight) return;
+
+    setCurrentHeight(height);
+  }, [isOpen, hasFixedHeight, height]);
 
   // 바깥 클릭 닫기
   useEffect(() => {
@@ -113,8 +113,8 @@ export default function BottomSheet({
         style={{
           width: '375px',
           maxWidth: '100vw',
-          height: currentHeight,
-          maxHeight: resolvedHeight ? resolvedHeight : '90vh',
+          height: hasFixedHeight ? currentHeight : 'auto',
+          maxHeight: hasFixedHeight ? currentHeight : undefined,
           animation: 'slideUp 0.3s ease-out',
           boxShadow: '0 -4px 15px rgba(0, 0, 0, 0.12)',
         }}
