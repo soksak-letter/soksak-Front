@@ -165,6 +165,7 @@ const useFindAccount = (type: FindType) => {
       // 1. 아이디 찾기인 경우 -> 결과 화면 데이터를 세팅 (Mock Data)
       try {
         const response = await postFindId({ email });
+
         if (response.resultType === 'SUCCESS') {
           // 결과 페이지로 데이터 전달
           navigate('/auth/id-verify', {
@@ -173,6 +174,7 @@ const useFindAccount = (type: FindType) => {
               date: response.success.createdAt,
             },
           });
+          console.log(response.success.username);
         } else {
           showToast(response.error.reason || '회원 정보를 찾을 수 없습니다.', 'error');
         }

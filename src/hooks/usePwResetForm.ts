@@ -79,7 +79,6 @@ const usePwResetForm = () => {
       }
     } catch (error) {
       console.error(error);
-      alert('서버 오류가 발생했습니다.');
     }
   };
   return {
