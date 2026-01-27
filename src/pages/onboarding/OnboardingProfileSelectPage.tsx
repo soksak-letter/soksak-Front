@@ -12,7 +12,9 @@ import {
 } from '@/constants/onboardingProfile';
 
 import { useModalStore } from '@/stores/modalStore';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSaveBasicInfo } from '@/hooks/onboarding/useSaveBasicInfo';
+import type { Gender, Job } from '@/types/dto/onboarding';
 
 type GenderId = GenderOption['id'];
 type JobId = JobOption['id'];
@@ -22,20 +24,60 @@ export default function OnboardingProfileSelectPage() {
   const [job, setJob] = useState<JobId | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const openModal = useModalStore((s) => s.openModal);
+
+  // mode: onboarding(default) | edit
+  const mode = new URLSearchParams(location.search).get('mode') === 'edit' ? 'edit' : 'onboarding';
+  const isEdit = mode === 'edit';
+
+  const saveBasicInfo = useSaveBasicInfo();
 
   const isNextEnabled = gender !== null && job !== null;
 
   const handleNext = () => {
     if (!isNextEnabled) return;
-    console.log('gender:', gender, 'job:', job);
-    navigate('/onboarding/topic-select');
+
+    const payload = {
+      gender: gender as Gender,
+      job: job as Job,
+    };
+
+    saveBasicInfo.mutate(payload, {
+      onSuccess: (res) => {
+        if (res.resultType === 'SUCCESS') {
+          if (isEdit) {
+            navigate('/my/my-page', { replace: true });
+          } else {
+            navigate('/onboarding/topic-select');
+          }
+          return;
+        }
+
+        // 이미 온보딩 완료 사용자
+        if (res.error.errorCode === '409') {
+          if (isEdit) {
+            navigate('/my/my-page', { replace: true });
+          } else {
+            navigate('/', { replace: true });
+          }
+          return;
+        }
+
+        // TODO: 토스트로 reason 노출
+        console.log(res.error.reason);
+      },
+    });
   };
 
   const handleSkipOpen = () => {
     openModal('onboardingSkipConfirm', {
       onConfirmSkip: () => {
-        navigate('/onboarding/topic-select');
+        if (isEdit) {
+          navigate('/my/my-page', { replace: true });
+        } else {
+          navigate('/onboarding/topic-select');
+        }
       },
     });
   };
