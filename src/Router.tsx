@@ -10,7 +10,7 @@ import MainPage from './pages/main/Mainpage';
 import WelcomePage from './pages/login/WelcomePage';
 
 import SignUpPage from './pages/login/SignUpPage';
-import SignInPage from './pages/login/SignInPage';
+import SignInPage from './pages/login/SigninPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
@@ -44,6 +44,7 @@ import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
 import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
+import SocailLoginCallBackPage from './pages/login/socialLoginCallBackPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -98,6 +99,7 @@ const router = createBrowserRouter([
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
               { path: 'terms', element: <TermsCheckPage /> },
+              { path: 'callback', element: <SocailLoginCallBackPage /> },
             ],
           },
 
