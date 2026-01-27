@@ -1,40 +1,41 @@
 import clsx from 'clsx';
 
-type TabKey = 'inbox' | 'request';
+export type LetterInboxTabKey = 'other' | 'received';
 
-export default function FriendTopTabs({
+export default function LetterInboxTabs({
   value,
   onChange,
 }: {
-  value: TabKey;
-  onChange: (v: TabKey) => void;
+  value: LetterInboxTabKey;
+  onChange: (v: LetterInboxTabKey) => void;
 }) {
   return (
     <div className='mt-3'>
       <div className='grid grid-cols-2 rounded-md bg-[#E5E6E6]'>
         <button
           type='button'
-          onClick={() => onChange('inbox')}
+          onClick={() => onChange('other')}
           className={clsx(
             'h-[44px] rounded-md ty-body4 transition',
-            value === 'inbox'
+            value === 'other'
               ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
               : 'text-[#8C8C8C]',
           )}
         >
-          친구 목록
+          익명 편지
         </button>
+
         <button
           type='button'
-          onClick={() => onChange('request')}
+          onClick={() => onChange('received')}
           className={clsx(
             'h-[44px] rounded-md ty-body4 transition',
-            value === 'request'
+            value === 'received'
               ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
               : 'text-[#8C8C8C]',
           )}
         >
-          친구 신청
+          나에게 받은 편지
         </button>
       </div>
     </div>

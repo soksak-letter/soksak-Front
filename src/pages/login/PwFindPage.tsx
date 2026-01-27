@@ -1,8 +1,10 @@
 import { Button } from '@/components/common/Button';
-import Toast from '@/components/common/Toast';
+import ToastPopup from '@/components/ToastPopup';
 import useFindAccount from '@/hooks/useFindAccount';
+import { useState } from 'react';
 
 const PwFindPage = () => {
+  const [isFocused, setIsFocused] = useState(false);
   const {
     email,
     authCode,
@@ -10,7 +12,8 @@ const PwFindPage = () => {
     apiStatus,
     serverMessage,
     isAuthVerified,
-    showToast, // 토스트 보임 여부
+    toastState, // { message, status } 또는 null
+    toastVisible, // boolean
     closeToast, // 토스트 닫기 함수
     formattedTime,
     handleEmailChange,
@@ -42,7 +45,7 @@ const PwFindPage = () => {
           인증번호가 발송되었습니다.
         </p>
       );
-    if (email.length > 0 && !validation.success)
+    if (email.length > 0 && !validation.success && !isFocused)
       return (
         <p className='ty-detail text-[var(--color-status-alert)] mt-1'>{validation.message}</p>
       );
@@ -56,30 +59,32 @@ const PwFindPage = () => {
         <p className='ty-body4'>이메일로 전송받은 인증번호를 확인해주세요.</p>
       </div>
 
-      <div className='flex flex-col gap-[8px]'>
+      <div className='flex flex-col h-[180px] gap-[8px]'>
         {/* 이메일 입력 & 인증 요청 버튼 */}
-        <div>
+        <div className='flex flex-col gap-[4px]'>
           <div className='flex flex-row gap-[8px]'>
             <input
               type='email'
               value={email}
               onChange={handleEmailChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder='이메일'
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg border-[var(--color-grey-100)]
-              outline-none focus:border-[var(--color-secondary-800)] 
+              outline-none 
               ${
                 // 1. 성공 (그린): 존재하는 이메일일 때
                 apiStatus === 'success'
                   ? 'border-[var(--color-status-positive)] focus:border-[var(--color-status-positive)]'
                   : // 2. 에러 (레드): API 오류 또는 형식 틀림
-                    apiStatus === 'error' || (email.length > 0 && !validation.success)
+                    apiStatus === 'error' || (email.length > 0 && !validation.success && !isFocused)
                     ? 'border-[var(--color-status-alert)]'
-                    : // 3. 입력값 있음 (블루): 입력 중이거나, 입력 후 포커스 떼도 유지
+                    : // 3. 입력값 있음 (블랙): 입력 중이거나, 입력 후 포커스 떼도 유지
                       email.length > 0
-                      ? 'border-[var(--color-secondary-800)] focus:border-[var(--color-secondary-800)]'
-                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블루)
-                        'border-[var(--color-grey-100)] focus:border-[var(--color-secondary-800)]'
+                      ? 'border-[var(--color-secondary-800)] focus:border-[var(--color-grey-800)]'
+                      : // 4. 기본 (회색): 빈 칸일 때 (포커스 시엔 블랙)
+                        'border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)]'
               }`}
             />
             <Button
@@ -104,7 +109,7 @@ const PwFindPage = () => {
 
         {/* 2. 인증번호 입력 영역 (이메일 발송 성공 시에만 노출) */}
         {apiStatus === 'success' && (
-          <div className='flex flex-col gap-[8px]'>
+          <div className='flex flex-col gap-[4px]'>
             <div className='flex gap-2'>
               <div className='relative flex-1'>
                 <input
@@ -112,7 +117,7 @@ const PwFindPage = () => {
                   value={authCode}
                   onChange={handleAuthCodeChange}
                   placeholder='인증번호 6자리 입력'
-                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-secondary-800)] ${
+                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)] ${
                     !isAuthVerified
                       ? 'border-[var(--color-grey-100)]'
                       : 'border-[var(--color-status-positive)]'
@@ -128,28 +133,34 @@ const PwFindPage = () => {
 
               <Button
                 size='small'
-                color='black'
+                color={authCode.length === 6 ? 'black' : 'grey'}
                 onClick={handleVerifyCode}
                 disabled={authCode.length < 6}
-                className={`
-              ${authCode.length === 6 ? 'bg-[#9CA3AF] text-white' : 'bg-[var(--color-grey-100)] text-[#8C8C8C]'}
-            `}
               >
                 확인
               </Button>
             </div>
-            <p className='y-detail text-[var(--color-status-positive)] mt-1 '>
+            <p className='ty-detail text-[var(--color-status-positive)]'>
               {isAuthVerified ? '인증되었습니다' : ''}
             </p>
           </div>
         )}
       </div>
 
-      {/* [수정] Toast 컴포넌트 사용 */}
-      <Toast isVisible={showToast} message='인증되었습니다.' onClose={closeToast} />
+      {/* Toast 컴포넌트 사용 */}
+      {toastState && (
+        <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
+          <ToastPopup
+            status={toastState.status} // 'success' | 'error'
+            message={toastState.message} // 메세지 텍스트
+            visible={toastVisible} // 애니메이션용 visibility
+            onClose={closeToast} // 강제 닫기 (클릭 시)
+          />
+        </div>
+      )}
 
       {/* 하단 아이디 찾기 버튼 */}
-      <div className='absolute bottom-[300px] w-full px-[5px] flex justify-center'>
+      <div className='flex w-full px-[5px] justify-center'>
         {/* 여백은 상황에 맞게 조절하세요 */}
         <Button
           // 인증이 완료되어야만 활성화

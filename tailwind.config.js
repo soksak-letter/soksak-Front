@@ -51,6 +51,7 @@ export default {
           primary: 'var(--color-bg-primary)',
           secondary: 'var(--color-bg-secondary)',
           tertiary: 'var(--color-bg-tertiary)',
+          500: 'var(--color-bg-500)',
         },
         line: {
           normal: 'var(--color-line-normal)',
