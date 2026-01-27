@@ -6,7 +6,8 @@ import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
 import useToast from '@/hooks/useToast';
 import { useModalStore } from '@/stores/modalStore';
-import { useMemo, useState } from 'react';
+import type { ApiError } from '@/types/dto/common';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LIMIT = {
@@ -57,6 +58,23 @@ const AnonDraftPage = () => {
 
     return null;
   };
+
+  const handled = useRef(false);
+
+  useEffect(() => {
+    if (!isError || handled.current) return;
+    handled.current = true;
+
+    const apiError = error as unknown as ApiError;
+
+    showToast(apiError.reason, 'error');
+
+    const id = window.setTimeout(() => {
+      navigate('/home/main', { replace: true });
+    }, 600);
+
+    return () => window.clearTimeout(id);
+  }, [isError, error, navigate, showToast]);
 
   const handleSubmit = () => {
     const title = letter.title.trim();
