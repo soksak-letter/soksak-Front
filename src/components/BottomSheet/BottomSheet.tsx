@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -8,7 +8,9 @@ interface BottomSheetProps {
 
   overlay?: boolean;
   closeOnOutside?: boolean;
-  height?: number | string;
+  height?: number;
+  draggable?: boolean;
+  minHeight?: number;
 }
 
 export default function BottomSheet({
@@ -19,28 +21,83 @@ export default function BottomSheet({
   overlay = true,
   closeOnOutside = true,
   height,
+  draggable = false,
+  minHeight = 100,
 }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
-  const resolvedHeight = typeof height === 'number' ? `${height}px` : height;
 
   const HANDLE_H = 10;
   const TITLE_H = title ? 52 : 0;
 
+  const hasFixedHeight = typeof height === 'number';
+
+  // 고정 높이 모드에서 max는 height 자체
+  const maxHeightPx = useMemo(() => (hasFixedHeight ? height : 0), [hasFixedHeight, height]);
+  // currentHeight는 height를 props로 받았을 때 의미 있다.
+  const [currentHeight, setCurrentHeight] = useState<number>(() => (hasFixedHeight ? height : 0));
+  const [isDragging, setIsDragging] = useState(false);
+
+  // 꾸미기 페이지 첫 진입시 바텀시트는 최대 높이로 열린다.
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!hasFixedHeight) return;
+
+    setCurrentHeight(height);
+  }, [isOpen, hasFixedHeight, height]);
+
+  // 바깥 클릭 닫기
   useEffect(() => {
     if (!isOpen) return;
     if (!closeOnOutside) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) {
-        onClose();
-      }
+      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) onClose();
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, closeOnOutside, onClose]);
 
+  // 드래그 핸들러
+  const dragRef = useRef<{
+    startY: number;
+    startHeight: number;
+  } | null>(null);
+  const onPointerDownHandle = (e: React.PointerEvent) => {
+    if (!draggable || !hasFixedHeight) return;
+
+    setIsDragging(true);
+    dragRef.current = { startY: e.clientY, startHeight: currentHeight };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMoveHandle = (e: React.PointerEvent) => {
+    if (!draggable || !hasFixedHeight) return;
+    if (!dragRef.current) return;
+
+    const { startY, startHeight } = dragRef.current;
+
+    const deltaY = e.clientY - startY; // 아래로 +, 위로 -
+    const nextHeight = startHeight - deltaY;
+
+    const clamped = Math.max(minHeight, Math.min(height!, nextHeight));
+    setCurrentHeight(clamped);
+  };
+
+  const onPointerUpHandle = (e: React.PointerEvent) => {
+    if (!draggable || !hasFixedHeight) return;
+
+    dragRef.current = null;
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {}
+  };
+
   if (!isOpen) return null;
+
+  const contentHeight = hasFixedHeight
+    ? Math.max(0, currentHeight - HANDLE_H - TITLE_H)
+    : undefined;
 
   return (
     <>
@@ -58,14 +115,19 @@ export default function BottomSheet({
         style={{
           width: '375px',
           maxWidth: '100vw',
-          height: resolvedHeight ?? 'auto',
-          maxHeight: resolvedHeight ? resolvedHeight : '90vh',
+          height: hasFixedHeight ? currentHeight : 'auto',
+          maxHeight: hasFixedHeight ? currentHeight : undefined,
           animation: 'slideUp 0.3s ease-out',
           boxShadow: '0 -4px 15px rgba(0, 0, 0, 0.12)',
         }}
       >
         {/* 드래그 핸들 */}
-        <div className='flex justify-center pt-3 pb-1'>
+        <div
+          className='flex justify-center py-3 cursor-grab'
+          onPointerDown={onPointerDownHandle}
+          onPointerMove={onPointerMoveHandle}
+          onPointerUp={onPointerUpHandle}
+        >
           <div className='w-14 h-1 bg-[var(--color-text-assistive)] rounded-full' />
         </div>
 
@@ -80,10 +142,8 @@ export default function BottomSheet({
         <div
           className='overflow-y-auto'
           style={{
-            height: resolvedHeight
-              ? `calc(${resolvedHeight} - ${HANDLE_H}px - ${TITLE_H}px)`
-              : 'auto',
-            maxHeight: resolvedHeight ? undefined : 'calc(90vh - 80px)',
+            height: contentHeight,
+            overflow: isDragging ? 'hidden' : 'auto',
           }}
         >
           {children}

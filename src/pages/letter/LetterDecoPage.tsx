@@ -66,8 +66,8 @@ function LetterDecoPage() {
       <div className='p-5'>
         <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
       </div>
-      {/* TODO : 편지지 디자인 확정 후 수정 */}
       {/* 편지 미리보기 Wrapper */}
+      {/* TODO : 편지지, 편지봉투 요소들 전역 상태 데이터와 연결 */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
         {selectedTab === 'stamp' ? (
           <div className='absolute inset-0 flex justify-center'>
@@ -79,19 +79,14 @@ function LetterDecoPage() {
             />
           </div>
         ) : (
-          <LetterCard />
+          <LetterCard
+            paperColor='#FAF9EE' // TODO : 편지지 svg로 받아와야 함. 이름 변경 필요
+            font='Pretendard, sans-serif'
+            title={title}
+            content={content}
+            className='-rotate-1 mt-10'
+          />
         )}
-        {/* 텍스트 레이어 (겹침) */}
-        <div className='absolute inset-0 flex flex-col px-3 pt-4 pb-3'>
-          {/* 제목 */}
-          <div className='mb-2 line-clamp-2'>
-            <p className='ty-title3'>{title}</p>
-          </div>
-          {/* 내용 */}
-          <div className='flex-1 whitespace-pre-wrap overflow-hidden'>
-            <p className='ty-body5'>{content}</p>
-          </div>
-        </div>
       </div>
       {isOpen && (
         <BottomSheet
@@ -100,6 +95,8 @@ function LetterDecoPage() {
           overlay={false}
           closeOnOutside={false}
           height={362}
+          draggable={true}
+          minHeight={100}
         >
           <LetterStyleContent selectedTab={selectedTab} onChangeTab={setSelectedTab} />
         </BottomSheet>
