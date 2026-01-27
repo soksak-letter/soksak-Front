@@ -1,17 +1,73 @@
+import { axiosInstance } from '@/api/axios';
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
+import type { SignInRequest, SignInResponse } from '@/types/dto/auth';
+import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  // 1. DTO에 맞춰 userName으로 상태 관리
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
   // 페이지 이동 핸들러
   const handleFindId = () => navigate('/auth/id-find'); // 아이디 찾기 페이지 경로
   const handleFindPw = () => navigate('/auth/pw-find'); // 비밀번호 찾기 페이지 경로
-  const handleLogin = () => {
-    // 로그인 로직 처리
-    console.log('로그인 시도');
-    navigate('/'); // 로그인 성공 시 메인으로 이동
+  /**
+   * [비밀번호 입력 핸들러]
+   * - 공백 제거
+   * - 16자 초과 입력 방지 (maxLength가 있어도 붙여넣기 등을 위해 안전장치 추가)
+   */
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const cleanValue = removeWhitespace(e.target.value);
+    if (cleanValue.length > 16) return; // 16자 넘으면 업데이트 안 함
+    setPassword(cleanValue);
+  };
+
+  const canSubmit = username && password && password.length >= 8;
+  const handleLogin = async () => {
+    // 2) 보낼 데이터 준비 (SignInRequest 타입 준수)
+    const requestData: SignInRequest = {
+      username: username,
+      password: password,
+    };
+
+    console.log(' [로그인 요청] 데이터:', requestData);
+
+    try {
+      // 3) API 호출 (POST /auth/login) -> 백엔드 주소 확인 필요
+      const response = await axiosInstance.post<SignInResponse>('/auth/login', requestData);
+
+      console.log('[로그인 성공] 응답:', response.data);
+
+      const { resultType, success, error } = response.data;
+
+      // 4) 성공 처리
+      if (resultType === 'SUCCESS' && success) {
+        // SignInResult 구조: { result: { jwtAccessToken, ... } }
+        const { jwtAccessToken, jwtRefreshToken } = success.result;
+
+        // 토큰 저장
+        localStorage.setItem('accessToken', jwtAccessToken);
+        localStorage.setItem('refreshToken', jwtRefreshToken);
+
+        console.log('토큰 저장 완료! 메인으로 이동');
+        navigate('/');
+      } else {
+        // 200 OK지만 실패 로직 (예: 비밀번호 불일치 등 서버가 정의한 에러)
+        console.warn('[로그인 실패] 이유:', error?.reason);
+      }
+    } catch (err: any) {
+      console.error(' [통신 에러]:', err);
+      if (err.response) {
+        // 서버가 400, 500 등을 보냈을 때
+        console.log(err.response.data?.error?.reason || '서버 오류가 발생했습니다.');
+      } else {
+        console.log('네트워크 연결을 확인해주세요.');
+      }
+    }
   };
 
   return (
@@ -21,14 +77,20 @@ const SignInPage = () => {
         <input
           type='text'
           placeholder='아이디'
-          className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
+          value={username} // state: username
+          onChange={(e) => setUserName(removeWhitespace(e.target.value))}
+          className='w-[342px] h-[48px] border-[1px] bg-[var(--color-bg-primary)] px-4 outline-none focus:border-[var(--color-grey-800)] border-[var(--color-grey-100)] rounded-lg'
         />
         <input
-          type='text'
-          placeholder='비밀번호(영문,숫자 포함 최대 16자리)'
-          className='w-[342px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] border-[var(--color-grey-100)] rounded-lg'
+          type='password'
+          value={password} // state: password
+          onChange={handlePasswordChange}
+          onKeyDown={blockSpaceKey} // 스페이스바 입력 차단
+          maxLength={16} // HTML 속성으로 16자 제한
+          placeholder='비밀번호(영문, 숫자 조합으로 8~16자리)'
+          className='w-[342px] h-[48px] border-[1px] bg-[var(--color-bg-primary)] px-4 outline-none focus:border-[var(--color-grey-800)] border-[var(--color-grey-100)] rounded-lg'
         />
-        <Button onClick={handleLogin} className='w-[342px] h-[48px]'>
+        <Button onClick={handleLogin} disabled={!canSubmit} className='w-[342px] h-[48px]'>
           로그인
         </Button>
         <div className='w-[342px] flex justify-end items-end gap-3 mb-10'>

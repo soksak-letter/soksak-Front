@@ -4,7 +4,8 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
-import Toast from '@/components/common/Toast';
+import useToast from '@/hooks/useToast';
+import ToastPopup from '@/components/ToastPopup';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -16,9 +17,8 @@ const LetterReportPage = () => {
 
   const [isCompleted, setIsCompleted] = useState(false);
 
-  //토스트 상태 관리 (Toast 파일 수정 필요..?)
-  const [toastMessage, setToastMessage] = useState('');
-  const [isToastVisible, setIsToastVisible] = useState(false);
+  //토스트 상태 관리
+  const { toast, visible, showToast, closeToast } = useToast();
 
   const reasons = [
     '욕설/비하',
@@ -57,8 +57,7 @@ const LetterReportPage = () => {
   const handleBlockToggle = (nextState: boolean) => {
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
-      setToastMessage('신고 사유를 선택해주세요.');
-      setIsToastVisible(true); // 토스트 띄우기
+      showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
 
@@ -69,8 +68,7 @@ const LetterReportPage = () => {
   const handleSubmit = () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
-      setToastMessage('신고 사유를 선택해주세요.');
-      setIsToastVisible(true); // 토스트 띄우기
+      showToast('신고 사유를 선택해주세요.', 'error');
       return;
     }
     setIsCompleted(true); // 완료 화면으로 전환
@@ -140,11 +138,16 @@ const LetterReportPage = () => {
           className={!isBlocked ? '!bg-[#CBCCCD] [&>span]:!bg-[#E5E6E6]' : ''}
         />
       </div>
-      <Toast
-        message={toastMessage}
-        isVisible={isToastVisible}
-        onClose={() => setIsToastVisible(false)}
-      />
+      {toast && (
+        <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
+          <ToastPopup
+            status={toast.status} // 'error' | 'success'
+            message={toast.message} // '신고 사유를 선택해주세요.'
+            visible={visible} // 애니메이션 제어
+            onClose={closeToast} // 즉시 닫기
+          />
+        </div>
+      )}
     </div>
   );
 };
