@@ -13,15 +13,41 @@ const InquiryPage = () => {
   const [inquiryType, setInquiryType] = useState('');
   const [content, setContent] = useState('');
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!email || !title || !inquiryType || !content) {
       alert('모든 항목을 입력해주세요.');
       return;
     }
-    // TODO: API 연동
-    console.log({ email, title, inquiryType, content });
-    navigate(-1);
+
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+    formData.append('access_key', import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append('email', email);
+    formData.append('subject', `[${inquiryType}] ${title}`);
+    formData.append('message', content);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('문의가 성공적으로 전송되었습니다.');
+        navigate(-1);
+      } else {
+        alert('전송에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch {
+      alert('오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,9 +154,10 @@ const InquiryPage = () => {
           <button
             type='button'
             onClick={handleSubmit}
-            className='w-full h-[52px] bg-[var(--color-primary-500)] text-white rounded-xl ty-body2 hover:bg-[var(--color-primary-600)] transition-colors'
+            disabled={isSubmitting}
+            className='w-full h-[52px] bg-[var(--color-primary-500)] text-white rounded-xl ty-body2 hover:bg-[var(--color-primary-600)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            문의하기
+            {isSubmitting ? '전송 중...' : '문의하기'}
           </button>
         </div>
       </div>
