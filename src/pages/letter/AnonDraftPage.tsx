@@ -16,7 +16,7 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patchDraft } = useLetterStore(); // TODO : 필요시 셀렉터로 렌더 최적화
+  const { draft, patchDraft, resetAll } = useLetterStore(); // TODO : 필요시 셀렉터로 렌더 최적화
   const { data, isLoading, isError, error } = useDailyQuestion();
 
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ const AnonDraftPage = () => {
       });
       return;
     }
+    resetAll();
     navigate(-1);
   };
 

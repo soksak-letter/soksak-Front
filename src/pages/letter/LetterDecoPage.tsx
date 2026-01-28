@@ -19,7 +19,7 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const { draft, style, patchStyle } = useLetterStore();
+  const { draft, style, patchStyle, resetAll } = useLetterStore();
   const { data, isLoading, isError, error, refetch } = useLetterStyleOptions();
   const createLetterMutation = useCreateLetter();
 
@@ -92,6 +92,8 @@ function LetterDecoPage() {
       onSuccess: (res) => {
         openModal('letterSendingConfirm', {
           onConfirmSending: () => {
+            console.log(payload);
+            resetAll();
             navigate('/letter/${safeMode}/sending'); // letterId 바로 받는지 확인
           },
           onConfirmCancelSending: () => setIsOpen(true),
