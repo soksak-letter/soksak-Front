@@ -1,6 +1,7 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
+
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
@@ -15,8 +16,9 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patch } = useLetterDraftStore(); // TODO : 추후 셀렉터로 렌더 최적화
+  const { draft, patch } = useLetterDraftStore(); // TODO : 필요시 셀렉터로 렌더 최적화
   const { data, isLoading, isError, error } = useDailyQuestion();
+
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();

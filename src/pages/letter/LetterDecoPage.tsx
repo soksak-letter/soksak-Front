@@ -7,17 +7,18 @@ import LetterCard from '@/components/letters/LetterCard';
 import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
+import { useLetterDraftStore } from '@/stores/letterDraftStore';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
+  const { draft, patch } = useLetterDraftStore();
+
   const { target } = useParams<{ target?: string }>();
   const { state } = useLocation();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
-
-  const { title = '', content = '' } = (state ?? {}) as { title?: string; content?: string };
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
@@ -82,8 +83,7 @@ function LetterDecoPage() {
           <LetterCard
             paperColor='#FAF9EE' // TODO : 편지지 svg로 받아와야 함. 이름 변경 필요
             font='Pretendard, sans-serif'
-            title={title}
-            content={content}
+            value={{ title: draft.title, content: draft.content }}
             className='-rotate-1 mt-10'
           />
         )}

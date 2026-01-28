@@ -1,8 +1,7 @@
 type LetterCardProps = {
   paperColor: string;
   font: string;
-  title: string;
-  content: string;
+  value: { title: string; content: string };
   className?: string;
 };
 
@@ -13,7 +12,7 @@ const PADDING_TOP = 56;
 const PADDING_X = 22;
 const PADDING_BOTTOM = 24;
 
-const LetterCard = ({ paperColor, font, title, content, className }: LetterCardProps) => {
+const LetterCard = ({ paperColor, font, value, className }: LetterCardProps) => {
   return (
     <div className='flex justify-center'>
       <div
@@ -68,7 +67,7 @@ const LetterCard = ({ paperColor, font, title, content, className }: LetterCardP
                 wordBreak: 'break-word',
               }}
             >
-              {title}
+              {value.title}
             </p>
           </div>
 
@@ -83,7 +82,7 @@ const LetterCard = ({ paperColor, font, title, content, className }: LetterCardP
                 wordBreak: 'break-word',
               }}
             >
-              {content}
+              {value.content}
             </p>
           </div>
         </div>
