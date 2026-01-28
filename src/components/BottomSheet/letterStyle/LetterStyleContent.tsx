@@ -51,11 +51,11 @@ export default function LetterStyleContent({
 
   const paperViewModels = useMemo(() => {
     return papers.map((p) => {
-      const asset = PAPER_ASSET_MAP[p.color];
+      const asset = PAPER_ASSET_MAP[p.id];
 
       return {
         id: p.id,
-        name: p.color,
+        name: p.color ?? `Paper ${p.id}`,
         Preview: asset?.Preview,
       };
     });
@@ -96,7 +96,7 @@ export default function LetterStyleContent({
               {p.Preview ? (
                 <PaperPreview Preview={p.Preview} name={p.name} />
               ) : (
-                <div className='w-full h-full rounded-xl bg-gray-100' />
+                <div className='w-full h-full bg-gray-100' />
               )}
             </button>
           ))}

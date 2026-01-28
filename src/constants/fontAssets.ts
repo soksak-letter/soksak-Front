@@ -5,6 +5,8 @@ export type FontAsset = {
   sampleEn: string;
 };
 
+export const DEFAULT_FONT_ID = 1;
+
 export const FONT_ASSET_MAP: Record<number, FontAsset> = {
   1: {
     label: 'Pretendard',

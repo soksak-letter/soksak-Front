@@ -11,8 +11,8 @@ import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
-import { DEFAULT_KEY, PAPER_ASSET_MAP } from '@/constants/paperAssets';
-import { FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
@@ -36,17 +36,20 @@ function LetterDecoPage() {
   const selectedPaper = papers.find((p) => p.id === style.paperId);
   const selectedStamp = stamps.find((s) => s.id === style.stampId);
 
-  const paperAsset = selectedPaper ? PAPER_ASSET_MAP[selectedPaper.color] : null;
-  const PaperBg = paperAsset?.Preview ?? PAPER_ASSET_MAP[DEFAULT_KEY].Preview;
-  const envelopeColor = paperAsset?.envelopeColor ?? PAPER_ASSET_MAP[DEFAULT_KEY].envelopeColor;
+  const paperAsset =
+    (style.paperId != null ? PAPER_ASSET_MAP[style.paperId] : undefined) ??
+    PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
+
+  const PaperBg = paperAsset.Preview;
+  const envelopeColor = paperAsset.envelopeColor;
 
   useEffect(() => {
     console.log('[Style fontId updated]', style.fontId);
   }, [style.fontId]);
 
   const fontFamily =
-    (style.fontId ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
-    'Pretendard, sans-serif';
+    (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
+    FONT_ASSET_MAP[DEFAULT_FONT_ID].fontFamily;
 
   const stampUrl = selectedStamp?.assetUrl ?? '';
 
@@ -79,8 +82,6 @@ function LetterDecoPage() {
       onConfirmCancelSending: () => setIsOpen(true),
     });
   };
-
-  console.log('styleOptions', { isLoading, isError, data, error });
 
   return (
     <div className='relative'>

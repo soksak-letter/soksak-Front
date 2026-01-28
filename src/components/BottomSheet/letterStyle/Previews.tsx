@@ -8,7 +8,7 @@ export function PaperPreview({
   name: string;
 }) {
   return (
-    <div className='w-full h-full rounded-xl overflow-hidden bg-white flex items-center justify-center'>
+    <div className='w-full h-full overflow-hidden bg-white flex items-center justify-center'>
       <Preview className='w-full h-full' />
     </div>
   );
@@ -16,7 +16,7 @@ export function PaperPreview({
 
 export function StampPreview({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className='w-full h-full rounded-xl overflow-hidden bg-white'>
+    <div className='w-full h-full overflow-hidden bg-white'>
       <img src={src} alt={alt} className='w-full h-full object-cover' />
     </div>
   );
