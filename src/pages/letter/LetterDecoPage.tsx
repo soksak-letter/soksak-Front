@@ -3,6 +3,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useState } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
+import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
@@ -20,6 +21,7 @@ type StyleTab = 'font' | 'paper' | 'stamp';
 function LetterDecoPage() {
   const { draft, style, patchStyle } = useLetterStore();
   const { data, isLoading, isError, error, refetch } = useLetterStyleOptions();
+  const createLetterMutation = useCreateLetter();
 
   const { target } = useParams<{ target?: string }>();
   const { openModal } = useModalStore();
@@ -75,9 +77,30 @@ function LetterDecoPage() {
   const handleSubmit = () => {
     setIsOpen(false);
 
-    openModal('letterSendingConfirm', {
-      onConfirmSending: () => navigate(`/letter/${safeMode}/sending`),
-      onConfirmCancelSending: () => setIsOpen(true),
+    const payload = {
+      target: safeMode,
+      title: draft.title,
+      content: draft.content,
+      isPublic: draft.isPublic,
+      paperId: style.paperId!,
+      fontId: style.fontId!,
+      stampId: style.stampId!,
+    };
+
+    createLetterMutation.mutate(payload, {
+      onSuccess: (res) => {
+        openModal('letterSendingConfirm', {
+          onConfirmSending: () => {
+            navigate('/letter/${safeMode}/sending'); // letterId 바로 받는지 확인
+          },
+          onConfirmCancelSending: () => setIsOpen(true),
+        });
+      },
+      onError: (err) => {
+        console.error(err);
+        setIsOpen(true);
+        alert(err?.reason ?? '편지 전송에 실패했어요.');
+      },
     });
   };
 
