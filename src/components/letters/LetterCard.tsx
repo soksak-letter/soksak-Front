@@ -1,5 +1,7 @@
+import React from 'react';
+
 type LetterCardProps = {
-  paperColor: string;
+  PaperBg: React.ComponentType<{ className?: string }>;
   font: string;
   value: { title: string; content: string };
   className?: string;
@@ -12,7 +14,7 @@ const PADDING_TOP = 56;
 const PADDING_X = 22;
 const PADDING_BOTTOM = 24;
 
-const LetterCard = ({ paperColor, font, value, className }: LetterCardProps) => {
+const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
   return (
     <div className='flex justify-center'>
       <div
@@ -20,13 +22,12 @@ const LetterCard = ({ paperColor, font, value, className }: LetterCardProps) => 
         style={{
           width: CARD_W,
           height: CARD_H,
-          backgroundColor: paperColor,
           border: '1px solid rgba(0,0,0,0.15)',
           fontFamily: font,
         }}
       >
         <div className='absolute inset-0 pointer-events-none'>
-          {/* TODO: 여기에 SVG/패턴 넣기 */}
+          {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}{' '}
         </div>
 
         {/* 고정 라인 레이어 */}

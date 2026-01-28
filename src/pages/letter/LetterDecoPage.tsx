@@ -1,19 +1,25 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useState } from 'react';
+import { useLetterStore } from '@/stores/letterStore';
+import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
-import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
+import LetterStyleContent from '@/components/BottomSheet/letterStyle/LetterStyleContent';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLetterStore } from '@/stores/letterStore';
+import { LoadingDots } from '@/components/LoadingDots';
+import { Button } from '@/components/common/Button';
+import { DEFAULT_KEY, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { FONT_ASSET_MAP } from '@/constants/fontAssets';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const { draft, patchStyle } = useLetterStore();
+  const { draft, style, patchStyle } = useLetterStore();
+  const { data, isLoading, isError, error, refetch } = useLetterStyleOptions();
 
   const { target } = useParams<{ target?: string }>();
   const { openModal } = useModalStore();
@@ -21,6 +27,23 @@ function LetterDecoPage() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
+
+  const fonts = data?.fonts ?? [];
+  const papers = data?.papers ?? [];
+  const stamps = data?.stamps ?? [];
+
+  const selectedFont = fonts.find((f) => f.id === style.fontId);
+  const selectedPaper = papers.find((p) => p.id === style.paperId);
+  const selectedStamp = stamps.find((s) => s.id === style.stampId);
+
+  const paperAsset = selectedPaper ? PAPER_ASSET_MAP[selectedPaper.color] : null;
+  const PaperBg = paperAsset?.Preview ?? PAPER_ASSET_MAP[DEFAULT_KEY].Preview;
+  const envelopeColor = paperAsset?.envelopeColor ?? PAPER_ASSET_MAP[DEFAULT_KEY].envelopeColor;
+
+  const fontAsset = selectedFont ? FONT_ASSET_MAP[selectedFont.font] : null;
+  const fontFamily = fontAsset?.fontFamily ?? 'Pretendard, sans-serif';
+
+  const stampUrl = selectedStamp?.assetUrl ?? '';
 
   useEffect(() => {
     setIsOpen(true);
@@ -67,21 +90,20 @@ function LetterDecoPage() {
         <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
       </div>
       {/* 편지 미리보기 Wrapper */}
-      {/* TODO : 편지지, 편지봉투 요소들 전역 상태 데이터와 연결 */}
       <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
         {selectedTab === 'stamp' ? (
           <div className='absolute inset-0 flex justify-center'>
             <LetterEnvelope
-              paperColor='#FFF7E6'
-              stampSrc='https://via.placeholder.com/56x76.png?text=STAMP'
-              stampAlt='test'
+              paperColor={envelopeColor}
+              stampSrc={stampUrl}
+              stampAlt={selectedStamp?.name ?? '우표 이미지'}
               className='mt-20 -rotate-4 shadow-sm'
             />
           </div>
         ) : (
           <LetterCard
-            paperColor='#FAF9EE' // TODO : 편지지 svg로 받아와야 함. 이름 변경 필요
-            font='Pretendard, sans-serif'
+            PaperBg={PaperBg}
+            font={fontFamily}
             value={{ title: draft.title, content: draft.content }}
             className='-rotate-1 mt-10'
           />
@@ -97,9 +119,31 @@ function LetterDecoPage() {
           draggable={true}
           minHeight={100}
         >
-          <LetterStyleContent selectedTab={selectedTab} onChangeTab={setSelectedTab} />
+          {isLoading ? (
+            <div className='flex h-full flex-col items-center justify-center gap-8 -mt-5'>
+              <LoadingDots fillIntervalMs={350} />
+              <p className='mt-4 ty-title2'>로딩 중...</p>
+            </div>
+          ) : isError ? (
+            <div className='flex h-full flex-col items-center justify-center gap-10 -mt-5 text-center'>
+              <p className='ty-title2'>스타일을 불러오지 못했어요.</p>
+              <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+                다시 시도
+              </Button>
+            </div>
+          ) : (
+            <LetterStyleContent
+              selectedTab={selectedTab}
+              onChangeTab={setSelectedTab}
+              value={style}
+              onChange={(next) => patchStyle(next)}
+              papers={papers}
+              fonts={fonts}
+              stamps={stamps}
+            />
+          )}
         </BottomSheet>
-      )}{' '}
+      )}
     </div>
   );
 }
