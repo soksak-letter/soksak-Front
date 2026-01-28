@@ -26,7 +26,7 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
         }}
       >
         <div className='absolute inset-0 pointer-events-none'>
-          {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}{' '}
+          {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}
         </div>
 
         {/* 텍스트 레이어 (라인 위) */}

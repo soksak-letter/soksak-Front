@@ -32,8 +32,6 @@ function LetterDecoPage() {
   const papers = data?.papers ?? [];
   const stamps = data?.stamps ?? [];
 
-  const selectedFont = fonts.find((f) => f.id === style.fontId);
-  const selectedPaper = papers.find((p) => p.id === style.paperId);
   const selectedStamp = stamps.find((s) => s.id === style.stampId);
 
   const paperAsset =

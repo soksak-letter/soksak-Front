@@ -28,7 +28,7 @@ export const FONT_ASSET_MAP: Record<number, FontAsset> = {
   },
   4: {
     label: '나눔 느릿느릿체',
-    fontFamily: 'NanumNeuritNeurit, handwriting',
+    fontFamily: 'NanumNeuritNeurit, cursive',
     sampleKo: '편지로 새로운 인연을 만나보세요.',
     sampleEn: 'Try using Soksak letters',
   },

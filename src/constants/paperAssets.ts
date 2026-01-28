@@ -16,7 +16,7 @@ export type PaperAsset = {
   envelopeColor: string;
 };
 
-export const DEFAULT_PAPER_ID = 4;
+export const DEFAULT_PAPER_ID = 1;
 
 export const PAPER_ASSET_MAP: Record<number, PaperAsset> = {
   1: { label: 'Mint', Preview: mint, envelopeColor: '#D8F3EE' },
