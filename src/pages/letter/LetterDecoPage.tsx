@@ -40,6 +40,10 @@ function LetterDecoPage() {
   const PaperBg = paperAsset?.Preview ?? PAPER_ASSET_MAP[DEFAULT_KEY].Preview;
   const envelopeColor = paperAsset?.envelopeColor ?? PAPER_ASSET_MAP[DEFAULT_KEY].envelopeColor;
 
+  useEffect(() => {
+    console.log('[Style fontId updated]', style.fontId);
+  }, [style.fontId]);
+
   const fontFamily =
     (style.fontId ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
     'Pretendard, sans-serif';

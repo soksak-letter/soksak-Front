@@ -17,7 +17,7 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
   return (
     <div className='flex justify-center'>
       <div
-        className={['relative overflow-hiden', className].filter(Boolean).join(' ')}
+        className={['relative overflow-hidden', className].filter(Boolean).join(' ')}
         style={{
           width: CARD_W,
           height: CARD_H,
