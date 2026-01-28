@@ -12,7 +12,7 @@ import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { DEFAULT_KEY, PAPER_ASSET_MAP } from '@/constants/paperAssets';
-import { FONT_ASSET_MAP, FONT_KEY_FROM_SERVER } from '@/constants/fontAssets';
+import { FONT_ASSET_MAP } from '@/constants/fontAssets';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';

@@ -37,11 +37,19 @@ export default function LetterStyleContent({
 }: LetterStyleContentProps) {
   const fontViewModels: FontOption[] = useMemo(() => {
     return fonts.map((f) => {
+<<<<<<< HEAD
       const asset = FONT_ASSET_MAP[f.id];
 
       return {
         id: f.id,
         name: asset?.label ?? f.font,
+=======
+      const asset = FONT_ASSET_MAP[f.font]; // name으로 asset 찾기 -> 추후 id로 변경 가능성
+
+      return {
+        id: f.id,
+        name: f.font,
+>>>>>>> 8c3bb9c2a7c1bf80be7d4222e7b134f95a628941
         fontFamily: asset?.fontFamily ?? 'Pretendard, sans-serif',
         sampleKo: asset?.sampleKo ?? '샘플 문구',
         sampleEn: asset?.sampleEn ?? 'Sample text',

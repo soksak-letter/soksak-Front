@@ -22,6 +22,7 @@ export function FontItem({ font, selected, onSelect }: FontItemProps) {
       onClick={() => onSelect(font.id)}
       className='flex w-full items-center justify-between py-4 text-left'
     >
+<<<<<<< HEAD
       {/* 좌측 : 폰트 이름 */}
       <div className='min-w-[110px]'>
         <p
@@ -63,6 +64,31 @@ export function FontItem({ font, selected, onSelect }: FontItemProps) {
           )}
         </span>{' '}
       </div>
+=======
+      {/* 왼쪽: 폰트 정보 */}
+      <div className='flex flex-col gap-1'>
+        <p className='ty-body2' style={{ fontFamily: font.fontFamily }}>
+          {font.name}
+        </p>
+
+        <p
+          className='ty-caption text-(--color-text-assistive)'
+          style={{ fontFamily: font.fontFamily }}
+        >
+          {font.sampleKo}
+        </p>
+
+        <p
+          className='ty-caption text-(--color-text-assistive)'
+          style={{ fontFamily: font.fontFamily }}
+        >
+          {font.sampleEn}
+        </p>
+      </div>
+
+      {/* 오른쪽: 체크 아이콘 */}
+      {selected && <IoMdCheckmark className='shrink-0 text-(--color-primary-500)' />}
+>>>>>>> 8c3bb9c2a7c1bf80be7d4222e7b134f95a628941
     </button>
   );
 }
