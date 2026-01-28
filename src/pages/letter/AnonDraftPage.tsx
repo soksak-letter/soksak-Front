@@ -5,7 +5,7 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
-import { useLetterDraftStore } from '@/stores/letterDraftStore';
+import { useLetterDraftStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
