@@ -63,10 +63,9 @@ export default function LetterStyleContent({
 
   const cardClass = (isSelected: boolean) =>
     [
-      'aspect-[3/4] rounded-xl bg-white shadow-sm hover:shadow-md transition-all',
-      'ring-1 ring-transparent hover:ring-2 hover:ring-[var(--color-primary-500)]',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-500)] focus-visible:ring-offset-2',
-      isSelected ? 'ring-2 ring-[var(--color-primary-500)] ring-offset-2' : '',
+      'relative overflow-hidden',
+      'shadow-md -rotate-2 scale-[0.86] transition-all',
+      isSelected ? 'ring-2 ring-[var(--color-primary-500)]' : '',
     ].join(' ');
 
   return (

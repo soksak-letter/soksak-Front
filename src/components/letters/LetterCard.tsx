@@ -62,7 +62,7 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
             <p
               style={{
                 fontSize: 14,
-                lineHeight: '24px',
+                lineHeight: '19px',
                 color: '#171717',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
