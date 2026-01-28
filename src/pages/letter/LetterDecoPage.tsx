@@ -78,13 +78,14 @@ function LetterDecoPage() {
     setIsOpen(false);
 
     const payload = {
-      target: safeMode,
+      questionId: draft.questionId,
       title: draft.title,
       content: draft.content,
       isPublic: draft.isPublic,
       paperId: style.paperId!,
       fontId: style.fontId!,
       stampId: style.stampId!,
+      receiverUserId: 1,
     };
 
     createLetterMutation.mutate(payload, {

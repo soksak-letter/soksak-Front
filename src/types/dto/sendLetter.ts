@@ -1,5 +1,5 @@
 export type CreateLetterBody = {
-  target: 'anon' | 'other' | 'self' | 'friend';
+  questionId: number | null;
   title: string;
   content: string;
   isPublic: boolean;
@@ -7,6 +7,7 @@ export type CreateLetterBody = {
   paperId: number;
   fontId: number;
   stampId: number;
+  receiverUserId: number;
 };
 
 export type CreateLetterResult = null;
