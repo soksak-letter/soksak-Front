@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
 
-const INQUIRY_TYPES = ['서비스 이용 문의', '오류 신고', '기능 제안', '계정 문의', '기타'];
+const INQUIRY_TYPES = ['신고 관련', '제재 관련', '일반 문의'];
 
 const InquiryPage = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const InquiryPage = () => {
   };
 
   return (
-    <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-secondary)]'>
+    <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-[var(--color-bg-500)])]'>
       {/* Header */}
       <div className='bg-white'>
         <BackHeader
@@ -46,7 +46,7 @@ const InquiryPage = () => {
         </p>
 
         {/* Form Card */}
-        <div className='bg-white rounded-xl p-4 flex flex-col gap-5'>
+        <div className='bg-white rounded-xl p-4 flex flex-col gap-5 shadow-[0_0_10px_rgba(0,0,0,0.1)]'>
           {/* Email */}
           <div>
             <label className='ty-body4 text-[var(--color-text-normal)] block mb-2'>
@@ -56,8 +56,8 @@ const InquiryPage = () => {
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='w-full h-[48px] px-4 border border-[var(--color-line-normal)] rounded-lg ty-body5 text-[var(--color-text-normal)] placeholder:text-[var(--color-text-assistive)] focus:outline-none focus:border-[var(--color-primary-400)]'
               placeholder='이메일을 입력해주세요'
+              className='w-full h-[48px] px-4 bg-[var(--color-bg-500)] rounded-lg ty-body5 text-[var(--color-text-assistive)] placeholder:text-black/60 focus:outline-none'
             />
           </div>
 
@@ -68,8 +68,8 @@ const InquiryPage = () => {
               type='text'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className='w-full h-[48px] px-4 border border-[var(--color-line-normal)] rounded-lg ty-body5 text-[var(--color-text-normal)] placeholder:text-[var(--color-text-assistive)] focus:outline-none focus:border-[var(--color-primary-400)]'
               placeholder='제목을 입력해주세요'
+              className='w-full h-[48px] px-4 bg-[var(--color-bg-500)] rounded-lg ty-body5 text-[var(--color-text-assistive)] placeholder:text-black/60 focus:outline-none'
             />
           </div>
 
@@ -79,27 +79,23 @@ const InquiryPage = () => {
             <button
               type='button'
               onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
-              className='w-full h-[48px] px-4 border border-[var(--color-line-normal)] rounded-lg ty-body5 text-left flex items-center justify-between focus:outline-none focus:border-[var(--color-primary-400)]'
+              className='w-full h-[48px] px-4 bg-[var(--color-bg-500)] rounded-lg ty-body5 text-left flex items-center justify-between focus:outline-none'
             >
               <span
-                className={
-                  inquiryType
-                    ? 'text-[var(--color-text-normal)]'
-                    : 'text-[var(--color-text-assistive)]'
-                }
+                className={inquiryType ? 'text-[var(--color-text-assistive)]' : 'text-black/60'}
               >
                 {inquiryType || '문의 유형 선택'}
               </span>
               {isTypeDropdownOpen ? (
-                <IoChevronUp className='w-5 h-5 text-[var(--color-text-assistive)]' />
+                <IoChevronUp className='w-5 h-5 text-black/60' />
               ) : (
-                <IoChevronDown className='w-5 h-5 text-[var(--color-text-assistive)]' />
+                <IoChevronDown className='w-5 h-5 text-black/60' />
               )}
             </button>
 
             {/* Dropdown */}
             {isTypeDropdownOpen && (
-              <div className='absolute top-full left-0 right-0 mt-1 bg-white border border-[var(--color-line-normal)] rounded-lg shadow-lg z-10'>
+              <div className='absolute top-full left-0 right-0 mt-1 bg-[var(--color-bg-500)] rounded-lg shadow-lg z-10 overflow-hidden'>
                 {INQUIRY_TYPES.map((type) => (
                   <button
                     key={type}
@@ -108,7 +104,7 @@ const InquiryPage = () => {
                       setInquiryType(type);
                       setIsTypeDropdownOpen(false);
                     }}
-                    className='w-full px-4 py-3 text-left ty-body5 text-[var(--color-text-normal)] hover:bg-[var(--color-bg-secondary)] first:rounded-t-lg last:rounded-b-lg'
+                    className='relative w-full px-4 py-3 text-left ty-body5 text-black/60 hover:bg-black/10 after:content-[""] after:absolute after:bottom-0 after:left-4 after:right-4 after:h-px after:bg-black/10 last:after:hidden'
                   >
                     {type}
                   </button>
@@ -123,20 +119,20 @@ const InquiryPage = () => {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className='w-full h-[160px] px-4 py-3 border border-[var(--color-line-normal)] rounded-lg ty-body5 text-[var(--color-text-normal)] placeholder:text-[var(--color-text-assistive)] resize-none focus:outline-none focus:border-[var(--color-primary-400)]'
               placeholder='문의 내용을 입력해주세요'
+              className='w-full h-[160px] px-4 py-3 bg-[var(--color-bg-500)] rounded-lg ty-body5 text-[var(--color-text-assistive)] placeholder:text-black/60 resize-none focus:outline-none'
             />
           </div>
-        </div>
 
-        {/* Submit Button */}
-        <button
-          type='button'
-          onClick={handleSubmit}
-          className='w-full h-[52px] mt-6 bg-[var(--color-primary-500)] text-white rounded-xl ty-body2 hover:bg-[var(--color-primary-600)] transition-colors'
-        >
-          문의하기
-        </button>
+          {/* Submit Button */}
+          <button
+            type='button'
+            onClick={handleSubmit}
+            className='w-full h-[52px] bg-[var(--color-primary-500)] text-white rounded-xl ty-body2 hover:bg-[var(--color-primary-600)] transition-colors'
+          >
+            문의하기
+          </button>
+        </div>
       </div>
     </div>
   );
