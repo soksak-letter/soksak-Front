@@ -6,7 +6,9 @@ type LetterDraft = {
   title: string;
   content: string;
   isPublic: boolean;
+};
 
+type LetterStyle = {
   paperId: number | null;
   stampId: number | null;
   fontId: number | null;
@@ -19,25 +21,41 @@ const initialDraft: LetterDraft = {
   title: '',
   content: '',
   isPublic: false,
+};
 
+const initialStyle: LetterStyle = {
   paperId: null,
   stampId: null,
   fontId: null,
 };
 
-type LetterDraftStore = {
+type LetterStore = {
   draft: LetterDraft;
-  patch: (partial: Partial<LetterDraft>) => void;
-  reset: () => void;
+  style: LetterStyle;
+
+  patchDraft: (partial: Partial<LetterDraft>) => void;
+  patchStyle: (partial: Partial<LetterStyle>) => void;
+
+  resetAll: () => void;
+  resetDraft: () => void;
+  resetStyle: () => void;
 };
 
-export const useLetterDraftStore = create<LetterDraftStore>((set) => ({
+export const useLetterStore = create<LetterStore>((set) => ({
   draft: initialDraft,
+  style: initialStyle,
 
-  patch: (partial) =>
+  patchDraft: (partial) =>
     set((state) => ({
       draft: { ...state.draft, ...partial },
     })),
 
-  reset: () => set({ draft: initialDraft }),
+  patchStyle: (partial) =>
+    set((state) => ({
+      style: { ...state.style, ...partial },
+    })),
+
+  resetAll: () => set({ draft: initialDraft, style: initialStyle }),
+  resetDraft: () => set({ draft: initialDraft }),
+  resetStyle: () => set({ style: initialStyle }),
 }));
