@@ -7,16 +7,15 @@ import LetterCard from '@/components/letters/LetterCard';
 import LetterStyleContent from '@/components/BottomSheet/contents/LetterStyleContent';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLetterDraftStore } from '@/stores/letterStore';
+import { useLetterStore } from '@/stores/letterStore';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const { draft, patch } = useLetterDraftStore();
+  const { draft, patchStyle } = useLetterStore();
 
   const { target } = useParams<{ target?: string }>();
-  const { state } = useLocation();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
 

@@ -5,7 +5,7 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
-import { useLetterDraftStore } from '@/stores/letterStore';
+import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patch } = useLetterDraftStore(); // TODO : 필요시 셀렉터로 렌더 최적화
+  const { draft, patchDraft } = useLetterStore(); // TODO : 필요시 셀렉터로 렌더 최적화
   const { data, isLoading, isError, error } = useDailyQuestion();
 
   const navigate = useNavigate();
@@ -58,8 +58,8 @@ const AnonDraftPage = () => {
   useEffect(() => {
     if (!data?.id) return;
 
-    if (draft.questionId == null) patch({ questionId: data.id });
-  }, [data?.id, draft.questionId, patch]);
+    if (draft.questionId == null) patchDraft({ questionId: data.id });
+  }, [data?.id, draft.questionId, patchDraft]);
 
   useEffect(() => {
     if (!isError || handled.current) return;
@@ -128,7 +128,7 @@ const AnonDraftPage = () => {
       <div className='px-4'>
         <LetterTextBox
           value={{ title: draft.title, content: draft.content }}
-          onChange={(next) => patch({ title: next.title, content: next.content })}
+          onChange={(next) => patchDraft({ title: next.title, content: next.content })}
           className='w-[343px] h-[394px]'
         />
       </div>
@@ -136,7 +136,10 @@ const AnonDraftPage = () => {
         <span className='text-[var(--color-text-normal)] ty-body5'>
           오늘 하루 동안 편지 공개하기
         </span>
-        <ToggleSwitch checked={draft.isPublic} onCheckedChange={(v) => patch({ isPublic: v })} />
+        <ToggleSwitch
+          checked={draft.isPublic}
+          onCheckedChange={(v) => patchDraft({ isPublic: v })}
+        />
       </div>
       <p className='flex p-5 text-[var(--color-text-assistive)] ty-detailMedium'>
         비방의 언어가 담기면 자동으로 필터링 돼요.
