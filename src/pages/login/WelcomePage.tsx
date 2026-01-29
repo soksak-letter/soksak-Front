@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
+
+  const handleSocialLogin = (provider: string) => {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    window.location.href = `${API_BASE_URL}/auth/oauth/${provider}`;
+  };
   return (
     <div className='w-[375px] bg-[#FAFAFA]! h-screen mx-auto flex flex-col items-center px-6 relative'>
       {/* 상단 로고 및 타이틀 영역 */}
@@ -65,12 +70,18 @@ const WelcomePage = () => {
       {/* SNS 소셜 로그인 버튼들 */}
       <div className='flex justify-center gap-5 pb-10'>
         {/* 네이버 */}
-        <button className='w-[46px] h-[46px] bg-[#03A94D] rounded-full flex justify-center items-center shadow-sm hover:opacity-90 transition-opacity'>
+        <button
+          onClick={() => handleSocialLogin('naver')}
+          className='w-[46px] h-[46px] bg-[#03A94D] rounded-full flex justify-center items-center shadow-sm hover:opacity-90 transition-opacity'
+        >
           <SiNaver className='text-[var(--color-bg-primary)]' />
         </button>
 
         {/* 카카오 */}
-        <button className='w-[46px] h-[46px] bg-[#FEE500] rounded-full flex justify-center items-center shadow-sm hover:opacity-90 transition-opacity'>
+        <button
+          onClick={() => handleSocialLogin('kakao')}
+          className='w-[46px] h-[46px] bg-[#FEE500] rounded-full flex justify-center items-center shadow-sm hover:opacity-90 transition-opacity'
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24px'
@@ -86,7 +97,10 @@ const WelcomePage = () => {
         </button>
 
         {/* 구글 */}
-        <button className='w-[46px] h-[46px] bg-[var(--color-bg-primary)] border border-gray-200 rounded-full flex justify-center items-center shadow-sm hover:bg-gray-50 transition-colors'>
+        <button
+          onClick={() => handleSocialLogin('google')}
+          className='w-[46px] h-[46px] bg-[var(--color-bg-primary)] border border-gray-200 rounded-full flex justify-center items-center shadow-sm hover:bg-gray-50 transition-colors'
+        >
           <FcGoogle className='w-[24px] h-[24px]' />
         </button>
       </div>
