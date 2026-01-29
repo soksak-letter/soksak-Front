@@ -59,7 +59,7 @@ const InquiryPage = () => {
         <BackHeader
           title='1:1 문의하기'
           rightElement={
-            <button type='button' onClick={handleSubmit}>
+            <button type='button' onClick={handleSubmit} disabled={isSubmitting}>
               완료
             </button>
           }
