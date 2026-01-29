@@ -14,8 +14,6 @@ type FriendInboxItem = {
   lastDate: string; // '2026.1.3'
 };
 
-type TabKey = 'list' | 'request';
-
 type SortOrder = 'latest' | 'oldest';
 
 const parseDotDate = (s: string) => {
@@ -26,7 +24,6 @@ const parseDotDate = (s: string) => {
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<TabKey>('list');
   const [keyword, setKeyword] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
@@ -93,6 +90,7 @@ export default function FriendInboxPage() {
 
         {/* 리스트 */}
         <div className='mt-4 space-y-4'>
+          {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
           {filtered.map((f) => (
             <button
               key={f.id}
@@ -104,8 +102,8 @@ export default function FriendInboxPage() {
                 <div className='flex items-center gap-3'>
                   <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
                   <div>
-                    <p className='text-[16px] font-semibold text-[#171717]'>{f.name}</p>
-                    <p className='mt-1 text-[12px] '>편지를 나눈 횟수 {f.exchangeCount}회</p>
+                    <p className='ty-body2'>{f.name}</p>
+                    <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
                   </div>
                 </div>
 
@@ -113,7 +111,7 @@ export default function FriendInboxPage() {
                 <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
               </div>
 
-              <div className='mt-3 flex justify-end text-[12px]'>{f.lastDate}</div>
+              <div className='mt-3 flex justify-end ty-detailMedium'>{f.lastDate}</div>
             </button>
           ))}
 
