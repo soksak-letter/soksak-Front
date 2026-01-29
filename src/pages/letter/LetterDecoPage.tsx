@@ -3,7 +3,6 @@ import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useState } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
-import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
@@ -14,14 +13,15 @@ import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const { draft, style, patchStyle, resetAll } = useLetterStore();
+  const { draft, style, patchStyle } = useLetterStore();
   const { data, isLoading, isError, error, refetch } = useLetterStyleOptions();
-  const createLetterMutation = useCreateLetter();
+  const { showToast } = useGlobalToast();
 
   const { target } = useParams<{ target?: string }>();
   const { openModal } = useModalStore();
@@ -77,33 +77,17 @@ function LetterDecoPage() {
   const handleSubmit = () => {
     setIsOpen(false);
 
-    const payload = {
-      questionId: draft.questionId,
-      title: draft.title,
-      content: draft.content,
-      isPublic: draft.isPublic,
-      paperId: style.paperId!,
-      fontId: style.fontId!,
-      stampId: style.stampId!,
-      receiverUserId: 1,
-    };
+    if (!style.paperId || !style.fontId || !style.stampId) {
+      setIsOpen(true);
+      showToast('꾸미기 요소를 모두 선택해주셔야 합니다!', 'error');
+      return;
+    }
 
-    createLetterMutation.mutate(payload, {
-      onSuccess: (res) => {
-        openModal('letterSendingConfirm', {
-          onConfirmSending: () => {
-            console.log(payload);
-            resetAll();
-            navigate('/letter/${safeMode}/sending'); // letterId 바로 받는지 확인
-          },
-          onConfirmCancelSending: () => setIsOpen(true),
-        });
+    openModal('letterSendingConfirm', {
+      onConfirmSending: () => {
+        navigate(`/letter/${safeMode}/sending`);
       },
-      onError: (err) => {
-        console.error(err);
-        setIsOpen(true);
-        alert(err?.reason ?? '편지 전송에 실패했어요.');
-      },
+      onConfirmCancelSending: () => setIsOpen(true),
     });
   };
 

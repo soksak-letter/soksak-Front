@@ -1,12 +1,12 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import stampEx1 from '@/assets/test/stampEx1.svg';
-import stampEx2 from '@/assets/test/stampEx2.svg';
 import { useEffect } from 'react';
 import { useModalStore } from '@/stores/modalStore';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
+
+type Target = 'anon' | 'other' | 'self' | 'friend';
 
 const LetterSendingPage = () => {
   const { pathname } = useLocation();
@@ -17,21 +17,7 @@ const LetterSendingPage = () => {
     exitMs: 300,
   });
 
-  const sender = '개굴';
-  const receiver = '파란수박';
-
-  const testPapers = [
-    { id: 'paper-1', name: 'Ivory', color: '#FFF4E6' },
-    { id: 'paper-2', name: 'Sky', color: '#478bd3' },
-    { id: 'paper-3', name: 'Mint', color: '#47e89f' },
-    { id: 'paper-4', name: 'Gray', color: '#717171' },
-  ];
-
-  const testStamps = [
-    { id: 'stamp-1', src: stampEx1 },
-    { id: 'stamp-2', src: stampEx2 },
-  ];
-
+  // 이것도 letterStore에 ...
   const isFriendSending = pathname.includes('/letter/friend/sending');
 
   useEffect(() => {
