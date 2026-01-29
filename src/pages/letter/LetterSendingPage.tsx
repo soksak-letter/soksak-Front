@@ -25,32 +25,44 @@ const LetterSendingPage = () => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
   }, [target]);
 
+  // target에 따라 receiverUserId 유무를 지정
   const payload = useMemo(() => {
     if (!safeMode) return null;
-    if (!draft.title || !draft.content) return null;
+    if (!draft.title?.trim() || !draft.content?.trim()) return null;
     if (style.paperId == null || style.fontId == null || style.stampId == null) return null;
 
-    return {
-      title: draft.title,
-      content: draft.content,
+    const base = {
+      title: draft.title.trim(),
+      content: draft.content.trim(),
       isPublic: draft.isPublic,
       paperId: style.paperId,
       fontId: style.fontId,
       stampId: style.stampId,
       ...(draft.questionId != null && { questionId: draft.questionId }),
-      ...(draft.receiverUserId != null && { receiverUserId: draft.receiverUserId }),
     };
-  }, [
-    safeMode,
-    draft.title,
-    draft.content,
-    draft.isPublic,
-    draft.questionId,
-    draft.receiverUserId,
-    style.paperId,
-    style.fontId,
-    style.stampId,
-  ]);
+
+    switch (safeMode) {
+      case 'anon':
+        // receiverUserId X
+        return base;
+
+      case 'other':
+        // receiverUserId X
+        return base;
+
+      case 'friend':
+        // receiverUserId 필수
+        if (draft.receiverUserId == null) return null;
+        return { ...base, receiverUserId: draft.receiverUserId };
+
+      case 'self':
+        // receiverUserId 금지
+        return base;
+
+      default:
+        return null;
+    }
+  }, [safeMode, draft, style]);
 
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
