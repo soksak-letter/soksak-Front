@@ -49,7 +49,7 @@ export const postSignin = async (body: SignInRequest) => {
 };
 /**
  * 소셜 로그인 (인가 코드 -> 토큰 교환)
- * @param provider 'google' | 'kakao' | 'naver' | 'apple'
+ * @param provider 'google' | 'kakao' | 'naver'
  * @param code 소셜 측에서 받은 인가 코드
  */
 export const socialLogin = async (provider: string, code: string) => {
