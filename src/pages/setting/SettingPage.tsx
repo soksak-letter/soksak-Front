@@ -59,8 +59,69 @@ export default function SettingPage() {
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[21px] py-[16px]'>
+      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px]'>
         {/* 계정·알림 섹션 */}
+        <section className='mb-[50px]'>
+          <h2
+            className='mb-[23px]'
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 600,
+              fontSize: '16px',
+              lineHeight: '25.6px',
+              color: '#000000',
+            }}
+          >
+            계정·알림
+          </h2>
+          <ul className='flex flex-col gap-[9px]'>
+            <li>
+              <button
+                onClick={() => navigate('/setting/password')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                비밀번호 변경
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate('/setting/notification')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                알림
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate('/setting/consent')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                정보 동의 설정
+              </button>
+            </li>
+          </ul>
+        </section>
 
         {/* 서비스 정보·정책 섹션 */}
 
