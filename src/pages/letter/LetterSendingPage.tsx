@@ -52,11 +52,6 @@ const LetterSendingPage = () => {
     style.stampId,
   ]);
 
-  useEffect(() => {
-    console.log('[SendingPage] mounted');
-    return () => console.log('[SendingPage] unmounted');
-  }, []);
-
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
     if (!safeMode) {
