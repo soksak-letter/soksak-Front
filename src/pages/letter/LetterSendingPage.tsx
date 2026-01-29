@@ -7,7 +7,6 @@ import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
-import type { ToastLocationState } from '@/types/toastLocationState';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
