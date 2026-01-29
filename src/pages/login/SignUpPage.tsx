@@ -330,6 +330,11 @@ const SignUpPage = () => {
               checked={agreements.marketing}
               onToggle={() => handleCheck('marketing')}
             />
+            <TermItem
+              label='[선택] 광고성 푸시 알림 수신 동의'
+              checked={agreements.push}
+              onToggle={() => handleCheck('push')}
+            />
           </div>
         </div>
       </div>

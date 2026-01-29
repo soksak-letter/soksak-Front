@@ -7,6 +7,7 @@ const useTermsAgree = () => {
     privacy: false, // [필수] 개인정보 수집
     age: false, // [필수] 만 14세 이상
     marketing: false, // [선택] 마케팅
+    push: false, //[선택] 푸쉬 알림 동의
   });
 
   // 모든 필수 약관이 동의되었는지 확인 (버튼 활성화용)
@@ -31,6 +32,7 @@ const useTermsAgree = () => {
       privacy: nextState,
       age: nextState,
       marketing: nextState,
+      push: nextState,
     });
   };
   //데이터와 함수를 반환
