@@ -1,3 +1,5 @@
+import { DEFAULT_FONT_ID } from '@/constants/fontAssets';
+import { DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { create } from 'zustand';
 
 type LetterDraft = {
@@ -24,8 +26,8 @@ const initialDraft: LetterDraft = {
 };
 
 const initialStyle: LetterStyle = {
-  paperId: null,
-  stampId: null,
+  paperId: DEFAULT_PAPER_ID,
+  stampId: DEFAULT_FONT_ID,
   fontId: null,
 };
 
