@@ -55,6 +55,8 @@ import WeeklyReportPage from './pages/WeeklyReportPage';
 
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
+import TermsOfServicePage from './pages/setting/TermsOfServicePage';
+import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -85,6 +87,8 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <SettingPage /> },
               { path: 'pw-reset', element: <PasswordResetPage /> },
+              { path: 'terms', element: <TermsOfServicePage /> },
+              { path: 'privacy', element: <PrivacyPolicyPage /> },
             ],
           },
         ],
