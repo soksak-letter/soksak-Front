@@ -65,6 +65,7 @@ function LetterDecoPage() {
   useEffect(() => {
     if (!safeMode) {
       navigate('/error/404', { replace: true });
+      return;
     }
     if (!draft.title || !draft.content) {
       navigate(`/letter/${safeMode}/draft`, { replace: true });
