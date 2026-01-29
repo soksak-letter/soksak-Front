@@ -1,33 +1,116 @@
-import type { CSSProperties } from 'react';
-
-// TODO :
-// 임의로 만든 letter
-// 디자인 확정 후 수정 필요
-
-const paperStyle: CSSProperties = {
-  // 종이 배경색
-  backgroundColor: '#E6E2F2',
-  // 줄(가로) 반복
-  backgroundImage: `repeating-linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.25) 0px,
-    rgba(0, 0, 0, 0.25) 1px,
-    transparent 1px,
-    transparent 14px
-  )`,
-  // 위에서부터 줄 시작 위치(위쪽 여백 느낌)
-  backgroundPosition: '0 18px',
+type LetterCardProps = {
+  paperColor: string;
+  font: string;
+  title: string;
+  content: string;
+  className?: string;
 };
 
-const LetterCard = () => {
+const CARD_W = 309.52;
+const CARD_H = 493.72;
+
+const PADDING_TOP = 56;
+const PADDING_X = 22;
+const PADDING_BOTTOM = 24;
+
+const LetterCard = ({ paperColor, font, title, content, className }: LetterCardProps) => {
   return (
     <div className='flex justify-center'>
       <div
-        className='absolute inset-0 rounded-[2px] shadow-sm ring-1 ring-black/10'
-        style={paperStyle}
-      />
+        className={['relative overflow-hiden', className].filter(Boolean).join(' ')}
+        style={{
+          width: CARD_W,
+          height: CARD_H,
+          backgroundColor: paperColor,
+          border: '1px solid rgba(0,0,0,0.15)',
+          fontFamily: font,
+        }}
+      >
+        <div className='absolute inset-0 pointer-events-none'>
+          {/* TODO: 여기에 SVG/패턴 넣기 */}
+        </div>
+
+        {/* 고정 라인 레이어 */}
+        <div
+          className='absolute inset-0 pointer-events-none'
+          style={{
+            paddingTop: PADDING_TOP,
+            paddingLeft: PADDING_X,
+            paddingRight: PADDING_X,
+            paddingBottom: PADDING_BOTTOM,
+            opacity: 0.35,
+          }}
+        >
+          <Lines />
+        </div>
+
+        {/* 텍스트 레이어 (라인 위) */}
+        <div
+          className='relative z-10'
+          style={{
+            paddingTop: 18,
+            paddingLeft: PADDING_X,
+            paddingRight: PADDING_X,
+            paddingBottom: PADDING_BOTTOM,
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* 제목 */}
+          <div style={{ marginBottom: 14 }}>
+            <p
+              className='font-semibold'
+              style={{
+                fontSize: 18,
+                lineHeight: '24px',
+                color: '#171717',
+                wordBreak: 'break-word',
+              }}
+            >
+              {title}
+            </p>
+          </div>
+
+          {/* 내용 */}
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <p
+              style={{
+                fontSize: 14,
+                lineHeight: '24px',
+                color: '#171717',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}
+            >
+              {content}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default LetterCard;
+
+function Lines() {
+  // 카드 높이에서 padding 영역을 제외한 라인 영역 높이
+  const availableH = CARD_H - PADDING_TOP - PADDING_BOTTOM;
+  const lineHeight = 24;
+  const count = Math.floor(availableH / lineHeight);
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: lineHeight,
+            borderBottom: '1px solid rgba(0,0,0,0.22)',
+          }}
+        />
+      ))}
+    </div>
+  );
+}

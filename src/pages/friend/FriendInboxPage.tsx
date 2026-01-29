@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import FriendTopTabs from '@/components/FriendTopTabs';
+import { AiOutlineSearch } from 'react-icons/ai';
+import SortIcon from '@/assets/icons/SortIcon.svg?react';
 
 type FriendInboxItem = {
   id: number;
@@ -12,6 +14,14 @@ type FriendInboxItem = {
 };
 
 type TabKey = 'list' | 'request';
+
+type SortOrder = 'latest' | 'oldest';
+
+const parseDotDate = (s: string) => {
+  // '2026.1.3' -> Date
+  const [y, m, d] = s.split('.').map((v) => Number(v));
+  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
+};
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
@@ -26,11 +36,20 @@ export default function FriendInboxPage() {
     [],
   );
 
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
+
   const filtered = useMemo(() => {
     const k = keyword.trim();
-    if (!k) return items;
-    return items.filter((x) => x.name.includes(k));
-  }, [items, keyword]);
+
+    const result = !k ? items : items.filter((x) => x.name.includes(k));
+
+    // 정렬 (최신순 기본 / 역순)
+    return [...result].sort((a, b) => {
+      const ta = parseDotDate(a.lastDate);
+      const tb = parseDotDate(b.lastDate);
+      return sortOrder === 'latest' ? tb - ta : ta - tb;
+    });
+  }, [items, keyword, sortOrder]);
 
   return (
     <div className='min-h-screen bg-white'>
@@ -47,23 +66,23 @@ export default function FriendInboxPage() {
         />
 
         {/* 검색 */}
-        <div className='mt-4 flex items-center gap-3'>
-          <div className='flex h-11 flex-1 items-center gap-2 rounded-xl bg-[#F2F2F2] px-4'>
-            <span className='text-[#9B9B9B]'>🔍</span>
+        <div className='mt-[16px] flex items-center gap-3'>
+          <div className='flex h-11 flex-1 w-[229px] items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
+            <AiOutlineSearch className='w-[20px] h-[20px] text-[var(--color-grey-500)]' />
             <input
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               placeholder='키워드를 검색해보세요'
-              className='w-full bg-transparent text-sm outline-none placeholder:text-[#9B9B9B]'
+              className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
             />
           </div>
 
           <button
             type='button'
-            className='h-11 w-11 rounded-xl bg-[#F2F2F2] text-[#9B9B9B]'
-            aria-label='filter'
+            onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
+            className='h-11 w-11 flex items-center justify-center'
           >
-            ☰
+            <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
           </button>
         </div>
 
@@ -73,7 +92,7 @@ export default function FriendInboxPage() {
             <button
               key={f.id}
               type='button'
-              onClick={() => navigate(`/friend/${f.id}/posts`)}
+              onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
               className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
             >
               <div className='flex items-center justify-between gap-3'>

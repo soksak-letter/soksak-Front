@@ -46,7 +46,7 @@ export default function FriendRequestPage() {
 
       // 친구에게 편지 쓰기 버튼
       onWriteLetter: () => {
-        // navigate(`/friend/${user.id}/posts`);
+        navigate(`/friend/post/${letterId}`); // TODO: letterId 추가
       },
     });
   };
@@ -61,82 +61,67 @@ export default function FriendRequestPage() {
       <TitleHeader title='친구' />
 
       <main className='px-5 pb-24'>
-        {/* 상단 탭(친구 목록 / 친구 신청) */}
-        <FriendTopTabs
-          value='request'
-          onChange={(tab) => {
-            if (tab === 'inbox') {
-              navigate('/friend/inbox');
-            }
-          }}
-        />
-
-        {/* 본문 */}
-        {tab === 'request' ? (
-          <div className='mt-5 space-y-8 '>
-            <Section title='받은 신청'>
-              {received.length === 0 ? (
-                <EmptyState text='받은 신청이 없어요' />
-              ) : (
-                <div className='w-[343px] rounded-xl space-y-2'>
-                  {received.map((u) => (
-                    <RequestRow
-                      key={u.id}
-                      name={u.name}
-                      right={
-                        <div className='flex gap-2 '>
-                          <Button
-                            color='grey'
-                            size='small3'
-                            onClick={() => handleReject(u)}
-                            className='min-w-[72px]'
-                          >
+        <div className='mx-auto w-full max-w-[343px]'>
+          {/* 상단 탭(친구 목록 / 친구 신청) */}
+          <FriendTopTabs
+            value='request'
+            onChange={(tab) => {
+              if (tab === 'inbox') {
+                navigate('/friend/inbox');
+              }
+            }}
+          />
+          {/* 본문 */}
+          {tab === 'request' ? (
+            <div className='mt-5 space-y-8 '>
+              <Section title='받은 신청'>
+                {received.length === 0 ? (
+                  <EmptyState text='받은 신청이 없어요' />
+                ) : (
+                  <div className='w-[343px] rounded-xl space-y-2'>
+                    {received.map((u) => (
+                      <RequestRow
+                        key={u.id}
+                        name={u.name}
+                        right={
+                          <div className='flex gap-[8px] '>
+                            <Button color='grey' size='small3' onClick={() => handleReject(u)}>
+                              거절
+                            </Button>
+                            <Button color='primary' size='small2' onClick={() => handleAccept(u)}>
+                              친구 추가
+                            </Button>
+                          </div>
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+              </Section>
+              <Section title='보낸 신청'>
+                {sent.length === 0 ? (
+                  <EmptyState text='보낸 신청이 없어요' />
+                ) : (
+                  <div className='space-y-2'>
+                    {sent.map((u) => (
+                      <RequestRow
+                        key={u.id}
+                        name={u.name}
+                        right={
+                          <Button color='black' size='small3' onClick={() => handleReject(u)}>
                             거절
                           </Button>
-                          <Button
-                            color='primary'
-                            size='small2'
-                            onClick={() => handleAccept(u)}
-                            className='min-w-[88px]'
-                          >
-                            친구 추가
-                          </Button>
-                        </div>
-                      }
-                    />
-                  ))}
-                </div>
-              )}
-            </Section>
-
-            <Section title='보낸 신청'>
-              {sent.length === 0 ? (
-                <EmptyState text='보낸 신청이 없어요' />
-              ) : (
-                <div className='space-y-3'>
-                  {sent.map((u) => (
-                    <RequestRow
-                      key={u.id}
-                      name={u.name}
-                      right={
-                        <Button
-                          color='black'
-                          size='small3'
-                          onClick={() => handleReject(u)}
-                          className='min-w-[72px]'
-                        >
-                          거절
-                        </Button>
-                      }
-                    />
-                  ))}
-                </div>
-              )}
-            </Section>
-          </div>
-        ) : (
-          <div className='mt-10'>todo</div>
-        )}
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+              </Section>
+            </div>
+          ) : (
+            <div className='mt-10'>todo</div>
+          )}
+        </div>
       </main>
     </div>
   );

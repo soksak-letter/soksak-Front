@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 type LetterTextBoxValue = {
   title: string;
@@ -19,8 +19,6 @@ const LENGTH = {
 } as const;
 
 const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
-  const [titleTouched, setTitleTouched] = useState(false);
-
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextTitle = e.target.value;
     onChange({
@@ -44,17 +42,16 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
   return (
     <div className='flex flex-col'>
       <div className={`flex flex-col ${className ?? ''}`}>
-        <div className='h-[46px] shrink-0 rounded-t-md bg-[#EFEFEF] px-4 py-2.5 shadow-sm'>
+        <div className='h-[46px] shrink-0 rounded-t-md bg-[#EFEFEF] px-4 py-2.5 shadow-[0_0px_20px_8px_rgba(0,0,0,0.05)]'>
           <input
             value={value.title}
             onChange={handleTitleChange}
-            onBlur={() => setTitleTouched(true)}
             className='w-full py-1 bg-transparent text-[14px] font-medium text-gray-800 placeholder:text-[#8C8C8C] focus:outline-none'
             placeholder='제목'
           />
         </div>
 
-        <div className='flex-1 rounded-b-md border border-t-0 border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col'>
+        <div className='flex-1 rounded-b-md bg-white shadow-[0_8px_15px_6px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col'>
           <textarea
             value={value.content}
             onChange={handleContentChange}
@@ -66,7 +63,7 @@ const LetterTextBox = ({ value, onChange, className }: LetterTextBoxProps) => {
           />
         </div>
       </div>
-      <div className='flex justify-end p-3 text-[12px] text-black font-semibold tabular-nums'>
+      <div className='flex justify-end p-3 ty-detailMedium tabular-nums'>
         {value.content.length}/{LENGTH.CONTENT.MAX}
       </div>
     </div>

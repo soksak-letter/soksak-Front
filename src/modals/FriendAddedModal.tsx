@@ -2,9 +2,11 @@ import ModalFrame from '@/components/modal/ModalFrame';
 import { useModalStore } from '@/stores/modalStore';
 
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 export default function FriendAddedModal() {
   const { closeModal, payload } = useModalStore();
+  const navigate = useNavigate();
 
   const friendName = payload?.friendName ?? '친구';
 
@@ -15,7 +17,7 @@ export default function FriendAddedModal() {
 
   const handleWriteLetter = () => {
     closeModal();
-    payload?.onWriteLetter?.();
+    navigate('/friend/draft');
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from '../../components/common/QuestionCard';
@@ -6,43 +6,54 @@ import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
 import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
 import type { Letter } from '../../types/letter';
+import type { LetterItem } from '../../types/dto/letter';
+import useHomeSummary from '../../hooks/useHomeSummary';
+import usePublicLetters from '../../hooks/usePublicLetters';
+import useFriendLetters from '../../hooks/useFriendLetters';
+
+// API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
+const colorToVariant = (color?: string): Letter['variant'] => {
+  if (!color) return 'blue';
+  // Color_1~4: blue, Color_5~8: pink, 나머지: yellow 등 임시 매핑
+  const colorNum = parseInt(color.replace('Color_', ''), 10);
+  if (colorNum <= 4) return 'blue';
+  if (colorNum <= 8) return 'pink';
+  return 'yellow';
+};
+
+// LetterItem을 Letter 타입으로 변환
+const convertToLetter = (item: LetterItem): Letter => ({
+  id: String(item.id),
+  title: item.title,
+  date: item.deliveredAt ?? '',
+  variant: colorToVariant(item.design?.paper?.color),
+  link: `/letter/${item.id}`,
+});
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
-  // 샘플 데이터 (실제로는 API에서 가져올 데이터)
-  const [publicLetters] = useState<Letter[]>([
-    {
-      id: '1',
-      title: '이지영 선생님',
-      date: '2025. 9. 17.',
-      variant: 'blue',
-      link: '/letter/1',
-    },
-    {
-      id: '2',
-      title: '요즘 아이돌에 빠져',
-      date: '2025. 6. 23.',
-      variant: 'pink',
-      link: '/letter/2',
-    },
-    {
-      id: '3',
-      title: '우리 아빠',
-      date: '2025. 12. 14.',
-      variant: 'yellow',
-      link: '/letter/3',
-    },
-  ]);
+  // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
+  const { data: homeSummary, isLoading: summaryLoading, timeLeft } = useHomeSummary();
 
-  // 데이터 로딩 시뮬레이션 (실제로는 API 호출 완료 시 setIsLoading(false))
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  // 공개 편지 API 연동
+  const { letters: publicLettersData } = usePublicLetters({
+    questionId: homeSummary?.todayQuestion?.id ?? null,
+  });
+
+  // 친구 편지 API 연동
+  const { letters: friendLettersData } = useFriendLetters({
+    questionId: homeSummary?.todayQuestion?.id ?? null,
+  });
+
+  // API 데이터를 Letter 타입으로 변환
+  const publicLetters: Letter[] = useMemo(() => {
+    return (publicLettersData ?? []).map(convertToLetter);
+  }, [publicLettersData]);
+
+  const friendLetters: Letter[] = useMemo(() => {
+    return (friendLettersData ?? []).map(convertToLetter);
+  }, [friendLettersData]);
 
   const handleWriteToSelf = () => {
     console.log('나에게 편지 쓰기');
@@ -54,7 +65,7 @@ const MainPage = () => {
     // 실제로는 페이지 이동 또는 모달 열기
   };
 
-  if (isLoading) {
+  if (summaryLoading) {
     return <MainPageSkeleton />;
   }
 
@@ -63,9 +74,9 @@ const MainPage = () => {
       {/* 오늘의 질문 섹션 */}
       <section>
         <QuestionCard
-          question={`당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?`}
-          timeLeft='13시간 32초'
-          profileImageUrl='https://via.placeholder.com/47x48'
+          question={homeSummary?.todayQuestion?.content || ''}
+          timeLeft={timeLeft}
+          profileImageUrl={homeSummary?.user?.profileImageUrl || 'https://placehold.co/47x48'}
         />
       </section>
 
@@ -77,12 +88,12 @@ const MainPage = () => {
       {/* 편지 여행 섹션 */}
       <section>
         <LetterJourney
-          userName='개굴'
-          weekLabel='1월 2주차'
-          receivedCount={16}
-          sentCount={12}
-          totalCount={32}
-          progressMessage={`새벽별처럼 빛나는 금성에 도착했어요!\n8통의 마음을 더 보내면 지구에 닿을 수 있어요.`}
+          userName={homeSummary?.user?.nickname || ''}
+          weekLabel={homeSummary?.letterStats?.reportPeriod || ''}
+          receivedCount={homeSummary?.letterStats?.stats?.receivedCount || 0}
+          sentCount={homeSummary?.letterStats?.stats?.sentCount || 0}
+          totalCount={homeSummary?.letterStats?.stats?.totalSentCount || 0}
+          progressMessage={homeSummary?.letterStats?.message || ''}
         />
       </section>
 
@@ -135,7 +146,7 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel letters={publicLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
+        <LetterCarousel letters={friendLetters} emptyMessage='친구의 편지가 아직 없어요.' />
       </section>
     </div>
   );
