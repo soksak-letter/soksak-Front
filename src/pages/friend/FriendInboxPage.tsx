@@ -5,6 +5,7 @@ import TitleHeader from '@/components/common/headers/TitleHeader';
 import FriendTopTabs from '@/components/FriendTopTabs';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
+import { useFriends } from '@/hooks/friend/useFriend';
 
 type FriendInboxItem = {
   id: number;
@@ -27,16 +28,20 @@ export default function FriendInboxPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>('list');
   const [keyword, setKeyword] = useState('');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
+
+  const { data: friends = [], isLoading } = useFriends();
 
   const items = useMemo<FriendInboxItem[]>(
-    () => [
-      { id: 1, name: '파란수박', exchangeCount: 22, lastDate: '2026.1.3' },
-      { id: 2, name: '파란수박', exchangeCount: 22, lastDate: '2026.1.3' },
-    ],
-    [],
+    () =>
+      friends.map((f) => ({
+        id: f.friendUserId,
+        name: f.nickname,
+        exchangeCount: f.letterCount,
+        lastDate: f.createdAt.split('T')[0].replaceAll('-', '.'),
+      })),
+    [friends],
   );
-
-  const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
