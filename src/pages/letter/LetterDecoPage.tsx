@@ -20,7 +20,7 @@ type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
   const { draft, style, patchStyle } = useLetterStore();
-  const { data, isLoading, isError, error, refetch } = useLetterStyleOptions();
+  const { data, isLoading, isError, refetch } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
 
   const { target } = useParams<{ target?: string }>();

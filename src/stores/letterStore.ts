@@ -27,8 +27,8 @@ const initialDraft: LetterDraft = {
 
 const initialStyle: LetterStyle = {
   paperId: DEFAULT_PAPER_ID,
-  stampId: DEFAULT_FONT_ID,
-  fontId: null,
+  stampId: null, // TODO : 백에서 assetUrl 받으면 stampAsset에서 초기값 정의
+  fontId: DEFAULT_FONT_ID,
 };
 
 type LetterStore = {
