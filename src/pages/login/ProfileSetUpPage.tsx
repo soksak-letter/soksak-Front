@@ -55,12 +55,14 @@ const ProfileSetUpPage = () => {
       if (profileImage) {
         await uploadProfileImage(profileImage);
       }
+      console.log('전송하려는 파일:', profileImage);
 
       console.log('프로필 설정 완료');
       navigate('/onboarding/'); // 다음 페이지로 이동
     } catch (error) {
       console.error('프로필 설정 실패:', error);
     } finally {
+      console.log('전송하려는 파일:', profileImage);
       setIsLoading(false);
     }
   };

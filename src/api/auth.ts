@@ -64,16 +64,20 @@ export const updateNickname = async (data: NicknameSetUpRequest) => {
  * @param file 파일
  */
 export const uploadProfileImage = async (file: File) => {
+  const token = localStorage.getItem('accessToken');
+
+  if (!token) {
+    console.error('토큰이 없습니다. 로그인이 필요합니다.');
+    return;
+  }
   const formData = new FormData();
-  formData.append('profile_image_url', file);
+  formData.append('image', file);
 
   const response = await axiosInstance.post<ProfileImageResponse>(
-    '/users/me/profile-image',
+    '/users/me/profile/image',
     formData,
     {
-      headers: {
-        'Content-Type': 'multipart/form-data', // 파일 전송 필수 헤더
-      },
+      headers: { Authorization: `Bearer ${token}` },
     },
   );
   return response.data;
