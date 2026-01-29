@@ -93,7 +93,7 @@ const AnonDraftPage = () => {
     navigate('/letter/anon/decorate');
   };
 
-  const questionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+  const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
     <div className='relative flex flex-col'>
@@ -118,7 +118,9 @@ const AnonDraftPage = () => {
           </>
         ) : (
           <>
-            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>{questionText}</p>
+            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
+              {formattedQuestionText}
+            </p>
             <div className='flex items-center ty-body2'>
               <span className='text-[#F2261C]'>{mmss}</span>
               <span className='text-black ml-1'>후에 질문이 사라져요.</span>
