@@ -60,7 +60,7 @@ export default function TermsOfServicePage() {
 
       {/* 메인 컨텐츠 */}
       <main className='mx-auto w-full max-w-[375px]'>
-        <div style={{ marginTop: '8px', paddingBottom: '80px' }} className='px-7'>
+        <div style={{ marginTop: '8px', paddingBottom: '80px' }} className='px-9'>
           {/* 제1조 */}
           <div style={{ marginBottom: '20px' }}>
             <p
