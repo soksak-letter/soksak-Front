@@ -124,6 +124,67 @@ export default function SettingPage() {
         </section>
 
         {/* 서비스 정보·정책 섹션 */}
+        <section className='mb-[50px]' style={{ marginTop: '53px' }}>
+          <h2
+            className='mb-[23px]'
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 600,
+              fontSize: '16px',
+              lineHeight: '25.6px',
+              color: '#000000',
+            }}
+          >
+            서비스 정보 정책
+          </h2>
+          <ul className='flex flex-col gap-[9px]'>
+            <li>
+              <button
+                onClick={() => navigate('/setting/notice')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                공지사항
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate('/setting/terms')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                서비스 이용약관
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate('/setting/privacy')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                개인정보 처리방침
+              </button>
+            </li>
+          </ul>
+        </section>
 
         {/* 계정 관리 섹션 */}
 
