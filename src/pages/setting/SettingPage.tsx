@@ -77,7 +77,7 @@ export default function SettingPage() {
           <ul className='flex flex-col gap-[9px]'>
             <li>
               <button
-                onClick={() => navigate('/setting/password')}
+                onClick={() => navigate('/setting/pw-reset')}
                 className='w-full text-left py-[3px] ml-[3px]'
                 style={{
                   fontFamily: 'Pretendard',
@@ -223,7 +223,9 @@ export default function SettingPage() {
         </section>
 
         {/* 버전 정보 */}
-        <section style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', gap: '276px' }}>
+        <section
+          style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', gap: '276px' }}
+        >
           <span
             style={{
               fontFamily: 'Pretendard',

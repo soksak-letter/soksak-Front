@@ -54,6 +54,7 @@ import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 import WeeklyReportPage from './pages/WeeklyReportPage';
 
 import SettingPage from './pages/setting/SettingPage';
+import PasswordResetPage from './pages/setting/PasswordResetPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -79,7 +80,13 @@ const router = createBrowserRouter([
 
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
           { path: 'report/weekly-report', element: <WeeklyReportPage /> },
-          { path: 'setting', element: <SettingPage /> },
+          {
+            path: 'setting',
+            children: [
+              { index: true, element: <SettingPage /> },
+              { path: 'pw-reset', element: <PasswordResetPage /> },
+            ],
+          },
         ],
       },
 
