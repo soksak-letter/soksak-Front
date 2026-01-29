@@ -1,10 +1,13 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useModalStore } from '@/stores/modalStore';
-import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
+import { useLetterStore } from '@/stores/letterStore';
+import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import type { CreateLetterBody } from '@/types/dto/sendLetter';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -12,59 +15,55 @@ const LetterSendingPage = () => {
   const { pathname } = useLocation();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
-  const { toast, visible, showToast, closeToast } = useToast({
-    duration: 3000,
-    exitMs: 300,
-  });
+  const { target } = useParams<{ target?: string }>();
+
+  const createLetterMutation = useCreateLetter();
+  const { draft, style, resetAll } = useLetterStore();
+
+  const { showToast } = useGlobalToast();
 
   // 이것도 letterStore에 ...
   const isFriendSending = pathname.includes('/letter/friend/sending');
 
+  const safeMode: Target | null = useMemo(() => {
+    return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
+  }, [target]);
+
+  const payload: CreateLetterBody | null = useMemo(() => {
+    // 필수값 누락시 아예 null -> 전송 못하도록
+    if (!style.fontId || !style.paperId || !style.stampId) {
+      return null;
+    }
+    return {
+      questionId: draft.questionId,
+      title: draft.title,
+      content: draft.content,
+      isPublic: draft.isPublic,
+      paperId: style.paperId,
+      fontId: style.fontId,
+      stampId: style.stampId,
+      receiverUserId: 1, // TODO : receiverUserId 어떻게 받아오는지 확인 필요
+    };
+  }, [draft, style]);
+
+  // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
+    if (!safeMode) {
+      navigate('/error/404', { replace: true });
+      return;
+    }
+    if (!payload) {
+      navigate(`/letter/${safeMode}/draft`, { replace: true });
+    }
+  }, [safeMode, payload, navigate]);
+
+  // POST 실행 및 분기
+  useEffect(() => {
+    if (!safeMode || !payload) return;
+
     let cancelled = false;
     const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-    const sendLetter = async () => {
-      try {
-        // TODO : 실제 전송 API 호출
-
-        if (cancelled) return;
-
-        if (isFriendSending) {
-          // TODO : 10회 주고받았는지 확인하는 API/값
-          // 아래는 mock data
-          const isTenTimes = true;
-
-          if (isTenTimes) {
-            await delay(3000);
-            if (cancelled) return;
-            navigate('/friend/sent-transition', { replace: true });
-            return;
-          }
-        }
-
-        // TODO : 10회 미만일 때 성공 처리
-        showToast('편지를 전송했어요!', 'success');
-        // 토스트 확인 + sending 페이지 확인 후 전송하기 위해 delay 설정
-        // 실제 서버 연결시, 3s 이상 걸릴 경우 sending 화면 지속되나?
-        await delay(3000);
-
-        if (cancelled) return;
-        navigate('/home/main', { replace: true });
-      } catch (e) {
-        if (cancelled) return;
-        // TODO : 전역 상태 store 만든 후 편지 전송 실패 처리 리팩토링
-        // 아래 모달은 여기서 띄우면 안됨.
-        // 이전 페이지로 이동한 뒤 모달을 띄우고 싶으나, navigate는 언마운트 후 리렌더링이 됨
-        openModal('letterSendingFailed');
-      }
-    };
-    sendLetter();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isFriendSending, navigate, openModal, showToast]);
+  }, []);
 
   const getTargetText = () => {
     if (pathname.includes('/letter/other/sending') || pathname.includes('/letter/anon/sending')) {
@@ -104,6 +103,7 @@ const LetterSendingPage = () => {
   };
 
   const TargetText = getTargetText();
+  if (!safeMode || !payload) return null;
 
   return (
     <div className='flex flex-col items-center justify-center gap-10 min-h-dvh'>

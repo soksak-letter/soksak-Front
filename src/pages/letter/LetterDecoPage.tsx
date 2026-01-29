@@ -58,15 +58,18 @@ function LetterDecoPage() {
   }, []);
   const closeSheet = () => setIsOpen(false);
 
-  // 유효하지 않은 target인 경우 이전 페이지로 이동 또는 에러 처리
+  // 잘못된 접근 방어 (URL로 직접 접근, 작성 흐름 없이 들어온 경우)
   const safeMode = ['anon', 'other', 'self', 'friend'].includes(target ?? '')
     ? (target as Target)
     : null;
   useEffect(() => {
     if (!safeMode) {
-      navigate('/error/404');
+      navigate('/error/404', { replace: true });
     }
-  }, [safeMode, navigate]);
+    if (!draft.title || !draft.content) {
+      navigate(`/letter/${safeMode}/draft`, { replace: true });
+    }
+  }, [safeMode, navigate, draft.title, draft.content]);
 
   if (!safeMode) return null;
 
