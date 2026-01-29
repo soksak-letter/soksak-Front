@@ -81,3 +81,24 @@ export type RefreshTokenResponse = CommonResponse<RefreshTokenResult>;
 
 // Logout Response
 export type LogoutResponse = CommonResponse<null>;
+
+//Profile-setUp 페이지
+//프로필 닉네임 수정
+// 내가 서버로 보낼 데이터 (Request)
+export interface NicknameSetUpRequest {
+  nickname?: string;
+}
+//서버가 응답으로 줄 데이터 (Response DTO)
+export interface NicknameSetUpResult {
+  updated: boolean;
+}
+export type NicknameSetUpResponse = CommonResponse<NicknameSetUpResult>;
+
+// 프로필 이미지 업로드
+// Request: FormData를 사용하므로 인터페이스보다는 API 함수에서 File 타입을 받음
+//서버가 응답으로 줄 데이터 (Response DTO)
+export interface ProfileImageResult {
+  updated: boolean;
+  profileImageUrl: string;
+}
+export type ProfileImageResponse = CommonResponse<ProfileImageResult>;
