@@ -105,25 +105,4 @@
 <rect x="57" y="124" width="2" height="2" rx="1" fill="white"/>
 <rect x="69" y="124" width="2" height="2" rx="1" fill="white"/>
 <rect width="70" height="114" transform="translate(5 8)" fill="white"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 20.5713)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 25.1416)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 29.7129)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 34.2832)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 38.8545)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 43.4248)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 47.9961)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 52.5669)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 57.1377)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 61.7085)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 66.2793)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 70.8506)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 75.4214)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 79.9922)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 84.563)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 89.1338)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 93.7046)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 98.2754)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 102.847)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 107.417)" stroke="#DEDEDE" stroke-width="0.5"/>
-<line y1="-0.25" x2="60" y2="-0.25" transform="matrix(0.999657 -0.0261811 0.0218176 0.999762 10.0107 111.988)" stroke="#DEDEDE" stroke-width="0.5"/>
 </svg>
