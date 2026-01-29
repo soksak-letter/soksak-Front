@@ -16,6 +16,8 @@ const InquiryPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
     if (!email || !title || !inquiryType || !content) {
       alert('모든 항목을 입력해주세요.');
       return;
