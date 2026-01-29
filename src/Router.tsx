@@ -53,6 +53,8 @@ import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
 
+import SettingPage from './pages/setting/SettingPage';
+
 // ===== Placeholders =====
 const TODOPage = () => <div />;
 
@@ -77,6 +79,7 @@ const router = createBrowserRouter([
 
           { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
           { path: 'report/weekly-report', element: <WeeklyReportPage /> },
+          { path: 'setting', element: <SettingPage /> },
         ],
       },
 
