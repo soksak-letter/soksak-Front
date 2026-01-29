@@ -8,6 +8,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import axios from 'axios';
+import type { ToastLocationState } from '@/types/toastLocationState';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -18,7 +19,7 @@ const LetterSendingPage = () => {
   const hasSentRef = useRef(false);
 
   const createLetterMutation = useCreateLetter();
-  const { draft, style, resetAll } = useLetterStore();
+  const { draft, style } = useLetterStore();
   const { data } = useLetterStyleOptions();
 
   const { showToast } = useGlobalToast();
@@ -92,9 +93,8 @@ const LetterSendingPage = () => {
         console.log('success', res);
 
         await delay(2000);
-        resetAll();
 
-        const isTenTimes = safeMode === 'friend' ? true : false; // TODO 실제 값으로 교체
+        const isTenTimes = safeMode === 'other' ? true : false; // TODO 실제 값으로 교체
         if (isTenTimes) {
           await delay(2000);
           navigate('/friend/sent-transition', { replace: true });
@@ -103,7 +103,12 @@ const LetterSendingPage = () => {
 
         showToast('편지를 전송했어요!', 'success');
         await delay(1000); // 토스트 잠깐 보여주기
-        navigate('/home/main', { replace: true });
+        navigate('/home/main', {
+          replace: true,
+          state: {
+            toast: { status: 'success', message: '편지를 전송했어요!' },
+          } satisfies ToastLocationState,
+        });
       },
 
       onError: async (err) => {
@@ -112,7 +117,7 @@ const LetterSendingPage = () => {
         navigate(-1);
       },
     });
-  }, [safeMode, payload, createLetterMutation, navigate, resetAll, showToast]);
+  }, [safeMode, payload, createLetterMutation, navigate, showToast]);
 
   const getTargetText = () => {
     // TODO : Mock data 제거
