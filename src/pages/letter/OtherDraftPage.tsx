@@ -8,6 +8,11 @@ import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
 import { BsQuestionCircleFill } from 'react-icons/bs';
 
+// TODO : questionId 실시간 변경됐을 때 사용할 로직
+// if (data?.id && draft.questionId !== data.id) {
+//   patchDraft({ questionId: data.id });
+// }
+
 const OtherDraftPage = () => {
   const navigate = useNavigate();
 
