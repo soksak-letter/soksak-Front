@@ -1,5 +1,5 @@
 export type CreateLetterBody = {
-  questionId: number | null;
+  questionId?: number;
   title: string;
   content: string;
   isPublic: boolean;
@@ -7,7 +7,7 @@ export type CreateLetterBody = {
   paperId: number;
   fontId: number;
   stampId: number;
-  receiverUserId: number;
+  receiverUserId?: number;
 };
 
 export type CreateLetterResult = null;

@@ -1,19 +1,21 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
 import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
-import type { CreateLetterBody } from '@/types/dto/sendLetter';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
+import axios from 'axios';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
 const LetterSendingPage = () => {
   const navigate = useNavigate();
   const { target } = useParams<{ target?: string }>();
+  // 중복 POST 방지용
+  const hasSentRef = useRef(false);
 
   const createLetterMutation = useCreateLetter();
   const { draft, style, resetAll } = useLetterStore();
@@ -25,22 +27,39 @@ const LetterSendingPage = () => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
   }, [target]);
 
-  const payload: CreateLetterBody | null = useMemo(() => {
-    // 필수값 누락시 아예 null -> 전송 못하도록
-    if (!style.fontId || !style.paperId || !style.stampId) {
-      return null;
-    }
+  useEffect(() => {}, [target, safeMode]);
+
+  const payload = useMemo(() => {
+    if (!safeMode) return null;
+
+    // 필수값 가드
+    if (!draft.title || !draft.content) return null;
+    if (!style.paperId || !style.fontId || !style.stampId) return null;
+
     return {
-      questionId: draft.questionId,
       title: draft.title,
       content: draft.content,
       isPublic: draft.isPublic,
+
       paperId: style.paperId,
       fontId: style.fontId,
       stampId: style.stampId,
-      receiverUserId: 1, // TODO : receiverUserId 어떻게 받아오는지 확인 필요
+
+      // 값이 있으면 보내고, 없으면 보내지 않는다
+      ...(draft.questionId != null && { questionId: draft.questionId }),
+      ...(draft.receiverUserId != null && { receiverUserId: draft.receiverUserId }),
     };
-  }, [draft, style]);
+  }, [
+    safeMode,
+    draft.title,
+    draft.content,
+    draft.isPublic,
+    draft.questionId,
+    draft.receiverUserId,
+    style.paperId,
+    style.fontId,
+    style.stampId,
+  ]);
 
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
@@ -49,51 +68,50 @@ const LetterSendingPage = () => {
       return;
     }
     if (!payload) {
-      navigate(`/letter/${safeMode}/draft`, { replace: true });
+      if (hasSentRef.current) {
+        navigate('/home/main', { replace: true });
+      } else {
+        navigate(`/letter/${safeMode}/draft`, { replace: true });
+      }
     }
   }, [safeMode, payload, navigate]);
 
-  // POST 실행 및 분기
+  // POST 실행
   useEffect(() => {
     if (!safeMode || !payload) return;
+    if (hasSentRef.current) return;
 
-    let cancelled = false;
+    hasSentRef.current = true;
+
     const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+    console.log('[Sending] FINAL PAYLOAD :', payload);
 
     createLetterMutation.mutate(payload, {
       onSuccess: async (res) => {
-        if (cancelled) return;
+        console.log('success', res);
 
+        await delay(2000);
         resetAll();
 
-        // TODO : receiverUserId가 친구인지 확인하는 방법?
-        // TODO : isTenTimes 부분도 전역 상태로 관리할 것?
-        const isFriendSending = safeMode === 'friend';
-        const isTenTimes = isFriendSending ? true : false;
-
+        const isTenTimes = safeMode === 'friend' ? true : false; // TODO 실제 값으로 교체
         if (isTenTimes) {
-          await delay(3000);
-          if (cancelled) return;
+          await delay(2000);
           navigate('/friend/sent-transition', { replace: true });
           return;
         }
 
         showToast('편지를 전송했어요!', 'success');
-        await delay(3000);
-        if (cancelled) return;
+        await delay(1000); // 토스트 잠깐 보여주기
         navigate('/home/main', { replace: true });
       },
 
-      onError: () => {
-        if (cancelled) return;
+      onError: async (err) => {
+        if (axios.isAxiosError(err)) await delay(2000);
         showToast('편지 전송에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
         navigate(-1);
       },
     });
-
-    return () => {
-      cancelled = true;
-    };
   }, [safeMode, payload, createLetterMutation, navigate, resetAll, showToast]);
 
   const getTargetText = () => {
