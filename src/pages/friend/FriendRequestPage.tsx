@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import { Button } from '@/components/common/Button';
@@ -6,16 +6,12 @@ import { useModalStore } from '@/stores/modalStore';
 import { useNavigate } from 'react-router-dom';
 import FriendTopTabs from '@/components/FriendTopTabs';
 
-type TabKey = 'inbox' | 'request';
-
 type RequestUser = {
   id: number;
   name: string;
 };
 
 export default function FriendRequestPage() {
-  const [tab, setTab] = useState<TabKey>('request');
-
   // 더미 데이터 (API 붙일 때만 교체)
   const received = useMemo<RequestUser[]>(
     () => [
