@@ -7,7 +7,6 @@ import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
-import axios from 'axios';
 import type { ToastLocationState } from '@/types/toastLocationState';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
@@ -21,32 +20,24 @@ const LetterSendingPage = () => {
   const createLetterMutation = useCreateLetter();
   const { draft, style } = useLetterStore();
   const { data } = useLetterStyleOptions();
-
   const { showToast } = useGlobalToast();
 
   const safeMode: Target | null = useMemo(() => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
   }, [target]);
 
-  useEffect(() => {}, [target, safeMode]);
-
   const payload = useMemo(() => {
     if (!safeMode) return null;
-
-    // 필수값 가드
     if (!draft.title || !draft.content) return null;
-    if (!style.paperId || !style.fontId || !style.stampId) return null;
+    if (style.paperId == null || style.fontId == null || style.stampId == null) return null;
 
     return {
       title: draft.title,
       content: draft.content,
       isPublic: draft.isPublic,
-
       paperId: style.paperId,
       fontId: style.fontId,
       stampId: style.stampId,
-
-      // 값이 있으면 보내고, 없으면 보내지 않는다
       ...(draft.questionId != null && { questionId: draft.questionId }),
       ...(draft.receiverUserId != null && { receiverUserId: draft.receiverUserId }),
     };
@@ -62,6 +53,11 @@ const LetterSendingPage = () => {
     style.stampId,
   ]);
 
+  useEffect(() => {
+    console.log('[SendingPage] mounted');
+    return () => console.log('[SendingPage] unmounted');
+  }, []);
+
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
     if (!safeMode) {
@@ -69,11 +65,7 @@ const LetterSendingPage = () => {
       return;
     }
     if (!payload) {
-      if (hasSentRef.current) {
-        navigate('/home/main', { replace: true });
-      } else {
-        navigate(`/letter/${safeMode}/draft`, { replace: true });
-      }
+      navigate('/home/main', { replace: true });
     }
   }, [safeMode, payload, navigate]);
 
@@ -81,41 +73,25 @@ const LetterSendingPage = () => {
   useEffect(() => {
     if (!safeMode || !payload) return;
     if (hasSentRef.current) return;
-
     hasSentRef.current = true;
 
-    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-    console.log('[Sending] FINAL PAYLOAD :', payload);
-
-    createLetterMutation.mutate(payload, {
-      onSuccess: async (res) => {
-        console.log('success', res);
-
-        await delay(2000);
-
-        const isTenTimes = safeMode === 'other' ? true : false; // TODO 실제 값으로 교체
-        if (isTenTimes) {
-          await delay(2000);
-          navigate('/friend/sent-transition', { replace: true });
-          return;
-        }
+    (async () => {
+      try {
+        await createLetterMutation.mutateAsync(payload);
 
         navigate('/home/main', {
           replace: true,
           state: {
             toast: { status: 'success', message: '편지를 전송했어요!' },
-          } satisfies ToastLocationState,
+          },
         });
-      },
-
-      onError: async (err) => {
-        if (axios.isAxiosError(err)) await delay(2000);
-        showToast('편지 전송에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+      } catch {
+        hasSentRef.current = false;
+        showToast('편지 전송에 실패했어요.', 'error');
         navigate(-1);
-      },
-    });
-  }, [safeMode, payload, createLetterMutation, navigate, showToast]);
+      }
+    })();
+  }, [safeMode, payload]);
 
   const getTargetText = () => {
     // TODO : Mock data 제거
