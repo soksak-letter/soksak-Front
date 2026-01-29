@@ -48,8 +48,24 @@ export interface SignInResult {
 }
 export type SignInResponse = CommonResponse<SignInResult>;
 
+//소셜로그인
+// 내가 서버로 보낼 데이터 (Request)
+export interface SocialLoginRequest {
+  code: string;
+}
+
+//서버가 응답으로 줄 데이터 (Response DTO)
+export interface SocialLoginResult {
+  userId: number;
+  tokens: {
+    jwtAccessToken: string;
+    jwtRefreshToken: string;
+  };
+}
+export type SocialLoginResponse = CommonResponse<SocialLoginResult>;
+
 //이메일 중복확인
-// 1. 내가 서버로 보낼 데이터 (Request)
+// 내가 서버로 보낼 데이터 (Request)
 export interface EmailExistsRequest {
   email: string;
 }
@@ -61,7 +77,7 @@ export interface EmailExistsResult {
 export type EmailExistsResponse = CommonResponse<EmailExistsResult>;
 
 //아이디 중복확인
-// 1. 내가 서버로 보낼 데이터 (Request)
+// 내가 서버로 보낼 데이터 (Request)
 export interface UsernameExistsRequest {
   username: string;
 }

@@ -10,7 +10,7 @@ import MainPage from './pages/main/Mainpage';
 import WelcomePage from './pages/login/WelcomePage';
 
 import SignUpPage from './pages/login/SignUpPage';
-import SignInPage from './pages/login/SigninPage';
+import SignInPage from './pages/login/SignInPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
@@ -44,7 +44,6 @@ import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
 import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
-import SocailLoginCallBackPage from './pages/login/socialLoginCallBackPage';
 
 import LetterInboxOtherPage from './pages/letter/LetterInboxOtherPage';
 import LetterInboxSelfPage from './pages/letter/LetterInboxSelfPage';
@@ -53,6 +52,7 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
+import SocailLoginCallBackPage from './pages/login/SocialLoginCallBackPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;

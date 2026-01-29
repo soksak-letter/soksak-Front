@@ -5,6 +5,7 @@ import type {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
+  SocialLoginResponse,
   UsernameExistsRequest,
   UsernameExistsResponse,
 } from '@/types/dto/auth';
@@ -45,4 +46,16 @@ export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
 export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
+};
+/**
+ * 소셜 로그인 (인가 코드 -> 토큰 교환)
+ * @param provider 'google' | 'kakao' | 'naver' | 'apple'
+ * @param code 소셜 측에서 받은 인가 코드
+ */
+export const loginSocial = async (provider: string, code: string) => {
+  const response = await axiosInstance.post<SocialLoginResponse>(
+    `/auth/login/${provider}`, // /auth/login/kakao
+    { code }, // Request Body: { "code": "..." }
+  );
+  return response.data;
 };
