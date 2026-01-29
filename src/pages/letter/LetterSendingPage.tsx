@@ -101,8 +101,6 @@ const LetterSendingPage = () => {
           return;
         }
 
-        showToast('편지를 전송했어요!', 'success');
-        await delay(1000); // 토스트 잠깐 보여주기
         navigate('/home/main', {
           replace: true,
           state: {
