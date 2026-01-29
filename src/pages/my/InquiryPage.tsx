@@ -53,7 +53,7 @@ const InquiryPage = () => {
   };
 
   return (
-    <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-[var(--color-bg-500)])]'>
+    <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
       {/* Header */}
       <div className='bg-white'>
         <BackHeader
