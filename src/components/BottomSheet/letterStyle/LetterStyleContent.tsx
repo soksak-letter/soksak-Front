@@ -61,13 +61,6 @@ export default function LetterStyleContent({
     });
   }, [papers]);
 
-  const cardClass = (isSelected: boolean) =>
-    [
-      'relative overflow-hidden',
-      'shadow-md -rotate-2 scale-[0.86] transition-all',
-      isSelected ? 'ring-2 ring-[var(--color-primary-500)]' : '',
-    ].join(' ');
-
   return (
     <div className='p-4'>
       {/* 탭바 */}
@@ -90,7 +83,15 @@ export default function LetterStyleContent({
               key={p.id}
               type='button'
               onClick={() => onChange?.({ paperId: p.id })}
-              className={cardClass(value.paperId === p.id)}
+              className={[
+                'relative overflow-hidden shadow-md transition-all duration-200',
+                'scale-90 -rotate-2',
+              ].join(' ')}
+              style={
+                value.paperId === p.id
+                  ? { boxShadow: '0 8px 24px rgba(244, 62, 58, 0.35)' }
+                  : undefined
+              }
             >
               {p.Preview ? (
                 <PaperPreview Preview={p.Preview} name={p.name} />
@@ -110,7 +111,15 @@ export default function LetterStyleContent({
               key={s.id}
               type='button'
               onClick={() => onChange?.({ stampId: s.id })}
-              className={cardClass(value.stampId === s.id)}
+              className={[
+                'relative overflow-hidden shadow-md transition-all duration-200',
+                'scale-90 -rotate-2',
+              ].join(' ')}
+              style={
+                value.stampId === s.id
+                  ? { boxShadow: '0 8px 24px rgba(244, 62, 58, 0.35)' }
+                  : undefined
+              }
             >
               <StampPreview src={s.assetUrl} alt={s.name} />
             </button>
