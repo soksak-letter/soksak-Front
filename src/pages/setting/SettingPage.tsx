@@ -187,8 +187,66 @@ export default function SettingPage() {
         </section>
 
         {/* 계정 관리 섹션 */}
+        <section className='mb-[50px]' style={{ marginTop: '137px' }}>
+          <ul className='flex flex-col gap-[9px]'>
+            <li>
+              <button
+                onClick={() => navigate('/setting/logout')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                로그아웃
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate('/setting/withdrawal')}
+                className='w-full text-left py-[3px] ml-[3px]'
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '25.6px',
+                  color: '#000000',
+                }}
+              >
+                회원탈퇴
+              </button>
+            </li>
+          </ul>
+        </section>
 
         {/* 버전 정보 */}
+        <section style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', gap: '276px' }}>
+          <span
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '14px',
+              lineHeight: '22.4px',
+              color: 'rgba(0, 0, 0, 0.6)',
+            }}
+          >
+            버전
+          </span>
+          <span
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '14px',
+              lineHeight: '22.4px',
+              color: 'rgba(0, 0, 0, 0.6)',
+            }}
+          >
+            v1.3
+          </span>
+        </section>
       </main>
     </div>
   );
