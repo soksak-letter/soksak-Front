@@ -16,6 +16,10 @@ const TermCheckPage = () => {
     if (!isFormValid) return;
     navigate('/onboarding/profile');
   };
+  // 상세 보기 클릭 핸들러 (페이지 이동)
+  const handleOpenDetail = (type: string) => {
+    navigate(`/terms/${type}`);
+  };
 
   return (
     <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>
@@ -43,11 +47,13 @@ const TermCheckPage = () => {
             label='[필수] 이용약관 동의'
             checked={agreements.terms}
             onToggle={() => handleCheck('terms')}
+            onViewClick={() => handleOpenDetail('terms')}
           />
           <TermItem
             label='[필수] 개인정보 수집 동의'
             checked={agreements.privacy}
             onToggle={() => handleCheck('privacy')}
+            onViewClick={() => handleOpenDetail('privacy')}
           />
           <TermItem
             label='[필수] 만 14세 이상입니다.'

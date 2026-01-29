@@ -50,6 +50,11 @@ const SignUpPage = () => {
   // 최종 제출 버튼 활성화 조건
   const canSubmit = canSubmitWithoutTerms && isTermsAgreed;
 
+  // 상세 보기 클릭 핸들러 (페이지 이동)
+  const handleOpenDetail = (type: string) => {
+    navigate(`/terms/${type}`);
+  };
+
   /**
    * [API 연결] 회원가입 요청 핸들러
    */
@@ -314,11 +319,13 @@ const SignUpPage = () => {
               label='[필수] 이용약관 동의'
               checked={agreements.terms}
               onToggle={() => handleCheck('terms')}
+              onViewClick={() => handleOpenDetail('terms')}
             />
             <TermItem
               label='[필수] 개인정보 수집 동의'
               checked={agreements.privacy}
               onToggle={() => handleCheck('privacy')}
+              onViewClick={() => handleOpenDetail('privacy')}
             />
             <TermItem
               label='[필수] 만 14세 이상입니다.'
