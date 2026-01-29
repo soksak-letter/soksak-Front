@@ -7,7 +7,7 @@ export async function postCreateLetter(body: CreateLetterBody): Promise<CreateLe
 
   const data = res.data as CommonResponse<CreateLetterResult>;
 
-  if (data.resultType !== 'SUCCESS' || !data.success) {
+  if (data.resultType !== 'SUCCESS') {
     throw (
       data.error ?? {
         errorCode: 'LETTER_CREATE_FAIL',
