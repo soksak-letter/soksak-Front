@@ -23,10 +23,17 @@ const InquiryPage = () => {
       return;
     }
 
+    // Validate Web3Forms access key
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey || accessKey === 'undefined' || accessKey.trim() === '') {
+      alert('죄송합니다. 서버 설정에 문제가 있습니다. 나중에 다시 시도해주세요.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     const formData = new FormData();
-    formData.append('access_key', import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append('access_key', accessKey);
     formData.append('email', email);
     formData.append('subject', `[${inquiryType}] ${title}`);
     formData.append('message', content);
