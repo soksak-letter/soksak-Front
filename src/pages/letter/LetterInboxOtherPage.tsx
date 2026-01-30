@@ -40,9 +40,41 @@ export default function LetterInboxOtherPage() {
   const [keyword, setKeyword] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
+  const DUMMY_MAILBOX_LETTERS = [
+    {
+      threadId: 101,
+      sender: { id: 2, nickname: '파란수박' },
+      lastLetterId: 9001,
+      lastLetterTitle: '익명 질문: 요즘 제일 행복한 순간은?',
+      lastLetterPreview: '나는 요즘…',
+      updatedAt: new Date().toISOString(),
+      paperId: 0,
+    },
+    {
+      threadId: 102,
+      sender: { id: 3, nickname: '초록오이' },
+      lastLetterId: 9002,
+      lastLetterTitle: '오늘 하루를 한 단어로 말하면?',
+      lastLetterPreview: '음…',
+      updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+      paperId: 1,
+    },
+    {
+      threadId: 103,
+      sender: { id: 4, nickname: '노란치즈' },
+      lastLetterId: 9003,
+      lastLetterTitle: '너가 제일 자주 하는 생각은?',
+      lastLetterPreview: '나는…',
+      updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+      paperId: 2,
+    },
+  ] as const;
+
   // 서버 응답을 화면 아이템으로 변환 (isUnread 제외)
   const items: InboxOtherLetterItem[] = useMemo(() => {
-    const raw = data?.letters ?? [];
+    const serverLetters = data?.letters ?? [];
+    const raw = serverLetters.length > 0 ? serverLetters : DUMMY_MAILBOX_LETTERS;
+
     return raw.map((x) => ({
       letterId: x.lastLetterId,
       threadId: x.threadId,
