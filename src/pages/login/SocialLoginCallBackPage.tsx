@@ -2,6 +2,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import LoadingPage from '../system/LoadingPage';
 import { postsocialLogin } from '@/api/auth';
 import { useEffect, useRef } from 'react';
+import { ROUTES } from '@/routes/paths';
 
 const SocialLoginCallBackPage = () => {
   const navigate = useNavigate();
@@ -30,11 +31,20 @@ const SocialLoginCallBackPage = () => {
     try {
       const data = await postsocialLogin(provider, code);
       if (data.resultType === 'SUCCESS') {
+        const { isNewUser } = data.success; // isNewUser 꺼내기
         // 토큰 저장 및 이동
         const { jwtAccessToken, jwtRefreshToken } = data.success.tokens;
         localStorage.setItem('accessToken', jwtAccessToken);
         localStorage.setItem('refreshToken', jwtRefreshToken);
-        navigate('/', { replace: true });
+        //  신규 유저 여부에 따라 페이지 이동 분기
+        if (isNewUser) {
+          console.log('신규 회원입니다. 온보딩으로 이동합니다.');
+          // 온보딩 시작 페이지 주소 (작성하신 ProfileSetUpPage가 있는 곳)
+          navigate(ROUTES.onboarding.start, { replace: true });
+        } else {
+          console.log('기존 회원입니다. 홈으로 이동합니다.');
+          navigate('/', { replace: true });
+        }
       } else {
         // 성공은 했지만 서버 응답이 FAIL인 경우 (예: 가입 안 된 유저 등)
         throw new Error('로그인 처리 실패');

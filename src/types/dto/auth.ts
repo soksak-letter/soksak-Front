@@ -57,6 +57,7 @@ export interface SocialLoginRequest {
 
 //서버가 응답으로 줄 데이터 (Response DTO)
 export interface SocialLoginResult {
+  isNewUser: boolean;
   userId: number;
   tokens: {
     jwtAccessToken: string;
