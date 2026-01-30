@@ -1,7 +1,7 @@
 import type { ApiError } from '../common';
 
 export type AnonMailboxSuccess = {
-  items: {
+  letters: {
     threadId: number;
     sender: {
       id: number;

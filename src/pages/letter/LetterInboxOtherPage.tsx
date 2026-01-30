@@ -42,7 +42,7 @@ export default function LetterInboxOtherPage() {
 
   // 서버 응답을 화면 아이템으로 변환 (isUnread 제외)
   const items: InboxOtherLetterItem[] = useMemo(() => {
-    const raw = data?.items ?? [];
+    const raw = data?.letters ?? [];
     return raw.map((x) => ({
       letterId: x.lastLetterId,
       threadId: x.threadId,
@@ -51,7 +51,7 @@ export default function LetterInboxOtherPage() {
       receivedAt: parseDate(x.updatedAt),
       receivedAtMs: new Date(x.updatedAt).getTime(),
       isUnread: false,
-      paperId: x.paperId,
+      paperId: x.paperId + 1,
     }));
   }, [data]);
 
@@ -78,10 +78,13 @@ export default function LetterInboxOtherPage() {
   };
 
   const handleOpenLetter = (item: InboxOtherLetterItem) => {
-    navigate(`/letter/${item.letterId}/thread/${item.threadId}`);
+    navigate(`/letter/${item.letterId}/thread/${item.threadId}`); // threadId로만 가도 될 것 같은데
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
+
+  console.log('anon mailbox raw data:', data);
+  console.log('anon mailbox items:', data?.letters);
 
   return (
     <div className='min-h-screen bg-white'>

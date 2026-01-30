@@ -12,7 +12,6 @@ type PostItem = {
   dateText: string; // '2026.1.3'
   sentAt: string; // ISO
   direction: Direction; // received=왼쪽, sent=오른쪽
-  colorKey: 'yellow' | 'blue' | 'pink' | 'cream';
 };
 
 export default function LetterPostOtherPage() {
@@ -26,61 +25,6 @@ export default function LetterPostOtherPage() {
   // TODO: threadId로 상대 닉네임/질문/포스트 목록 불러오기
   const senderName = '파란수박';
   const questionTitle = '당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?';
-
-  const posts = useMemo<PostItem[]>(() => {
-    const data: PostItem[] = [
-      {
-        letterId: 1,
-        title: '이지영선생님러브러브...',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T09:10:00',
-        direction: 'received',
-        colorKey: 'yellow',
-      },
-      {
-        letterId: 2,
-        title: '나는현우진이좋은데...',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T09:18:00',
-        direction: 'sent',
-        colorKey: 'blue',
-      },
-      {
-        letterId: 3,
-        title: '이지영 사랑해',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T09:33:00',
-        direction: 'received',
-        colorKey: 'blue',
-      },
-      {
-        letterId: 4,
-        title: '안녕하세요 날씨가 좋아...',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T09:50:00',
-        direction: 'sent',
-        colorKey: 'pink',
-      },
-      {
-        letterId: 5,
-        title: '이지영선생님러브러브...',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T10:05:00',
-        direction: 'received',
-        colorKey: 'blue',
-      },
-      {
-        letterId: 6,
-        title: '이지영선생님러브러브...',
-        dateText: '2026.1.3',
-        sentAt: '2026-01-03T10:20:00',
-        direction: 'sent',
-        colorKey: 'cream',
-      },
-    ];
-
-    return [...data].sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime());
-  }, []);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.direction === 'received'), [posts]);
@@ -167,18 +111,4 @@ function PostCard({ item, onClick }: { item: PostItem; onClick?: () => void }) {
       <p className='mt-1 text-[12px] text-[#6F6F6F]'>{item.dateText}</p>
     </button>
   );
-}
-
-function envelopeBg(key: PostItem['colorKey']) {
-  switch (key) {
-    case 'yellow':
-      return 'bg-[#FFF2B3]';
-    case 'blue':
-      return 'bg-[#D9EEFF]';
-    case 'pink':
-      return 'bg-[#FFD1D1]';
-    case 'cream':
-    default:
-      return 'bg-[#F2F2F2]';
-  }
 }
