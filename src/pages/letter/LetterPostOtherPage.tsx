@@ -97,7 +97,7 @@ export default function LetterPostOtherPage() {
   if (!threadIdParam) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
-    navigate(`/letter/reply/${letterId}`, {
+    navigate(`/letter/reply/${threadId}/${letterId}`, {
       state: { threadId, letterId, senderName },
     });
   };

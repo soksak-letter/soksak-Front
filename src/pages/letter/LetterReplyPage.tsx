@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import { Button } from '@/components/common/Button';
+import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 
 type ReplyViewData = {
   senderName: string;
@@ -13,27 +14,25 @@ type ReplyViewData = {
 
 export default function LetterReplyPage() {
   const navigate = useNavigate();
-  const params = useParams();
+  const { letterId: letterIdParam } = useParams();
+  const location = useLocation();
+
+  const letterId = letterIdParam ? Number(letterIdParam) : 0;
+  const { data, isLoading, isError, error } = useLetterDetail(letterId);
 
   // 필요하면 라우트에서 letterId/threadId를 받아와서 API 연결
   // const letterId = params.letterId;
   // const threadId = params.threadId;
 
-  const data = useMemo<ReplyViewData>(() => {
-    return {
-      senderName: '파란수박',
-      sentAtText: '2025.8.27 6:21 AM',
-      question: '당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?',
-      content: `잠들기 전에 쓰는 편지
+  console.log('[LetterReplyPage] data:', data);
 
-잠들기 직전에 생각나서 들어왔네요. 요즘 취업을 준비하며 수많은 고민과 마주하고 있습니다.
-…(임의 텍스트)…
-이 질문은 저에게 있어, 당장의 목표를 넘어 궁극적인 삶의 방향을 일깨워서 되돌아보게 만드는 나침반같은 질문이네요.
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
-- 이 질문에 대한 저의 대답은, 바로 아빠!!
-저에게 삶의 태도 그 자체의 영감을 주셨어요.`,
-    };
-  }, []);
+  if (isError || !data) {
+    return <div>편지를 불러오지 못했어요.</div>;
+  }
 
   const handleReport = () => {
     navigate('/letter/report');
