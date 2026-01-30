@@ -52,6 +52,7 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
+import SplashPage from './pages/login/SplashPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -90,9 +91,7 @@ const router = createBrowserRouter([
           { path: 'error/network', element: <NetworkErrorPage /> },
           { path: 'error/403', element: <ForbiddenPage /> },
           { path: 'error/404', element: <NotFoundPage /> },
-
-          // 기존 라우트
-          // { path: 'splash', element: <SplashPage /> },
+          { path: 'splash', element: <SplashPage /> },
 
           {
             path: 'auth',
