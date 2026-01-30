@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const MyPage = () => {
   const navigate = useNavigate();
 
+
   // Mock data - 실제 사용 시 API에서 가져오기
   const userInfo = {
     nickname: '개굴님',
@@ -18,6 +19,9 @@ const MyPage = () => {
     receivedLetters: 12,
     totalUsageMinutes: 135,
   };
+
+  // 온도값을 0~100으로 clamp
+  const safeTemp = Math.max(0, Math.min(100, userInfo.temperature));
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -84,12 +88,12 @@ const MyPage = () => {
               {/* Filled portion */}
               <div
                 className='absolute left-0 top-0 h-full bg-[var(--color-primary-400)] rounded-full'
-                style={{ width: `${userInfo.temperature}%` }}
+                style={{ width: `${safeTemp}%` }}
               />
               {/* Indicator circle */}
               <div
                 className='absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-[var(--color-primary-400)] rounded-full border-2 border-white shadow-[0_0_10px_rgba(0,0,0,0.1)]'
-                style={{ left: `calc(${userInfo.temperature}% - 10px)` }}
+                style={{ left: `calc(${safeTemp}% - 10px)` }}
               />
             </div>
 
@@ -98,9 +102,9 @@ const MyPage = () => {
               <span className='ty-body5 text-[var(--color-text-normal)]'>0도</span>
               <span
                 className='absolute ty-body5 text-[var(--color-primary-400)] -translate-x-1/2'
-                style={{ left: `${userInfo.temperature}%` }}
+                style={{ left: `${safeTemp}%` }}
               >
-                {userInfo.temperature}도
+                {safeTemp}도
               </span>
               <span className='ty-body5 text-[var(--color-text-normal)]'>100도</span>
             </div>
