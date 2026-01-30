@@ -18,7 +18,7 @@ const TermCheckPage = () => {
   };
   // 상세 보기 클릭 핸들러 (페이지 이동)
   const handleOpenDetail = (type: string) => {
-    navigate(`/terms/${type}`);
+    navigate(`/setting/${type}`);
   };
 
   return (
@@ -62,13 +62,13 @@ const TermCheckPage = () => {
           />
           <TermItem
             label='[선택] 이메일 수신 동의 (아이디 및 비밀번호 찾기)'
-            checked={agreements.marketing}
-            onToggle={() => handleCheck('marketing')}
+            checked={agreements.marketingEmail}
+            onToggle={() => handleCheck('marketingEmail')}
           />
           <TermItem
             label='[선택] 광고성 푸시 알림 수신 동의'
-            checked={agreements.push}
-            onToggle={() => handleCheck('push')}
+            checked={agreements.marketingPush}
+            onToggle={() => handleCheck('marketingPush')}
           />
         </div>
       </div>

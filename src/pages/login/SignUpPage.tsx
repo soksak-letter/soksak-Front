@@ -75,7 +75,8 @@ const SignUpPage = () => {
       termsAgreed: agreements.terms, // 필수 약관
       privacyAgreed: agreements.privacy, // 필수 개인정보
       ageOver14Agreed: agreements.age, // 필수 14세
-      marketingAgreed: agreements.marketing, // 선택 마케팅
+      marketingEmailAgreed: agreements.marketingEmail, // 선택 마케팅 이메일
+      marketingPushAgreed: agreements.marketingPush,
     };
 
     try {
@@ -334,13 +335,13 @@ const SignUpPage = () => {
             />
             <TermItem
               label='[선택] 마케팅 수신 동의'
-              checked={agreements.marketing}
-              onToggle={() => handleCheck('marketing')}
+              checked={agreements.marketingEmail}
+              onToggle={() => handleCheck('marketingEmail')}
             />
             <TermItem
               label='[선택] 광고성 푸시 알림 수신 동의'
-              checked={agreements.push}
-              onToggle={() => handleCheck('push')}
+              checked={agreements.marketingPush}
+              onToggle={() => handleCheck('marketingPush')}
             />
           </div>
         </div>

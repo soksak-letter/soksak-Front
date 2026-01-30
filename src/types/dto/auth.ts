@@ -13,7 +13,8 @@ export interface SignUpRequest {
   termsAgreed: boolean;
   privacyAgreed: boolean;
   ageOver14Agreed: boolean;
-  marketingAgreed?: boolean;
+  marketingPushAgreed?: boolean;
+  marketingEmailAgreed?: boolean;
 }
 
 // 2. 서버가 응답으로 줄 데이터 (Response DTO)
