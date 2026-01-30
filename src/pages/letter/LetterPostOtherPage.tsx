@@ -36,7 +36,7 @@ export default function LetterPostOtherPage() {
 
   const threadId = threadIdParam ? Number(threadIdParam) : 0;
   const { data, isLoading, isError, refetch } = useAnonThread(threadId);
-  const { senderName } = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const questionTitle = data?.firstQuestion ?? '첫번째로 받은 질문입니다.';
 
