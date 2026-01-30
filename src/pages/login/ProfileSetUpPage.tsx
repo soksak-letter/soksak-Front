@@ -81,6 +81,7 @@ const ProfileSetUpPage = () => {
       setNickname(value);
     }
   };
+
   useEffect(() => {
     return () => {
       if (previewUrl) {

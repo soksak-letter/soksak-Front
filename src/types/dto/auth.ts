@@ -49,6 +49,23 @@ export interface SignInResult {
 }
 export type SignInResponse = CommonResponse<SignInResult>;
 
+//약관동의 API
+// 1. 내가 서버로 보낼 데이터 (Request Dto)
+export interface AgreementsRequest {
+  termsAgreed: boolean;
+  privacyAgreed: boolean;
+  ageOver14Agreed: boolean;
+  marketingPushAgreed?: boolean;
+  marketingEmailAgreed?: boolean;
+}
+
+// 2. 서버가 응답으로 줄 데이터 (Response DTO)
+export interface AgreementsResult {
+  result: {};
+  updated: boolean;
+}
+export type AgreementsResponse = CommonResponse<AgreementsResult>;
+
 //이메일 중복확인
 // 1. 내가 서버로 보낼 데이터 (Request)
 export interface EmailExistsRequest {

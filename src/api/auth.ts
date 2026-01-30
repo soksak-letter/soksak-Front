@@ -1,4 +1,6 @@
 import type {
+  AgreementsRequest,
+  AgreementsResponse,
   EmailExistsRequest,
   EmailExistsResponse,
   NicknameSetUpRequest,
@@ -48,6 +50,17 @@ export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
 export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
+};
+/**
+ * 약관 동의 API
+ * @param data 회원가입 입력 정보
+ */
+export const postAgreements = async (data: AgreementsRequest) => {
+  const response = await axiosInstance.patch<AgreementsResponse>(
+    '/users/me/consents', // 서버 API 명세에 맞는 URL 입력
+    data,
+  );
+  return response.data;
 };
 
 /**
