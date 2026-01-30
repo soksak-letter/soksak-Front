@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LetterCarousel from '../../components/letters/LetterCarousel';
 import QuestionCard from '../../components/common/QuestionCard';
@@ -10,6 +10,10 @@ import type { LetterItem } from '../../types/dto/letter';
 import useHomeSummary from '../../hooks/useHomeSummary';
 import usePublicLetters from '../../hooks/usePublicLetters';
 import useFriendLetters from '../../hooks/useFriendLetters';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useLetterStore } from '@/stores/letterStore';
+import { useLocation } from 'react-router-dom';
+import type { ToastLocationState } from '@/types/toastLocationState';
 
 // API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
 const colorToVariant = (color?: string): Letter['variant'] => {
@@ -33,6 +37,10 @@ const convertToLetter = (item: LetterItem): Letter => ({
 const MainPage = () => {
   const navigate = useNavigate();
 
+  const { showToast } = useGlobalToast();
+  const { resetAll } = useLetterStore();
+  const location = useLocation();
+
   // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
   const { data: homeSummary, isLoading: summaryLoading, timeLeft } = useHomeSummary();
 
@@ -55,14 +63,24 @@ const MainPage = () => {
     return (friendLettersData ?? []).map(convertToLetter);
   }, [friendLettersData]);
 
+  // 편지 발송 후 성공 토스트 뜨면 resetAll 실행
+  useEffect(() => {
+    const state = location.state as ToastLocationState | null;
+    const toast = state?.toast;
+    if (!toast) return;
+
+    showToast(toast.message, toast.status);
+    resetAll();
+
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.state, location.pathname, navigate, resetAll, showToast]);
+
   const handleWriteToSelf = () => {
-    console.log('나에게 편지 쓰기');
-    // 실제로는 페이지 이동 또는 모달 열기
+    navigate('/letter/self/draft');
   };
 
   const handleWriteToOther = () => {
-    console.log('상대에게 편지 쓰기');
-    // 실제로는 페이지 이동 또는 모달 열기
+    navigate('/letter/anon/draft');
   };
 
   if (summaryLoading) {

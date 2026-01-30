@@ -48,35 +48,29 @@
 
   /* ===== Nanum Fonts ===== */
   @font-face {
-    font-family: 'NanumBaeEunHyeCe';
+    font-family: 'NanumBaeEunHye';
     font-weight: 400;
     src:
       local('Nanum BaeEunHye'),
-      url('../../assets/fonts/NanumBaeEunHyeCe.woff2') format('woff2');
+      url('../../assets/fonts/NanumBaeEunHye.woff2') format('woff2');
   }
 
   @font-face {
-    font-family: 'NanumBiSangCe';
+    font-family: 'NanumBiSang';
     font-weight: 400;
     src:
       local('Nanum BiSang'),
-      url('../../assets/fonts/NanumBiSangCe.woff2') format('woff2');
+      url('../../assets/fonts/NanumBiSang.woff') format('woff'),
+      url('../../assets/fonts/NanumBiSang.woff2') format('woff2');
   }
 
   @font-face {
-    font-family: 'NanumGangInHanWiRo';
+    font-family: 'NanumNeuritNeurit';
     font-weight: 400;
     src:
-      local('Nanum GangInHanWiRo'),
-      url('../../assets/fonts/NanumGangInHanWiRo.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'NanumABbaGeurSsi';
-    font-weight: 400;
-    src:
-      local('Nanum ABbaGeurSsi'),
-      url('../../assets/fonts/NanumABbaGeurSsi.woff2') format('woff2');
+      local('Nanum NeuritNeurit'),
+      url('../../assets/fonts/NanumNeuritNeurit.woff') format('woff'),
+      url('../../assets/fonts/NanumNeuritNeurit.woff2') format('woff2');
   }
 
   :root {

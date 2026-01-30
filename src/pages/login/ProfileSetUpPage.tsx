@@ -1,10 +1,16 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useState } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
+
+import { patchNickname, postProfileImage } from '@/api/auth';
+
+import { ROUTES } from '@/routes/paths';
 
 const ProfileSetUpPage = () => {
   const navigate = useNavigate();
@@ -13,16 +19,56 @@ const ProfileSetUpPage = () => {
 
   // 툴팁(말풍선) 보임 여부 상태 관리
   const [showTooltip, setShowTooltip] = useState(false);
+  //프로필 사진 업로드 상태 관리
+  const [profileImage, setProfileImage] = useState<File | null>(null); // 업로드할 파일 객체
+  const [previewUrl, setPreviewUrl] = useState<string>(''); // 화면에 보여줄 미리보기 URL
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+
+  // 파일 인풋 제어를 위한 ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 유효성 검사 결과 객체 받기
   const validationResult = validate.nickname(nickname);
   const isValid = validationResult.success;
 
-  //온보딩으로(다음 클릭시)
-  const handleOnboading = () => {
-    if (!isValid) return;
-    console.log('프로필 설정 완료', nickname);
-    navigate('/onboarding/profile');
+  // 2. 이미지 변경 핸들러
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfileImage(file); // 이전 URL 해제
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      // 미리보기 URL 생성
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    }
+  };
+
+  // 카메라 버튼 클릭 시 hidden input 실행
+  const handleCameraClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // 3. 완료 버튼 핸들러 (API 연동)
+  const handleOnboading = async () => {
+    if (!isValid || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      // (1) 닉네임 변경 요청
+      await patchNickname({ nickname });
+
+      // (2) 프로필 이미지가 있다면 업로드 요청
+      if (profileImage) {
+        await postProfileImage(profileImage);
+      }
+      navigate(ROUTES.onboarding.start);
+    } catch (error) {
+      console.error('프로필 설정 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 테두리 색상 결정
@@ -41,6 +87,14 @@ const ProfileSetUpPage = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   return (
     <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>
       <div className='[&>*]:!bg-[#FAFAFA]'>
@@ -49,9 +103,24 @@ const ProfileSetUpPage = () => {
       {/* 프로필 영역 */}
       <div className='flex flex-col items-center mt-10 mb-[16px]'>
         <div className='relative'>
-          <div className='w-[128px] h-[128px] bg-[var(--color-primary-100)] rounded-full mb-3'></div>
+          <div className='w-[128px] h-[128px] bg-[var(--color-primary-100)] rounded-full mb-3 overflow-hidden'>
+            {previewUrl ? (
+              <img src={previewUrl} alt='프로필 미리보기' className='w-full h-full object-cover' />
+            ) : (
+              <div className='w-full h-full bg-[var(--color-primary-100)]' />
+            )}
+          </div>
+          {/* 숨겨진 파일 input */}
+          <input
+            type='file'
+            accept='image/*'
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            className='hidden'
+          />
           <button
             type='button'
+            onClick={handleCameraClick}
             className='absolute bottom-2 right-3 w-8 h-8 bg-[var(--color-primary-500)] rounded-full flex items-center justify-center border-2 border-[#FAFAFA] text-white'
             aria-label='프로필 사진 변경'
           >
@@ -114,7 +183,7 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboading} disabled={!isValid}>
+        <Button onClick={handleOnboading} disabled={!isValid || isLoading}>
           시작하기
         </Button>
       </div>
