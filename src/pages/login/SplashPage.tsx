@@ -22,7 +22,7 @@ const SplashPage = () => {
   }, [navigate]);
 
   return (
-    <div className='w-[375px] h-screen mx-auto bg-[#FAFAFA]! flex flex-col items-center justify-center px-[85px] relative overflow-hidden'>
+    <div className='w-[375px] h-screen mx-auto bg-[#FAFAFA] flex flex-col items-center justify-center px-[85px] relative overflow-hidden'>
       <style>{`
         @keyframes dissolveUp {
           0% { opacity: 0; transform: translate3d(0, 0, 0); }
