@@ -21,7 +21,7 @@ type InboxOtherLetterItem = {
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
-  paperId: number; // paperAsset에서 변환 필요할 듯
+  paperId: number;
 };
 
 const parseDate = (iso: string) => {
@@ -42,16 +42,16 @@ export default function LetterInboxOtherPage() {
 
   const DUMMY_MAILBOX_LETTERS = [
     {
-      threadId: 101,
+      threadId: 1,
       sender: { id: 2, nickname: '파란수박' },
       lastLetterId: 9001,
-      lastLetterTitle: '익명 질문: 요즘 제일 행복한 순간은?',
+      lastLetterTitle: '요즘 제일 행복한 순간은?',
       lastLetterPreview: '나는 요즘…',
       updatedAt: new Date().toISOString(),
       paperId: 0,
     },
     {
-      threadId: 102,
+      threadId: 2,
       sender: { id: 3, nickname: '초록오이' },
       lastLetterId: 9002,
       lastLetterTitle: '오늘 하루를 한 단어로 말하면?',
@@ -60,7 +60,7 @@ export default function LetterInboxOtherPage() {
       paperId: 1,
     },
     {
-      threadId: 103,
+      threadId: 3,
       sender: { id: 4, nickname: '노란치즈' },
       lastLetterId: 9003,
       lastLetterTitle: '너가 제일 자주 하는 생각은?',
@@ -79,7 +79,7 @@ export default function LetterInboxOtherPage() {
       letterId: x.lastLetterId,
       threadId: x.threadId,
       question: x.lastLetterTitle,
-      senderName: x.sender.nickname,
+      senderName: x.sender.nickname, // 서버에서 내려주는 랜덤 닉네임
       receivedAt: parseDate(x.updatedAt),
       receivedAtMs: new Date(x.updatedAt).getTime(),
       isUnread: false,
@@ -110,7 +110,9 @@ export default function LetterInboxOtherPage() {
   };
 
   const handleOpenLetter = (item: InboxOtherLetterItem) => {
-    navigate(`/letter/${item.letterId}/thread/${item.threadId}`); // threadId로만 가도 될 것 같은데
+    navigate(`/letter/thread/${item.threadId}`, {
+      state: { senderName: item.senderName },
+    });
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;

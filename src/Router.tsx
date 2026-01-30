@@ -139,8 +139,7 @@ const router = createBrowserRouter([
             ],
           },
 
-          { path: 'letter/post-other', element: <LetterPostOtherPage /> }, // 기존 라우팅 TODO: 삭제 필요
-          { path: 'letter/:letterId/thread/:threadId', element: <LetterPostOtherPage /> },
+          { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
 
           { path: 'letter/reply', element: <LetterReplyPage /> }, // TODO: 삭제 필요
           { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },

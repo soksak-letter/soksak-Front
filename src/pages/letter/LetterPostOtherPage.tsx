@@ -1,34 +1,64 @@
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import PenIcon from '@/assets/icons/PenIcon.svg?react';
-
-type Direction = 'received' | 'sent';
+import NotFoundPage from '../system/NotFoundPage';
+import { useAnonThread } from '@/hooks/mails/useAnonTreads';
+import { Button } from '@/components/common/Button';
+import { LoadingDots } from '@/components/LoadingDots';
+import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 
 type PostItem = {
   letterId: number;
   title: string;
+  deliveredAt: string; // ISO
   dateText: string; // '2026.1.3'
-  sentAt: string; // ISO
-  direction: Direction; // received=왼쪽, sent=오른쪽
+  isMine: boolean; // true: sent, false: received
+  isUnread: boolean;
+  paperId: number;
+};
+
+const parseDate = (iso: string) => {
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}.${m}.${day}`;
 };
 
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
-  const params = useParams();
+  const { threadId: threadIdParam } = useParams();
+  const location = useLocation();
 
-  // 라우터 설계에 따라 threadId가 있을 수도/없을 수도 있음
-  // (너희가 추천했던 threadId 중심이면 여기서 잡히게 될 것)
-  const threadId = params.threadId ?? '101';
+  const threadId = threadIdParam ? Number(threadIdParam) : 0;
+  const { data, isLoading, isError, refetch } = useAnonThread(threadId);
+  const { senderName } = location.state as { senderName?: string };
 
-  // TODO: threadId로 상대 닉네임/질문/포스트 목록 불러오기
-  const senderName = '파란수박';
-  const questionTitle = '당신의 인생에 가장 큰 영감을\n주는 사람은 누구인가요?';
+  const questionTitle = data?.firstQuestion ?? '';
+
+  const posts: PostItem[] = useMemo(() => {
+    if (!data?.letters) return [];
+
+    return data.letters.map((l) => ({
+      letterId: l.id,
+      title: l.title,
+      deliveredAt: l.deliveredAt,
+      dateText: parseDate(l.deliveredAt),
+      isMine: false,
+      isUnread: false,
+      paperId: l.design.paper.id,
+      stampId: l.design.stamp.id,
+    }));
+  }, [data]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
-  const leftLane = useMemo(() => posts.filter((p) => p.direction === 'received'), [posts]);
-  const rightLane = useMemo(() => posts.filter((p) => p.direction === 'sent'), [posts]);
+  const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
+  const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
+
+  // 잘못된 접근 - 404 처리
+  if (!threadIdParam) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
     // 너가 말한 흐름: post-other에서 편지 상세 누르면 reply 페이지로 이동
@@ -60,30 +90,60 @@ export default function LetterPostOtherPage() {
           {questionTitle}
         </h2>
 
-        {/* 바깥은 2열, 안쪽은 각 레인 flex-col */}
-        <div className='mt-6 grid grid-cols-2 gap-x-[34px] items-start'>
-          {/* 왼쪽 레인 (received) */}
-          <div className='flex flex-col gap-[41px]'>
-            {leftLane.map((p) => (
-              <PostCard
-                key={p.letterId}
-                item={p}
-                onClick={() => handleOpenLetterDetail(p.letterId)}
-              />
-            ))}
+        {/* 1) 로딩 */}
+        {isLoading ? (
+          <div className='flex flex-col items-center justify-center gap-8 py-50'>
+            <LoadingDots fillIntervalMs={350} />
+            <p className='ty-title2'>로딩 중...</p>
           </div>
+        ) : /* 2) 에러 */ isError ? (
+          <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
+            <p className='ty-title3'>목록을 불러오지 못했어요.</p>
+            <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+              다시 시도
+            </Button>
+          </div>
+        ) : (
+          /* 3) 정상 */
+          <>
+            {/* 바깥은 2열, 안쪽은 각 레인 flex-col */}
+            <div className='mt-6 grid grid-cols-2 gap-x-[34px] items-start'>
+              {/* 왼쪽 레인 (received) */}
+              <div className='flex flex-col gap-[41px]'>
+                {leftLane.map((p) => {
+                  const envelopeAsset = ENVELOPE_ASSET_MAP[p.paperId];
+                  const EnvelopePreview = envelopeAsset?.Preview;
 
-          {/* 오른쪽 레인 (sent) - 상단 41px 오프셋 */}
-          <div className='flex flex-col gap-[41px] pt-[41px]'>
-            {rightLane.map((p) => (
-              <PostCard
-                key={p.letterId}
-                item={p}
-                onClick={() => handleOpenLetterDetail(p.letterId)}
-              />
-            ))}
-          </div>
-        </div>
+                  return (
+                    <PostCard
+                      key={p.letterId}
+                      item={p}
+                      EnvelopePreview={EnvelopePreview}
+                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* 오른쪽 레인 (sent) - 상단 41px 오프셋 */}
+              <div className='flex flex-col gap-[41px] pt-[41px]'>
+                {rightLane.map((p) => {
+                  const envelopeAsset = ENVELOPE_ASSET_MAP[p.paperId];
+                  const EnvelopePreview = envelopeAsset?.Preview;
+
+                  return (
+                    <PostCard
+                      key={p.letterId}
+                      item={p}
+                      EnvelopePreview={EnvelopePreview}
+                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </main>
 
       {/* 플로팅 작성 버튼 */}
@@ -101,11 +161,24 @@ export default function LetterPostOtherPage() {
   );
 }
 
-function PostCard({ item, onClick }: { item: PostItem; onClick?: () => void }) {
+function PostCard({
+  item,
+  EnvelopePreview,
+  onClick,
+}: {
+  item: PostItem;
+  EnvelopePreview?: React.ComponentType<{ className?: string }>;
+  onClick?: () => void;
+}) {
   return (
     <button type='button' onClick={onClick} className='text-left'>
-      {/* 봉투 자리 */}
-      <div className={`w-[138px] h-[98px] rounded-2xl ${envelopeBg(item.colorKey)}`} />
+      <div className='w-[138px] h-[98px]'>
+        {EnvelopePreview ? (
+          <EnvelopePreview className='h-full w-full' />
+        ) : (
+          <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+        )}
+      </div>
 
       <p className='mt-3 line-clamp-1 text-[14px] font-semibold text-[#171717]'>{item.title}</p>
       <p className='mt-1 text-[12px] text-[#6F6F6F]'>{item.dateText}</p>
