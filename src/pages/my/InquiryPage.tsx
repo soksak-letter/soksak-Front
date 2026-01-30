@@ -115,6 +115,9 @@ const InquiryPage = () => {
               type='button'
               onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
               className='w-full h-[48px] px-4 bg-[var(--color-bg-500)] rounded-lg ty-body5 text-left flex items-center justify-between focus:outline-none'
+              aria-expanded={isTypeDropdownOpen}
+              aria-controls='inquiry-type-list'
+              aria-haspopup='listbox'
             >
               <span
                 className={inquiryType ? 'text-[var(--color-text-assistive)]' : 'text-black/60'}
@@ -130,11 +133,17 @@ const InquiryPage = () => {
 
             {/* Dropdown */}
             {isTypeDropdownOpen && (
-              <div className='absolute top-full left-0 right-0 mt-1 bg-[var(--color-bg-500)] rounded-lg shadow-lg z-10 overflow-hidden'>
+              <div
+                id='inquiry-type-list'
+                role='listbox'
+                className='absolute top-full left-0 right-0 mt-1 bg-[var(--color-bg-500)] rounded-lg shadow-lg z-10 overflow-hidden'
+              >
                 {INQUIRY_TYPES.map((type) => (
                   <button
                     key={type}
                     type='button'
+                    role='option'
+                    aria-selected={inquiryType === type}
                     onClick={() => {
                       setInquiryType(type);
                       setIsTypeDropdownOpen(false);
