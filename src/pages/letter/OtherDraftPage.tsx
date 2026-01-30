@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -15,6 +15,9 @@ import { BsQuestionCircleFill } from 'react-icons/bs';
 
 const OtherDraftPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const [letter, setLetter] = useState({
     title: '',
@@ -23,9 +26,7 @@ const OtherDraftPage = () => {
   const [isPublic, setIsPublic] = useState(false);
 
   // mock data
-  const nickname = '파란수박';
   const letterLeft = 4;
-  const dailyQuestion = '당신의 인생에 큰 영감을 주는 사람은 누구인가요?';
 
   const handleSubmit = () => {
     // TODO:
@@ -43,7 +44,7 @@ const OtherDraftPage = () => {
   return (
     <div className='flex flex-col'>
       <BackHeader
-        title={`${nickname}에게 보내는 편지`}
+        title={`${senderName}에게 보내는 편지`}
         rightElement={
           <button type='submit' onClick={handleSubmit}>
             꾸미기

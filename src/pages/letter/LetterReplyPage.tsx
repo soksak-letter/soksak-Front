@@ -76,7 +76,9 @@ export default function LetterReplyPage() {
   };
 
   const handleReply = () => {
-    navigate('/letter/other/draft');
+    navigate('/letter/other/draft', {
+      state: { senderName },
+    });
   };
 
   const handleEnd = () => {
