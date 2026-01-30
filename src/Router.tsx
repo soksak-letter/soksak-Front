@@ -53,6 +53,7 @@ import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
 import SplashPage from './pages/login/SplashPage';
+import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -72,11 +73,11 @@ const router = createBrowserRouter([
           { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> },
           { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
           // { path: 'letter/10-end', element: <LetterTenEndPage /> },
-          // { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
+          { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
           { path: 'friend/request', element: <FriendRequestPage /> },
           { path: 'friend/inbox', element: <FriendInboxPage /> },
 
-          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
+          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
           { path: 'report/weekly-report', element: <WeeklyReportPage /> },
         ],
       },
