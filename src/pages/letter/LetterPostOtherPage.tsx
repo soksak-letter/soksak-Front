@@ -18,7 +18,7 @@ type PostItem = {
   isUnread: boolean;
   paperId: number;
   stampId: number;
-  stampUrl?: string; // TODO : 백엔드에서 받으면 ?제거
+  stampUrl?: string; // TODO : 백엔드에서 받으면 ? 제거
 };
 
 const parseDate = (iso: string) => {

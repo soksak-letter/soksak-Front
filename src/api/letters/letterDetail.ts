@@ -1,13 +1,6 @@
 import { axiosInstance } from '@/api/axios';
 import type { ApiError } from '@/types/dto/common';
-
-export type LetterDetailSuccess = unknown;
-
-export type LetterDetailResponse = {
-  resultType: 'SUCCESS' | 'FAIL';
-  error: ApiError | null;
-  success: LetterDetailSuccess | null;
-};
+import type { LetterDetailResponse, LetterDetailSuccess } from '@/types/dto/letters/letterDetail';
 
 export async function getLetterDetail(letterId: number): Promise<LetterDetailSuccess> {
   const { data } = await axiosInstance.get<LetterDetailResponse>(`/letters/${letterId}`);
