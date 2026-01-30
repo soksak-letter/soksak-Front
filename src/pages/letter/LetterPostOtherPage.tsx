@@ -38,20 +38,51 @@ export default function LetterPostOtherPage() {
 
   const questionTitle = data?.firstQuestion ?? '';
 
-  const posts: PostItem[] = useMemo(() => {
-    if (!data?.letters) return [];
-
-    return data.letters.map((l) => ({
-      letterId: l.id,
-      title: l.title,
-      deliveredAt: l.deliveredAt,
-      dateText: parseDate(l.deliveredAt),
+  const DUMMY_POSTS: PostItem[] = [
+    {
+      letterId: 1,
+      title: '첫 번째 편지예요',
+      deliveredAt: '2026-01-01T10:00:00.000Z',
+      dateText: '2026.01.01',
+      isMine: false,
+      isUnread: true,
+      paperId: 1,
+    },
+    {
+      letterId: 2,
+      title: '답장을 보냈어요',
+      deliveredAt: '2026-01-02T12:30:00.000Z',
+      dateText: '2026.01.02',
+      isMine: true,
+      isUnread: false,
+      paperId: 2,
+    },
+    {
+      letterId: 3,
+      title: '또 다른 편지',
+      deliveredAt: '2026-01-03T18:20:00.000Z',
+      dateText: '2026.01.03',
       isMine: false,
       isUnread: false,
-      paperId: l.design.paper.id,
-      stampId: l.design.stamp.id,
-    }));
-  }, [data]);
+      paperId: 1,
+    },
+  ];
+
+  const posts: PostItem[] = useMemo(() => {
+    if (data?.letters && data.letters.length > 0) {
+      return data.letters.map((l) => ({
+        letterId: l.id,
+        title: l.title,
+        deliveredAt: l.deliveredAt,
+        dateText: parseDate(l.deliveredAt),
+        isMine: false,
+        isUnread: false,
+        paperId: l.design.paper.id + 1,
+        stampId: l.design.stamp.id,
+      }));
+    }
+    return DUMMY_POSTS;
+  }, [data?.letters]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
