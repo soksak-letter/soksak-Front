@@ -76,7 +76,7 @@ const SignUpPage = () => {
       privacyAgreed: agreements.privacy, // 필수 개인정보
       ageOver14Agreed: agreements.age, // 필수 14세
       marketingEmailAgreed: agreements.marketingEmail, // 선택 마케팅 이메일
-      marketingPushAgreed: agreements.marketingPush,
+      marketingPushAgreed: agreements.marketingPush, // 선택 마케팅 푸시
     };
 
     try {
@@ -84,7 +84,7 @@ const SignUpPage = () => {
       const response = await postSignup(requestBody);
 
       // 결과 콘솔 출력
-      console.log('회원가입 Response:', response);
+      //console.log('회원가입 Response:', response);
 
       // 4. 성공 시 처리
       if (response.resultType === 'SUCCESS') {
