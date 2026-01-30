@@ -101,15 +101,17 @@ export default function WeeklyReportPage() {
             주간 마음 리포트가 도착했어요!
           </h2>
           {/* 상단 “주간 마음 리포트” 카드 (344x307) - TODO: "에잇" 이 컴포넌트 구현하고 변경해주세요*/}
-          <section className='w-[344px] h-[307px] rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-4 py-4'>
-            {/* 네트워크/키워드 영역 블랭크 */}
-            <div className='mt-3 rounded-xl bg-[#FFF7F7] h-[150px] w-full' />
+          <section className='w-[344px] h-[307px] rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-[16px] py-[8px]'>
+            <div className='flex flex-col'>
+              {/* 네트워크/키워드 영역 블랭크 */}
+              <div className='mt-3 rounded-xl bg-[#FFF7F7] h-[150px] w-full' />
 
-            {/* 태그 영역 블랭크 */}
-            <div className='mt-3 flex flex-wrap gap-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
-              ))}
+              {/* 태그 영역 블랭크 */}
+              <div className='mt-3 flex flex-wrap gap-2'>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
+                ))}
+              </div>
             </div>
           </section>
 
