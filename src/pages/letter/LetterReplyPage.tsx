@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import { Button } from '@/components/common/Button';
+import { useModalStore } from '@/stores/modalStore';
 
 type ReplyViewData = {
   senderName: string;
@@ -13,7 +14,7 @@ type ReplyViewData = {
 
 export default function LetterReplyPage() {
   const navigate = useNavigate();
-  const params = useParams();
+  const { openModal } = useModalStore();
 
   // 필요하면 라우트에서 letterId/threadId를 받아와서 API 연결
   // const letterId = params.letterId;
@@ -44,7 +45,19 @@ export default function LetterReplyPage() {
   };
 
   const handleEnd = () => {
-    navigate(-1); // TODO: 여기 뒤로가기가 아니라 모달 떠야함. 모달 구현 필요
+    openModal('conversationRemaining', {
+      friendName: '파란수박',
+      remainingCount: 4,
+      onContinueConversation: () => {
+        // 그냥 닫히고 계속 작성
+      },
+      onStopConversation: () => {
+        // other-stop 페이지로 이동
+        navigate('/letter/other-stop', {
+          state: { friendName: '파란수박', totalCount: 7 },
+        });
+      },
+    });
   };
 
   return (
