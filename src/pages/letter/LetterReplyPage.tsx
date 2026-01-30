@@ -9,7 +9,6 @@ import NotFoundPage from '../system/NotFoundPage';
 import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
-import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 
 const parseSentAt = (isoOrNull: string | null) => {
