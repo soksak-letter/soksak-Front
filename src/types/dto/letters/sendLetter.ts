@@ -13,6 +13,6 @@ export type CreateLetterBody = {
 export type CreateLetterResult = {
   letter: {
     id: number;
-    deliveredAt: string;
+    deliveredAt: string | null;
   };
 };
