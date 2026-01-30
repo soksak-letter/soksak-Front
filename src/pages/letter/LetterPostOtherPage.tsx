@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import BackHeader from '@/components/common/headers/BackHeader';
 import PenIcon from '@/assets/icons/PenIcon.svg?react';
 import NotFoundPage from '../system/NotFoundPage';
-import { useAnonThread } from '@/hooks/mails/useAnonTreads';
+import { useAnonThread } from '@/hooks/mails/useAnonThread';
 import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
@@ -32,10 +32,12 @@ const parseDate = (iso: string) => {
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
   const { threadId: threadIdParam } = useParams();
-  const location = useLocation();
 
   const threadId = threadIdParam ? Number(threadIdParam) : 0;
   const { data, isLoading, isError, refetch } = useAnonThread(threadId);
+
+  // SenderName 불러오기
+  const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const questionTitle = data?.firstQuestion ?? '첫번째로 받은 질문입니다.';
