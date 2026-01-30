@@ -59,7 +59,7 @@ export default function SettingPage() {
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px]'>
+      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px] pb-24'>
         {/* 계정·알림 섹션 */}
         <section className='mb-[50px]'>
           <h2

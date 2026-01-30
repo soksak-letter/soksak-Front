@@ -59,7 +59,7 @@ export default function PasswordChangePage() {
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px]'>
+      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px] pb-24'>
         {/* 컨텐츠 추가 예정 */}
       </main>
     </div>
