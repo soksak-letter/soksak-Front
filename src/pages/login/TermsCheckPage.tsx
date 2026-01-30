@@ -5,6 +5,7 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
 import useTermsAgree from '@/hooks/useTermsAgree';
 import TermItem from '@/components/TermItem';
+import { updateAgreements } from '@/api/auth';
 
 const TermCheckPage = () => {
   const navigate = useNavigate();
@@ -12,9 +13,28 @@ const TermCheckPage = () => {
   const { agreements, isAllChecked, isFormValid, handleCheck, handleAllCheck } = useTermsAgree();
 
   //온보딩으로(다음 클릭시)
-  const handleOnboading = () => {
+  const handleOnboading = async () => {
     if (!isFormValid) return;
-    navigate('/onboarding/profile');
+    try {
+      // 2. 서버로 보낼 데이터 포맷 맞추기 (Hook 상태 -> API DTO)
+      const requestData = {
+        termsAgreed: agreements.terms,
+        privacyAgreed: agreements.privacy,
+        ageOver14Agreed: agreements.age,
+        marketingEmailAgreed: agreements.marketingEmail,
+        marketingPushAgreed: agreements.marketingPush,
+      };
+
+      // 3. API 호출
+      await updateAgreements(requestData);
+
+      console.log('약관 동의 전송 성공');
+
+      // 4. 성공 시 다음 페이지 이동
+      navigate(ROUTES.onbarding.start);
+    } catch (error) {
+      console.error('약관 동의 전송 실패:', error);
+    }
   };
   // 상세 보기 클릭 핸들러 (페이지 이동)
   const handleOpenDetail = (type: string) => {

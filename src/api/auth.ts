@@ -55,7 +55,7 @@ export const postSignin = async (body: SignInRequest) => {
  * 약관 동의 API
  * @param data 회원가입 입력 정보
  */
-export const postAgreements = async (data: AgreementsRequest) => {
+export const updateAgreements = async (data: AgreementsRequest) => {
   const response = await axiosInstance.patch<AgreementsResponse>(
     '/users/me/consents', // 서버 API 명세에 맞는 URL 입력
     data,
