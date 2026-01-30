@@ -17,6 +17,8 @@ type PostItem = {
   isMine: boolean; // true: sent, false: received
   isUnread: boolean;
   paperId: number;
+  stampId: number;
+  stampUrl?: string; // TODO : 백엔드에서 받으면 ?제거
 };
 
 const parseDate = (iso: string) => {
@@ -47,6 +49,7 @@ export default function LetterPostOtherPage() {
       isMine: false,
       isUnread: true,
       paperId: 1,
+      stampId: 1,
     },
     {
       letterId: 2,
@@ -56,6 +59,7 @@ export default function LetterPostOtherPage() {
       isMine: true,
       isUnread: false,
       paperId: 2,
+      stampId: 2,
     },
     {
       letterId: 3,
@@ -65,6 +69,7 @@ export default function LetterPostOtherPage() {
       isMine: false,
       isUnread: false,
       paperId: 1,
+      stampId: 3,
     },
   ];
 
@@ -95,9 +100,6 @@ export default function LetterPostOtherPage() {
     navigate(`/letter/reply/${letterId}`, {
       state: { threadId, letterId, senderName },
     });
-
-    // (추천 라우트 형태로 바꾸면)
-    // navigate(`/letter/reply/${letterId}`, { state: { threadId, senderName } });
   };
 
   const handleWriteReply = () => {
@@ -200,16 +202,36 @@ function PostCard({
 }) {
   return (
     <button type='button' onClick={onClick} className='text-left'>
-      <div className='w-[130px] h-[100px]'>
+      <div className='relative w-full aspect-[13/10] max-w-[160px]'>
         {EnvelopePreview ? (
           <EnvelopePreview className='h-full w-full' />
         ) : (
           <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
         )}
-      </div>
 
-      <p className='mt-3 line-clamp-1 ty-body4'>{item.title}</p>
-      <p className='mt-1 ty-detailMedium'>{item.dateText}</p>
+        {/* 우표(백엔드 assetUrl로) */}
+        {!!item.stampUrl && (
+          <img
+            src={item.stampUrl}
+            alt='우표'
+            className='
+              absolute
+              right-[14px] bottom-[14px]
+              h-[34px] w-[34px]
+              pointer-events-none
+            '
+          />
+        )}
+      </div>
+      <div className='ml-3'>
+        <p className='mt-3 line-clamp-1 ty-body4'>{item.title}</p>
+
+        <div className='mt-1 flex items-center gap-1'>
+          <p className='ty-detailMedium'>{item.dateText}</p>
+          {/* TODO : Unread 상태 전역으로 관리? */}
+          {item.isUnread && <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />}
+        </div>
+      </div>
     </button>
   );
 }
