@@ -8,6 +8,7 @@ export type ModalType =
   | 'letterSendingFailed'
   | 'friendRequest'
   | 'friendRequestFailed'
+  | 'conversationRemaining'
   | null;
 
 export type ModalPayload = {
@@ -35,6 +36,11 @@ export type ModalPayload = {
 
   // friendRequestFailed
   onConfirmRequestAgain?: () => void;
+
+  // conversationRemaining (대화 n회 남음)
+  remainingCount?: number;
+  onContinueConversation?: () => void;
+  onStopConversation?: () => void;
 };
 
 interface ModalState {

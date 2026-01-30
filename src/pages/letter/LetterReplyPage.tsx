@@ -9,6 +9,8 @@ import NotFoundPage from '../system/NotFoundPage';
 import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { useNavigate } from 'react-router-dom';
+import { useModalStore } from '@/stores/modalStore';
 
 const parseSentAt = (isoOrNull: string | null) => {
   if (!isoOrNull) return '-';
@@ -43,6 +45,7 @@ export default function LetterReplyPage() {
   // SenderName 불러오기
   const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const { openModal } = useModalStore();
 
   const view = useMemo(() => {
     if (!data) return null;
@@ -82,7 +85,19 @@ export default function LetterReplyPage() {
   };
 
   const handleEnd = () => {
-    navigate(-1); // TODO: 여기 뒤로가기가 아니라 모달 떠야함. 모달 구현 필요
+    openModal('conversationRemaining', {
+      friendName: '파란수박',
+      remainingCount: 4,
+      onContinueConversation: () => {
+        // 그냥 닫히고 계속 작성
+      },
+      onStopConversation: () => {
+        // other-stop 페이지로 이동
+        navigate('/letter/other-stop', {
+          state: { friendName: '파란수박', totalCount: 7 },
+        });
+      },
+    });
   };
 
   const content = isLoading ? (
