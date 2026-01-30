@@ -108,7 +108,7 @@ const router = createBrowserRouter([
               { path: 'signup', element: <SignUpPage /> },
               { path: 'profile-setup', element: <ProfileSetUpPage /> },
               { path: 'terms', element: <TermsCheckPage /> },
-              { path: 'callback', element: <SocailLoginCallBackPage /> },
+              { path: 'callback/:provider', element: <SocailLoginCallBackPage /> },
             ],
           },
 
