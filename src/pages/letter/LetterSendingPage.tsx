@@ -85,6 +85,7 @@ const LetterSendingPage = () => {
       try {
         const res = await createLetterMutation.mutateAsync(payload);
 
+        // 편지 발송 응답 확인용
         console.log('[CreateLetter success response]', res);
 
         navigate('/home/main', {
