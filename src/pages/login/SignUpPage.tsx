@@ -52,7 +52,7 @@ const SignUpPage = () => {
 
   // 상세 보기 클릭 핸들러 (페이지 이동)
   const handleOpenDetail = (type: string) => {
-    navigate(`/terms/${type}`);
+    navigate(`/setting/${type}`);
   };
 
   /**
