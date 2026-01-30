@@ -1,11 +1,16 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useEffect, useRef, useState } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
+
 import { patchNickname, postProfileImage } from '@/api/auth';
+
+import { ROUTES } from '@/routes/paths';
 
 const ProfileSetUpPage = () => {
   const navigate = useNavigate();
@@ -58,7 +63,7 @@ const ProfileSetUpPage = () => {
       if (profileImage) {
         await postProfileImage(profileImage);
       }
-      navigate('/onboarding/'); // 다음 페이지로 이동
+      navigate(ROUTES.onboarding.start);
     } catch (error) {
       console.error('프로필 설정 실패:', error);
     } finally {

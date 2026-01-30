@@ -3,11 +3,12 @@ import { SiNaver } from 'react-icons/si';
 import { useNavigate } from 'react-router-dom';
 import Soksakletter from '@/assets/icons/Soksakletter.svg?react';
 import Kakao from '@/assets/icons/Kakao.svg?react';
+import { ROUTES } from '@/routes/paths';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
   return (
-    <div className='w-[375px] bg-[#FAFAFA]! h-screen mx-auto flex flex-col items-center px-6 relative'>
+    <div className='w-[375px] bg-[#FAFAFA]! min-h-screen mx-auto flex flex-col items-center px-6 relative'>
       {/* 상단 로고 및 타이틀 영역 */}
       <div className='mt-24 flex flex-col items-center mb-10'>
         <h1 className='ty-largeTitle text-[var(--color-primary-500)] mb-3 tracking-tight'>
@@ -24,14 +25,14 @@ const WelcomePage = () => {
       {/* 메인 버튼 영역 (로그인 / 회원가입) */}
       <div className='w-full space-y-3 mb-10'>
         <button
-          onClick={() => navigate('/auth/signin')}
+          onClick={() => navigate(ROUTES.auth.signin)}
           className='w-full h-[52px] bg-[var(--color-primary-500)] text-[var(--color-bg-primary)] text-ty-body3
         rounded-lg hover:bg-[#E4473F] transition-colors'
         >
           로그인
         </button>
         <button
-          onClick={() => navigate('/auth/signup')}
+          onClick={() => navigate(ROUTES.auth.signup)}
           className='w-full h-[52px] bg-[var(--color-bg-primary)] border border-[var(--color-primary-400)] text-[#F5544C] text-ty-body3 rounded-lg hover:bg-red-50 transition-colors'
         >
           회원가입

@@ -5,7 +5,10 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
 import useTermsAgree from '@/hooks/useTermsAgree';
 import TermItem from '@/components/TermItem';
+
 import { patchAgreements } from '@/api/auth';
+
+import { ROUTES } from '@/routes/paths';
 
 const TermCheckPage = () => {
   const navigate = useNavigate();
@@ -15,6 +18,7 @@ const TermCheckPage = () => {
   //온보딩으로(다음 클릭시)
   const handleOnboading = async () => {
     if (!isFormValid) return;
+
     try {
       // 2. 서버로 보낼 데이터 포맷 맞추기 (Hook 상태 -> API DTO)
       const requestData = {
