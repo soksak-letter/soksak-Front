@@ -83,7 +83,9 @@ const LetterSendingPage = () => {
 
     (async () => {
       try {
-        await createLetterMutation.mutateAsync(payload);
+        const res = await createLetterMutation.mutateAsync(payload);
+
+        console.log('[CreateLetter success response]', res);
 
         navigate('/home/main', {
           replace: true,
