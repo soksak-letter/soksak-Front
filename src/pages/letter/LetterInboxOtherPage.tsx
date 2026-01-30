@@ -113,82 +113,68 @@ export default function LetterInboxOtherPage() {
               <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
             </button>
           </div>
-          {/* 리스트 */}
           <div className='mt-4 space-y-[10px]'>
-            {filtered.map((it) => {
-              const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
-              const EnvelopePreview = envelopeAsset?.Preview;
+            {/* 1) 로딩 */}
+            {isLoading ? (
+              <div className='flex flex-col items-center justify-center gap-8 py-50'>
+                <LoadingDots fillIntervalMs={350} />
+                <p className='ty-title2'>로딩 중...</p>
+              </div>
+            ) : /* 2) 에러 */ isError ? (
+              <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
+                <p className='ty-title3'>목록을 불러오지 못했어요.</p>
+                <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+                  다시 시도
+                </Button>
+              </div>
+            ) : (
+              /* 3) 정상 */ <>
+                {filtered.map((it) => {
+                  const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
+                  const EnvelopePreview = envelopeAsset?.Preview;
 
-              return (
-                <button
-                  key={it.letterId}
-                  type='button'
-                  onClick={() => handleOpenLetter(it)}
-                  className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-                >
-                  <div className='flex items-start justify-between gap-3'>
-                    {/* 왼쪽 텍스트 */}
-                    <div className='min-w-0'>
-                      <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
-                        {it.question}
-                      </p>
-                      <div className='mt-4 flex items-center gap-1'>
-                        <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
-                        {it.isUnread && (
-                          <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
-                        )}
-                      </div>
-                    </div>
-                    {/* 오른쪽 봉투 썸네일 */}
-                    <div className='h-12 w-16 shrink-0 flex items-center justify-center'>
-                      {EnvelopePreview ? (
-                        <EnvelopePreview className='h-full w-full' />
-                      ) : (
-                        <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
-                      )}
-                    </div>
-                  </div>
-                  <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
-                    {it.receivedAt}
-                  </div>
-                </button>
-              );
-            })}
-            <div className='mt-4 space-y-[10px]'>
-              {/* 1) 로딩 */}
-              {isLoading ? (
-                <div className='flex flex-col items-center justify-center gap-8 py-10'>
-                  <LoadingDots fillIntervalMs={350} />
-                  <p className='ty-title2'>로딩 중...</p>
-                </div>
-              ) : /* 2) 에러 */ isError ? (
-                <div className='flex flex-col items-center justify-center gap-10 py-10 text-center'>
-                  <p className='ty-title2'>목록을 불러오지 못했어요.</p>
-                  <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
-                    다시 시도
-                  </Button>
-                </div>
-              ) : (
-                /* 3) 정상 */ <>
-                  {filtered.map((it) => (
+                  return (
                     <button
-                      key={`${it.threadId}-${it.letterId}`}
+                      key={it.letterId}
                       type='button'
                       onClick={() => handleOpenLetter(it)}
                       className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
-                      ...
+                      <div className='flex items-start justify-between gap-3'>
+                        {/* 왼쪽 텍스트 */}
+                        <div className='min-w-0'>
+                          <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                            {it.question}
+                          </p>
+                          <div className='mt-4 flex items-center gap-1'>
+                            <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
+                            {it.isUnread && (
+                              <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
+                            )}
+                          </div>
+                        </div>
+                        {/* 오른쪽 봉투 썸네일 */}
+                        <div className='h-12 w-16 shrink-0 flex items-center justify-center'>
+                          {EnvelopePreview ? (
+                            <EnvelopePreview className='h-full w-full' />
+                          ) : (
+                            <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+                          )}
+                        </div>
+                      </div>
+                      <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
+                        {it.receivedAt}
+                      </div>
                     </button>
-                  ))}
-
-                  {isEmpty && (
-                    <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
-                      검색 결과가 없어요
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+                  );
+                })}
+                {isEmpty && (
+                  <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+                    검색 결과가 없어요
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </main>
