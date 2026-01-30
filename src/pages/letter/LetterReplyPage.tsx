@@ -37,11 +37,11 @@ const parseSentAt = (isoOrNull: string | null) => {
 export default function LetterReplyPage() {
   const navigate = useNavigate();
   const { letterId: letterIdParam } = useParams();
-  const location = useLocation();
-
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
-
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
+
+  // SenderName 불러오기
+  const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const view = useMemo(() => {

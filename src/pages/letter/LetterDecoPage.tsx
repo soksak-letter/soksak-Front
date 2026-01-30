@@ -19,11 +19,12 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const location = useLocation();
   const { draft, style, patchStyle } = useLetterStore();
   const { data, isLoading, isError, refetch } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
 
+  // senderName 불러오기
+  const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const { target } = useParams<{ target?: string }>();

@@ -12,6 +12,8 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 
 const LetterSendingPage = () => {
   const navigate = useNavigate();
+
+  // SenderName 불러오기
   const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 

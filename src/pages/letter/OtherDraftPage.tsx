@@ -18,11 +18,12 @@ const LIMIT = {
 
 const OtherDraftPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { draft, patchDraft, resetAll } = useLetterStore();
   const { data, isLoading, isError, refetch } = useDailyQuestion();
   const { showToast } = useGlobalToast();
 
+  // SenderName 불러오기
+  const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   // TODO : 남은 편지 횟수 처리 필요
