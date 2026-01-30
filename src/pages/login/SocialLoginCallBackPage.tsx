@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import LoadingPage from '../system/LoadingPage';
-import { socialLogin } from '@/api/auth';
+import { postsocialLogin } from '@/api/auth';
 import { useEffect, useRef } from 'react';
 
 const SocialLoginCallBackPage = () => {
@@ -28,7 +28,7 @@ const SocialLoginCallBackPage = () => {
 
   const handleLogin = async (provider: string, code: string) => {
     try {
-      const data = await socialLogin(provider, code);
+      const data = await postsocialLogin(provider, code);
       if (data.resultType === 'SUCCESS') {
         // 토큰 저장 및 이동
         const { jwtAccessToken, jwtRefreshToken } = data.success.tokens;
