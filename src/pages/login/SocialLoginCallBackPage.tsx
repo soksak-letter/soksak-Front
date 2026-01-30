@@ -31,8 +31,9 @@ const SocialLoginCallBackPage = () => {
       const data = await socialLogin(provider, code);
       if (data.resultType === 'SUCCESS') {
         // 토큰 저장 및 이동
-        const { jwtAccessToken } = data.success.tokens;
+        const { jwtAccessToken, jwtRefreshToken } = data.success.tokens;
         localStorage.setItem('accessToken', jwtAccessToken);
+        localStorage.setItem('refreshToken', jwtRefreshToken);
         navigate('/', { replace: true });
       } else {
         // 성공은 했지만 서버 응답이 FAIL인 경우 (예: 가입 안 된 유저 등)
