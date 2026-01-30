@@ -11,7 +11,7 @@ import WelcomePage from './pages/login/WelcomePage';
 import SignUpPage from './pages/login/SignUpPage';
 import SignInPage from './pages/login/SignInPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
-import SocailLoginCallBackPage from './pages/login/SocialLoginCallBackPage';
+import SocialLoginCallBackPage from './pages/login/SocialLoginCallBackPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -111,7 +111,7 @@ const router = createBrowserRouter([
                   { path: 'signup', element: <SignUpPage /> },
                   { path: 'profile-setup', element: <ProfileSetUpPage /> },
                   { path: 'terms', element: <TermsCheckPage /> },
-                  { path: 'callback/:provider', element: <SocailLoginCallBackPage /> },
+                  { path: 'callback/:provider', element: <SocialLoginCallBackPage /> },
                 ],
               },
               {

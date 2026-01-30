@@ -35,7 +35,7 @@ const TermCheckPage = () => {
       console.log('약관 동의 전송 성공');
 
       // 4. 성공 시 다음 페이지 이동
-      navigate(ROUTES.onbarding.start);
+      navigate(ROUTES.onboarding.start);
     } catch (error) {
       console.error('약관 동의 전송 실패:', error);
     }

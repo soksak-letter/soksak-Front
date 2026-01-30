@@ -40,7 +40,7 @@ const SocialLoginCallBackPage = () => {
         if (isNewUser) {
           console.log('신규 회원입니다. 온보딩으로 이동합니다.');
           // 온보딩 시작 페이지 주소 (작성하신 ProfileSetUpPage가 있는 곳)
-          navigate(ROUTES.onboarding.start, { replace: true });
+          navigate(ROUTES.auth.terms, { replace: true });
         } else {
           console.log('기존 회원입니다. 홈으로 이동합니다.');
           navigate('/', { replace: true });
