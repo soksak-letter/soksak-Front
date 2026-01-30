@@ -1,4 +1,4 @@
-import type { ApiError } from './common';
+import type { ApiError } from '../common';
 
 export type FontOptionDto = {
   id: number;

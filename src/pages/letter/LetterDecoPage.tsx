@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useState } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
@@ -23,6 +23,10 @@ function LetterDecoPage() {
   const { data, isLoading, isError, refetch } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
 
+  // senderName 불러오기
+  const location = useLocation();
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+
   const { target } = useParams<{ target?: string }>();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
@@ -42,8 +46,6 @@ function LetterDecoPage() {
 
   const PaperBg = paperAsset.Preview;
   const envelopeColor = paperAsset.envelopeColor;
-
-  useEffect(() => {}, [style.fontId]);
 
   const fontFamily =
     (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
@@ -87,7 +89,9 @@ function LetterDecoPage() {
 
     openModal('letterSendingConfirm', {
       onConfirmSending: () => {
-        navigate(`/letter/${safeMode}/sending`);
+        navigate(`/letter/${safeMode}/sending`, {
+          state: { senderName },
+        });
       },
       onConfirmCancelSending: () => setIsOpen(true),
     });

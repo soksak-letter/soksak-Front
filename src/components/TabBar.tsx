@@ -94,8 +94,8 @@ const TabBar = () => {
   const location = useLocation();
 
   const tabs = [
-    { id: 'home', label: '홈', icon: HomeIcon, route: '/' },
-    { id: 'mail', label: '편지함', icon: MailIcon, route: '/mail' },
+    { id: 'home', label: '홈', icon: HomeIcon, route: '/home/main' },
+    { id: 'mail', label: '편지함', icon: MailIcon, route: '/letter/inbox-other' },
     { id: 'friend', label: '친구', icon: FriendIcon, route: '/friend' },
     { id: 'report', label: '리포트', icon: ReportIcon, route: '/report' },
     { id: 'setting', label: '설정', icon: SettingIcon, route: '/setting' },

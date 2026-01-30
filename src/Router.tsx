@@ -138,8 +138,7 @@ const router = createBrowserRouter([
                   // { path: 'sent-transition', element: <LetterSendingPage /> }, TODO: 예디랑 논의 필요
                 ],
               },
-              { path: 'letter/post-other', element: <LetterPostOtherPage /> }, // 기존 라우팅 TODO: 삭제 필요
-              { path: 'letter/:letterId/thread/:threadId', element: <LetterPostOtherPage /> },
+              { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
               { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },

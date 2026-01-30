@@ -1,8 +1,10 @@
 import { axiosInstance } from '@/api/axios';
 import type { DailyQuestionResponse, DailyQuestionSuccess } from '@/types/dto/question';
 
-export async function getDailyQuestion(): Promise<DailyQuestionSuccess> {
-  const { data } = await axiosInstance.get<DailyQuestionResponse>('/questions/today');
+export async function getDailyQuestion(date: string): Promise<DailyQuestionSuccess> {
+  const { data } = await axiosInstance.get<DailyQuestionResponse>('/questions/today', {
+    params: { date },
+  });
 
   if (data.resultType !== 'SUCCESS' || !data.success) {
     throw (

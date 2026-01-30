@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/api/axios';
 import type { CommonResponse } from '@/types/dto/common';
-import type { CreateLetterBody, CreateLetterResult } from '@/types/dto/sendLetter';
+import type { CreateLetterBody, CreateLetterResult } from '@/types/dto/letters/sendLetter';
 
 export async function postCreateLetter(body: CreateLetterBody): Promise<CreateLetterResult> {
   const res = await axiosInstance.post('/letter/other', body);

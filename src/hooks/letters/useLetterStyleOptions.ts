@@ -1,4 +1,4 @@
-import { getLetterStyleOptions } from '@/api/deco';
+import { getLetterStyleOptions } from '@/api/letters/deco';
 import { useQuery } from '@tanstack/react-query';
 
 export const letterStylekeys = {

@@ -12,7 +12,7 @@ type DailyQuestionBoxProps = {
 const DailyQuestionBox = ({
   question,
   Icon,
-  iconClassName = 'text-(--color-text-normal)', // only css 토큰
+  iconClassName = 'text-[var(--color-text-normal)]',
   bubbleBgColor = '#E5E6E6',
   bubbleTextStyle = '',
 }: DailyQuestionBoxProps) => {
@@ -24,30 +24,38 @@ const DailyQuestionBox = ({
         <button type='button' className='flex items-center' onClick={() => setIsClicked((v) => !v)}>
           <Icon className={iconClassName} />
         </button>
-        <span className='ty-detail text-(--color-text-assistive)'>오늘의 질문이 궁금하다면?</span>
+        <span className='ty-detail text-[var(--color-text-assistive)]'>
+          오늘의 질문이 궁금하다면?
+        </span>
       </div>
 
-      {isClicked && (
-        <div className='flex flex-col items-start transition-opacity duration-200'>
-          <div className='flex flex-col items-start -ml-2 -mt-1'>
-            {/* 꼬리 */}
-            <div
-              className='ml-[9px] h-0 w-0 border-x-[6px] border-x-transparent border-b-[8px]'
-              style={{ borderBottomColor: bubbleBgColor }}
-            />
-            {/* 본문 */}
-            <div
-              className='max-w-[340px] rounded-[8px] px-3 py-2 leading-[160%] shadow-sm ty-detail'
-              style={{
-                backgroundColor: bubbleBgColor,
-                color: `${bubbleTextStyle}`, // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
-              }}
-            >
-              {question}
-            </div>
+      <div
+        className={`
+          flex flex-col items-start -mt-2
+          transition-all duration-200
+          ${isClicked ? 'opacity-100 visible' : 'opacity-0 invisible'}
+        `}
+        style={{ pointerEvents: isClicked ? 'auto' : 'none' }}
+      >
+        <div className='flex flex-col items-start -ml-2 -mt-1'>
+          {/* 꼬리 */}
+          <div
+            className='ml-[9px] h-0 w-0 border-x-[6px] border-x-transparent border-b-[8px]'
+            style={{ borderBottomColor: bubbleBgColor }}
+          />
+
+          {/* 본문 */}
+          <div
+            className='max-w-[340px] rounded-[8px] px-3 py-2 leading-[160%] shadow-sm ty-detailMedium'
+            style={{
+              backgroundColor: bubbleBgColor,
+              color: bubbleTextStyle,
+            }}
+          >
+            {question}
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };
