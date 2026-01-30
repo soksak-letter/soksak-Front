@@ -18,7 +18,7 @@ const WelcomePage = () => {
 
       {/* 중앙 로고 이미지 */}
       <div className='mb-[57px]'>
-        <Soksakletter className='w-[155px],h-[129px]' />
+        <Soksakletter className='w-[155px] h-[129px]' />
       </div>
 
       {/* 메인 버튼 영역 (로그인 / 회원가입) */}

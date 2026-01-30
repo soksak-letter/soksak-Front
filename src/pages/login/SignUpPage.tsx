@@ -334,7 +334,7 @@ const SignUpPage = () => {
               onToggle={() => handleCheck('age')}
             />
             <TermItem
-              label='[선택] 마케팅 수신 동의'
+              label='[선택] 이메일 수신 동의 (아이디 및 비밀번호 찾기)'
               checked={agreements.marketingEmail}
               onToggle={() => handleCheck('marketingEmail')}
             />
