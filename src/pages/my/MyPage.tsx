@@ -34,7 +34,7 @@ const MyPage = () => {
           <div className='w-[90px] h-[90px] rounded-full bg-[var(--color-primary-100)] flex-shrink-0' />
 
           {/* User Info */}
-          <div className='flex-1 min-w-0 pd-1'>
+          <div className='flex-1 min-w-0 pb-1'>
             <p className='ty-body4 text-[var(--color-text-normal)]'>{userInfo.nickname}</p>
             <p className='ty-body5 text-[var(--color-text-assistive)] truncate'>{userInfo.email}</p>
           </div>
