@@ -117,9 +117,6 @@ export default function LetterInboxOtherPage() {
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
-  console.log('anon mailbox raw data:', data);
-  console.log('anon mailbox items:', data?.letters);
-
   return (
     <div className='min-h-screen bg-white'>
       <TitleHeader title='편지함' />
