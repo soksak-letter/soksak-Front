@@ -6,63 +6,53 @@ import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInbo
 
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
+import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
+import { LoadingDots } from '@/components/LoadingDots';
+import { Button } from '@/components/common/Button';
 
 type SortOrder = 'latest' | 'oldest';
 
 type InboxOtherLetterItem = {
-  //   id: number;
   letterId: number;
   threadId: number;
   question: string;
   senderName: string;
-  receivedAt: string;
+  receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
+  receivedAtMs: number; // Sorting용
   isUnread: boolean;
-  // 나중에 봉투 컬러/썸네일이 필요하면 추가
-  // colorKey?: 'cream' | 'blue' | 'pink' | 'mint';
+  paperId: number; // paperAsset에서 변환 필요할 듯
 };
 
-const parseDotDate = (s: string) => {
-  const [y, m, d] = s.split('.').map((v) => Number(v));
-  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
+const parseDate = (iso: string) => {
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxOtherPage() {
   const navigate = useNavigate();
+  const { data, isError, isLoading, refetch } = useAnonMailbox();
 
   const [tab, setTab] = useState<LetterInboxTabKey>('other');
   const [keyword, setKeyword] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
-  // mock data
-  const items = useMemo<InboxOtherLetterItem[]>(
-    () => [
-      {
-        letterId: 1,
-        threadId: 101,
-        question: '당신의 인생에 가장 큰 영감을 주는 사람은 누구인가요?',
-        senderName: '파란수박',
-        receivedAt: '2026.1.3',
-        isUnread: true,
-      },
-      {
-        letterId: 2,
-        threadId: 102,
-        question: '요즘 가장 뿌듯했던 순간은 언제였나요?',
-        senderName: '익명',
-        receivedAt: '2026.1.2',
-        isUnread: false,
-      },
-      {
-        letterId: 3,
-        threadId: 101,
-        question: '최근에 스스로 칭찬해주고 싶은 일은 뭐였어요?',
-        senderName: '파란수박',
-        receivedAt: '2026.1.1',
-        isUnread: true,
-      },
-    ],
-    [],
-  );
+  // 서버 응답을 화면 아이템으로 변환 (isUnread 제외)
+  const items: InboxOtherLetterItem[] = useMemo(() => {
+    const raw = data?.items ?? [];
+    return raw.map((x) => ({
+      letterId: x.lastLetterId,
+      threadId: x.threadId,
+      question: x.lastLetterTitle,
+      senderName: x.sender.nickname,
+      receivedAt: parseDate(x.updatedAt),
+      receivedAtMs: new Date(x.updatedAt).getTime(),
+      isUnread: false,
+      paperId: x.paperId,
+    }));
+  }, [data]);
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
@@ -72,9 +62,9 @@ export default function LetterInboxOtherPage() {
       : items.filter((x) => x.question.includes(k) || x.senderName.includes(k));
 
     return [...result].sort((a, b) => {
-      const ta = parseDotDate(a.receivedAt);
-      const tb = parseDotDate(b.receivedAt);
-      return sortOrder === 'latest' ? tb - ta : ta - tb;
+      return sortOrder === 'latest'
+        ? b.receivedAtMs - a.receivedAtMs
+        : a.receivedAtMs - b.receivedAtMs;
     });
   }, [items, keyword, sortOrder]);
 
@@ -89,6 +79,8 @@ export default function LetterInboxOtherPage() {
   const handleOpenLetter = (item: InboxOtherLetterItem) => {
     navigate(`/letter/${item.letterId}/thread/${item.threadId}`);
   };
+
+  const isEmpty = !isLoading && !isError && filtered.length === 0;
 
   return (
     <div className='min-h-screen bg-white'>
@@ -147,11 +139,41 @@ export default function LetterInboxOtherPage() {
                 </div>
               </button>
             ))}
-            {filtered.length === 0 && (
-              <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
-                검색 결과가 없어요
-              </div>
-            )}
+            <div className='mt-4 space-y-[10px]'>
+              {/* 1) 로딩 */}
+              {isLoading ? (
+                <div className='flex flex-col items-center justify-center gap-8 py-10'>
+                  <LoadingDots fillIntervalMs={350} />
+                  <p className='ty-title2'>로딩 중...</p>
+                </div>
+              ) : /* 2) 에러 */ isError ? (
+                <div className='flex flex-col items-center justify-center gap-10 py-10 text-center'>
+                  <p className='ty-title2'>목록을 불러오지 못했어요.</p>
+                  <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+                    다시 시도
+                  </Button>
+                </div>
+              ) : (
+                /* 3) 정상 */ <>
+                  {filtered.map((it) => (
+                    <button
+                      key={`${it.threadId}-${it.letterId}`}
+                      type='button'
+                      onClick={() => handleOpenLetter(it)}
+                      className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                    >
+                      ...
+                    </button>
+                  ))}
+
+                  {isEmpty && (
+                    <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+                      검색 결과가 없어요
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </main>
