@@ -36,7 +36,7 @@ export default function LetterPostOtherPage() {
   const { data, isLoading, isError, refetch } = useAnonThread(threadId);
   const { senderName } = location.state as { senderName?: string };
 
-  const questionTitle = data?.firstQuestion ?? '';
+  const questionTitle = data?.firstQuestion ?? '첫번째로 받은 질문입니다.';
 
   const DUMMY_POSTS: PostItem[] = [
     {
@@ -203,7 +203,7 @@ function PostCard({
 }) {
   return (
     <button type='button' onClick={onClick} className='text-left'>
-      <div className='w-[138px] h-[98px]'>
+      <div className='w-[130px] h-[100px]'>
         {EnvelopePreview ? (
           <EnvelopePreview className='h-full w-full' />
         ) : (
@@ -211,8 +211,8 @@ function PostCard({
         )}
       </div>
 
-      <p className='mt-3 line-clamp-1 text-[14px] font-semibold text-[#171717]'>{item.title}</p>
-      <p className='mt-1 text-[12px] text-[#6F6F6F]'>{item.dateText}</p>
+      <p className='mt-3 line-clamp-1 ty-body4'>{item.title}</p>
+      <p className='mt-1 ty-detailMedium'>{item.dateText}</p>
     </button>
   );
 }
