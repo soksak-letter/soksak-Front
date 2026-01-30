@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
@@ -30,7 +30,10 @@ const ProfileSetUpPage = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setProfileImage(file);
+      setProfileImage(file); // 이전 URL 해제
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
       // 미리보기 URL 생성
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
@@ -55,14 +58,10 @@ const ProfileSetUpPage = () => {
       if (profileImage) {
         await uploadProfileImage(profileImage);
       }
-      console.log('전송하려는 파일:', profileImage);
-
-      console.log('프로필 설정 완료');
       navigate('/onboarding/'); // 다음 페이지로 이동
     } catch (error) {
       console.error('프로필 설정 실패:', error);
     } finally {
-      console.log('전송하려는 파일:', profileImage);
       setIsLoading(false);
     }
   };
@@ -82,6 +81,13 @@ const ProfileSetUpPage = () => {
       setNickname(value);
     }
   };
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>

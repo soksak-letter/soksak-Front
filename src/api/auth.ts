@@ -64,12 +64,6 @@ export const updateNickname = async (data: NicknameSetUpRequest) => {
  * @param file 파일
  */
 export const uploadProfileImage = async (file: File) => {
-  const token = localStorage.getItem('accessToken');
-
-  if (!token) {
-    console.error('토큰이 없습니다. 로그인이 필요합니다.');
-    return;
-  }
   const formData = new FormData();
   formData.append('image', file);
 
@@ -77,7 +71,7 @@ export const uploadProfileImage = async (file: File) => {
     '/users/me/profile/image',
     formData,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {},
     },
   );
   return response.data;

@@ -76,7 +76,7 @@ const SignUpPage = () => {
       privacyAgreed: agreements.privacy, // 필수 개인정보
       ageOver14Agreed: agreements.age, // 필수 14세
       marketingEmailAgreed: agreements.marketingEmail, // 선택 마케팅 이메일
-      marketingPushAgreed: agreements.marketingPush,
+      marketingPushAgreed: agreements.marketingPush, // 선택 마케팅 푸시
     };
 
     try {

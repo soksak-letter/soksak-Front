@@ -87,6 +87,7 @@ export type LogoutResponse = CommonResponse<null>;
 //프로필 닉네임 수정
 // 내가 서버로 보낼 데이터 (Request)
 export interface NicknameSetUpRequest {
+  //닉네임 (서버 명세상 선택이나, 초기 설정 시에는 필수 권장)
   nickname?: string;
 }
 //서버가 응답으로 줄 데이터 (Response DTO)
