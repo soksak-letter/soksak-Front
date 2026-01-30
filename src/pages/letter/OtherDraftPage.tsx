@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
@@ -10,11 +9,7 @@ import { BsQuestionCircleFill } from 'react-icons/bs';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useLetterStore } from '@/stores/letterStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
-
-// TODO : questionId 실시간 변경됐을 때 사용할 로직
-// if (data?.id && draft.questionId !== data.id) {
-//   patchDraft({ questionId: data.id });
-// }
+import { useEffect } from 'react';
 
 const LIMIT = {
   TITLE: { MIN: 3, MAX: 20 },
@@ -30,12 +25,6 @@ const OtherDraftPage = () => {
 
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
-  const [letter, setLetter] = useState({
-    title: '',
-    content: '',
-  });
-  const [isPublic, setIsPublic] = useState(false);
-
   // TODO : 남은 편지 횟수 처리 필요
   const letterLeft = 4;
 
@@ -50,7 +39,28 @@ const OtherDraftPage = () => {
     return null;
   };
 
+  // questionId 저장
+  useEffect(() => {
+    const newId = data?.id;
+    if (!newId) return;
+
+    if (draft.questionId !== newId) {
+      patchDraft({ questionId: newId });
+    }
+  }, [data?.id, draft.questionId, patchDraft]);
+
   const handleSubmit = () => {
+    if (isLoading) {
+      showToast('질문을 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+
+    const questionId = data?.id;
+    if (isError || !questionId) {
+      showToast('질문을 불러오지 못했어요. 다시 시도해주세요.', 'error');
+      return;
+    }
+
     const title = draft.title.trim();
     const content = draft.content.trim();
     const errorMsg = validate(title, content);
@@ -60,7 +70,14 @@ const OtherDraftPage = () => {
       return;
     }
 
+    patchDraft({ questionId });
+
     navigate('/letter/anon/decorate');
+  };
+
+  const handleBack = () => {
+    resetAll();
+    navigate(-1);
   };
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
@@ -103,6 +120,7 @@ const OtherDraftPage = () => {
             꾸미기
           </button>
         }
+        onBack={handleBack}
       />
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
         <div className='text-[18px] font-semibold leading-[160%]'>
@@ -112,11 +130,18 @@ const OtherDraftPage = () => {
         {/* daily question */}
         {questionNode}
         <div>
-          <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
+          <LetterTextBox
+            value={{ title: draft.title, content: draft.content }}
+            onChange={(next) => patchDraft(next)}
+            className='w-[343px] h-[394px]'
+          />
         </div>
         <div className='w-full flex items-center justify-end -mt-3 gap-2'>
           <span className='text-(--color-text-normal) ty-body5'>오늘 하루 동안 편지 공개하기</span>
-          <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
+          <ToggleSwitch
+            checked={draft.isPublic}
+            onCheckedChange={(v) => patchDraft({ isPublic: v })}
+          />
         </div>
         <p className='ty-detailMedium text-(--color-text-assistive)'>
           비방의 언어가 담기면 자동으로 필터링 돼요.

@@ -43,8 +43,6 @@ function LetterDecoPage() {
   const PaperBg = paperAsset.Preview;
   const envelopeColor = paperAsset.envelopeColor;
 
-  useEffect(() => {}, [style.fontId]);
-
   const fontFamily =
     (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
     FONT_ASSET_MAP[DEFAULT_FONT_ID].fontFamily;
