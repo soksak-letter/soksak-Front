@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useState } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
@@ -19,9 +19,12 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
+  const location = useLocation();
   const { draft, style, patchStyle } = useLetterStore();
   const { data, isLoading, isError, refetch } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
+
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const { target } = useParams<{ target?: string }>();
   const { openModal } = useModalStore();
@@ -85,7 +88,9 @@ function LetterDecoPage() {
 
     openModal('letterSendingConfirm', {
       onConfirmSending: () => {
-        navigate(`/letter/${safeMode}/sending`);
+        navigate(`/letter/${safeMode}/sending`, {
+          state: { senderName },
+        });
       },
       onConfirmCancelSending: () => setIsOpen(true),
     });

@@ -1,5 +1,5 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useEffect, useMemo, useRef } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
@@ -12,6 +12,9 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 
 const LetterSendingPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
   const hasSentRef = useRef(false);
@@ -105,7 +108,6 @@ const LetterSendingPage = () => {
   const getTargetText = () => {
     // TODO : Mock data 제거
     const sender = '개굴';
-    const receiver = '파란수박';
 
     if (safeMode === 'anon' || safeMode === 'other') {
       return (
@@ -130,7 +132,7 @@ const LetterSendingPage = () => {
         <>
           {sender}님의 소중한 편지가
           <br />
-          {receiver}님에게 전달되고 있어요.
+          {senderName}님에게 전달되고 있어요.
         </>
       );
     }
