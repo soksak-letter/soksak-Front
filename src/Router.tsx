@@ -12,6 +12,7 @@ import WelcomePage from './pages/login/WelcomePage';
 import SignUpPage from './pages/login/SignUpPage';
 import SignInPage from './pages/login/SignInPage';
 import TermsCheckPage from './pages/login/TermsCheckPage';
+import SocailLoginCallBackPage from './pages/login/SocialLoginCallBackPage';
 
 import OnboardingTopicSelectPage from './pages/onboarding/OnboardingTopicSelectPage';
 import OnboardingProfileSelectPage from './pages/onboarding/OnboardingProfileSelectPage';
@@ -52,7 +53,6 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/WeeklyReportPage';
-import SocailLoginCallBackPage from './pages/login/SocialLoginCallBackPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
