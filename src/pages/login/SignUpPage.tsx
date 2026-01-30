@@ -84,7 +84,7 @@ const SignUpPage = () => {
       const response = await postSignup(requestBody);
 
       // 결과 콘솔 출력
-      console.log('회원가입 Response:', response);
+      //console.log('회원가입 Response:', response);
 
       // 4. 성공 시 처리
       if (response.resultType === 'SUCCESS') {

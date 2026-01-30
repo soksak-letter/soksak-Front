@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
-import { updateNickname, uploadProfileImage } from '@/api/auth';
+import { patchNickname, postProfileImage } from '@/api/auth';
 
 const ProfileSetUpPage = () => {
   const navigate = useNavigate();
@@ -52,11 +52,11 @@ const ProfileSetUpPage = () => {
     setIsLoading(true);
     try {
       // (1) 닉네임 변경 요청
-      await updateNickname({ nickname });
+      await patchNickname({ nickname });
 
       // (2) 프로필 이미지가 있다면 업로드 요청
       if (profileImage) {
-        await uploadProfileImage(profileImage);
+        await postProfileImage(profileImage);
       }
       navigate('/onboarding/'); // 다음 페이지로 이동
     } catch (error) {

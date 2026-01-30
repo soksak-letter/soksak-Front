@@ -55,7 +55,7 @@ export const postSignin = async (body: SignInRequest) => {
  * 약관 동의 API
  * @param data 회원가입 입력 정보
  */
-export const updateAgreements = async (data: AgreementsRequest) => {
+export const patchAgreements = async (data: AgreementsRequest) => {
   const response = await axiosInstance.patch<AgreementsResponse>(
     '/users/me/consents', // 서버 API 명세에 맞는 URL 입력
     data,
@@ -68,7 +68,7 @@ export const updateAgreements = async (data: AgreementsRequest) => {
  * @param data 닉네임
  */
 
-export const updateNickname = async (data: NicknameSetUpRequest) => {
+export const patchNickname = async (data: NicknameSetUpRequest) => {
   const response = await axiosInstance.patch<NicknameSetUpResponse>('/users/me/profile', data);
   return response.data;
 };
@@ -76,7 +76,7 @@ export const updateNickname = async (data: NicknameSetUpRequest) => {
  * 프로필 이미지 업로드 API
  * @param file 파일
  */
-export const uploadProfileImage = async (file: File) => {
+export const postProfileImage = async (file: File) => {
   const formData = new FormData();
   formData.append('image', file);
 

@@ -5,7 +5,7 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
 import useTermsAgree from '@/hooks/useTermsAgree';
 import TermItem from '@/components/TermItem';
-import { updateAgreements } from '@/api/auth';
+import { patchAgreements } from '@/api/auth';
 
 const TermCheckPage = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const TermCheckPage = () => {
       };
 
       // 3. API 호출
-      await updateAgreements(requestData);
+      await patchAgreements(requestData);
 
       console.log('약관 동의 전송 성공');
 
