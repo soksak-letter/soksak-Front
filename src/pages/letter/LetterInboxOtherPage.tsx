@@ -9,6 +9,7 @@ import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
+import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -111,34 +112,45 @@ export default function LetterInboxOtherPage() {
           </div>
           {/* 리스트 */}
           <div className='mt-4 space-y-[10px]'>
-            {filtered.map((it) => (
-              <button
-                key={it.letterId}
-                type='button'
-                onClick={() => handleOpenLetter(it)}
-                className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-              >
-                <div className='flex items-start justify-between gap-3'>
-                  {/* 왼쪽 텍스트 */}
-                  <div className='min-w-0'>
-                    <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
-                      {it.question}
-                    </p>
-                    <div className='mt-4 flex items-center gap-1'>
-                      <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
-                      {it.isUnread && (
-                        <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
+            {filtered.map((it) => {
+              const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
+              const EnvelopePreview = envelopeAsset?.Preview;
+
+              return (
+                <button
+                  key={it.letterId}
+                  type='button'
+                  onClick={() => handleOpenLetter(it)}
+                  className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                >
+                  <div className='flex items-start justify-between gap-3'>
+                    {/* 왼쪽 텍스트 */}
+                    <div className='min-w-0'>
+                      <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                        {it.question}
+                      </p>
+                      <div className='mt-4 flex items-center gap-1'>
+                        <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
+                        {it.isUnread && (
+                          <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
+                        )}
+                      </div>
+                    </div>
+                    {/* 오른쪽 봉투 썸네일 */}
+                    <div className='h-12 w-16 shrink-0 flex items-center justify-center'>
+                      {EnvelopePreview ? (
+                        <EnvelopePreview className='h-full w-full' />
+                      ) : (
+                        <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
                       )}
                     </div>
                   </div>
-                  {/* 오른쪽 봉투 썸네일 자리 */}
-                  <div className='h-12 w-16 shrink-0 rounded-xl bg-[#F2F2F2]' />
-                </div>
-                <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
-                  {it.receivedAt}
-                </div>
-              </button>
-            ))}
+                  <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
+                    {it.receivedAt}
+                  </div>
+                </button>
+              );
+            })}
             <div className='mt-4 space-y-[10px]'>
               {/* 1) 로딩 */}
               {isLoading ? (
