@@ -10,4 +10,9 @@ export type CreateLetterBody = {
   receiverUserId?: number;
 };
 
-export type CreateLetterResult = null;
+export type CreateLetterResult = {
+  letter: {
+    id: number;
+    deliveredAt: string;
+  };
+};
