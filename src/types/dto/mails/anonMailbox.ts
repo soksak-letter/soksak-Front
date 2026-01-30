@@ -1,20 +1,18 @@
 import type { ApiError } from '../common';
 
 export type AnonMailboxSuccess = {
-  items: [
-    {
-      threadId: number;
-      sender: {
-        id: number;
-        nickname: string;
-      };
-      lastLetterId: number;
-      lastLetterTitle: string;
-      lastLetterPreview: string;
-      updatedAt: string;
-      paperId: number;
-    },
-  ];
+  items: {
+    threadId: number;
+    sender: {
+      id: number;
+      nickname: string;
+    };
+    lastLetterId: number;
+    lastLetterTitle: string;
+    lastLetterPreview: string;
+    updatedAt: string;
+    paperId: number;
+  }[];
 };
 
 export type AnonMailboxResponse = {
