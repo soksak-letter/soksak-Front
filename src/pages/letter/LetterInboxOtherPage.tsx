@@ -26,10 +26,19 @@ type InboxOtherLetterItem = {
 
 const parseDate = (iso: string) => {
   const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
+  const fmt = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const parts = Object.fromEntries(
+    fmt
+      .formatToParts(d)
+      .filter((p) => p.type !== 'literal')
+      .map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}.${parts.month}.${parts.day}`;
 };
 
 export default function LetterInboxOtherPage() {
