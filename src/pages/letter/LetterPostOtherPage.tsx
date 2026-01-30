@@ -92,10 +92,7 @@ export default function LetterPostOtherPage() {
   if (!threadIdParam) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
-    // 너가 말한 흐름: post-other에서 편지 상세 누르면 reply 페이지로 이동
-    // 현재 reply가 파라미터 없이도 열리도록 만들어둔 상태라 일단 단순 이동.
-    // 나중에 신고/답장 대상 식별하려면 letterId/threadId를 함께 넘기는 걸 추천.
-    navigate(`/letter/reply`, {
+    navigate(`/letter/reply/${letterId}`, {
       state: { threadId, letterId, senderName },
     });
 

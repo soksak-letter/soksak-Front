@@ -141,7 +141,6 @@ const router = createBrowserRouter([
 
           { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
 
-          { path: 'letter/reply', element: <LetterReplyPage /> }, // TODO: 삭제 필요
           { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },
           { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
 
