@@ -15,7 +15,6 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import LoadingPage from '../system/LoadingPage';
 
-// TODO : 셀프 드레프트는 뒤로가기 했을 때 임시저장 여부를 묻는 모달이 뜬다.
 // TODO : letterStore에 target === self 일 때만 dateValue값을 추가한다.
 
 type DateValue = { year: number; month: number; day: number };
@@ -59,13 +58,21 @@ const SelfDraftPage = () => {
 
   const handleBack = () => {
     if (isExpired) {
-      openModal('exitConfirm', {
-        onConfirmExit: () => navigate(-1),
-      });
+      openModal('exitConfirm', { onConfirmExit: () => navigate(-1) });
       return;
     }
-    // TODO : storageConfirm 모달 추가 (임시저장 여부 확인)
-    navigate(-1);
+
+    openModal('storageConfirm', {
+      onExit: () => {
+        resetAll();
+        navigate(-1);
+      },
+      onConfirmStorage: () => {
+        // TODO: 임시저장 로직 (api or localStorage)
+        // 저장 성공 토스트 같은 거 하고
+        navigate(-1);
+      },
+    });
   };
 
   const validate = (title: string, content: string) => {
