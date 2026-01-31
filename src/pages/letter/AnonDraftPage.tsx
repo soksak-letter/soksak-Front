@@ -9,6 +9,7 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LoadingPage from '../system/LoadingPage';
 
 const LIMIT = {
   TITLE: { MIN: 3, MAX: 20 },
@@ -109,12 +110,7 @@ const AnonDraftPage = () => {
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
         {isLoading ? (
           <>
-            {/* 질문 스켈레톤 */}
-            <div className='h-6 w-[260px] rounded bg-gray-200 animate-pulse' />
-            <div className='h-6 w-[210px] rounded bg-gray-200 animate-pulse' />
-
-            {/* 타이머 스켈레톤 */}
-            <div className='h-4 w-[160px] rounded bg-gray-200 animate-pulse mt-2' />
+            <LoadingPage />
           </>
         ) : (
           <>
