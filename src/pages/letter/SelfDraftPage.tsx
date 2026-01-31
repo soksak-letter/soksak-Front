@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useModalStore } from '@/stores/modalStore';
@@ -10,20 +10,30 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import SurpriseLetterContent from '@/components/BottomSheet/contents/SurpriseLetterContent';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useLetterStore } from '@/stores/letterStore';
+import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
+import LoadingPage from '../system/LoadingPage';
+
+// TODO : 셀프 드레프트는 뒤로가기 했을 때 임시저장 여부를 묻는 모달이 뜬다.
+// TODO : letterStore에 target === self 일 때만 dateValue값을 추가한다.
 
 type DateValue = { year: number; month: number; day: number };
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+const LIMIT = {
+  TITLE: { MIN: 3, MAX: 20 },
+  CONTENT: { MIN: 1, MAX: 500 },
+} as const;
 
 const SelfDraftPage = () => {
+  const { draft, patchDraft, resetAll } = useLetterStore();
+  const { data, isLoading, isError, error } = useDailyQuestion();
+
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+  const { showToast } = useGlobalToast();
 
-  const [letter, setLetter] = useState({
-    title: '',
-    content: '',
-  });
-  const [isPublic, setIsPublic] = useState(false);
+  // 데이트 피커 바텀시트 상태
   const [isOpen, setIsOpen] = useState(false);
 
   const [pickedDate, setPickedDate] = useState<DateValue>(() => {
@@ -38,10 +48,14 @@ const SelfDraftPage = () => {
 
   const label = `${pickedDate.year}.${pickedDate.month + 1}.${pickedDate.day}`;
 
-  const startAtRef = useRef<number>(Date.now());
-  const deadlineMs = useMemo(() => startAtRef.current + DAY_MS, []);
+  // 질문 유지 시간 계산
+  const deadlineMs = useMemo(() => {
+    if (!data?.expiredAt) return null;
+    const t = new Date(data.expiredAt).getTime();
+    return Number.isNaN(t) ? null : t;
+  }, [data?.expiredAt]);
 
-  const { isExpired, mmss } = useCountdown(deadlineMs);
+  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now());
 
   const handleBack = () => {
     if (isExpired) {
@@ -50,21 +64,63 @@ const SelfDraftPage = () => {
       });
       return;
     }
+    // TODO : storageConfirm 모달 추가 (임시저장 여부 확인)
     navigate(-1);
   };
 
-  const handleSubmit = () => {
-    // TODO:
-    // 1. title 최소/최대 글자 수 조건 확인
-    // 2. content 최소/최대 글자 수 조건 확인
-    // 3. 조건 안 맞으면 토스트/에러 처리
-    navigate('/letter/self/decorate', {
-      state: {
-        title: letter.title,
-        content: letter.content,
-      },
-    });
+  const validate = (title: string, content: string) => {
+    if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
+    if (title.length > LIMIT.TITLE.MAX)
+      return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
+    if (content.length < LIMIT.CONTENT.MIN) return '내용을 작성해 주세요!';
+    if (content.length > LIMIT.CONTENT.MAX)
+      return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
+
+    return null;
   };
+
+  const handleSubmit = () => {
+    const title = draft.title.trim();
+    const content = draft.content.trim();
+    const errorMsg = validate(title, content);
+
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
+    navigate('/letter/anon/decorate');
+  };
+
+  // questionId 저장
+  useEffect(() => {
+    if (!data?.id) return;
+
+    if (draft.questionId == null) patchDraft({ questionId: data.id });
+  }, [data?.id, draft.questionId, patchDraft]);
+
+  const handled = useRef(false);
+
+  // questionId 관련 처리
+  useEffect(() => {
+    if (!isError || handled.current) return;
+    handled.current = true;
+
+    const message =
+      (error as { reason?: string })?.reason ||
+      (error as Error)?.message ||
+      '네트워크 연결을 확인해주세요.';
+
+    showToast(message, 'error');
+
+    const id = window.setTimeout(() => {
+      navigate('/home/main', { replace: true });
+    }, 3000);
+
+    return () => window.clearTimeout(id);
+  }, [isError, error, navigate, showToast]);
+
+  const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
     <div className='flex flex-col'>
@@ -78,15 +134,21 @@ const SelfDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <p className='ty-title2'>
-          당신의 인생에 가장 큰 영감을
-          <br />
-          주는 사람은 누구인가요?
-        </p>
-        <div className='flex items-center ty-body2'>
-          <span className='text-[#F2261C]'>{mmss}</span>
-          <span className='ml-1'>후에 질문이 사라져요.</span>
-        </div>
+        {isLoading ? (
+          <>
+            <LoadingPage />
+          </>
+        ) : (
+          <>
+            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
+              {formattedQuestionText}
+            </p>
+            <div className='flex items-center ty-body2'>
+              <span className='text-[#F2261C]'>{mmss}</span>
+              <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+            </div>
+          </>
+        )}
       </div>
 
       <div className='flex items-center justify-end p-5 -mt-7 gap-1'>
@@ -106,13 +168,20 @@ const SelfDraftPage = () => {
       </div>
 
       <div className='px-4'>
-        <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
+        <LetterTextBox
+          value={{ title: draft.title, content: draft.content }}
+          onChange={(next) => patchDraft({ title: next.title, content: next.content })}
+          className='w-[343px] h-[394px]'
+        />
       </div>
       <div className='flex items-center justify-end p-5 -mt-5 gap-2'>
         <span className='text-[var(--color-text-normal)] ty-body5'>
           오늘 하루 동안 편지 공개하기
         </span>
-        <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
+        <ToggleSwitch
+          checked={draft.isPublic}
+          onCheckedChange={(v) => patchDraft({ isPublic: v })}
+        />
       </div>
       <p className='flex p-5 -mt-3 ty-detailMedium text-[var(--color-text-assistive)]'>
         비방의 언어가 담기면 자동으로 필터링 돼요.

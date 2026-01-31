@@ -17,7 +17,7 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patchDraft, resetAll } = useLetterStore();
+  const { draft, patchDraft } = useLetterStore();
   const { data, isLoading, isError, error } = useDailyQuestion();
 
   const navigate = useNavigate();
@@ -39,7 +39,6 @@ const AnonDraftPage = () => {
       });
       return;
     }
-    resetAll();
     navigate(-1);
   };
 
@@ -54,7 +53,18 @@ const AnonDraftPage = () => {
     return null;
   };
 
-  const handled = useRef(false);
+  const handleSubmit = () => {
+    const title = draft.title.trim();
+    const content = draft.content.trim();
+    const errorMsg = validate(title, content);
+
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
+    navigate('/letter/anon/decorate');
+  };
 
   // questionId 저장
   useEffect(() => {
@@ -62,6 +72,8 @@ const AnonDraftPage = () => {
 
     if (draft.questionId == null) patchDraft({ questionId: data.id });
   }, [data?.id, draft.questionId, patchDraft]);
+
+  const handled = useRef(false);
 
   useEffect(() => {
     if (!isError || handled.current) return;
@@ -80,19 +92,6 @@ const AnonDraftPage = () => {
 
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
-
-  const handleSubmit = () => {
-    const title = draft.title.trim();
-    const content = draft.content.trim();
-    const errorMsg = validate(title, content);
-
-    if (errorMsg) {
-      showToast(errorMsg, 'error');
-      return;
-    }
-
-    navigate('/letter/anon/decorate');
-  };
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
@@ -124,6 +123,7 @@ const AnonDraftPage = () => {
           </>
         )}
       </div>
+
       <div className='px-4'>
         <LetterTextBox
           value={{ title: draft.title, content: draft.content }}
