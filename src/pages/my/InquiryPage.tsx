@@ -10,12 +10,11 @@ if (
   );
 }
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { validate } from '@/utils/validate';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
 import { postWeb3FormsInquiry } from '@/api/web3forms';
-import { useRef } from 'react';
 
 const INQUIRY_TYPES = ['신고 관련', '제재 관련', '일반 문의'];
 
