@@ -1,5 +1,6 @@
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useState } from 'react';
+import { validate } from '@/utils/validate';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
 
@@ -18,8 +19,16 @@ const InquiryPage = () => {
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
+
     if (!email || !title || !inquiryType || !content) {
       alert('모든 항목을 입력해주세요.');
+      return;
+    }
+
+    // 이메일 형식 유효성 검사
+    const emailValidation = validate.email(email);
+    if (!emailValidation.success) {
+      alert(emailValidation.message);
       return;
     }
 
