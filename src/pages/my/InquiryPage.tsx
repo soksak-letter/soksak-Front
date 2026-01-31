@@ -1,16 +1,5 @@
-// Web3Forms 환경 변수 상수화 및 즉시 검증
-const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-if (
-  !WEB3FORMS_ACCESS_KEY ||
-  WEB3FORMS_ACCESS_KEY === 'undefined' ||
-  WEB3FORMS_ACCESS_KEY.trim() === ''
-) {
-  throw new Error(
-    '[InquiryPage] VITE_WEB3FORMS_ACCESS_KEY 환경 변수가 설정되지 않았습니다. .env.local을 확인하세요.',
-  );
-}
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { validate } from '@/utils/validate';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
