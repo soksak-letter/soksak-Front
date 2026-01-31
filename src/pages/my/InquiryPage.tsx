@@ -10,11 +10,12 @@ if (
   );
 }
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { validate } from '@/utils/validate';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
 import { postWeb3FormsInquiry } from '@/api/web3forms';
+import { useRef } from 'react';
 
 const INQUIRY_TYPES = ['신고 관련', '제재 관련', '일반 문의'];
 
@@ -27,6 +28,25 @@ const InquiryPage = () => {
   const [content, setContent] = useState('');
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isTypeDropdownOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsTypeDropdownOpen(false);
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setIsTypeDropdownOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [isTypeDropdownOpen]);
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
@@ -118,7 +138,7 @@ const InquiryPage = () => {
           </div>
 
           {/* Inquiry Type */}
-          <div className='relative'>
+          <div className='relative' ref={dropdownRef}>
             <label className='ty-body4 text-[var(--color-text-normal)] block mb-2'>문의 유형</label>
             <button
               type='button'
