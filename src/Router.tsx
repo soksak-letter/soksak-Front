@@ -74,8 +74,16 @@ const router = createBrowserRouter([
             element: <AppShellWithTab />,
             children: [
               { path: 'home/main', element: <MainPage /> },
-              { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> },
-              { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
+              {
+                path: '/letter',
+                children: [
+                  { index: true, element: <Navigate to='/letter/inbox-other' replace /> },
+                  { path: 'inbox-other', element: <LetterInboxOtherPage /> },
+                  { path: 'inbox-self', element: <LetterInboxSelfPage /> },
+                ],
+              },
+              // { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> }, // letter/inbox-self에서도 탭바 활성화 되도록
+              // { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
               // { path: 'letter/10-end', element: <LetterTenEndPage /> },
               { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
               { path: 'friend/request', element: <FriendRequestPage /> },
