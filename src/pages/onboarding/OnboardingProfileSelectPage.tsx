@@ -49,7 +49,7 @@ export default function OnboardingProfileSelectPage() {
           if (isEdit) {
             navigate('/my/my-page', { replace: true });
           } else {
-            navigate('/onboarding/topic-select');
+            navigate('/onboarding/topic-select-2');
           }
           return;
         }
@@ -82,7 +82,7 @@ export default function OnboardingProfileSelectPage() {
         if (isEdit) {
           navigate('/my/my-page', { replace: true });
         } else {
-          navigate('/onboarding/topic-select');
+          navigate('/onboarding/topic-select-2');
         }
       },
     });

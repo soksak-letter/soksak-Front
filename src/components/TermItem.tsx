@@ -22,7 +22,7 @@ const TermItem = ({ label, checked, onToggle, onViewClick }: TermItemProps) => {
             e.stopPropagation();
             onViewClick();
           }}
-          className='text-[12px] text-[#8C8C8C] underline decoration-[#CBCCCD] underline-offset-2'
+          className='ty-detailMedium text-[var(--color-text-assistive)] underline decoration-[#CBCCCD] underline-offset-2'
         >
           보기
         </button>

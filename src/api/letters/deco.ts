@@ -1,5 +1,8 @@
-import type { LetterStyleOptionsResponse, LetterStyleOptionsSuccess } from '@/types/dto/deco';
-import { axiosInstance } from './axios';
+import type {
+  LetterStyleOptionsResponse,
+  LetterStyleOptionsSuccess,
+} from '@/types/dto/letters/deco';
+import { axiosInstance } from '../axios';
 
 export async function getLetterStyleOptions(): Promise<LetterStyleOptionsSuccess> {
   const { data } = await axiosInstance.get<LetterStyleOptionsResponse>('/letter-assets');

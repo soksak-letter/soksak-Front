@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { postCreateLetter } from '@/api/sendLetter';
-import type { CreateLetterBody, CreateLetterResult } from '@/types/dto/sendLetter';
+import { postCreateLetter } from '@/api/letters/sendLetter';
+import type { CreateLetterBody, CreateLetterResult } from '@/types/dto/letters/sendLetter';
 import type { ApiError } from '@/types/dto/common';
 
 export function useCreateLetter() {

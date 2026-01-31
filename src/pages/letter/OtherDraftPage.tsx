@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -7,69 +6,143 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
 import { BsQuestionCircleFill } from 'react-icons/bs';
+import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
+import { useLetterStore } from '@/stores/letterStore';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useEffect } from 'react';
 
-// TODO : questionId 실시간 변경됐을 때 사용할 로직
-// if (data?.id && draft.questionId !== data.id) {
-//   patchDraft({ questionId: data.id });
-// }
+const LIMIT = {
+  TITLE: { MIN: 3, MAX: 20 },
+  CONTENT: { MIN: 1, MAX: 500 },
+} as const;
 
 const OtherDraftPage = () => {
   const navigate = useNavigate();
+  const { draft, patchDraft, resetAll } = useLetterStore();
+  const { data, isLoading, isError, refetch } = useDailyQuestion();
+  const { showToast } = useGlobalToast();
 
-  const [letter, setLetter] = useState({
-    title: '',
-    content: '',
-  });
-  const [isPublic, setIsPublic] = useState(false);
+  // SenderName 불러오기
+  const location = useLocation();
+  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
-  // mock data
-  const nickname = '파란수박';
+  // TODO : 남은 편지 횟수 처리 필요
   const letterLeft = 4;
-  const dailyQuestion = '당신의 인생에 큰 영감을 주는 사람은 누구인가요?';
+
+  const validate = (title: string, content: string) => {
+    if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
+    if (title.length > LIMIT.TITLE.MAX)
+      return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
+    if (content.length < LIMIT.CONTENT.MIN) return '내용을 작성해 주세요!';
+    if (content.length > LIMIT.CONTENT.MAX)
+      return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
+
+    return null;
+  };
+
+  // questionId 저장
+  useEffect(() => {
+    const newId = data?.id;
+    if (!newId) return;
+
+    if (draft.questionId !== newId) {
+      patchDraft({ questionId: newId });
+    }
+  }, [data?.id, draft.questionId, patchDraft]);
 
   const handleSubmit = () => {
-    // TODO:
-    // 1. title 최소/최대 글자 수 조건 확인
-    // 2. content 최소/최대 글자 수 조건 확인
-    // 3. 조건 안 맞으면 토스트/에러 처리
-    navigate('/letter/other/decorate', {
-      state: {
-        title: letter.title,
-        content: letter.content,
-      },
-    });
+    if (isLoading) {
+      showToast('질문을 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+
+    const questionId = data?.id;
+    if (isError || !questionId) {
+      showToast('질문을 불러오지 못했어요. 다시 시도해주세요.', 'error');
+      return;
+    }
+
+    const title = draft.title.trim();
+    const content = draft.content.trim();
+    const errorMsg = validate(title, content);
+
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
+    patchDraft({ questionId });
+
+    navigate('/letter/anon/decorate');
   };
+
+  const handleBack = () => {
+    resetAll();
+    navigate(-1);
+  };
+
+  const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
+  const questionNode = isLoading ? (
+    <DailyQuestionBox
+      Icon={BsQuestionCircleFill}
+      question='질문을 불러오는 중...'
+      iconClassName='text-(--color-primary-500)'
+      bubbleBgColor='var(--color-grey-100)'
+      bubbleTextStyle='text-(--color-text-normal)'
+    />
+  ) : isError ? (
+    <div className='w-full rounded-xl bg-(--color-grey-100) p-4'>
+      <p className='ty-body5 text-(--color-text-normal)'>질문을 불러오지 못했어요.</p>
+      <button
+        type='button'
+        className='mt-2 ty-body5 font-medium text-(--color-primary-500)'
+        onClick={() => refetch()}
+      >
+        다시 시도
+      </button>
+    </div>
+  ) : (
+    <DailyQuestionBox
+      Icon={BsQuestionCircleFill}
+      question={formattedQuestionText}
+      iconClassName='text-(--color-primary-500)'
+      bubbleBgColor='var(--color-grey-100)'
+      bubbleTextStyle='ty-body5 text-(--color-text-normal)'
+    />
+  );
 
   return (
     <div className='flex flex-col'>
       <BackHeader
-        title={`${nickname}에게 보내는 편지`}
+        title={`${senderName}에게 보내는 편지`}
         rightElement={
           <button type='submit' onClick={handleSubmit}>
             꾸미기
           </button>
         }
+        onBack={handleBack}
       />
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
         <div className='text-[18px] font-semibold leading-[160%]'>
           <span className='text-black'>우리에게 남은 편지 횟수는 </span>
           <span className='text-[var(--color-primary-500)]'>{letterLeft}회</span>
         </div>
-
-        <DailyQuestionBox
-          Icon={BsQuestionCircleFill}
-          question={dailyQuestion}
-          iconClassName='text-(--color-primary-500)'
-          bubbleBgColor='var(--color-grey-100)'
-          bubbleTextStyle='text-(--color-text-normal)'
-        />
-
+        {/* daily question */}
+        {questionNode}
         <div>
-          <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
+          <LetterTextBox
+            value={{ title: draft.title, content: draft.content }}
+            onChange={(next) => patchDraft(next)}
+            className='w-[343px] h-[394px]'
+          />
         </div>
         <div className='w-full flex items-center justify-end -mt-3 gap-2'>
           <span className='text-(--color-text-normal) ty-body5'>오늘 하루 동안 편지 공개하기</span>
-          <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
+          <ToggleSwitch
+            checked={draft.isPublic}
+            onCheckedChange={(v) => patchDraft({ isPublic: v })}
+          />
         </div>
         <p className='ty-detailMedium text-(--color-text-assistive)'>
           비방의 언어가 담기면 자동으로 필터링 돼요.
