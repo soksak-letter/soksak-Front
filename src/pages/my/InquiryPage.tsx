@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { validate } from '@/utils/validate';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronUp, IoChevronDown } from 'react-icons/io5';
+import { postWeb3FormsInquiry } from '@/api/web3forms';
 
 const INQUIRY_TYPES = ['신고 관련', '제재 관련', '일반 문의'];
 
@@ -44,21 +45,13 @@ const InquiryPage = () => {
 
     setIsSubmitting(true);
 
-    const formData = new FormData();
-    formData.append('access_key', WEB3FORMS_ACCESS_KEY);
-    formData.append('email', email);
-    formData.append('subject', `[${inquiryType}] ${title}`);
-    formData.append('message', content);
-    // 1. Honeypot 필드 추가 (값이 비어있어야 정상 제출됨)
-    formData.append('botcheck', '');
-
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData,
+      const data = await postWeb3FormsInquiry({
+        email,
+        subject: `[${inquiryType}] ${title}`,
+        message: content,
+        botcheck: '',
       });
-
-      const data = await response.json();
 
       if (data.success) {
         alert('문의가 성공적으로 전송되었습니다.');
