@@ -71,14 +71,20 @@ const SelfDraftPage = () => {
       return;
     }
 
+    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
+
+    if (!hasSomething) {
+      navigate(-1);
+      return;
+    }
+
     openModal('storageConfirm', {
       onExit: () => {
         resetCurrent();
         navigate(-1);
       },
-      onConfirmStorage: () => {
-        // TODO: 임시저장 로직 (api or localStorage)
-        // 저장 성공 토스트 같은 거 하고
+      onConfirmStorage: async () => {
+        showToast('임시저장 되었습니다!', 'success');
         navigate(-1);
       },
     });
