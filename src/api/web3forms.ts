@@ -42,7 +42,7 @@ export async function postWeb3FormsInquiry(
 
   try {
     const response = await axiosInstance.post('https://api.web3forms.com/submit', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      // headers: { 'Content-Type': 'multipart/form-data' }, // 브라우저가 자동으로 처리하므로 제거
       withCredentials: false, // CORS 문제 방지: Web3Forms는 인증 필요 없음
       validateStatus: () => true, // HTTP 에러도 catch가 아닌 응답으로 받음
     });
