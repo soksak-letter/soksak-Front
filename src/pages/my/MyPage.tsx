@@ -46,6 +46,8 @@ const MyPage = () => {
           <button
             type='button'
             className='flex-shrink-0 px-3 py-2 border border-[var(--color-line-normal)] rounded-xl ty-body5 text-[var(--color-text-normal)]'
+            // TODO: 프로필 편집 기능 미구현. 추후 /onboarding/profile-select?mode=edit 등으로 연결 필요
+            disabled
           >
             프로필 수정
           </button>

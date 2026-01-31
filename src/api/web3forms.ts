@@ -40,10 +40,15 @@ export async function postWeb3FormsInquiry(
   formData.append('message', req.message);
   formData.append('botcheck', req.botcheck ?? '');
 
-  // axiosInstance로 외부 API 호출
-  const response = await axiosInstance.post('https://api.web3forms.com/submit', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    withCredentials: false, // CORS 문제 방지: Web3Forms는 인증 필요 없음
-  });
-  return response.data;
+  try {
+    const response = await axiosInstance.post('https://api.web3forms.com/submit', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: false, // CORS 문제 방지: Web3Forms는 인증 필요 없음
+      validateStatus: () => true, // HTTP 에러도 catch가 아닌 응답으로 받음
+    });
+    return response.data;
+  } catch (error) {
+    // 네트워크 오류 등
+    return { success: false, error };
+  }
 }
