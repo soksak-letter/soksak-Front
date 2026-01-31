@@ -4,12 +4,15 @@ import { create } from 'zustand';
 
 export type Target = 'self' | 'anon' | 'other' | 'friend';
 
+type DateValue = { year: number; month: number; day: number };
+
 type LetterDraft = {
   questionId: number | null;
   receiverUserId: number | null;
   title: string;
   content: string;
   isPublic: boolean;
+  deliverAtDate?: DateValue;
 };
 
 type LetterStyle = {
@@ -24,6 +27,7 @@ const createInitialDraft = (): LetterDraft => ({
   title: '',
   content: '',
   isPublic: false,
+  deliverAtDate: undefined,
 });
 
 const createInitialStyle = (): LetterStyle => ({

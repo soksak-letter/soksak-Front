@@ -45,9 +45,17 @@ const SelfDraftPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [pickedDate, setPickedDate] = useState<DateValue>(() => {
+    // store에 저장된 값이 있으면 그걸 우선 사용
+    if (draft.deliverAtDate) return draft.deliverAtDate;
+
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth(), day: now.getDate() };
   });
+
+  // picked date 저장
+  useEffect(() => {
+    patchDraft({ deliverAtDate: pickedDate });
+  }, [pickedDate, patchDraft]);
 
   const openSheet = () => {
     setIsOpen(true);
@@ -111,7 +119,7 @@ const SelfDraftPage = () => {
       return;
     }
 
-    navigate('/letter/anon/decorate');
+    navigate('/letter/self/decorate');
   };
 
   // questionId 저장

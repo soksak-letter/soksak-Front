@@ -11,6 +11,9 @@ import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
 const LetterSendingPage = () => {
+  const style = useLetterStore((d) => d.getStyle());
+  const draft = useLetterStore((s) => s.getDraft());
+
   const navigate = useNavigate();
 
   // SenderName 불러오기
@@ -22,7 +25,6 @@ const LetterSendingPage = () => {
   const hasSentRef = useRef(false);
 
   const createLetterMutation = useCreateLetter();
-  const { draft, style } = useLetterStore();
   const { data } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
 
