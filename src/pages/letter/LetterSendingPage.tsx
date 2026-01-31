@@ -199,9 +199,9 @@ const LetterSendingPage = () => {
   const envelopeColor = paperAsset.envelopeColor;
 
   const TargetText = getTargetText();
-  const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
 
-  if (ok) return null;
+  const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
+  if (!safeMode || !ok) return null;
 
   return (
     <div className='flex flex-col items-center justify-center gap-10 min-h-dvh'>
