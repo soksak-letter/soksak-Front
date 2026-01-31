@@ -54,7 +54,7 @@ export default function FriendInboxPage() {
   }, [items, keyword, sortOrder]);
 
   return (
-    <div className='min-h-screen bg-white'>
+    <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='친구' />
 
       <main className='px-5 pb-[95px]'>
@@ -116,7 +116,7 @@ export default function FriendInboxPage() {
           ))}
 
           {filtered.length === 0 && (
-            <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
               검색 결과가 없어요
             </div>
           )}

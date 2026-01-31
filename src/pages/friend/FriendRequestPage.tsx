@@ -160,8 +160,6 @@ function RequestRow({ name, right }: { name: string; right: React.ReactNode }) {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className='rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-8 text-center text-sm text-[#9B9B9B]'>
-      {text}
-    </div>
+    <div className='px-4 py-8 text-center ty-body3 text-[var(--color-text-assistive)]'>{text}</div>
   );
 }
