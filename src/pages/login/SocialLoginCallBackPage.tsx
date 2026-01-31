@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import LoadingPage from '../system/LoadingPage';
-import { postsocialLogin } from '@/api/auth';
+import { postSocialLogin, type SocialProvider } from '@/api/auth';
 import { useEffect, useRef } from 'react';
 import { ROUTES } from '@/routes/paths';
 
@@ -12,24 +12,9 @@ const SocialLoginCallBackPage = () => {
   // React 18 StrictMode에서 useEffect가 두 번 실행되는 것 방지
   const isCalled = useRef(false);
 
-  useEffect(() => {
-    // 1. provider나 code가 없으면 바로 쫓아냄
-    if (!provider || !code) {
-      navigate('/auth/welcome');
-      return;
-    }
-
-    // 2. 이미 실행된 적이 있다면 중단 (중복 호출 방지)
-    if (isCalled.current) return;
-    isCalled.current = true; // 실행됨 표시
-
-    // 3. 로그인 함수 실행
-    handleLogin(provider, code);
-  }, [provider, code, navigate]);
-
-  const handleLogin = async (provider: string, code: string) => {
+  const handleLogin = async (socialProvider: SocialProvider, code: string) => {
     try {
-      const data = await postsocialLogin(provider, code);
+      const data = await postSocialLogin(socialProvider, code);
       if (data.resultType === 'SUCCESS') {
         const { isNewUser } = data.success; // isNewUser 꺼내기
         // 토큰 저장 및 이동
@@ -51,9 +36,33 @@ const SocialLoginCallBackPage = () => {
       }
     } catch (error) {
       console.error('소셜 로그인 에러:', error);
-      navigate('/auth/welcome', { replace: true });
+      navigate(ROUTES.auth.welcome, { replace: true });
     }
   };
+
+  useEffect(() => {
+    // 1. provider나 code가 없으면 바로 쫓아냄
+    if (!provider || !code) {
+      navigate(ROUTES.auth.welcome);
+      return;
+    }
+
+    // 2. 이미 실행된 적이 있다면 중단 (중복 호출 방지)
+    if (isCalled.current) return;
+    isCalled.current = true; // 실행됨 표시
+
+    // useParams로 들어온 string을 우리가 정의한 타입으로 강제 변환합니다.
+    const currentProvider = provider as SocialProvider;
+    // (선택 사항) 만약 URL에 이상한 값이 들어올 것을 대비해 검사하고 싶다면:
+    const validProviders: SocialProvider[] = ['google', 'kakao', 'naver'];
+    if (!validProviders.includes(currentProvider)) {
+      console.error('지원하지 않는 소셜 로그인입니다.');
+      navigate(ROUTES.auth.welcome);
+      return;
+    }
+    // 3. 로그인 함수 실행
+    void handleLogin(currentProvider, code);
+  }, [provider, code, navigate]);
 
   return (
     <div>

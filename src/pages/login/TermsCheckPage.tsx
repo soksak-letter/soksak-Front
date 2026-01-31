@@ -59,7 +59,7 @@ const TermCheckPage = () => {
             <span className='ty-body4'>전체 동의합니다.</span>
           </div>
 
-          <p className='px-[3px] px-[26px] mt-[8px] ty-detail text-[var(--color-text-assistive)]'>
+          <p className='py[3px] px-[26px] mt-[8px] ty-detail text-[var(--color-text-assistive)]'>
             전체 동의는 필수 및 선택 항목에 대한 동의가 포함되어 있으며, 개별적으로도 동의를
             선택하실 수 있습니다. 선택항목에 대한 동의를 거부하시는 경우에도 회원가입 및 일반적인
             서비스를 이용할 수 있습니다.

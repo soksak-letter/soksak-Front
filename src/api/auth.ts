@@ -52,12 +52,15 @@ export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
 };
+
 /**
  * 소셜 로그인 (인가 코드 -> 토큰 교환)
  * @param provider 'google' | 'kakao' | 'naver'
  * @param code 소셜 측에서 받은 인가 코드
  */
-export const postsocialLogin = async (provider: string, code: string) => {
+export type SocialProvider = 'google' | 'kakao' | 'naver';
+
+export const postSocialLogin = async (provider: SocialProvider, code: string) => {
   const response = await axiosInstance.post<SocialLoginResponse>(
     `/auth/login/${provider}`, // /auth/login/kakao
     { code }, // Request Body: { "code": "..." }
