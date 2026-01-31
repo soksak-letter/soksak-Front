@@ -8,6 +8,26 @@ const IdVerifyPage = () => {
   // navigate state로 전달받은 데이터
   const { id, date } = location.state || { id: '-', date: '-' };
 
+  //  날짜 포맷팅 함수 (YYYY-MM-DD... -> YYYY년 M월 D일)
+  const formatDate = (dateString: string) => {
+    if (!dateString || dateString === '-') return '-';
+
+    try {
+      const dateObj = new Date(dateString);
+
+      // 날짜 변환 실패 시(유효하지 않은 날짜) 원본 반환
+      if (isNaN(dateObj.getTime())) return dateString;
+
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+      const day = dateObj.getDate();
+
+      return `${year}년 ${month}월 ${day}일`;
+    } catch (error) {
+      return dateString;
+    }
+  };
+
   return (
     <div className='relative flex flex-col h-full'>
       <div className='mb-[32px]'>
@@ -25,7 +45,7 @@ const IdVerifyPage = () => {
             </div>
             <div>
               <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>가입일</p>
-              <p className='ty-body4 text-[var(--color-text-normal)]'>{date}</p>
+              <p className='ty-body4 text-[var(--color-text-normal)]'>{formatDate(date)}</p>
             </div>
           </div>
         </div>

@@ -15,14 +15,8 @@ const PwResetPage = () => {
     handleFocus,
     handleBlur,
     handleNoSpaceChange,
+    handleSubmit,
   } = usePwResetForm();
-
-  // 4. 최종 제출 (재설정 버튼 클릭)
-  const handleSubmit = async () => {
-    // API 호출 로직 (Mock)
-    console.log('비밀번호 재설정 요청:');
-    navigate('/auth/signin'); // 로그인 페이지로 이동
-  };
 
   return (
     <div className='relative flex flex-col h-full'>
