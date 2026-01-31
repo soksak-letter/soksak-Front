@@ -1,9 +1,6 @@
 import { axiosInstance } from '@/api/axios';
 import type { CommonResponse } from '@/types/dto/common';
-import type {
-  CreateSelfLetterBody,
-  CreateSelfLetterResult,
-} from '@/types/dto/letters/sendSelfLetter';
+import type { CreateSelfLetterBody, CreateSelfLetterResult } from '@/types/dto/letters/sendLetter';
 
 export async function postCreateSelfLetter(
   body: CreateSelfLetterBody,
