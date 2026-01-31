@@ -37,6 +37,8 @@ const InquiryPage = () => {
     formData.append('email', email);
     formData.append('subject', `[${inquiryType}] ${title}`);
     formData.append('message', content);
+    // 1. Honeypot 필드 추가 (값이 비어있어야 정상 제출됨)
+    formData.append('botcheck', '');
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {

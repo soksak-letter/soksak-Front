@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 const MyPage = () => {
   const navigate = useNavigate();
 
-
   // Mock data - 실제 사용 시 API에서 가져오기
   const userInfo = {
     nickname: '개굴님',
