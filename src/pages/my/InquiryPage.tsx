@@ -1,3 +1,14 @@
+// Web3Forms 환경 변수 상수화 및 즉시 검증
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+if (
+  !WEB3FORMS_ACCESS_KEY ||
+  WEB3FORMS_ACCESS_KEY === 'undefined' ||
+  WEB3FORMS_ACCESS_KEY.trim() === ''
+) {
+  throw new Error(
+    '[InquiryPage] VITE_WEB3FORMS_ACCESS_KEY 환경 변수가 설정되지 않았습니다. .env.local을 확인하세요.',
+  );
+}
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useState } from 'react';
 import { validate } from '@/utils/validate';
@@ -19,7 +30,6 @@ const InquiryPage = () => {
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
-
     if (!email || !title || !inquiryType || !content) {
       alert('모든 항목을 입력해주세요.');
       return;
@@ -32,17 +42,10 @@ const InquiryPage = () => {
       return;
     }
 
-    // Validate Web3Forms access key
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-    if (!accessKey || accessKey === 'undefined' || accessKey.trim() === '') {
-      alert('죄송합니다. 서버 설정에 문제가 있습니다. 나중에 다시 시도해주세요.');
-      return;
-    }
-
     setIsSubmitting(true);
 
     const formData = new FormData();
-    formData.append('access_key', accessKey);
+    formData.append('access_key', WEB3FORMS_ACCESS_KEY);
     formData.append('email', email);
     formData.append('subject', `[${inquiryType}] ${title}`);
     formData.append('message', content);
