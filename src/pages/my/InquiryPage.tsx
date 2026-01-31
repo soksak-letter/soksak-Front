@@ -51,7 +51,10 @@ const InquiryPage = () => {
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
-    if (!email || !title || !inquiryType || !content) {
+    const trimmedTitle = title.trim();
+    const trimmedContent = content.trim();
+
+    if (!email || !trimmedTitle || !inquiryType || !trimmedContent) {
       alert('모든 항목을 입력해주세요.');
       return;
     }
@@ -68,8 +71,8 @@ const InquiryPage = () => {
     try {
       const data = await postWeb3FormsInquiry({
         email,
-        subject: `[${inquiryType}] ${title}`,
-        message: content,
+        subject: `[${inquiryType}] ${trimmedTitle}`,
+        message: trimmedContent,
         botcheck: '',
       });
 
