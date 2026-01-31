@@ -7,6 +7,7 @@ import { useCreateLetter } from '@/hooks/letters/useCreateLetter';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
+import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -25,6 +26,7 @@ const LetterSendingPage = () => {
   const hasSentRef = useRef(false);
 
   const createLetterMutation = useCreateLetter();
+  const createSelfLetterMutation = useCreateSelfLetter();
   const { data } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
 
@@ -32,13 +34,13 @@ const LetterSendingPage = () => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
   }, [target]);
 
-  // target에 따라 receiverUserId 유무를 지정
-  const payload = useMemo(() => {
+  // 공통 base payload
+  const basePayload = useMemo(() => {
     if (!safeMode) return null;
     if (!draft.title?.trim() || !draft.content?.trim()) return null;
     if (style.paperId == null || style.fontId == null || style.stampId == null) return null;
 
-    const base = {
+    return {
       title: draft.title.trim(),
       content: draft.content.trim(),
       isPublic: draft.isPublic,
@@ -47,29 +49,47 @@ const LetterSendingPage = () => {
       stampId: style.stampId,
       ...(draft.questionId != null && { questionId: draft.questionId }),
     };
+  }, [
+    safeMode,
+    draft.title,
+    draft.content,
+    draft.isPublic,
+    draft.questionId,
+    style.paperId,
+    style.fontId,
+    style.stampId,
+  ]);
 
-    switch (safeMode) {
-      case 'anon':
-        // receiverUserId X
-        return base;
+  // 타인 전송 payload (anon/other/friend)
+  const sendPayload = useMemo(() => {
+    if (!basePayload) return null;
+    if (!safeMode) return null;
 
-      case 'other':
-        // receiverUserId X
-        return base;
-
-      case 'friend':
-        // receiverUserId 필수
-        if (draft.receiverUserId == null) return null;
-        return { ...base, receiverUserId: draft.receiverUserId };
-
-      case 'self':
-        // receiverUserId 금지
-        return base;
-
-      default:
-        return null;
+    if (safeMode === 'friend') {
+      if (draft.receiverUserId == null) return null;
+      return { ...basePayload, receiverUserId: draft.receiverUserId };
     }
-  }, [safeMode, draft, style]);
+
+    if (safeMode === 'anon' || safeMode === 'other') {
+      return basePayload;
+    }
+
+    return null; // self는 여기 아님
+  }, [basePayload, safeMode, draft.receiverUserId]);
+
+  // 나에게 전송할 때 payload
+  const selfPayload = useMemo(() => {
+    if (!basePayload) return null;
+    if (safeMode !== 'self') return null;
+
+    const d = draft.deliverAtDate;
+    if (!d) return null;
+
+    // 서버로 보낼 시간 파싱
+    const scheduled = new Date(d.year, d.month, d.day, 0, 0, 0, 0).toISOString();
+
+    return { ...basePayload, scheduledAt: scheduled };
+  }, [basePayload, safeMode, draft.deliverAtDate]);
 
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
   useEffect(() => {
@@ -77,29 +97,37 @@ const LetterSendingPage = () => {
       navigate('/error/404', { replace: true });
       return;
     }
-    if (!payload) {
+
+    const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
+
+    if (!ok) {
       navigate('/home/main', { replace: true });
     }
-  }, [safeMode, payload, navigate]);
+  }, [safeMode, selfPayload, sendPayload, navigate]);
 
   // POST 실행
   useEffect(() => {
-    if (!safeMode || !payload) return;
+    if (!safeMode) return;
     if (hasSentRef.current) return;
+
+    const payloadToUse = safeMode === 'self' ? selfPayload : sendPayload;
+
+    if (!payloadToUse) return;
+
     hasSentRef.current = true;
 
     (async () => {
       try {
-        const res = await createLetterMutation.mutateAsync(payload);
+        const res =
+          safeMode === 'self'
+            ? await createSelfLetterMutation.mutateAsync(payloadToUse)
+            : await createLetterMutation.mutateAsync(payloadToUse);
 
-        // 편지 발송 응답 확인용
         console.log('[CreateLetter success response]', res);
 
         navigate('/home/main', {
           replace: true,
-          state: {
-            toast: { status: 'success', message: '편지를 전송했어요!' },
-          },
+          state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
         });
       } catch {
         hasSentRef.current = false;
@@ -107,7 +135,15 @@ const LetterSendingPage = () => {
         navigate(-1);
       }
     })();
-  }, [safeMode, payload]);
+  }, [
+    safeMode,
+    selfPayload,
+    sendPayload,
+    createLetterMutation,
+    createSelfLetterMutation,
+    navigate,
+    showToast,
+  ]);
 
   const getTargetText = () => {
     // TODO : Mock data 제거
@@ -163,7 +199,9 @@ const LetterSendingPage = () => {
   const envelopeColor = paperAsset.envelopeColor;
 
   const TargetText = getTargetText();
-  if (!safeMode || !payload) return null;
+  const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
+
+  if (ok) return null;
 
   return (
     <div className='flex flex-col items-center justify-center gap-10 min-h-dvh'>
