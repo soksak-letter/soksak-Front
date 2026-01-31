@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useModalStore } from '@/stores/modalStore';
@@ -63,6 +63,54 @@ const SelfDraftPage = () => {
   const closeSheet = () => setIsOpen(false);
 
   const label = `${pickedDate.year}.${pickedDate.month + 1}.${pickedDate.day}`;
+
+  const handleSelectionChange = useCallback(
+    (selection: {
+      type: 'surprise' | 'manual';
+      period?: '3days' | '1week' | '1month' | '3months' | '6months' | '1year';
+      date?: { month: number; day: number; year: number };
+    }) => {
+      const now = new Date();
+
+      if (selection.type === 'surprise' && selection.period) {
+        const d = new Date(now);
+
+        const addDays = (n: number) => d.setDate(d.getDate() + n);
+        switch (selection.period) {
+          case '3days':
+            addDays(3);
+            break;
+          case '1week':
+            addDays(7);
+            break;
+          case '1month':
+            d.setMonth(d.getMonth() + 1);
+            break;
+          case '3months':
+            d.setMonth(d.getMonth() + 3);
+            break;
+          case '6months':
+            d.setMonth(d.getMonth() + 6);
+            break;
+          case '1year':
+            d.setFullYear(d.getFullYear() + 1);
+            break;
+        }
+
+        setPickedDate({ year: d.getFullYear(), month: d.getMonth(), day: d.getDate() });
+        return;
+      }
+
+      if (selection.type === 'manual' && selection.date) {
+        setPickedDate({
+          year: selection.date.year,
+          month: selection.date.month, // DatePickerWheel은 0-based
+          day: selection.date.day,
+        });
+      }
+    },
+    [setPickedDate], // setState는 안정적이라 사실 deps 비워도 되지만 이렇게 써도 OK
+  );
 
   // 질문 유지 시간 계산
   const deadlineMs = useMemo(() => {
@@ -192,7 +240,7 @@ const SelfDraftPage = () => {
         </button>
         {isOpen && (
           <BottomSheet isOpen={isOpen} onClose={closeSheet}>
-            <SurpriseLetterContent />
+            <SurpriseLetterContent onSelectionChange={handleSelectionChange} />
           </BottomSheet>
         )}
       </div>

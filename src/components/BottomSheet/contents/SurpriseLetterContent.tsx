@@ -39,10 +39,13 @@ export default function SurpriseLetterContent({
 
   useEffect(() => {
     if (selectedTab === 'surprise') {
-      onSelectionChange?.({ type: 'surprise', period: selectedPeriod });
-    } else if (selectedDate) {
-      onSelectionChange?.({ type: 'manual', date: selectedDate });
+      if (selectedDate) {
+        onSelectionChange?.({ type: 'manual', date: selectedDate });
+      }
+      return;
     }
+
+    onSelectionChange?.({ type: 'surprise', period: selectedPeriod });
   }, [selectedTab, selectedPeriod, selectedDate, onSelectionChange]);
 
   return (
