@@ -19,10 +19,19 @@ const LIMIT = {
 } as const;
 
 const OtherDraftPage = () => {
-  const navigate = useNavigate();
-  const { draft, patchDraft, resetAll } = useLetterStore();
   const { data, isLoading, isError, refetch } = useDailyQuestion();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+
   const { showToast } = useGlobalToast();
+  const navigate = useNavigate();
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('other');
+  }, [setActiveTarget]);
 
   // SenderName 불러오기
   const location = useLocation();
@@ -79,7 +88,6 @@ const OtherDraftPage = () => {
   };
 
   const handleBack = () => {
-    resetAll();
     navigate(-1);
   };
 

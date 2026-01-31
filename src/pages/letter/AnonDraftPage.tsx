@@ -17,12 +17,20 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patchDraft } = useLetterStore();
   const { data, isLoading, isError, error } = useDailyQuestion();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
 
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('anon');
+  }, [setActiveTarget]);
 
   const deadlineMs = useMemo(() => {
     if (!data?.expiredAt) return null;

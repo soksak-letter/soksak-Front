@@ -25,12 +25,21 @@ const LIMIT = {
 } as const;
 
 const SelfDraftPage = () => {
-  const { draft, patchDraft, resetAll } = useLetterStore();
   const { data, isLoading, isError, error } = useDailyQuestion();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+  const resetCurrent = useLetterStore((s) => s.resetCurrent);
 
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('self');
+  }, [setActiveTarget]);
 
   // 데이트 피커 바텀시트 상태
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +73,7 @@ const SelfDraftPage = () => {
 
     openModal('storageConfirm', {
       onExit: () => {
-        resetAll();
+        resetCurrent();
         navigate(-1);
       },
       onConfirmStorage: () => {
