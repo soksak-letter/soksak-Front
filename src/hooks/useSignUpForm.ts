@@ -121,7 +121,7 @@ const useSignUpForm = () => {
       const response = await postCheckEmailExists({ email: emailAtRequest });
       if (form.email !== emailAtRequest) return;
       // 2. 콘솔에 응답 출력
-      console.log('이메일 중복확인 Response:', response);
+      //console.log('이메일 중복확인 Response:', response);
 
       // 3. 성공 여부 판단 (서버 응답 구조에 따라 로직 처리)
       if (response.resultType === 'SUCCESS') {
@@ -150,7 +150,7 @@ const useSignUpForm = () => {
 
       // 2. 409 Conflict (중복) 처리
       if (error.response?.status === 409) {
-        // 🎯 [핵심] 이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
+        //  이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
         if (errorCode === 'USER_EMAIL_DUPLICATED') {
           setIsEmailUnique(false);
           setValidations((prev) => ({

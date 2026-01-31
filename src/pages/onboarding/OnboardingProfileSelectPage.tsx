@@ -12,7 +12,9 @@ import {
 } from '@/constants/onboardingProfile';
 
 import { useModalStore } from '@/stores/modalStore';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSaveBasicInfo } from '@/hooks/onboarding/useSaveBasicInfo';
+import type { Gender, Job } from '@/types/dto/onboarding';
 
 type GenderId = GenderOption['id'];
 type JobId = JobOption['id'];
@@ -22,20 +24,66 @@ export default function OnboardingProfileSelectPage() {
   const [job, setJob] = useState<JobId | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const openModal = useModalStore((s) => s.openModal);
 
-  const isNextEnabled = gender !== null && job !== null;
+  // mode: onboarding(default) | edit
+  const mode = new URLSearchParams(location.search).get('mode') === 'edit' ? 'edit' : 'onboarding';
+  const isEdit = mode === 'edit';
+
+  const saveBasicInfo = useSaveBasicInfo();
+
+  const isNextEnabled = gender !== null && job !== null && !saveBasicInfo.isPending;
 
   const handleNext = () => {
     if (!isNextEnabled) return;
-    console.log('gender:', gender, 'job:', job);
-    navigate('/onboarding/topic-select');
+
+    const payload = {
+      gender: gender,
+      job: job,
+    };
+
+    saveBasicInfo.mutate(payload, {
+      onSuccess: (res) => {
+        if (res.resultType === 'SUCCESS') {
+          if (isEdit) {
+            navigate('/my/my-page', { replace: true });
+          } else {
+            navigate('/onboarding/topic-select-2');
+          }
+          return;
+        }
+
+        // 이미 온보딩 완료 사용자
+        if (res.error.errorCode === '409') {
+          // TODO: 에러코드 화이트리스트 필요(자유 문자열로 들어옴)
+          if (isEdit) {
+            navigate('/my/my-page', { replace: true });
+          } else {
+            navigate('/', { replace: true });
+          }
+          return;
+        }
+
+        // TODO: 토스트로 reason 노출
+        console.log(res.error.reason);
+      },
+
+      onError: (error) => {
+        navigate('/error/network');
+        console.error('저장 실패:', error);
+      },
+    });
   };
 
   const handleSkipOpen = () => {
     openModal('onboardingSkipConfirm', {
       onConfirmSkip: () => {
-        navigate('/onboarding/topic-select');
+        if (isEdit) {
+          navigate('/my/my-page', { replace: true });
+        } else {
+          navigate('/onboarding/topic-select-2');
+        }
       },
     });
   };

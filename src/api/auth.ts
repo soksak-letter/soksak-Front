@@ -1,6 +1,11 @@
 import type {
+  AgreementsRequest,
+  AgreementsResponse,
   EmailExistsRequest,
   EmailExistsResponse,
+  NicknameSetUpRequest,
+  NicknameSetUpResponse,
+  ProfileImageResponse,
   SignInRequest,
   SignInResponse,
   SignUpRequest,
@@ -45,4 +50,42 @@ export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
 export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
+};
+/**
+ * 약관 동의 API
+ * @param data 회원가입 입력 정보
+ */
+export const patchAgreements = async (data: AgreementsRequest) => {
+  const response = await axiosInstance.patch<AgreementsResponse>(
+    '/users/me/consents', // 서버 API 명세에 맞는 URL 입력
+    data,
+  );
+  return response.data;
+};
+
+/**
+ * 닉네임 설정 API
+ * @param data 닉네임
+ */
+
+export const patchNickname = async (data: NicknameSetUpRequest) => {
+  const response = await axiosInstance.patch<NicknameSetUpResponse>('/users/me/profile', data);
+  return response.data;
+};
+/**
+ * 프로필 이미지 업로드 API
+ * @param file 파일
+ */
+export const postProfileImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await axiosInstance.post<ProfileImageResponse>(
+    '/users/me/profile/image',
+    formData,
+    {
+      headers: {},
+    },
+  );
+  return response.data;
 };

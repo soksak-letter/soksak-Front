@@ -50,6 +50,11 @@ const SignUpPage = () => {
   // 최종 제출 버튼 활성화 조건
   const canSubmit = canSubmitWithoutTerms && isTermsAgreed;
 
+  // 상세 보기 클릭 핸들러 (페이지 이동)
+  const handleOpenDetail = (type: string) => {
+    navigate(`/setting/${type}`);
+  };
+
   /**
    * [API 연결] 회원가입 요청 핸들러
    */
@@ -70,7 +75,8 @@ const SignUpPage = () => {
       termsAgreed: agreements.terms, // 필수 약관
       privacyAgreed: agreements.privacy, // 필수 개인정보
       ageOver14Agreed: agreements.age, // 필수 14세
-      marketingAgreed: agreements.marketing, // 선택 마케팅
+      marketingEmailAgreed: agreements.marketingEmail, // 선택 마케팅 이메일
+      marketingPushAgreed: agreements.marketingPush, // 선택 마케팅 푸시
     };
 
     try {
@@ -78,7 +84,7 @@ const SignUpPage = () => {
       const response = await postSignup(requestBody);
 
       // 결과 콘솔 출력
-      console.log('회원가입 Response:', response);
+      //console.log('회원가입 Response:', response);
 
       // 4. 성공 시 처리
       if (response.resultType === 'SUCCESS') {
@@ -314,11 +320,13 @@ const SignUpPage = () => {
               label='[필수] 이용약관 동의'
               checked={agreements.terms}
               onToggle={() => handleCheck('terms')}
+              onViewClick={() => handleOpenDetail('terms')}
             />
             <TermItem
               label='[필수] 개인정보 수집 동의'
               checked={agreements.privacy}
               onToggle={() => handleCheck('privacy')}
+              onViewClick={() => handleOpenDetail('privacy')}
             />
             <TermItem
               label='[필수] 만 14세 이상입니다.'
@@ -326,9 +334,14 @@ const SignUpPage = () => {
               onToggle={() => handleCheck('age')}
             />
             <TermItem
-              label='[선택] 마케팅 수신 동의'
-              checked={agreements.marketing}
-              onToggle={() => handleCheck('marketing')}
+              label='[선택] 이메일 수신 동의 (아이디 및 비밀번호 찾기)'
+              checked={agreements.marketingEmail}
+              onToggle={() => handleCheck('marketingEmail')}
+            />
+            <TermItem
+              label='[선택] 광고성 푸시 알림 수신 동의'
+              checked={agreements.marketingPush}
+              onToggle={() => handleCheck('marketingPush')}
             />
           </div>
         </div>
