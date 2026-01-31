@@ -84,8 +84,10 @@ export default function LetterInboxSelfPage() {
     }
   };
 
-  const handleOpenLetter = (item: InboxSelfLetterItem) => {
-    navigate(`/letter/post-self/${item.letterId}`);
+  const handleOpenLetter = (letterId: number) => {
+    navigate(`/letter/post-self/${letterId}`, {
+      state: { letterId },
+    });
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
@@ -148,7 +150,7 @@ export default function LetterInboxSelfPage() {
                     <button
                       key={it.letterId}
                       type='button'
-                      onClick={() => handleOpenLetter(it)}
+                      onClick={() => handleOpenLetter(it.letterId)}
                       className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>

@@ -147,11 +147,11 @@ const router = createBrowserRouter([
                 ],
               },
               { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
-              { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },
+              { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
               { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },
               { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
-              { path: 'letter/post-self', element: <LetterPostSelfPage /> },
+              // { path: 'letter/post-self', element: <LetterPostSelfPage /> }, // TODO : 미사용 라우터 삭제
               { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
               { path: 'letter/loading', element: <LoadingPage /> },
               // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
