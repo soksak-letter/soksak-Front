@@ -104,14 +104,14 @@ export default function WeeklyReportPage() {
           <section className='w-[344px] h-[307px] rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-[16px] py-[8px]'>
             <div className='flex flex-col'>
               {/* 네트워크/키워드 영역 블랭크 */}
-              <div className='mt-3 rounded-xl bg-[#FFF7F7] h-[150px] w-full' />
-
-              {/* 태그 영역 블랭크 */}
-              <div className='mt-3 flex flex-wrap gap-2'>
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
-                ))}
-              </div>
+              <div className='flex mt-3 rounded-xl h-[148px] w-full gap-[16px] ' />
+              <p>이번 주, 당신의 마음을 채운 단어는?</p>
+            </div>
+            {/* 태그 영역 블랭크 */}
+            <div className='mt-3 flex flex-wrap gap-2'>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
+              ))}
             </div>
           </section>
 
