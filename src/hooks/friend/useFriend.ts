@@ -20,23 +20,31 @@
 import { useQuery } from '@tanstack/react-query';
 import { friendKeys } from './keys';
 import { getFriends } from '@/api/friend';
+import type { FriendItem } from '@/types/dto/friend';
+import type { AxiosError } from 'axios';
 
 export const useFriends = () =>
-  useQuery({
+  useQuery<FriendItem[]>({
     queryKey: friendKeys.friends(),
     queryFn: async () => {
-      const res = await getFriends();
-      const data = res.data;
+      try {
+        const res = await getFriends();
+        const data = res.data;
 
-      if (data.resultType === 'SUCCESS') {
-        return data.success.result.data;
+        if (data.resultType === 'SUCCESS') return data.success.result.data;
+
+        if (data.error.errorCode === 'FRIEND_NOTFOUND_ERROR') return [];
+
+        throw data.error;
+      } catch (e) {
+        // HTTP 404 같은 “진짜 네트워크 에러”가 온 경우 대비
+        const err = e as AxiosError<any>;
+
+        // 서버가 HTTP 404로도 내려줄 가능성이 있으면 여기서 [] 처리
+        if (err.response?.status === 404) return [];
+
+        throw e;
       }
-
-      if (data.error.errorCode === 'FRIEND_NOTFOUND_ERROR') {
-        return [];
-      }
-
-      // React Query error로 넘기기
-      throw data.error;
     },
+    retry: 0, // 일단 개발 중엔 retry 꺼서 네트워크 폭주/오해 방지 추천
   });

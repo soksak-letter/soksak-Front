@@ -38,4 +38,8 @@ export const useIncomingFriendRequests = () =>
 
       throw data.error;
     },
+    retry: 0,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 60_000,
   });
