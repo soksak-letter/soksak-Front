@@ -9,13 +9,13 @@ import { useMemo } from 'react';
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 // 1. API 응답 형태의 Mock Data (데이터가 오는 곳)
 const keywordsMock = [
-  { keyword: '운동/건강', count: 2 },
-  { keyword: '야근', count: 4 },
+  { keyword: '운동/건강', count: 1 },
+  { keyword: '야근', count: 1 },
   { keyword: '피곤', count: 10 },
   { keyword: '복잡', count: 5 },
   { keyword: '감사', count: 9 },
-  { keyword: '기쁨', count: 2 },
-  { keyword: '성취', count: 2 },
+  { keyword: '기쁨', count: 1 },
+  { keyword: '성취', count: 1 },
 ];
 export default function WeeklyReportPage() {
   // 별자리 컴포넌트와 하단 태그 리스트에서 공통으로 사용할 데이터 변환
@@ -133,17 +133,18 @@ export default function WeeklyReportPage() {
                 </div>
               </div>
               {/* 태그 영역 블랭크 */}
-              <div className=' flex flex-wrap justify-center gap-2'>
+              <div className=' flex flex-wrap justify-center gap-[15px]'>
                 {formattedKeywords.map((node, index) => {
                   const isMain = index === 0; //가장 큰 노드
                   return (
                     <div
                       key={`tag-${node.id}`}
-                      className={`h-[28px] px-3 flex items-center justify-center rounded-full border text-[12px] font-medium transition-all ${
-                        isMain
-                          ? 'border-[#FFC8C6] bg-[#FFF5F5] text-[#FF5C5C]'
-                          : 'border-[#F0F0F0] bg-white text-[#999999]'
-                      }`}
+                      className={`h-[28px] px-[10px] flex items-center justify-center 
+                        rounded-full border ty-detailMedium shadow-sm transition-all ${
+                          isMain
+                            ? 'border-[#FFC8C6] bg-[#FFF5F5] text-[#FF5C5C]'
+                            : 'border-[#F0F0F0] bg-white text-[#999999]'
+                        }`}
                     >
                       # {node.label} {node.count > 1 && `(${node.count})`}
                     </div>
