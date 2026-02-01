@@ -83,14 +83,21 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/letter/inbox-other' replace /> },
                   { path: 'inbox-other', element: <LetterInboxOtherPage /> },
                   { path: 'inbox-self', element: <LetterInboxSelfPage /> },
+                  { path: 'other-stop', element: <LetterOtherStopPage /> },
+                  // { path: 'letter/10-end', element: <LetterTenEndPage /> },
                 ],
               },
-              // { path: 'letter/10-end', element: <LetterTenEndPage /> },
-              { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
-              { path: 'friend/request', element: <FriendRequestPage /> },
-              { path: 'friend/inbox', element: <FriendInboxPage /> },
-              { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+              {
+                path: '/friend',
+                children: [
+                  { index: true, element: <Navigate to='/friend/inbox' replace /> },
+                  { path: 'inbox', element: <FriendInboxPage /> },
+                  { path: 'request', element: <FriendRequestPage /> },
+                  { path: 'sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+                ],
+              },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
+              { path: 'setting', element: <TODOPage /> },
             ],
           },
           // 프레임만
