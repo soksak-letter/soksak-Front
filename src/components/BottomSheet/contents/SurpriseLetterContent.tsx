@@ -31,17 +31,16 @@ export default function SurpriseLetterContent({
 }: SurpriseLetterContentProps = {}) {
   const [selectedTab, setSelectedTab] = useState<TabType>('surprise');
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('3months');
-  const [selectedDate, setSelectedDate] = useState<{
-    month: number;
-    day: number;
-    year: number;
-  } | null>(null);
+  const [selectedDate, setSelectedDate] = useState<{ month: number; day: number; year: number }>(
+    () => {
+      const now = new Date();
+      return { year: now.getFullYear(), month: now.getMonth(), day: now.getDate() };
+    },
+  );
 
   useEffect(() => {
     if (selectedTab === 'surprise') {
-      if (selectedDate) {
-        onSelectionChange?.({ type: 'manual', date: selectedDate });
-      }
+      onSelectionChange?.({ type: 'manual', date: selectedDate });
       return;
     }
 

@@ -15,8 +15,6 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import LoadingPage from '../system/LoadingPage';
 
-// TODO : letterStore에 target === self 일 때만 dateValue값을 추가한다.
-
 type DateValue = { year: number; month: number; day: number };
 
 const LIMIT = {
