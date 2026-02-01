@@ -35,7 +35,7 @@ export default function FriendInboxPage() {
         id: f.friendUserId,
         name: f.nickname,
         exchangeCount: f.letterCount,
-        lastDate: f.createdAt.split('T')[0].replaceAll('-', '.'),
+        lastDate: f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.'),
       })),
     [friends],
   );

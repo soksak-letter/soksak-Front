@@ -5,14 +5,20 @@ export type FriendApiResponse<T> = CommonResponse<{
   result: { data: T };
 }>;
 
+export type RecentLetter = {
+  createdAt: string;
+  design: {
+    paper?: { color?: string };
+    stamp?: { name?: string; assetUrl?: string };
+  };
+};
+
 export type FriendItem = {
   id: number;
   friendUserId: number;
   nickname: string;
   letterCount: number;
-  recentLetter: boolean;
-  createdAt: string;
-  design: Record<string, unknown>;
+  recentLetter: RecentLetter;
 };
 
 export type FriendRequestStatus = 'PENDING' | 'REJECTED' | 'DELETED';
