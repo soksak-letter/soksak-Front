@@ -20,7 +20,7 @@ export function EmotionConstellation({ data }: { data: any[] }) {
         id: index,
         x: index * xStep + 30, // 양옆 여백 30px 부여
         // [Y 좌표 계산] 별자리 느낌을 위해 상하 폭을 조금 더 좁게 조정 (짧은 선 유도)높이값을 순환(index % 6)
-        y: [50, 90, 90, 100, 70, 85][index % 6],
+        y: [50, 105, 120, 70, 45, 80][index % 6],
       };
     });
   }, [data]);
@@ -83,7 +83,7 @@ export function EmotionConstellation({ data }: { data: any[] }) {
       {nodes.map((node) => {
         const isMax = node.count === maxCount; // 현재 노드가 최대 빈도인지 확인
         // 노드 개수가 많아지면(6개 초과) 반지름을 살짝 줄여서 겹침 방지
-        const baseRadius = nodes.length > 6 ? 10 : 13;
+        const baseRadius = nodes.length > 6 ? 11 : 13;
         // 빈도수 비율에 따라 반지름을 10px 범위 내에서 추가로 키움
         const radius = baseRadius + (node.count / (maxCount || 1)) * 10;
 

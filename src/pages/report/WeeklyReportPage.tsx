@@ -13,10 +13,9 @@ const keywordsMock = [
   { keyword: '야근', count: 4 },
   { keyword: '피곤', count: 10 },
   { keyword: '복잡', count: 5 },
-  { keyword: '감사', count: 10 },
+  { keyword: '감사', count: 9 },
   { keyword: '기쁨', count: 2 },
   { keyword: '성취', count: 2 },
-  { keyword: '휴식', count: 2 },
 ];
 export default function WeeklyReportPage() {
   // 별자리 컴포넌트와 하단 태그 리스트에서 공통으로 사용할 데이터 변환
