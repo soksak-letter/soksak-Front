@@ -117,7 +117,7 @@ const SelfDraftPage = () => {
     return Number.isNaN(t) ? null : t;
   }, [data?.expiredAt]);
 
-  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now());
+  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now() + 60000);
 
   const handleBack = () => {
     if (isExpired) {
