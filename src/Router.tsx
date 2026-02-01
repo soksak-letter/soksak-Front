@@ -88,7 +88,6 @@ const router = createBrowserRouter([
               },
               {
                 path: '/friend',
-                element: <AppShellWithTab />,
                 children: [
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
