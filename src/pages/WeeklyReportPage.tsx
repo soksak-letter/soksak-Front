@@ -3,42 +3,58 @@ import type { EmotionStatusKey } from '@/components/WeeklyReport/EmotionStatusIc
 
 import { WeeklyEmotionDistributionCard } from '@/components/WeeklyReport/WeeklyEmotionDistributionCard';
 import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFlowCard';
+import { EmotionConstellation } from '@/components/WeeklyReport/EmotionConstellation';
+import { useMemo } from 'react';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
-
-const keywordsMock: [
-  { keyword: '운동/건강'; count: 5 }, // 가장 높은 count
-  { keyword: '감사'; count: 3 },
-  { keyword: '기쁨'; count: 2 },
-  { keyword: '성취'; count: 1 },
-  { keyword: '휴식'; count: 1 },
+// 1. API 응답 형태의 Mock Data (데이터가 오는 곳)
+const keywordsMock = [
+  { keyword: '운동/건강', count: 2 },
+  { keyword: '야근', count: 14 },
+  { keyword: '피곤', count: 14 },
+  { keyword: '복잡', count: 14 },
+  { keyword: '감사', count: 14 },
+  { keyword: '기쁨', count: 2 },
+  { keyword: '성취', count: 2 },
+  { keyword: '휴식', count: 2 },
 ];
-const emotionStatusMock: EmotionStatusKey = 'tired';
-
-const flowMock: WeeklyEmotionFlowItem[] = [
-  { day: '월', segments: [{ percent: 55, color: 'var(--color-primary-500)' }] },
-  {
-    day: '화',
-    segments: [
-      { percent: 55, color: 'var(--color-primary-500)' },
-      { percent: 30, color: 'var(--color-primary-300)' },
-    ],
-  },
-  { day: '수', segments: [] },
-  { day: '목', segments: [] },
-  { day: '금', segments: [] },
-  {
-    day: '토',
-    segments: [
-      { percent: 35, color: 'var(--color-primary-500)' },
-      { percent: 40, color: 'var(--color-grey-300)' },
-      { percent: 20, color: 'var(--color-primary-300)' },
-    ],
-  },
-  { day: '일', segments: [] },
-];
-
 export default function WeeklyReportPage() {
+  // 별자리 컴포넌트와 하단 태그 리스트에서 공통으로 사용할 데이터 변환
+  const formattedKeywords = useMemo(() => {
+    return [...keywordsMock]
+      .sort((a, b) => b.count - a.count)
+      .map((item, index) => ({
+        id: index,
+        label: item.keyword,
+        count: item.count,
+      }));
+  }, []);
+
+  const emotionStatusMock: EmotionStatusKey = 'tired';
+
+  const flowMock: WeeklyEmotionFlowItem[] = [
+    { day: '월', segments: [{ percent: 55, color: 'var(--color-primary-500)' }] },
+    {
+      day: '화',
+      segments: [
+        { percent: 55, color: 'var(--color-primary-500)' },
+        { percent: 30, color: 'var(--color-primary-300)' },
+      ],
+    },
+    { day: '수', segments: [] },
+    { day: '목', segments: [] },
+    { day: '금', segments: [] },
+    {
+      day: '토',
+      segments: [
+        { percent: 35, color: 'var(--color-primary-500)' },
+        { percent: 40, color: 'var(--color-grey-300)' },
+        { percent: 20, color: 'var(--color-primary-300)' },
+      ],
+    },
+    { day: '일', segments: [] },
+  ];
+
   const distribution = [
     { key: 'tired', label: '피곤함', value: 50, color: '#F05A4F' },
     { key: 'calm', label: '차분함', value: 30, color: '#F3B3AE' },
@@ -113,22 +129,27 @@ export default function WeeklyReportPage() {
               {/* 네트워크/키워드 영역 블랭크 */}
               <div className='flex flex-col  mt-3 rounded-xl h-[148px] w-full gap-[16px] '>
                 <p>이번 주, 당신의 마음을 채운 단어는?</p>
-                <div className='flex h-full w-full'></div>
+                <div className='flex h-full w-full justify-center items-center overflow-visible'>
+                  <EmotionConstellation data={formattedKeywords} />
+                </div>
               </div>
               {/* 태그 영역 블랭크 */}
               <div className=' flex flex-wrap justify-center gap-2'>
-                {emotionMock.map((node) => (
-                  <div
-                    key={`tag-${node.id}`}
-                    className={`h-[28px] w-[51px] rounded-full border text-sm font-medium ${
-                      node.id === 1
-                        ? 'border-red-300 bg-red-50 text-gray-800'
-                        : 'border-gray-200 bg-white text-gray-400'
-                    }`}
-                  >
-                    # {node.label} {node.count > 1 && `(${node.count})`}
-                  </div>
-                ))}
+                {formattedKeywords.map((node, index) => {
+                  const isMain = index === 0; //가장 큰 노드
+                  return (
+                    <div
+                      key={`tag-${node.id}`}
+                      className={`h-[28px] px-3 flex items-center justify-center rounded-full border text-[12px] font-medium transition-all ${
+                        isMain
+                          ? 'border-[#FFC8C6] bg-[#FFF5F5] text-[#FF5C5C]'
+                          : 'border-[#F0F0F0] bg-white text-[#999999]'
+                      }`}
+                    >
+                      # {node.label} {node.count > 1 && `(${node.count})`}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>
