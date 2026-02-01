@@ -22,8 +22,10 @@ export const useCancelFriendRequest = () => {
 
   return useMutation({
     mutationFn: (targetUserId: number) => cancelFriendRequest(targetUserId),
-    onSuccess: async () => {
-      await qc.invalidateQueries({ queryKey: friendKeys.outgoing() });
+    onSuccess: async (res) => {
+      if (res.data.resultType === 'SUCCESS') {
+        await qc.invalidateQueries({ queryKey: friendKeys.outgoing() });
+      }
     },
   });
 };
