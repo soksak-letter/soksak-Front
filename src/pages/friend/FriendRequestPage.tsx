@@ -10,6 +10,7 @@ import { useOutgoingFriendRequests } from '@/hooks/friend/useOutgoingFriendReque
 import { useAcceptFriendRequest } from '@/hooks/friend/useAcceptFriendRequest';
 import { useRejectFriendRequest } from '@/hooks/friend/useRejectFriendRequest';
 import { useCancelFriendRequest } from '@/hooks/friend/useCancelFriendRequest';
+import { useLetterStore } from '@/stores/letterStore';
 
 type RequestUser = {
   id: number;
@@ -20,7 +21,13 @@ export default function FriendRequestPage() {
   const navigate = useNavigate();
   const openModal = useModalStore((s) => s.openModal);
 
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const patchDraft = useLetterStore((s) => s.patchDraft);
   const { data: incoming = [] } = useIncomingFriendRequests();
+  // TODO : 이전 friend draft를 리셋해야 하는가?
+  // 이전 friend draft 임시저장 -> 다른 친구에게 새로 작성하려고 하면 모달 띄우기
+  // (임시 저장된 글이 있습니다. 삭제하고 새로 작성하시겠어요?)
+  // const resetCurrent = useLetterStore((s) => s.resetCurrent);
   const { data: outgoing = [] } = useOutgoingFriendRequests();
 
   const acceptMutation = useAcceptFriendRequest();
@@ -45,6 +52,14 @@ export default function FriendRequestPage() {
     [outgoing],
   );
 
+  const goWriteLetterTo = (user: RequestUser) => {
+    setActiveTarget('friend');
+
+    patchDraft({ receiverUserId: user.id });
+
+    navigate('/letter/deco/friend');
+  };
+
   const handleAccept = (user: RequestUser) => {
     acceptMutation.mutate(user.id, {
       onSuccess: () => {
@@ -52,7 +67,7 @@ export default function FriendRequestPage() {
           friendName: user.name,
           onConfirm: () => {},
           onWriteLetter: () => {
-            // TODO: letterId 연결
+            goWriteLetterTo(user);
           },
         });
       },
