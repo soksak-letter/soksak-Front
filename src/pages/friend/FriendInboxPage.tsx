@@ -53,6 +53,9 @@ export default function FriendInboxPage() {
     });
   }, [items, keyword, sortOrder]);
 
+  const isEmptyFriends = !isLoading && items.length === 0;
+  const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
+
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='친구' />
@@ -91,31 +94,38 @@ export default function FriendInboxPage() {
         {/* 리스트 */}
         <div className='mt-4 space-y-4'>
           {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
-          {filtered.map((f) => (
-            <button
-              key={f.id}
-              type='button'
-              onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
-              className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-            >
-              <div className='flex items-center justify-between gap-3'>
-                <div className='flex items-center gap-3'>
-                  <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
-                  <div>
-                    <p className='ty-body2'>{f.name}</p>
-                    <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
+          {!isLoading &&
+            filtered.map((f) => (
+              <button
+                key={f.id}
+                type='button'
+                onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
+                className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+              >
+                <div className='flex items-center justify-between gap-3'>
+                  <div className='flex items-center gap-3'>
+                    <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
+                    <div>
+                      <p className='ty-body2'>{f.name}</p>
+                      <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
+                    </div>
                   </div>
+
+                  {/* 봉투 썸네일 자리(나중에 이미지로 교체) */}
+                  <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
                 </div>
 
-                {/* 봉투 썸네일 자리(나중에 이미지로 교체) */}
-                <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
-              </div>
+                <div className='mt-3 flex justify-end ty-detailMedium'>{f.lastDate}</div>
+              </button>
+            ))}
 
-              <div className='mt-3 flex justify-end ty-detailMedium'>{f.lastDate}</div>
-            </button>
-          ))}
+          {isEmptyFriends && (
+            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
+              아직 친구가 없어요
+            </div>
+          )}
 
-          {filtered.length === 0 && (
+          {isEmptySearch && (
             <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
               검색 결과가 없어요
             </div>
