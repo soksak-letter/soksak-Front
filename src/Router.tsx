@@ -168,7 +168,7 @@ const router = createBrowserRouter([
               },
               { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
               { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
-              { path: 'friend/thread/:threadId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
+              { path: 'friend/thread/:friendId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
               { path: 'friend/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
               {
                 path: 'friend/:friendId/thread/:threadId/letters/:letterId',

@@ -50,8 +50,8 @@ export default function FriendInboxPage() {
   );
 
   const handleOpenThread = (item: FriendInboxItem) => {
-    navigate(`/friend/thread/${item.id}`, {
-      state: { friendUserId: item.friendUserId, friendName: item.name },
+    navigate(`/friend/thread/${item.friendUserId}`, {
+      state: { friendId: item.friendUserId, friendName: item.name },
     });
   };
 

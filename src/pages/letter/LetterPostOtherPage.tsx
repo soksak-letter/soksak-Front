@@ -185,7 +185,6 @@ export default function LetterPostOtherPage() {
         className='fixed bottom-[112px] right-[calc(50%-187px+20px)] z-50
           h-[56px] w-[56px] rounded-full bg-[var(--color-primary-500)] text-white
           shadow-[0_10px_30px_rgba(0,0,0,0.18)]'
-        aria-label='답장 작성'
       >
         <PenIcon className='ml-3.5' />
       </button>
