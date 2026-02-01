@@ -58,6 +58,7 @@ import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
+import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -164,7 +165,7 @@ const router = createBrowserRouter([
                 path: 'friend/:friendId/thread/:threadId/letters/:letterId',
                 element: <LetterReplyPage />,
               },
-              { path: 'report/keyword-letter', element: <TODOPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
               { path: 'my/my-page', element: <TODOPage /> },
               { path: 'my/limits', element: <TODOPage /> },
