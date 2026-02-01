@@ -20,6 +20,7 @@ const LetterSendingPage = () => {
   // SenderName 불러오기
   const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
 
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
@@ -149,12 +150,21 @@ const LetterSendingPage = () => {
     // TODO : Mock data 제거
     const sender = '개굴';
 
-    if (safeMode === 'anon' || safeMode === 'other') {
+    if (safeMode === 'anon') {
       return (
         <>
           {sender}님의 소중한 편지가
           <br />
           누군가에게 전달되고 있어요.
+        </>
+      );
+    }
+    if (safeMode === 'other') {
+      return (
+        <>
+          {sender}님의 소중한 편지가
+          <br />
+          {senderName}님에게 전달되고 있어요.
         </>
       );
     }
@@ -172,7 +182,7 @@ const LetterSendingPage = () => {
         <>
           {sender}님의 소중한 편지가
           <br />
-          {senderName}님에게 전달되고 있어요.
+          {friendName}님에게 전달되고 있어요.
         </>
       );
     }

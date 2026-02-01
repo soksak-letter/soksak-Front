@@ -9,6 +9,7 @@ import NotFoundPage from '../system/NotFoundPage';
 import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { useLetterStore } from '@/stores/letterStore';
 
 type ReplyData = {
   title: string;
@@ -55,6 +56,7 @@ export default function FriendReplyPage() {
   const friendId = Number(friendIdParam);
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
+  const { setActiveTarget, patchDraft } = useLetterStore();
 
   // FriendName 불러오기
   const location = useLocation();
@@ -94,8 +96,16 @@ export default function FriendReplyPage() {
   };
 
   const handleReply = () => {
-    navigate('/friend/draft', {
-      state: { friendId, friendName },
+    setActiveTarget('friend');
+
+    patchDraft({
+      receiverUserId: friendId,
+    });
+
+    navigate('/letter/friend/draft', {
+      state: {
+        friendName,
+      },
     });
   };
 
