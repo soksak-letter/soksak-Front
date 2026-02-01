@@ -10,6 +10,7 @@ import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 
 type FriendInboxItem = {
   id: number;
+  friendUserId: number;
   name: string;
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
@@ -36,7 +37,8 @@ export default function FriendInboxPage() {
   const items = useMemo<FriendInboxItem[]>(
     () =>
       friends.map((f) => ({
-        id: f.friendUserId,
+        id: f.id, // id는 threadId의 역할을 합니다.
+        friendUserId: f.friendUserId,
         name: f.nickname,
         exchangeCount: f.letterCount,
         lastDate: f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.'),
@@ -46,6 +48,12 @@ export default function FriendInboxPage() {
       })),
     [friends],
   );
+
+  const handleOpenThread = (item: FriendInboxItem) => {
+    navigate(`/friend/thread/${item.id}`, {
+      state: { friendUserId: item.friendUserId, friendName: item.name },
+    });
+  };
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
@@ -110,7 +118,7 @@ export default function FriendInboxPage() {
                 <button
                   key={f.id}
                   type='button'
-                  onClick={() => navigate(`/friend/${f.id}/posts`)}
+                  onClick={() => handleOpenThread(f)}
                   className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                 >
                   {/* 상단: 프로필 + 봉투 */}

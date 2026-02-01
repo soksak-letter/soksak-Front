@@ -120,7 +120,7 @@ export default function LetterInboxOtherPage() {
     }
   };
 
-  const handleOpenLetter = (item: InboxOtherLetterItem) => {
+  const handleOpenThread = (item: InboxOtherLetterItem) => {
     navigate(`/letter/thread/${item.threadId}`, {
       state: { senderName: item.senderName },
     });
@@ -179,7 +179,7 @@ export default function LetterInboxOtherPage() {
                     <button
                       key={it.letterId}
                       type='button'
-                      onClick={() => handleOpenLetter(it)}
+                      onClick={() => handleOpenThread(it)}
                       className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>

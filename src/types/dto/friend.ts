@@ -1,4 +1,4 @@
-import type { CommonResponse } from './common';
+import type { CommonResponse } from '../common';
 
 export type FriendApiResponse<T> = CommonResponse<{
   message: string;
