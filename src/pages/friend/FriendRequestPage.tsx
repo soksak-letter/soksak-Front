@@ -120,8 +120,8 @@ export default function FriendRequestPage() {
                       key={u.id}
                       name={u.name}
                       right={
-                        <Button color='black' size='small3' onClick={() => handleReject(u)}>
-                          거절
+                        <Button color='black' size='small3' onClick={() => handleCancel(u)}>
+                          취소
                         </Button>
                       }
                     />
