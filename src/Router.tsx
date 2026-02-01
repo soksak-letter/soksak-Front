@@ -51,7 +51,7 @@ import LetterPostSelfPage from './pages/letter/LetterPostSelfPage';
 import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
-import WeeklyReportPage from './pages/WeeklyReportPage';
+import WeeklyReportPage from './pages/report/WeeklyReportPage';
 import MyPage from './pages/my/MyPage';
 import InquiryPage from './pages/my/InquiryPage';
 import SplashPage from './pages/login/SplashPage';
