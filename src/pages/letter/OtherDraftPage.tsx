@@ -123,7 +123,7 @@ const OtherDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
-        <div className='text-[18px] font-semibold leading-[160%]'>
+        <div className='ty-title3'>
           <span className='text-black'>우리에게 남은 편지 횟수는 </span>
           <span className='text-[var(--color-primary-500)]'>{letterLeft}회</span>
         </div>
@@ -131,9 +131,9 @@ const OtherDraftPage = () => {
         <DailyQuestionBox
           Icon={BsQuestionCircleFill}
           question={formattedQuestionText}
-          iconClassName='text-(--color-primary-500)'
+          iconClassName='text-[var(--color-primary-500)]'
           bubbleBgColor='var(--color-grey-100)'
-          bubbleTextStyle='ty-body5 text-(--color-text-normal)'
+          bubbleTextStyle='ty-body5 text-[var(--color-text-normal)]'
         />
 
         <LetterTextBox
@@ -143,14 +143,16 @@ const OtherDraftPage = () => {
         />
 
         <div className='w-full flex items-center justify-end -mt-3 gap-2'>
-          <span className='text-(--color-text-normal) ty-body5'>오늘 하루 동안 편지 공개하기</span>
+          <span className='text-[var(--color-text-normal)] ty-body5'>
+            오늘 하루 동안 편지 공개하기
+          </span>
           <ToggleSwitch
             checked={draft.isPublic}
             onCheckedChange={(v) => patchDraft({ isPublic: v })}
           />
         </div>
 
-        <p className='ty-detailMedium text-(--color-text-assistive)'>
+        <p className='ty-detailMedium text-[var(--color-text-assistive)]'>
           비방의 언어가 담기면 자동으로 필터링 돼요.
           <br />
           상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.
