@@ -58,6 +58,7 @@ import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
+import FriendReplyPage from './pages/friend/FriendReplyPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -169,10 +170,11 @@ const router = createBrowserRouter([
               { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
               { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
               { path: 'friend/thread/:friendId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
-              { path: 'friend/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
+              // { path: 'friend/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
+              // => TODO : 이 부분은 그냥 /friend/draft로 들어가도 되지 않나요? 어차피 thread의 경우 시간 순으로 나열되는데? 친구에 대한 정보는 가지고 있습니다.
               {
-                path: 'friend/:friendId/thread/:threadId/letters/:letterId',
-                element: <LetterReplyPage />,
+                path: 'friend/thread/:friendId/:letterId',
+                element: <FriendReplyPage />,
               },
               { path: 'report/keyword-letter', element: <TODOPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
