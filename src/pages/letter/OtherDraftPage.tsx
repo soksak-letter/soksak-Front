@@ -10,6 +10,8 @@ import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useLetterStore } from '@/stores/letterStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useEffect } from 'react';
+import LoadingPage from '../system/LoadingPage';
+import { Button } from '@/components/common/Button';
 
 const LIMIT = {
   TITLE: { MIN: 3, MAX: 20 },
@@ -17,10 +19,19 @@ const LIMIT = {
 } as const;
 
 const OtherDraftPage = () => {
-  const navigate = useNavigate();
-  const { draft, patchDraft, resetAll } = useLetterStore();
   const { data, isLoading, isError, refetch } = useDailyQuestion();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+
   const { showToast } = useGlobalToast();
+  const navigate = useNavigate();
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('other');
+  }, [setActiveTarget]);
 
   // SenderName 불러오기
   const location = useLocation();
@@ -77,40 +88,28 @@ const OtherDraftPage = () => {
   };
 
   const handleBack = () => {
-    resetAll();
     navigate(-1);
   };
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
-  const questionNode = isLoading ? (
-    <DailyQuestionBox
-      Icon={BsQuestionCircleFill}
-      question='질문을 불러오는 중...'
-      iconClassName='text-(--color-primary-500)'
-      bubbleBgColor='var(--color-grey-100)'
-      bubbleTextStyle='text-(--color-text-normal)'
-    />
-  ) : isError ? (
-    <div className='w-full rounded-xl bg-(--color-grey-100) p-4'>
-      <p className='ty-body5 text-(--color-text-normal)'>질문을 불러오지 못했어요.</p>
-      <button
-        type='button'
-        className='mt-2 ty-body5 font-medium text-(--color-primary-500)'
-        onClick={() => refetch()}
-      >
-        다시 시도
-      </button>
-    </div>
-  ) : (
-    <DailyQuestionBox
-      Icon={BsQuestionCircleFill}
-      question={formattedQuestionText}
-      iconClassName='text-(--color-primary-500)'
-      bubbleBgColor='var(--color-grey-100)'
-      bubbleTextStyle='ty-body5 text-(--color-text-normal)'
-    />
-  );
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (isError) {
+    return (
+      <div className='min-h-dvh bg-[var(--color-bg-500)]'>
+        <BackHeader title={`${senderName}에게 보내는 편지`} onBack={handleBack} />
+        <div className='flex flex-col items-center justify-center gap-8 py-30 text-center px-5'>
+          <p className='ty-title3'>질문을 불러오지 못했어요.</p>
+          <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+            다시 시도
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col'>
@@ -124,27 +123,36 @@ const OtherDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
-        <div className='text-[18px] font-semibold leading-[160%]'>
+        <div className='ty-title3'>
           <span className='text-black'>우리에게 남은 편지 횟수는 </span>
           <span className='text-[var(--color-primary-500)]'>{letterLeft}회</span>
         </div>
         {/* daily question */}
-        {questionNode}
-        <div>
-          <LetterTextBox
-            value={{ title: draft.title, content: draft.content }}
-            onChange={(next) => patchDraft(next)}
-            className='w-[343px] h-[394px]'
-          />
-        </div>
+        <DailyQuestionBox
+          Icon={BsQuestionCircleFill}
+          question={formattedQuestionText}
+          iconClassName='text-[var(--color-primary-500)]'
+          bubbleBgColor='var(--color-grey-100)'
+          bubbleTextStyle='ty-body5 text-[var(--color-text-normal)]'
+        />
+
+        <LetterTextBox
+          value={{ title: draft.title, content: draft.content }}
+          onChange={(next) => patchDraft(next)}
+          className='w-[343px] h-[394px]'
+        />
+
         <div className='w-full flex items-center justify-end -mt-3 gap-2'>
-          <span className='text-(--color-text-normal) ty-body5'>오늘 하루 동안 편지 공개하기</span>
+          <span className='text-[var(--color-text-normal)] ty-body5'>
+            오늘 하루 동안 편지 공개하기
+          </span>
           <ToggleSwitch
             checked={draft.isPublic}
             onCheckedChange={(v) => patchDraft({ isPublic: v })}
           />
         </div>
-        <p className='ty-detailMedium text-(--color-text-assistive)'>
+
+        <p className='ty-detailMedium text-[var(--color-text-assistive)]'>
           비방의 언어가 담기면 자동으로 필터링 돼요.
           <br />
           상대방에 대한 존중이 담긴 언어로 따뜻한 편지를 전달해주세요.

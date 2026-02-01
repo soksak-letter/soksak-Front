@@ -9,6 +9,7 @@ export type ModalType =
   | 'friendRequest'
   | 'friendRequestFailed'
   | 'conversationRemaining'
+  | 'storageConfirm'
   | null;
 
 export type ModalPayload = {
@@ -41,6 +42,10 @@ export type ModalPayload = {
   remainingCount?: number;
   onContinueConversation?: () => void;
   onStopConversation?: () => void;
+
+  // storageConfirm
+  onConfirmStorage?: () => void;
+  onExit?: () => void;
 };
 
 interface ModalState {

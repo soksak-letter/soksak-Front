@@ -2,12 +2,17 @@ import { DEFAULT_FONT_ID } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { create } from 'zustand';
 
+export type Target = 'self' | 'anon' | 'other' | 'friend';
+
+type DateValue = { year: number; month: number; day: number };
+
 type LetterDraft = {
   questionId: number | null;
   receiverUserId: number | null;
   title: string;
   content: string;
   isPublic: boolean;
+  deliverAtDate?: DateValue;
 };
 
 type LetterStyle = {
@@ -16,48 +21,107 @@ type LetterStyle = {
   fontId: number | null;
 };
 
-const initialDraft: LetterDraft = {
+const createInitialDraft = (): LetterDraft => ({
   questionId: null,
   receiverUserId: null,
-
   title: '',
   content: '',
   isPublic: false,
-};
+  deliverAtDate: undefined,
+});
 
-const initialStyle: LetterStyle = {
+const createInitialStyle = (): LetterStyle => ({
   paperId: DEFAULT_PAPER_ID,
-  stampId: null, // TODO : 백에서 assetUrl 받으면 stampAsset에서 초기값 정의
+  stampId: null, // TODO : AssetUrl 연동 후 초기값 정의
   fontId: DEFAULT_FONT_ID,
-};
+});
 
 type LetterStore = {
-  draft: LetterDraft;
-  style: LetterStyle;
+  // 현재 작성 모드
+  activeTarget: Target;
+  setActiveTarget: (t: Target) => void;
 
+  // target별 상태
+  draftByTarget: Record<Target, LetterDraft>;
+  styleByTarget: Record<Target, LetterStyle>;
+
+  // 현재 target의 draft/style 접근자
+  getDraft: () => LetterDraft;
+  getStyle: () => LetterStyle;
+
+  // 현재 target에만 patch
   patchDraft: (partial: Partial<LetterDraft>) => void;
   patchStyle: (partial: Partial<LetterStyle>) => void;
 
+  // reset도 현재 target만 / 전체 다 가능
+  resetCurrent: () => void;
   resetAll: () => void;
-  resetDraft: () => void;
-  resetStyle: () => void;
 };
 
-export const useLetterStore = create<LetterStore>((set) => ({
-  draft: initialDraft,
-  style: initialStyle,
+export const useLetterStore = create<LetterStore>((set, get) => ({
+  activeTarget: 'self',
+  setActiveTarget: (t) => set({ activeTarget: t }),
+
+  draftByTarget: {
+    self: createInitialDraft(),
+    anon: createInitialDraft(),
+    other: createInitialDraft(),
+    friend: createInitialDraft(),
+  },
+  styleByTarget: {
+    self: createInitialStyle(),
+    anon: createInitialStyle(),
+    other: createInitialStyle(),
+    friend: createInitialStyle(),
+  },
+
+  getDraft: () => get().draftByTarget[get().activeTarget],
+  getStyle: () => get().styleByTarget[get().activeTarget],
 
   patchDraft: (partial) =>
-    set((state) => ({
-      draft: { ...state.draft, ...partial },
-    })),
+    set((state) => {
+      const t = state.activeTarget;
+      return {
+        draftByTarget: {
+          ...state.draftByTarget,
+          [t]: { ...state.draftByTarget[t], ...partial },
+        },
+      };
+    }),
 
   patchStyle: (partial) =>
-    set((state) => ({
-      style: { ...state.style, ...partial },
-    })),
+    set((state) => {
+      const t = state.activeTarget;
+      return {
+        styleByTarget: {
+          ...state.styleByTarget,
+          [t]: { ...state.styleByTarget[t], ...partial },
+        },
+      };
+    }),
 
-  resetAll: () => set({ draft: initialDraft, style: initialStyle }),
-  resetDraft: () => set({ draft: initialDraft }),
-  resetStyle: () => set({ style: initialStyle }),
+  resetCurrent: () =>
+    set((state) => {
+      const t = state.activeTarget;
+      return {
+        draftByTarget: { ...state.draftByTarget, [t]: createInitialDraft() },
+        styleByTarget: { ...state.styleByTarget, [t]: createInitialStyle() },
+      };
+    }),
+
+  resetAll: () =>
+    set({
+      draftByTarget: {
+        self: createInitialDraft(),
+        anon: createInitialDraft(),
+        other: createInitialDraft(),
+        friend: createInitialDraft(),
+      },
+      styleByTarget: {
+        self: createInitialStyle(),
+        anon: createInitialStyle(),
+        other: createInitialStyle(),
+        friend: createInitialStyle(),
+      },
+    }),
 }));

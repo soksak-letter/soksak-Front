@@ -22,6 +22,8 @@ type InboxOtherLetterItem = {
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
+  // stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  // stampUrl: string;
 };
 
 const parseDate = (iso: string) => {
@@ -127,7 +129,7 @@ export default function LetterInboxOtherPage() {
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
   return (
-    <div className='min-h-screen bg-white'>
+    <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='편지함' />
 
       <main className='px-5 pb-[95px]'>
@@ -182,7 +184,7 @@ export default function LetterInboxOtherPage() {
                     >
                       <div className='flex items-start justify-between gap-3'>
                         {/* 왼쪽 텍스트 */}
-                        <div className='min-w-0'>
+                        <div className='min-w-0 flex flex-col gap-9 mt-1'>
                           <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
                             {it.question}
                           </p>
@@ -193,17 +195,21 @@ export default function LetterInboxOtherPage() {
                             )}
                           </div>
                         </div>
-                        {/* 오른쪽 봉투 썸네일 */}
-                        <div className='h-12 w-16 shrink-0 flex items-center justify-center'>
-                          {EnvelopePreview ? (
-                            <EnvelopePreview className='h-full w-full' />
-                          ) : (
-                            <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
-                          )}
+
+                        <div className='flex flex-col'>
+                          {/* 오른쪽 봉투 썸네일 */}
+                          <div className='h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
+                            {EnvelopePreview ? (
+                              <EnvelopePreview className='h-full w-full' />
+                            ) : (
+                              <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+                            )}
+                          </div>
+                          {/* 오른쪽 하단 날짜 */}
+                          <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                            {it.receivedAt}
+                          </div>
                         </div>
-                      </div>
-                      <div className='mt-3 flex justify-end text-[12px] text-[var(--color-text-normal)]'>
-                        {it.receivedAt}
                       </div>
                     </button>
                   );

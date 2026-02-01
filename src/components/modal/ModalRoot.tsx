@@ -8,6 +8,7 @@ import FriendRequestModal from '@/modals/FriendRequestModal';
 import FriendRequestFailedModal from '@/modals/FriendRequestFailedModal';
 import LetterSendingFailedModal from '@/modals/LetterSendingFailedModal';
 import ConversationRemainingModal from '@/modals/ConversationRemainingModal';
+import StorageConfirmModal from '@/modals/StorageConfirmModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
@@ -36,6 +37,9 @@ export default function ModalRoot() {
 
     case 'conversationRemaining':
       return <ConversationRemainingModal />;
+
+    case 'storageConfirm':
+      return <StorageConfirmModal />;
 
     default:
       return null;
