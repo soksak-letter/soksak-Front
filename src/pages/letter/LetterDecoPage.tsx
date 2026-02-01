@@ -19,17 +19,32 @@ type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
 
 function LetterDecoPage() {
-  const { draft, style, patchStyle } = useLetterStore();
+  const setActiveTarget = useLetterStore((d) => d.setActiveTarget);
+  const style = useLetterStore((d) => d.getStyle());
+  const patchStyle = useLetterStore((d) => d.patchStyle);
+  const draft = useLetterStore((s) => s.getDraft());
+
   const { data, isLoading, isError, refetch } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
+  const { openModal } = useModalStore();
+  const navigate = useNavigate();
 
   // senderName 불러오기
   const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
 
   const { target } = useParams<{ target?: string }>();
-  const { openModal } = useModalStore();
-  const navigate = useNavigate();
+
+  const safeMode: Target | null =
+    target === 'anon' || target === 'other' || target === 'self' || target === 'friend'
+      ? target
+      : null;
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    if (!safeMode) return;
+    setActiveTarget(safeMode);
+  }, [safeMode, setActiveTarget]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<StyleTab>('font');
@@ -59,20 +74,19 @@ function LetterDecoPage() {
   const closeSheet = () => setIsOpen(false);
 
   // 잘못된 접근 방어 (URL로 직접 접근, 작성 흐름 없이 들어온 경우)
-  const safeMode = ['anon', 'other', 'self', 'friend'].includes(target ?? '')
-    ? (target as Target)
-    : null;
   useEffect(() => {
     if (!safeMode) {
       navigate('/error/404', { replace: true });
       return;
     }
-    if (!draft.title || !draft.content) {
+
+    // 제목/내용 둘 중 하나라도 없으면 draft로 돌려보내기
+    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
+
+    if (!hasSomething) {
       navigate(`/letter/${safeMode}/draft`, { replace: true });
     }
   }, [safeMode, navigate, draft.title, draft.content]);
-
-  if (!safeMode) return null;
 
   const handleBack = () => {
     navigate(-1);
