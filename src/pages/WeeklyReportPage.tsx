@@ -6,6 +6,13 @@ import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFl
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 
+const keywordsMock: [
+  { keyword: '운동/건강'; count: 5 }, // 가장 높은 count
+  { keyword: '감사'; count: 3 },
+  { keyword: '기쁨'; count: 2 },
+  { keyword: '성취'; count: 1 },
+  { keyword: '휴식'; count: 1 },
+];
 const emotionStatusMock: EmotionStatusKey = 'tired';
 
 const flowMock: WeeklyEmotionFlowItem[] = [
@@ -102,16 +109,27 @@ export default function WeeklyReportPage() {
           </h2>
           {/* 상단 “주간 마음 리포트” 카드 (344x307) - TODO: "에잇" 이 컴포넌트 구현하고 변경해주세요*/}
           <section className='w-[344px] h-[307px] rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-[16px] py-[8px]'>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-[32px]'>
               {/* 네트워크/키워드 영역 블랭크 */}
-              <div className='flex mt-3 rounded-xl h-[148px] w-full gap-[16px] ' />
-              <p>이번 주, 당신의 마음을 채운 단어는?</p>
-            </div>
-            {/* 태그 영역 블랭크 */}
-            <div className='mt-3 flex flex-wrap gap-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
-              ))}
+              <div className='flex flex-col  mt-3 rounded-xl h-[148px] w-full gap-[16px] '>
+                <p>이번 주, 당신의 마음을 채운 단어는?</p>
+                <div className='flex h-full w-full'></div>
+              </div>
+              {/* 태그 영역 블랭크 */}
+              <div className=' flex flex-wrap justify-center gap-2'>
+                {emotionMock.map((node) => (
+                  <div
+                    key={`tag-${node.id}`}
+                    className={`h-[28px] w-[51px] rounded-full border text-sm font-medium ${
+                      node.id === 1
+                        ? 'border-red-300 bg-red-50 text-gray-800'
+                        : 'border-gray-200 bg-white text-gray-400'
+                    }`}
+                  >
+                    # {node.label} {node.count > 1 && `(${node.count})`}
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
