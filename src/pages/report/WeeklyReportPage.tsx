@@ -5,8 +5,16 @@ import { WeeklyEmotionDistributionCard } from '@/components/WeeklyReport/WeeklyE
 import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFlowCard';
 import { EmotionConstellation } from '@/components/WeeklyReport/EmotionConstellation';
 import { useMemo } from 'react';
+import LetterCarousel from '@/components/letters/LetterCarousel';
+import { useNavigate } from 'react-router-dom';
+import type { Letter } from '@/types/letter';
+import { ROUTES } from '@/routes/paths';
+import type { LetterItem } from '@/types/dto/letter';
+import usePublicLetters from '@/hooks/usePublicLetters';
+import useHomeSummary from '@/hooks/useHomeSummary';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
+
 // 1. API 응답 형태의 Mock Data (데이터가 오는 곳)
 const keywordsMock = [
   { keyword: '운동/건강', count: 1 },
@@ -17,7 +25,32 @@ const keywordsMock = [
   { keyword: '기쁨', count: 1 },
   { keyword: '성취', count: 1 },
 ];
+
+/**TODO:편지조각 현재 나에게 보내는
+ * 편지API로 MOCkDATA 처리하고 있어서
+ * 백에서 넘겨주면 마저 마무리 */
+// API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
+const colorToVariant = (color?: string): Letter['variant'] => {
+  if (!color) return 'blue';
+  // Color_1~4: blue, Color_5~8: pink, 나머지: yellow 등 임시 매핑
+  const colorNum = parseInt(color.replace('Color_', ''), 10);
+  if (colorNum <= 4) return 'blue';
+  if (colorNum <= 8) return 'pink';
+  return 'yellow';
+};
+
+// LetterItem을 Letter 타입으로 변환
+const convertToLetter = (item: LetterItem): Letter => ({
+  id: String(item.id),
+  title: item.title,
+  date: item.deliveredAt ?? '',
+  variant: colorToVariant(item.design?.paper?.color),
+  link: `/letter/${item.id}`,
+});
+/**TODO:마무리 끝 */
+
 export default function WeeklyReportPage() {
+  const navigate = useNavigate();
   // 별자리 컴포넌트와 하단 태그 리스트에서 공통으로 사용할 데이터 변환
   const formattedKeywords = useMemo(() => {
     return [...keywordsMock]
@@ -29,6 +62,22 @@ export default function WeeklyReportPage() {
       }));
   }, []);
 
+  /**TODO:편지조각 현재 나에게 보내는
+   * 편지API로 구현되고 있어서
+   * 백에서 넘겨주면 마저 마무리 */
+  // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
+  const { data: homeSummary } = useHomeSummary();
+
+  // 공개 편지 API 연동
+  const { letters: publicLettersData } = usePublicLetters({
+    questionId: homeSummary?.todayQuestion?.id ?? null,
+  });
+
+  // API 데이터를 Letter 타입으로 변환
+  const publicLetters: Letter[] = useMemo(() => {
+    return (publicLettersData ?? []).map(convertToLetter);
+  }, [publicLettersData]);
+  /**TODO: 끝 */
   const emotionStatusMock: EmotionStatusKey = 'tired';
 
   const flowMock: WeeklyEmotionFlowItem[] = [
@@ -155,22 +204,43 @@ export default function WeeklyReportPage() {
           </section>
 
           {/* 편지조각 보기 (피그마 375x170) - 블랭크 */}
-          <section className='w-[375px] h-[170px] -mx-4 px-4'>
+          <div className='w-[375px] h-[170px] -mx-4 px-4'>
             <div className='h-full w-full p-4'>
               {/* 상단 라벨/버튼 자리 */}
-              <div className='flex items-center justify-between'>
-                <div className='ty-body2'>편지조각 보기</div>
-                <div className='ty-body5 text-[var(--color-text-alternative)]'>전체보기</div>
-              </div>
+              <div>
+                <div className='flex items-center justify-between'>
+                  <h2 className='ty-body2'>편지조각 보기</h2>
+                  <button
+                    onClick={() => navigate(ROUTES.report.keyword)}
+                    className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
+                  >
+                    <span>전체보기</span>
+                    <svg
+                      width='12'
+                      height='12'
+                      viewBox='0 0 12 12'
+                      fill='none'
+                      className='rotate-180'
+                    >
+                      <path
+                        d='M7.5 9L4.5 6L7.5 3'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
+                  </button>
+                </div>
 
-              {/* 카드 3개 블랭크 - TODO: 캐러셀로 변경 */}
-              <div className='mt-3 grid grid-cols-3 gap-2'>
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className='h-[96px] rounded-lg bg-[#EAF6FF]' />
-                ))}
+                {/* 편지 캐러셀 */}
+                <LetterCarousel
+                  letters={publicLetters}
+                  emptyMessage='현재 공개된 편지가 더이상 없어요.'
+                />
               </div>
             </div>
-          </section>
+          </div>
 
           {/* 주간 감정 분포 */}
           <WeeklyEmotionDistributionCard data={distribution} emotionStatus={emotionStatusMock} />
