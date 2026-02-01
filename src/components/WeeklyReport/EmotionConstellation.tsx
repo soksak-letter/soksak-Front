@@ -83,7 +83,7 @@ export function EmotionConstellation({ data }: { data: any[] }) {
       {nodes.map((node) => {
         const isMax = node.count === maxCount; // 현재 노드가 최대 빈도인지 확인
         // 노드 개수가 많아지면(6개 초과) 반지름을 살짝 줄여서 겹침 방지
-        const baseRadius = nodes.length > 6 ? 11 : 13;
+        const baseRadius = nodes.length > 6 ? 12 : 13;
         // 빈도수 비율에 따라 반지름을 10px 범위 내에서 추가로 키움
         const radius = baseRadius + (node.count / (maxCount || 1)) * 10;
 
@@ -110,8 +110,8 @@ export function EmotionConstellation({ data }: { data: any[] }) {
               dominantBaseline='central'
               className={isMax ? 'fill-white' : 'fill-[#171717]'} //가장 크면 흰색 아니면 블랙
               style={{
-                fontSize: `${radius * 0.45 + 2}px`, // 원 크기에 맞춰 글자 크기도 살짝 조절
-                fontWeight: 'bold',
+                fontSize: `${radius * 0.45 + 3}px`, // 원 크기에 맞춰 글자 크기도 살짝 조절
+                fontWeight: '500',
                 pointerEvents: 'none', // 글자가 마우스 이벤트를 방해하지 않게 설정
                 userSelect: 'none',
               }}

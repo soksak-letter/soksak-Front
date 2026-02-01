@@ -209,7 +209,7 @@ export default function WeeklyReportPage() {
               {/* 상단 라벨/버튼 자리 */}
               <div>
                 <div className='flex items-center justify-between'>
-                  <h2 className='ty-body2'>편지조각 보기</h2>
+                  <h2 className='ty-body2 text-[var(--color-text-normal)]'>편지조각</h2>
                   <button
                     onClick={() => navigate(ROUTES.report.keyword)}
                     className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
