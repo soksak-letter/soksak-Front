@@ -134,7 +134,7 @@ export default function PasswordChangePage() {
         </p>
       </main>
 
-      {/* 비밀번호 변경 버튼 */}
+      {/* 하단 영역 (링크 + 버튼) */}
       <div
         className='fixed bottom-0 left-1/2 w-full max-w-[375px] px-[16px] pb-[34px]'
         style={{
@@ -142,6 +142,32 @@ export default function PasswordChangePage() {
           backgroundColor: '#FAFAFA',
         }}
       >
+        {/* 비밀번호를 잊었어요 링크 */}
+        <button
+          type='button'
+          onClick={() => {
+            // TODO: 비밀번호 찾기 페이지로 이동
+          }}
+          style={{
+            display: 'block',
+            width: '100%',
+            textAlign: 'center',
+            marginBottom: '16px',
+            fontFamily: 'Pretendard',
+            fontWeight: 500,
+            fontSize: '14px',
+            lineHeight: '23.8px',
+            color: '#595959',
+            textDecoration: 'underline',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          비밀번호를 잊었어요
+        </button>
+
+        {/* 비밀번호 변경 버튼 */}
         <button
           type='button'
           style={{
