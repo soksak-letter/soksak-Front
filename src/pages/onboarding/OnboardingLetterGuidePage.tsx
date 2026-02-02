@@ -9,6 +9,10 @@ import { FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { useLetterStore } from '@/stores/letterStore';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 
+import { subscribePush } from '@/utils/push/subscribePush';
+import useToast from '@/hooks/useToast';
+import { putPushSubscription } from '@/api/putPushSubscription';
+
 type LocationState = {
   title?: string;
   content?: string;
@@ -17,6 +21,9 @@ type LocationState = {
 export default function OnboardingLetterGuidePage() {
   const { state } = useLocation() as { state?: LocationState };
   const navigate = useNavigate();
+  const { showToast } = useToast();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // location.state + store fallback
   const { draft, patchDraft } = useLetterStore();
@@ -36,15 +43,62 @@ export default function OnboardingLetterGuidePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleNext = () => {
-    navigate('/onboarding/letter-send', { replace: true });
-    console.log({
-      question: '3일 뒤, 나는 어떤 모습으로 달라져 있을까요?',
-      title,
-      content,
-    });
-  };
+  const handleNext = async () => {
+    // 0) 버튼 중복 클릭 방지용 로딩 상태 사용
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
+    try {
+      // 1) 브라우저 푸시 구독 시도
+      const result = await subscribePush();
+
+      // 2) 구독 성공이면 백엔드에 등록(PUT)
+      if (result.ok) {
+        const res = await putPushSubscription(result.body);
+
+        if (res.data.resultType === 'SUCCESS' && res.data.success?.updated) {
+          showToast('알림 설정이 완료되었어요', 'success');
+          console.log('[push subscription]', result.body);
+        } else {
+          showToast('알림 등록에 실패했어요. 설정에서 다시 시도해 주세요.', 'error');
+        }
+      } else {
+        // 실패 사유별로 UX 안내를 다르게 줄 수도 있음
+        // - INSECURE_CONTEXT: 로컬/비보안 컨텍스트
+        // - DENIED: 사용자가 거절
+        // - NO_SW/NO_NOTIFICATION: 브라우저 미지원
+        // - MISSING_VAPID: env 누락
+        // - NO_KEYS: 구독 객체 이상
+
+        if (result.reason === 'INSECURE_CONTEXT') {
+          showToast(
+            '현재 환경에서는 알림 설정이 어려워요. 배포 환경에서 다시 시도해 주세요.',
+            'error',
+          );
+        } else if (result.reason === 'DENIED') {
+          showToast('알림 권한이 거절되었어요. 설정에서 다시 켤 수 있어요.', 'error');
+        } else {
+          showToast('알림을 설정하지 못했어요. 설정에서 다시 켤 수 있어요.', 'error');
+        }
+
+        console.debug('[push] subscribe failed:', result.reason);
+      }
+    } catch (e) {
+      // 네트워크/서버 에러 등
+      console.error('[push] unexpected error', e);
+    } finally {
+      // 3) 푸시 성공/실패와 무관하게 다음 화면으로 이동
+      navigate('/onboarding/letter-send', { replace: true });
+
+      console.log({
+        question: '3일 뒤, 나는 어떤 모습으로 달라져 있을까요?',
+        title,
+        content,
+      });
+
+      setIsSubmitting(false);
+    }
+  };
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   return (
@@ -106,7 +160,7 @@ export default function OnboardingLetterGuidePage() {
       </div>
 
       <div className='mt-auto flex justify-center pt-10'>
-        <Button color='primary' size='large' onClick={handleNext}>
+        <Button color='primary' size='large' onClick={handleNext} disabled={isSubmitting}>
           다음으로
         </Button>
       </div>
