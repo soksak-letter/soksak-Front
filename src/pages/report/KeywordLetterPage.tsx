@@ -31,7 +31,7 @@ const parseDotDate = (s: string) => {
 export default function KeywordLetterPage() {
   const location = useLocation();
 
-  const { openModal, closeModal, activeModal, payload } = useModalStore();
+  const { openModal, activeModal, payload } = useModalStore();
 
   // 이전 페이지(리포트)에서 전달받은 키워드 정보가 있다고 가정 (예: { keyword: '피곤', count: 5 })
   const selectedKeyword = location.state?.keyword ?? '피곤';
@@ -67,7 +67,7 @@ export default function KeywordLetterPage() {
         senderName: '노란귤',
         receivedAt: '2026-01-03T18:20:00.000Z',
         dateText: '2026.01.03',
-        paperId: 1,
+        paperId: 5,
         stampId: 2,
       },
       {
@@ -76,7 +76,7 @@ export default function KeywordLetterPage() {
         senderName: '분홍자몽',
         receivedAt: '2026-01-04T18:20:00.000Z',
         dateText: '2026.01.04',
-        paperId: 1,
+        paperId: 7,
         stampId: 2,
       },
       {
@@ -140,7 +140,7 @@ export default function KeywordLetterPage() {
       {/* 5. 편지 상세 모달 렌더링 */}
       {activeModal === 'letterDetail' && payload?.letterId && (
         <ModalFrame>
-          <LetterDetailModalContent letterId={payload.letterId} onClose={closeModal} />
+          <LetterDetailModalContent letterId={payload.letterId} />
         </ModalFrame>
       )}
     </div>
@@ -209,6 +209,7 @@ function LetterDetailModalContent({ letterId }: { letterId: number }) {
     return <div className='bg-white p-6 rounded-xl'>데이터를 불러오지 못했습니다.</div>;
 
   const font = FONT_ASSET_MAP[data.design.font.id] ?? FONT_ASSET_MAP[DEFAULT_FONT_ID];
+  // 서버 ID가 0-based라 오프셋 조정 아니라면 추후 수정 필요
   const paper = PAPER_ASSET_MAP[data.design.paper.id + 1] ?? PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
 
   return (
