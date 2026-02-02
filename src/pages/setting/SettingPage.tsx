@@ -184,29 +184,11 @@ export default function SettingPage() {
           </section>
 
           {/* 버전 정보 */}
-          <section
-            style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', gap: '276px' }}
-          >
-            <span
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 500,
-                fontSize: '14px',
-                lineHeight: '22.4px',
-                color: 'rgba(0, 0, 0, 0.6)',
-              }}
-            >
+          <section className='mt-12 flex flex-row items-center justify-between w-full max-w-[375px] px-2'>
+            <span className='font-pretendard font-medium text-[14px] leading-[22.4px] text-black/60 min-w-[40px]'>
               버전
             </span>
-            <span
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 500,
-                fontSize: '14px',
-                lineHeight: '22.4px',
-                color: 'rgba(0, 0, 0, 0.6)',
-              }}
-            >
+            <span className='font-pretendard font-medium text-[14px] leading-[22.4px] text-black/60 text-right truncate max-w-[120px]'>
               v{pkg.version}
             </span>
           </section>
