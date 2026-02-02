@@ -105,7 +105,7 @@ const router = createBrowserRouter([
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
-              { path: 'setting', element: <TODOPage /> },
+              { path: 'setting', element: <SettingPage /> },
             ],
           },
           // 프레임만
