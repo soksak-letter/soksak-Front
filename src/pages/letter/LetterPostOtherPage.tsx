@@ -8,7 +8,7 @@ import { useAnonThread } from '@/hooks/mails/useAnonThread';
 import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 type PostItem = {
   letterId: number;

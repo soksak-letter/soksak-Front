@@ -11,7 +11,7 @@ import LoveIcon from '@/assets/icons/LoveIcon.svg?react';
 import stampEx1 from '@/assets/test/stampEx1.svg';
 import stampEx2 from '@/assets/test/stampEx2.svg';
 import { useCreateReview } from '@/hooks/useCreateReview';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type ReviewMood = 'meh' | 'good' | 'love';

@@ -12,7 +12,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useEffect } from 'react';
 import LoadingPage from '../system/LoadingPage';
 import { Button } from '@/components/common/Button';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { validateLetter } from '@/utils/validateLetter';
 
 const OtherDraftPage = () => {
