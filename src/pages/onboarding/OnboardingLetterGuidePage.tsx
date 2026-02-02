@@ -1,7 +1,13 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import IosNotificationGuideModal from '@/modals/IosNotificationGuideModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import LetterCard from '@/components/letters/LetterCard';
+import { PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { useLetterStore } from '@/stores/letterStore';
+import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 
 type LocationState = {
   title?: string;
@@ -10,12 +16,28 @@ type LocationState = {
 
 export default function OnboardingLetterGuidePage() {
   const { state } = useLocation() as { state?: LocationState };
+  const navigate = useNavigate();
 
-  const title = state?.title ?? '제목';
-  const content = state?.content ?? '';
+  // location.state + store fallback
+  const { draft, patchDraft } = useLetterStore();
+  const title = state?.title ?? draft.title ?? '제목';
+  const content = state?.content ?? draft.content ?? '';
+
+  const mintPaperId = 1; //  mint paper 선택
+  const PaperBg = PAPER_ASSET_MAP[mintPaperId].Preview;
+
+  const fontId = 3; // TODO: 나눔히피체 추가되면 교체해야 함
+  const fontFamily = FONT_ASSET_MAP[fontId].fontFamily;
+
+  useEffect(() => {
+    if (state?.title || state?.content) {
+      patchDraft({ title: state?.title ?? '', content: state?.content ?? '' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNext = () => {
-    // TODO: 여기서 저장 + 다음 온보딩 단계로
+    navigate('/onboarding/letter-send', { replace: true });
     console.log({
       question: '3일 뒤, 나는 어떤 모습으로 달라져 있을까요?',
       title,
@@ -26,7 +48,7 @@ export default function OnboardingLetterGuidePage() {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   return (
-    <div className='flex min-h-dvh flex-col px-5 pt-6 pb-6'>
+    <div className='flex min-h-dvh flex-col px-5 pt-6 pb-6 bg-[var(--color-bg-500)]'>
       <button
         type='button'
         onClick={() => setIsGuideOpen(true)}
@@ -52,24 +74,38 @@ export default function OnboardingLetterGuidePage() {
       </div>
 
       <div className='mt-6 flex flex-1 items-center justify-center'>
-        <div className='w-[300px] rounded-md bg-white shadow-sm ring-1 ring-black/5'>
-          <div className='px-4 py-3 text-sm font-semibold text-[#171717]'>{title}</div>
-
-          <div className='px-4 pb-4 text-sm text-[#171717] leading-6'>
-            {content ? (
-              <p className='whitespace-pre-wrap'>{content}</p>
-            ) : (
-              <p className='text-gray-400'>작성된 내용이 여기에 표시돼요.</p>
-            )}
+        <div
+          className='relative w-[240px] h-[390px] -translate-y-[40px] flex justify-center [&_.z-10]:translate-y-[20px]
+  [&_.z-10]:transform'
+        >
+          <div
+            className='relative'
+            style={{
+              transform: 'scale(0.775)',
+              transformOrigin: 'center',
+            }}
+          >
+            <LetterCard
+              PaperBg={PaperBg}
+              font={fontFamily}
+              value={{ title, content }}
+              className={[
+                'rotate-[2deg]',
+                'drop-shadow-[0_12px_30px_rgba(0,0,0,0.08)]',
+                '!bg-transparent',
+                '!shadow-none',
+                '!ring-0 !border-0',
+                '!p-0',
+                'overflow-visible',
+              ].join(' ')}
+            />
           </div>
 
-          <div className='border-t border-black/5 px-4 py-3 text-center text-xs text-gray-400'>
-            야, 제발 지켜라!!!!
-          </div>
+          <HappyModalIcon className='absolute bottom-[-48px] right-[-28px] h-[77.5px] w-[80px]' />
         </div>
       </div>
 
-      <div className='mt-auto flex justify-center pt-4'>
+      <div className='mt-auto flex justify-center pt-10'>
         <Button color='primary' size='large' onClick={handleNext}>
           다음으로
         </Button>
