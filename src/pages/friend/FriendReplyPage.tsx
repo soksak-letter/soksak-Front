@@ -110,7 +110,7 @@ export default function FriendReplyPage() {
   };
 
   const content = isLoading ? (
-    <div className='flex flex-col items-center justify-center gap-8 py-50'>
+    <div className='flex flex-col items-center justify-center gap-8 py-70'>
       <LoadingDots fillIntervalMs={350} />
       <p className='ty-title2'>로딩 중...</p>
     </div>
