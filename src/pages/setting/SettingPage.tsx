@@ -1,7 +1,5 @@
-
 import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
-
 
 export default function SettingPage() {
   const navigate = useNavigate();

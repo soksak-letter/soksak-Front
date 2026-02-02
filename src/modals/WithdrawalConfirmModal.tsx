@@ -1,4 +1,3 @@
-
 import ModalFrame from '@/components/modal/ModalFrame';
 import { useModalStore } from '@/stores/modalStore';
 import SadModalIcon from '@/assets/icons/SadModalIcon.svg?react';
