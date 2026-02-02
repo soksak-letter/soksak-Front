@@ -11,7 +11,11 @@ import { useBlockUser } from '@/hooks/useModeration';
 const LetterReportPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const targetUserId = Number(searchParams.get('targetUserId')) || 0;
+
+  // targetUserId 파싱 및 유효성 검사
+  const rawTargetUserId = searchParams.get('targetUserId');
+  const parsedTargetUserId = rawTargetUserId ? Number(rawTargetUserId) : NaN;
+  const isValidTargetUserId = !Number.isNaN(parsedTargetUserId) && parsedTargetUserId > 0;
 
   // 차단 훅
   const { mutateAsync: block, isPending: isBlocking } = useBlockUser();
@@ -85,22 +89,22 @@ const LetterReportPage = () => {
     }
 
     // 차단하기가 활성화된 경우 차단 API 호출
-    if (isBlocked && targetUserId) {
-      console.log('[LetterReportPage] 차단 API 호출 시작, targetUserId:', targetUserId);
-      const { result, message } = await block(targetUserId);
-      console.log('[LetterReportPage] 차단 API 결과 - result:', result, ', message:', message);
+    if (isBlocked) {
+      if (!isValidTargetUserId) {
+        showToast('차단 대상을 찾을 수 없습니다.', 'error');
+        return;
+      }
+
+      const { result, message } = await block(parsedTargetUserId);
 
       if (!result) {
         showToast(message, 'error');
         return;
       }
-      console.log('[LetterReportPage] 차단 성공! 메시지:', message);
       showToast(message, 'success');
     }
 
-    // TODO: 신고 API 연동 필요
-    // console.log('[LetterReportPage] 신고 완료 처리');
-    setIsCompleted(true); // 완료 화면으로 전환
+    setIsCompleted(true);
   };
   if (isCompleted) {
     return (
