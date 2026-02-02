@@ -6,12 +6,9 @@ import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFl
 import { EmotionConstellation } from '@/components/WeeklyReport/EmotionConstellation';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Letter } from '@/types/letter';
 import { ROUTES } from '@/routes/paths';
-import usePublicLetters from '@/hooks/usePublicLetters';
-import useHomeSummary from '@/hooks/useHomeSummary';
+
 import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel';
-import type { LetterItem } from '@/types/dto/letter';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 
