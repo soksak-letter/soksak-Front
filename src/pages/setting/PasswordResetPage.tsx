@@ -132,16 +132,7 @@ export default function PasswordChangePage() {
         >
           비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.
         </p>
-      </main>
 
-      {/* 하단 영역 (링크 + 버튼) */}
-      <div
-        className='fixed bottom-0 left-1/2 w-full max-w-[375px] px-[16px] pb-[34px]'
-        style={{
-          transform: 'translateX(-50%)',
-          backgroundColor: '#FAFAFA',
-        }}
-      >
         {/* 비밀번호를 잊었어요 링크 */}
         <button
           type='button'
@@ -152,7 +143,7 @@ export default function PasswordChangePage() {
             display: 'block',
             width: '100%',
             textAlign: 'center',
-            marginBottom: '16px',
+            marginTop: '28px',
             fontFamily: 'Pretendard',
             fontWeight: 500,
             fontSize: '14px',
@@ -166,7 +157,16 @@ export default function PasswordChangePage() {
         >
           비밀번호를 잊었어요
         </button>
+      </main>
 
+      {/* 하단 영역 (버튼) */}
+      <div
+        className='fixed bottom-0 left-1/2 w-full max-w-[375px] px-[16px] pb-[34px]'
+        style={{
+          transform: 'translateX(-50%)',
+          backgroundColor: '#FAFAFA',
+        }}
+      >
         {/* 비밀번호 변경 버튼 */}
         <button
           type='button'
