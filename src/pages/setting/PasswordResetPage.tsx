@@ -133,6 +133,35 @@ export default function PasswordChangePage() {
           비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.
         </p>
       </main>
+
+      {/* 비밀번호 변경 버튼 */}
+      <div
+        className='fixed bottom-0 left-1/2 w-full max-w-[375px] px-[16px] pb-[34px]'
+        style={{
+          transform: 'translateX(-50%)',
+          backgroundColor: '#FAFAFA',
+        }}
+      >
+        <button
+          type='button'
+          style={{
+            width: '100%',
+            height: '48px',
+            backgroundColor: '#F5544C',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.08)',
+            fontFamily: 'Pretendard',
+            fontWeight: 500,
+            fontSize: '16px',
+            lineHeight: '25.6px',
+            color: '#FFFFFF',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          비밀번호 변경
+        </button>
+      </div>
     </div>
   );
 }
