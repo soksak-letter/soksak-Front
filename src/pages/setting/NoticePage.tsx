@@ -11,6 +11,9 @@ import { useNotices } from '@/hooks/useNotices';
 // 날짜 포맷 함수
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return '-';
+  }
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
