@@ -8,7 +8,7 @@ export default function TermsOfServicePage() {
   };
 
   return (
-    <div className='min-h-dvh bg-[#FAFAFA]'>
+    <div className='min-h-screen bg-white'>
       {/* 헤더 */}
       <header
         className='fixed top-0 left-1/2 z-50 flex items-center justify-center px-[21px] py-[13px]'
@@ -59,7 +59,7 @@ export default function TermsOfServicePage() {
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] pb-24'>
+      <main className='mx-auto w-full max-w-[375px] pb-8'>
         <div style={{ marginTop: '8px' }} className='px-9'>
           {/* 제1조 */}
           <div style={{ marginBottom: '20px' }}>
