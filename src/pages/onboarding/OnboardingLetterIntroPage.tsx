@@ -23,7 +23,7 @@ export default function OnboardingLetterIntroPage() {
       </div>
 
       {/* 빨간 문구 ↔ 편지지 간격 */}
-      <div className='mt-[31.75px] flex flex-1 items-center justify-center pb-[14px]'>
+      <div className='mt-[31.75px] flex flex-1 items-center justify-center pb-[30px]'>
         {/* “일러스트 덩어리” 자체는 고정 크기(피그마), 화면에선 가운데 정렬 */}
         <div className='relative h-[390px] w-[240px]'>
           {/* 편지지: rotate 포함 */}
