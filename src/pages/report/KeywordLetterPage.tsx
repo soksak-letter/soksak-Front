@@ -1,6 +1,12 @@
 import BackHeader from '@/components/common/headers/BackHeader';
+import LetterCard from '@/components/letters/LetterCard';
+import { LoadingDots } from '@/components/LoadingDots';
+import ModalFrame from '@/components/modal/ModalFrame';
 
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -79,6 +85,7 @@ export default function KeywordLetterPage() {
         dateText: '2026.01.20',
         paperId: 1,
         stampId: 1,
+        stampUrl: 'https://api.soksak-letter.com/assets/stamps/1.png',
       },
     ],
     [],
@@ -92,6 +99,13 @@ export default function KeywordLetterPage() {
     });
   }, [items, sortOrder]);
 
+  // 4. 모달 핸들러
+  const handleOpenDetail = (item: KeywordLetterItem) => {
+    openModal('letterDetail', {
+      letterId: item.letterId,
+      senderName: item.senderName,
+    });
+  };
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <BackHeader title='키워드별 편지 조각' />
@@ -123,6 +137,16 @@ export default function KeywordLetterPage() {
           ;
         </div>
       </main>
+      {/* 5. 편지 상세 모달 렌더링 */}
+      {currentModal?.type === 'letterDetail' && (
+        <ModalFrame>
+          <LetterDetailModalContent
+            letterId={currentModal.props.letterId}
+            senderName={currentModal.props.senderName}
+            onClose={closeModal}
+          />
+        </ModalFrame>
+      )}
     </div>
   );
 }
@@ -166,5 +190,52 @@ function PostCard({
         </div>
       </div>
     </button>
+  );
+}
+/**
+ * 📝 LetterDetailModalContent: 모달 내부에 들어갈 실제 편지 내용
+ */
+function LetterDetailModalContent({
+  letterId,
+  senderName,
+  onClose,
+}: {
+  letterId: number;
+  senderName: string;
+  onClose: () => void;
+}) {
+  const { data, isLoading, isError } = useLetterDetail(letterId);
+
+  if (isLoading)
+    return (
+      <div className='py-20'>
+        <LoadingDots />
+      </div>
+    );
+  if (isError || !data)
+    return <div className='bg-white p-6 rounded-xl'>데이터를 불러오지 못했습니다.</div>;
+
+  const font = FONT_ASSET_MAP[data.design.font.id] ?? FONT_ASSET_MAP[DEFAULT_FONT_ID];
+  const paper = PAPER_ASSET_MAP[data.design.paper.id + 1] ?? PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
+
+  return (
+    <div className='flex flex-col items-center animate-in fade-in zoom-in duration-300'>
+      <p className='ty-title3 text-white mb-6'>{senderName}님의 편지</p>
+
+      <div onClick={(e) => e.stopPropagation()}>
+        {' '}
+        {/* 카드 클릭 시 모달 닫힘 방지 */}
+        <LetterCard
+          PaperBg={paper.Preview}
+          font={font.fontFamily}
+          value={{ title: data.title, content: data.content }}
+          className='rotate-1 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
+        />
+      </div>
+
+      <button onClick={onClose} className='mt-8 text-white/70 underline ty-body5'>
+        닫기
+      </button>
+    </div>
   );
 }

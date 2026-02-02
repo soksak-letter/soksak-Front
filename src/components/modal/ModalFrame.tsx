@@ -18,8 +18,14 @@ export default function ModalFrame({ children }: Props) {
   }, [closeModal]);
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/60'>
-      {children}
+    <div
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black/60'
+      onClick={closeModal} //배경 클릭시 닫기
+    >
+      {/* 이벤트 전파 방지: 편지(children) 부분을 눌렀을 때는 
+         닫히지 않게 e.stopPropagation()을 자식 요소에 걸어주는 것이 좋습니다.
+      */}
+      <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
   );
 }
