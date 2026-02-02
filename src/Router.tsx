@@ -86,7 +86,6 @@ const router = createBrowserRouter([
             path: 'setting',
             children: [
               { index: true, element: <SettingPage /> },
-              { path: 'pw-reset', element: <PasswordResetPage /> },
               { path: 'terms', element: <TermsOfServicePage /> },
               { path: 'privacy', element: <PrivacyPolicyPage /> },
             ],
@@ -138,6 +137,8 @@ const router = createBrowserRouter([
 
           { path: 'feed/public-all', element: <FeedPage /> },
           { path: 'feed/friend-all', element: <FriendFeedPage /> },
+
+          { path: 'setting/pw-reset', element: <PasswordResetPage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
