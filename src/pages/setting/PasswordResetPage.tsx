@@ -59,8 +59,79 @@ export default function PasswordChangePage() {
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px] pb-24'>
-        {/* 컨텐츠 추가 예정 */}
+      <main className='mx-auto w-full max-w-[375px] px-[14px] pt-[33px] pb-24'>
+        {/* 안내 문구 */}
+        <p
+          style={{
+            fontFamily: 'Pretendard',
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '23.8px',
+            color: '#171717',
+            marginBottom: '16px',
+          }}
+        >
+          새로운 비밀번호를 입력해주세요.
+        </p>
+
+        {/* 입력 필드 영역 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {/* 비밀번호 입력 */}
+          <input
+            type='password'
+            placeholder='비밀번호'
+            style={{
+              width: '100%',
+              height: '48px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E5E6E6',
+              borderRadius: '8px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '14px',
+              color: '#171717',
+              outline: 'none',
+            }}
+            className='placeholder:text-[#8C8C8C]'
+          />
+
+          {/* 비밀번호 확인 입력 */}
+          <input
+            type='password'
+            placeholder='비밀번호 확인'
+            style={{
+              width: '100%',
+              height: '48px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E5E6E6',
+              borderRadius: '8px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '14px',
+              color: '#171717',
+              outline: 'none',
+            }}
+            className='placeholder:text-[#8C8C8C]'
+          />
+        </div>
+
+        {/* 도움말 텍스트 */}
+        <p
+          style={{
+            fontFamily: 'Pretendard',
+            fontWeight: 400,
+            fontSize: '12px',
+            lineHeight: '19.2px',
+            color: '#595959',
+            marginTop: '10px',
+          }}
+        >
+          비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.
+        </p>
       </main>
     </div>
   );
