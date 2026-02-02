@@ -41,7 +41,7 @@ export default function LetterReviewPage() {
   const threadId = threadIdParam ? Number(threadIdParam) : threadIdFromStore;
 
   const { showToast } = useGlobalToast();
-  const senderName = useThreadFlowStore((s) => s.senderName);
+  const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
   // TODO : 내 이름 불러오기
   const username = '개굴';
 
@@ -53,12 +53,12 @@ export default function LetterReviewPage() {
   };
 
   // threadId 없으면 막기
-  const canSubmit = mood !== null && !!threadId;
   const createReview = useCreateReview();
+  const canSubmit = mood !== null && !!threadId && !createReview.isPending;
 
   // POST 요청
   const handleSubmit = async () => {
-    if (!mood) return;
+    if (!mood || createReview.isPending) return;
 
     if (!threadId) {
       showToast('후기를 보낼 수 없어요. (threadId 없음)');
