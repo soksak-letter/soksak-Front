@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
               변경에 따라 개정될 수 있습니다.
             </SectionText>
             <SectionText>
-              1. 회사는 제1항에 따라 본 방침을 개정하는 경우 다음 각 호 하나 이상의 방법으로
+              2. 회사는 제1항에 따라 본 방침을 개정하는 경우 다음 각 호 하나 이상의 방법으로
               공지합니다.
             </SectionText>
             <SectionText>
@@ -99,7 +99,7 @@ export default function PrivacyPolicyPage() {
               나. 서면·모사전송·전자우편 또는 이와 비슷한 방법으로 이용자에게 공지하는 방법
             </SectionText>
             <SectionText>
-              1. 회사는 제2항의 공지는 본 방침 개정의 시행일로부터 최소 7일 이전에 공지합니다. 다만,
+              3. 회사는 제2항의 공지는 본 방침 개정의 시행일로부터 최소 7일 이전에 공지합니다. 다만,
               이용자 권리의 중요한 변경이 있을 경우에는 최소 30일 전에 공지합니다.
             </SectionText>
           </Section>
@@ -152,7 +152,7 @@ export default function PrivacyPolicyPage() {
               필요한 경우
             </SectionText>
             <SectionText>
-              1. 이용문의에 대한 회신, 불만의 처리 등 이용자에 대한 서비스 개선을 위한 경우
+              2. 이용문의에 대한 회신, 불만의 처리 등 이용자에 대한 서비스 개선을 위한 경우
             </SectionText>
             <SectionText>2. 회사의 서비스를 제공하기 위한 경우</SectionText>
             <SectionText>
@@ -187,13 +187,13 @@ export default function PrivacyPolicyPage() {
               관한 기록 : 3년 라. 표시•광고에 관한 기록 : 6개월
             </SectionText>
             <SectionText>
-              1. 통신비밀보호법에 따른 보유정보 및 보유기간 가. 웹사이트 로그 기록 자료 : 3개월
+              2. 통신비밀보호법에 따른 보유정보 및 보유기간 가. 웹사이트 로그 기록 자료 : 3개월
             </SectionText>
             <SectionText>
-              2. 전자금융거래법에 따른 보유정보 및 보유기간 가. 전자금융거래에 관한 기록 : 5년
+              3. 전자금융거래법에 따른 보유정보 및 보유기간 가. 전자금융거래에 관한 기록 : 5년
             </SectionText>
             <SectionText>
-              3. 위치정보의 보호 및 이용 등에 관한 법률가. 개인위치정보에 관한 기록 : 6개월
+              4. 위치정보의 보호 및 이용 등에 관한 법률 가. 개인위치정보에 관한 기록 : 6개월
             </SectionText>
           </Section>
           <Section>
@@ -211,7 +211,7 @@ export default function PrivacyPolicyPage() {
               따라(보유 및 이용기간 참조) 일정 기간 저장된 후 파기 되어집니다.
             </SectionText>
             <SectionText>
-              1. 회사는 파기 사유가 발생한 개인정보를 개인정보보호 책임자의 승인절차를 거쳐
+              2. 회사는 파기 사유가 발생한 개인정보를 개인정보보호 책임자의 승인절차를 거쳐
               파기합니다.
             </SectionText>
           </Section>
@@ -245,12 +245,12 @@ export default function PrivacyPolicyPage() {
               처리 결과를 알립니다.
             </SectionText>
             <SectionText>
-              1. 회사는 오후 9시부터 그다음 날 오전 8시까지의 시간에 전자적 전송매체를 이용하여
+              3. 회사는 오후 9시부터 그다음 날 오전 8시까지의 시간에 전자적 전송매체를 이용하여
               영리목적의 광고성 정보를 전송하는 경우에는 제1항에도 불구하고 그 수신자로부터 별도의
               사전 동의를 받습니다.
             </SectionText>
             <SectionText>
-              2. 회사는 전자적 전송매체를 이용하여 영리목적의 광고성 정보를 전송하는 경우 다음의
+              4. 회사는 전자적 전송매체를 이용하여 영리목적의 광고성 정보를 전송하는 경우 다음의
               사항 등을 광고성 정보에 구체적으로 밝힙니다.
             </SectionText>
             <SectionText>가. 회사명 및 연락처</SectionText>
@@ -258,7 +258,7 @@ export default function PrivacyPolicyPage() {
               나. 수신 거부 또는 수신 동의의 철회 의사표시에 관한 사항의 표시
             </SectionText>
             <SectionText>
-              1. 회사는 전자적 전송매체를 이용하여 영리목적의 광고성 정보를 전송하는 경우 다음 각
+              5. 회사는 전자적 전송매체를 이용하여 영리목적의 광고성 정보를 전송하는 경우 다음 각
               호의 어느 하나에 해당하는 조치를 하지 않습니다.
             </SectionText>
             <SectionText>
@@ -327,11 +327,11 @@ export default function PrivacyPolicyPage() {
               입력으로 발생하는 문제의 책임은 이용자 자신에게 있습니다.
             </SectionText>
             <SectionText>
-              1. 타인의 개인정보를 도용한 회원가입의 경우 이용자 자격을 상실하거나 관련 개인정보보호
+              2. 타인의 개인정보를 도용한 회원가입의 경우 이용자 자격을 상실하거나 관련 개인정보보호
               법령에 의해 처벌받을 수 있습니다.
             </SectionText>
             <SectionText>
-              2. 이용자는 전자우편주소, 비밀번호 등에 대한 보안을 유지할 책임이 있으며 제3자에게
+              3. 이용자는 전자우편주소, 비밀번호 등에 대한 보안을 유지할 책임이 있으며 제3자에게
               이를 양도하거나 대여할 수 없습니다.
             </SectionText>
           </Section>
@@ -449,7 +449,7 @@ export default function PrivacyPolicyPage() {
             <SectionText>다. 대검찰청 : (국번없이) 1301 (www.spo.go.kr)</SectionText>
             <SectionText>라. 경찰청 : (국번없이) 182 (ecrm.cyber.go.kr)</SectionText>
             <SectionText>
-              1. 회사는 정보주체의 개인정보자기결정권을 보장하고, 개인정보침해로 인한 상담 및 피해
+              2. 회사는 정보주체의 개인정보자기결정권을 보장하고, 개인정보침해로 인한 상담 및 피해
               구제를 위해 노력하고 있으며, 신고나 상담이 필요한 경우 제1항의 담당부서로 연락해주시기
               바랍니다.
             </SectionText>
@@ -459,11 +459,11 @@ export default function PrivacyPolicyPage() {
               또는 부작위로 인하여 권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라
               행정심판을 청구할 수 있습니다.
             </SectionText>
-            <SectionText>
-              가. 중앙행정심판위원회 : (국번없이) 110 (www.simpan.go.kr) 제1조 본 방침은
-              2026.02.01.부터 시행됩니다.
-            </SectionText>
-            <SectionText>부칙</SectionText>
+            <SectionText>가. 중앙행정심판위원회 : (국번없이) 110 (www.simpan.go.kr)</SectionText>
+          </Section>
+          <Section>
+            <SectionTitle>부칙</SectionTitle>
+            <SectionText>본 방침은 2026.02.01.부터 시행됩니다.</SectionText>
           </Section>
         </div>
       </main>
