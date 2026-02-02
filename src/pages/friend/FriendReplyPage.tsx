@@ -1,14 +1,26 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
+import { useMemo } from 'react';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import { Button } from '@/components/common/Button';
-import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
-import { useMemo } from 'react';
-import { FONT_ASSET_MAP, DEFAULT_FONT_ID } from '@/constants/fontAssets';
-import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
+import { LoadingDots } from '@/components/LoadingDots';
 import NotFoundPage from '../system/NotFoundPage';
 import LetterCard from '@/components/letters/LetterCard';
-import { LoadingDots } from '@/components/LoadingDots';
+import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { useLetterStore } from '@/stores/letterStore';
+
+type ReplyData = {
+  title: string;
+  sentAtText: string;
+  question: string;
+  content: string;
+  paperId: number;
+  fontId: number;
+  stampId: number;
+  stampUrl: string;
+};
 
 const parseSentAt = (isoOrNull: string | null) => {
   if (!isoOrNull) return '-';
@@ -34,24 +46,22 @@ const parseSentAt = (isoOrNull: string | null) => {
   return `${y}.${m}.${day} ${hh}:${minutes} ${ampm}`;
 };
 
-type PostSelfData = {
-  title: string;
-  sentAtText: string;
-  question: string;
-  content: string;
-  paperId: number;
-  fontId: number;
-  stampId: number;
-  stampUrl: string;
-};
-
-export default function LetterPostSelfPage() {
+export default function FriendReplyPage() {
   const navigate = useNavigate();
-  const { letterId: letterIdParam } = useParams();
-  const letterId = letterIdParam ? Number(letterIdParam) : 0;
-  const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
 
-  const view = useMemo<PostSelfData | null>(() => {
+  // letterId, friendId Param으로 불러오기
+  const { letterId: letterIdParam, friendId: friendIdParam } = useParams();
+  const letterId = letterIdParam ? Number(letterIdParam) : 0;
+  const friendId = friendIdParam ? Number(friendIdParam) : 0;
+
+  const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
+  const { setActiveTarget, patchDraft } = useLetterStore();
+
+  // FriendName 불러오기
+  const location = useLocation();
+  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
+
+  const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
 
     return {
@@ -59,19 +69,14 @@ export default function LetterPostSelfPage() {
       sentAtText: parseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
-      paperId: (data.design?.paper?.id ?? 0) + 1,
-      fontId: data.design?.font?.id ?? 0,
-      stampId: data.design?.stamp?.id ?? 0,
-      stampUrl: data.design?.stamp?.assetUrl ?? '',
+      paperId: (data.design.paper.id ?? 0) + 1,
+      fontId: data.design.font.id ?? 0,
+      stampId: data.design.stamp.id ?? 0,
+      stampUrl: data.design.stamp.assetUrl ?? '',
     };
   }, [data]);
 
-  const stripQuestionPrefix = (s: string) => s.replace(/^질문\s*#\d+:\s*/, '');
-
-  const formattedQuestionTitle = useMemo(() => {
-    const q = view?.question ?? data?.question ?? '';
-    return stripQuestionPrefix(q);
-  }, [view?.question, data?.question]);
+  const formattedQuestionTitle = (data?.question ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   const assets = useMemo(() => {
     if (!view) return null;
@@ -83,10 +88,24 @@ export default function LetterPostSelfPage() {
   }, [view]);
 
   // 잘못된 접근 - 404 처리
-  if (!letterIdParam) return <NotFoundPage />;
+  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId)) return <NotFoundPage />;
 
-  const handleGoWriteNew = () => {
-    navigate('/letter/self/draft');
+  const handleReport = () => {
+    navigate('/letter/report');
+  };
+
+  const handleReply = () => {
+    setActiveTarget('friend');
+
+    patchDraft({
+      receiverUserId: friendId,
+    });
+
+    navigate('/friend/draft', {
+      state: {
+        friendName,
+      },
+    });
   };
 
   const content = isLoading ? (
@@ -118,19 +137,26 @@ export default function LetterPostSelfPage() {
         className='rotate-1 mt-5'
       />
 
-      {/* CTA */}
-      <div className='mt-6'>
-        <Button className='w-full' onClick={handleGoWriteNew}>
-          나에게 새로운 편지쓰러 가기
-        </Button>
-      </div>
+      <Button className='w-full mt-6' onClick={handleReply}>
+        답장하기
+      </Button>
     </>
   );
 
   return (
     <div className='min-h-dvh bg-[var(--color-bg-500)]'>
-      <BackHeader title='나에게 받은 편지' />
-
+      <BackHeader
+        title={`${friendName}님의 편지`}
+        rightElement={
+          <button
+            type='button'
+            onClick={handleReport}
+            className='ty-body5 font-medium text-[var(--color-primary-500)]'
+          >
+            신고하기
+          </button>
+        }
+      />
       <main className='px-5 pb-[28px]'>{content}</main>
     </div>
   );

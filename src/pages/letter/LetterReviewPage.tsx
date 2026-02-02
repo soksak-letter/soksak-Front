@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useParams } from 'react-router-dom'; TODO
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
@@ -25,7 +24,6 @@ const MOODS: Array<{
 
 export default function LetterReviewPage() {
   const navigate = useNavigate();
-  //   const { letterId } = useParams<{ letterId: string }>(); TODO
 
   const [mood, setMood] = useState<ReviewMood | null>(null);
   const [temp, setTemp] = useState<number>(0);

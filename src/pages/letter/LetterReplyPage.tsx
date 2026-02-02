@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useMemo } from 'react';
 
@@ -10,6 +10,7 @@ import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type ReplyData = {
   title: string;
@@ -50,11 +51,11 @@ export default function LetterReplyPage() {
   const navigate = useNavigate();
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
+
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
   const { openModal } = useModalStore();
 
   const view = useMemo<ReplyData | null>(() => {
@@ -71,6 +72,13 @@ export default function LetterReplyPage() {
       stampUrl: data.design.stamp.assetUrl ?? '',
     };
   }, [data]);
+
+  const stripQuestionPrefix = (s: string) => s.replace(/^질문\s*#\d+:\s*/, '');
+
+  const formattedQuestionTitle = useMemo(() => {
+    const q = view?.question ?? data?.question ?? '';
+    return stripQuestionPrefix(q);
+  }, [view?.question, data?.question]);
 
   const assets = useMemo(() => {
     if (!view) return null;
@@ -89,14 +97,12 @@ export default function LetterReplyPage() {
   };
 
   const handleReply = () => {
-    navigate('/letter/other/draft', {
-      state: { senderName },
-    });
+    navigate('/letter/other/draft');
   };
 
   const handleEnd = () => {
     openModal('conversationRemaining', {
-      friendName: '파란수박',
+      friendName: senderName,
       remainingCount: 4,
       onContinueConversation: () => {
         // 그냥 닫히고 계속 작성
@@ -104,14 +110,14 @@ export default function LetterReplyPage() {
       onStopConversation: () => {
         // other-stop 페이지로 이동
         navigate('/letter/other-stop', {
-          state: { friendName: '파란수박', totalCount: 7 },
+          state: { friendName: senderName, totalCount: 7 },
         });
       },
     });
   };
 
   const content = isLoading ? (
-    <div className='flex flex-col items-center justify-center gap-8 py-50'>
+    <div className='flex flex-col items-center justify-center gap-8 py-70'>
       <LoadingDots fillIntervalMs={350} />
       <p className='ty-title2'>로딩 중...</p>
     </div>
@@ -128,7 +134,7 @@ export default function LetterReplyPage() {
       <p className='ty-body5 text-[var(--color-text-normal)]'>{view.sentAtText}</p>
 
       <h1 className='mt-1 whitespace-pre-line ty-title2 leading-[140%] text-[var(--color-text-normal)]'>
-        {view.question}
+        {formattedQuestionTitle}
       </h1>
 
       {/* 편지지 컴포넌트 */}

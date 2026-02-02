@@ -20,13 +20,17 @@ const DailyQuestionBox = ({
 
   return (
     <>
-      <div className='flex items-center gap-2'>
-        <button type='button' className='flex items-center' onClick={() => setIsClicked((v) => !v)}>
+      <div className='flex items-center'>
+        <button
+          type='button'
+          className='flex items-center gap-2'
+          onClick={() => setIsClicked((v) => !v)}
+        >
           <Icon className={iconClassName} />
+          <span className='ty-detail text-[var(--color-text-assistive)]'>
+            오늘의 질문이 궁금하다면?
+          </span>
         </button>
-        <span className='ty-detail text-[var(--color-text-assistive)]'>
-          오늘의 질문이 궁금하다면?
-        </span>
       </div>
 
       <div
