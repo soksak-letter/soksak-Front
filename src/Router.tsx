@@ -247,7 +247,6 @@ const router = createBrowserRouter([
             element: <LetterReplyPage />,
           },
 
-          { path: 'report/keyword-letter', element: <TODOPage /> },
           { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
           { path: 'my/my-page', element: <MyPage /> },

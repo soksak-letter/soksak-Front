@@ -34,8 +34,8 @@ export default function KeywordLetterPage() {
   const { openModal, closeModal, activeModal, payload } = useModalStore();
 
   // 이전 페이지(리포트)에서 전달받은 키워드 정보가 있다고 가정 (예: { keyword: '피곤', count: 5 })
-  const selectedKeyword = location.state?.keyword || '피곤';
-  const keywordCount = location.state?.count || 5;
+  const selectedKeyword = location.state?.keyword ?? '피곤';
+  const keywordCount = location.state?.count ?? 5;
 
   // 정렬 상태 (최신순 기본)
   const [sortOrder] = useState<'latest' | 'oldest'>('latest');
