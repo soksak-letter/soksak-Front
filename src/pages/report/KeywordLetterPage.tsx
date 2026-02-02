@@ -191,13 +191,7 @@ function PostCard({
 /**
  * LetterDetailModalContent: 모달 내부에 들어갈 실제 편지 내용
  */
-function LetterDetailModalContent({
-  letterId,
-  onClose,
-}: {
-  letterId: number;
-  onClose: () => void;
-}) {
+function LetterDetailModalContent({ letterId }: { letterId: number; onClose: () => void }) {
   /**
    * useLetterDetail에서 data를 MockData로 주입
    * TODO:useLetterDetail에서의 Data를 실제 data로 API연동 필요
@@ -226,12 +220,10 @@ function LetterDetailModalContent({
           PaperBg={paper.Preview}
           font={font.fontFamily}
           value={{ title: data.title, content: data.content }} //data를 MockDATA로 구현
-          className='rotate-4 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
+          className='-rotate-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
         />
       </div>
-      <button onClick={onClose} className='mt-8 text-white/70 underline ty-body5'>
-        닫기
-      </button>
+      {/* 닫기는 편지 외부 영역 클릭시 가능 */}
     </div>
   );
 }
