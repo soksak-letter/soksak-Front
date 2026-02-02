@@ -61,19 +61,19 @@ const LetterReportPage = () => {
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
-    console.log('[LetterReportPage] 차단 토글 변경:', nextState);
-    console.log('[LetterReportPage] 현재 선택된 사유:', selectedReasons);
-    console.log('[LetterReportPage] targetUserId:', targetUserId);
+    // console.log('[LetterReportPage] 차단 토글 변경:', nextState);
+    // console.log('[LetterReportPage] 현재 선택된 사유:', selectedReasons);
+    // console.log('[LetterReportPage] targetUserId:', targetUserId);
 
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
-      console.log('[LetterReportPage] 사유 없이 차단 시도 - 차단됨');
+      // console.log('[LetterReportPage] 사유 없이 차단 시도 - 차단됨');
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
 
     // 사유가 있으면 정상적으로 토글 상태 변경
-    console.log('[LetterReportPage] 차단 상태 변경:', nextState);
+    // console.log('[LetterReportPage] 차단 상태 변경:', nextState);
     setIsBlocked(nextState);
   };
 
@@ -99,7 +99,7 @@ const LetterReportPage = () => {
     }
 
     // TODO: 신고 API 연동 필요
-    console.log('[LetterReportPage] 신고 완료 처리');
+    // console.log('[LetterReportPage] 신고 완료 처리');
     setIsCompleted(true); // 완료 화면으로 전환
   };
   if (isCompleted) {
