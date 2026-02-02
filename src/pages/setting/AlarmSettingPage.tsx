@@ -1,44 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
-
-// 토글 버튼 컴포넌트
-interface ToggleButtonProps {
-  isOn: boolean;
-  onToggle: () => void;
-}
-
-function ToggleButton({ isOn, onToggle }: ToggleButtonProps) {
-  return (
-    <button
-      type='button'
-      onClick={onToggle}
-      style={{
-        width: '48px',
-        height: '24px',
-        backgroundColor: isOn ? '#FFC8C6' : '#B1B3B4',
-        borderRadius: '18px',
-        padding: '3px',
-        border: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: isOn ? 'flex-end' : 'flex-start',
-        alignItems: 'center',
-        transition: 'background-color 0.2s ease',
-      }}
-    >
-      <div
-        style={{
-          width: '18px',
-          height: '18px',
-          backgroundColor: isOn ? '#F5544C' : '#FFFFFF',
-          borderRadius: '50%',
-          transition: 'background-color 0.2s ease',
-        }}
-      />
-    </button>
-  );
-}
+import ToggleSwitch from '@/components/common/ToggleSwitch';
 
 export default function AlarmSettingPage() {
   const navigate = useNavigate();
@@ -77,7 +40,12 @@ export default function AlarmSettingPage() {
           >
             마케팅 정보 알림
           </span>
-          <ToggleButton isOn={marketingAlarm} onToggle={() => setMarketingAlarm(!marketingAlarm)} />
+          <ToggleSwitch
+            checked={marketingAlarm}
+            onCheckedChange={setMarketingAlarm}
+            className='ml-2'
+            aria-label='마케팅 정보 알림 토글'
+          />
         </div>
 
         {/* 구분선 */}
@@ -110,7 +78,12 @@ export default function AlarmSettingPage() {
           >
             편지 알림
           </span>
-          <ToggleButton isOn={letterAlarm} onToggle={() => setLetterAlarm(!letterAlarm)} />
+          <ToggleSwitch
+            checked={letterAlarm}
+            onCheckedChange={setLetterAlarm}
+            className='ml-2'
+            aria-label='편지 도착 알림 토글'
+          />
         </div>
       </main>
     </div>
