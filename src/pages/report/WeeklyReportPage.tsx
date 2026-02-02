@@ -3,35 +3,95 @@ import type { EmotionStatusKey } from '@/components/WeeklyReport/EmotionStatusIc
 
 import { WeeklyEmotionDistributionCard } from '@/components/WeeklyReport/WeeklyEmotionDistributionCard';
 import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFlowCard';
+import { EmotionConstellation } from '@/components/WeeklyReport/EmotionConstellation';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/routes/paths';
+
+import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 
-const emotionStatusMock: EmotionStatusKey = 'tired';
-
-const flowMock: WeeklyEmotionFlowItem[] = [
-  { day: '월', segments: [{ percent: 55, color: 'var(--color-primary-500)' }] },
-  {
-    day: '화',
-    segments: [
-      { percent: 55, color: 'var(--color-primary-500)' },
-      { percent: 30, color: 'var(--color-primary-300)' },
-    ],
-  },
-  { day: '수', segments: [] },
-  { day: '목', segments: [] },
-  { day: '금', segments: [] },
-  {
-    day: '토',
-    segments: [
-      { percent: 35, color: 'var(--color-primary-500)' },
-      { percent: 40, color: 'var(--color-grey-300)' },
-      { percent: 20, color: 'var(--color-primary-300)' },
-    ],
-  },
-  { day: '일', segments: [] },
+// API 응답 형태의 Mock Data (데이터가 오는 곳)
+const keywordsMock = [
+  { keyword: '운동/건강', count: 1 },
+  { keyword: '야근', count: 1 },
+  { keyword: '피곤', count: 10 },
+  { keyword: '복잡', count: 5 },
+  { keyword: '감사', count: 9 },
+  { keyword: '기쁨', count: 1 },
+  { keyword: '성취', count: 1 },
 ];
+const reportMockData = [
+  {
+    id: '1',
+    title: '테스트1',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+  {
+    id: '2',
+    title: '테스트2',
+    date: '2024.02.02',
+    variant: 'pink',
+    link: '#',
+  },
+  {
+    id: '3',
+    title: '테스트3',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+  {
+    id: '4',
+    title: '테스트4',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+];
+//MockData 끝
 
 export default function WeeklyReportPage() {
+  const navigate = useNavigate();
+  // 별자리 컴포넌트와 하단 태그 리스트에서 공통으로 사용할 데이터 변환
+  const formattedKeywords = useMemo(() => {
+    return [...keywordsMock]
+      .sort((a, b) => b.count - a.count)
+      .map((item, index) => ({
+        id: index,
+        keyword: item.keyword,
+        count: item.count,
+      }));
+  }, []);
+
+  const emotionStatusMock: EmotionStatusKey = 'tired';
+
+  const flowMock: WeeklyEmotionFlowItem[] = [
+    { day: '월', segments: [{ percent: 55, color: 'var(--color-primary-500)' }] },
+    {
+      day: '화',
+      segments: [
+        { percent: 55, color: 'var(--color-primary-500)' },
+        { percent: 30, color: 'var(--color-primary-300)' },
+      ],
+    },
+    { day: '수', segments: [] },
+    { day: '목', segments: [] },
+    { day: '금', segments: [] },
+    {
+      day: '토',
+      segments: [
+        { percent: 35, color: 'var(--color-primary-500)' },
+        { percent: 40, color: 'var(--color-grey-300)' },
+        { percent: 20, color: 'var(--color-primary-300)' },
+      ],
+    },
+    { day: '일', segments: [] },
+  ];
+
   const distribution = [
     { key: 'tired', label: '피곤함', value: 50, color: '#F05A4F' },
     { key: 'calm', label: '차분함', value: 30, color: '#F3B3AE' },
@@ -100,36 +160,72 @@ export default function WeeklyReportPage() {
             <br />
             주간 마음 리포트가 도착했어요!
           </h2>
-          {/* 상단 “주간 마음 리포트” 카드 (344x307) - TODO: "에잇" 이 컴포넌트 구현하고 변경해주세요*/}
-          <section className='w-[344px] h-[307px] rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-4 py-4'>
-            {/* 네트워크/키워드 영역 블랭크 */}
-            <div className='mt-3 rounded-xl bg-[#FFF7F7] h-[150px] w-full' />
-
-            {/* 태그 영역 블랭크 */}
-            <div className='mt-3 flex flex-wrap gap-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className='h-[28px] w-[78px] rounded-full bg-[#F2F2F2]' />
-              ))}
+          {/* 상단 “주간 마음 리포트” 카드 (344x307)*/}
+          <section className='w-[344px] h-[307px] rounded-xl bg-[var(--color-bg-500)] shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-[16px] py-[8px]'>
+            <div className='flex flex-col gap-[32px]'>
+              {/* 네트워크/키워드 영역 블랭크 */}
+              <div className='flex flex-col items-center mt-3 rounded-xl h-[148px] w-full gap-[16px] '>
+                <p className='ty-title3'>이번 주, 당신의 마음을 채운 단어는?</p>
+                <div className='flex h-full w-full justify-center items-center overflow-visible'>
+                  <EmotionConstellation data={formattedKeywords} />
+                </div>
+              </div>
+              {/* 태그 영역 블랭크 */}
+              <div className=' flex flex-wrap justify-center gap-[15px]'>
+                {formattedKeywords.map((node, index) => {
+                  const isMain = index === 0; //가장 큰 노드
+                  return (
+                    <div
+                      key={`tag-${node.id}`}
+                      className={`h-[28px] px-[10px] flex items-center justify-center 
+                        rounded-full border ty-detailMedium shadow-sm transition-all ${
+                          isMain
+                            ? 'border-[#FFC8C6] bg-[#FFF5F5] text-[#FF5C5C]'
+                            : 'border-[#F0F0F0] bg-white text-[#999999]'
+                        }`}
+                    >
+                      # {node.keyword} {node.count > 1 && `(${node.count})`}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </section>
 
-          {/* 편지조각 보기 (피그마 375x170) - 블랭크 */}
-          <section className='w-[375px] h-[170px] -mx-4 px-4'>
-            <div className='h-full w-full p-4'>
+          {/* 편지조각 보기- 블랭크 */}
+          <div className='w-[375px] h-[170px] px-[16px]'>
+            <div className='h-full w-full py-4'>
               {/* 상단 라벨/버튼 자리 */}
-              <div className='flex items-center justify-between'>
-                <div className='ty-body2'>편지조각 보기</div>
-                <div className='ty-body5 text-[var(--color-text-alternative)]'>전체보기</div>
-              </div>
+              <div className='flex flex-col gap-[16px]'>
+                <div className='flex items-center justify-between'>
+                  <h2 className='ty-body2 text-[var(--color-text-normal)]'>편지조각</h2>
+                  <button
+                    onClick={() => navigate(ROUTES.report.keyword)}
+                    className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
+                  >
+                    <span>전체보기</span>
+                    <svg
+                      width='12'
+                      height='12'
+                      viewBox='0 0 12 12'
+                      fill='none'
+                      className='rotate-180'
+                    >
+                      <path
+                        d='M7.5 9L4.5 6L7.5 3'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
+                  </button>
+                </div>
 
-              {/* 카드 3개 블랭크 - TODO: 캐러셀로 변경 */}
-              <div className='mt-3 grid grid-cols-3 gap-2'>
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className='h-[96px] rounded-lg bg-[#EAF6FF]' />
-                ))}
+                <ReportLetterCarousel letters={reportMockData} />
               </div>
             </div>
-          </section>
+          </div>
 
           {/* 주간 감정 분포 */}
           <WeeklyEmotionDistributionCard data={distribution} emotionStatus={emotionStatusMock} />

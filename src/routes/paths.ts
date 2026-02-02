@@ -8,4 +8,7 @@ export const ROUTES = {
     signup: '/auth/signup',
     terms: '/auth/terms',
   },
+  report: {
+    keyword: '/report/keyword-letter',
+  },
 } as const;

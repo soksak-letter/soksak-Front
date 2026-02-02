@@ -60,7 +60,11 @@ import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
+
+import KeywordLetterPage from './pages/report/KeywordLetterPage';
+
 import FriendReplyPage from './pages/friend/FriendReplyPage';
+
 
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
