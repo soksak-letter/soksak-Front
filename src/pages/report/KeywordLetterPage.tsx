@@ -38,7 +38,7 @@ export default function KeywordLetterPage() {
   const keywordCount = location.state?.count ?? 5;
 
   // 정렬 상태 (최신순 기본)
-  const [sortOrder] = useState<'latest' | 'oldest'>('latest');
+  const sortOrder: 'latest' | 'oldest' = 'latest';
 
   // mock data (나에게 받은 편지)
   const items = useMemo<KeywordLetterItem[]>(
@@ -114,7 +114,7 @@ export default function KeywordLetterPage() {
       <main className='px-5 py-6'>
         {/* 2. 키워드 태그 섹션 */}
         <div className='flex items-center gap-2 mb-8'>
-          <div className='h-[28px] px-3 flex items-center justify-center rounded-full border border-[var(--color-primary-400)] bg-[#var(--color-primary-100)] text-[#var(--color-black)] ty-detailMedium shadow-sm'>
+          <div className='h-[28px] px-3 flex items-center justify-center rounded-full border border-[var(--color-primary-400)] bg-[var(--color-primary-100)] text-[#var(--color-black)] ty-detailMedium shadow-sm'>
             # {selectedKeyword} ({keywordCount})
           </div>
           <span className='ty-body1 text-[var(--color-black)]'>이 담긴 편지</span>
@@ -191,7 +191,7 @@ function PostCard({
 /**
  * LetterDetailModalContent: 모달 내부에 들어갈 실제 편지 내용
  */
-function LetterDetailModalContent({ letterId }: { letterId: number; onClose: () => void }) {
+function LetterDetailModalContent({ letterId }: { letterId: number }) {
   /**
    * useLetterDetail에서 data를 MockData로 주입
    * TODO:useLetterDetail에서의 Data를 실제 data로 API연동 필요

@@ -125,7 +125,7 @@ export function EmotionConstellation({ data }: EmotionConstellationProps) {
                 userSelect: 'none',
               }}
             >
-              {node.label}
+              {node.keyword}
             </text>
           </g>
         );
