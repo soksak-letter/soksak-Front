@@ -63,132 +63,43 @@ export default function TermsOfServicePage() {
         <div style={{ marginTop: '8px' }} className='px-9'>
           {/* 제1조 */}
           <div style={{ marginBottom: '20px' }}>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 700,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '8px',
-              }}
-            >
+            <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제1조(목적)</strong>
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black'>
               이 약관은 속삭편지 팀(이하 "개발자 팀"이라 합니다)이 제공하는 제반 서비스의 이용과
               관련하여 개발자 팀과 회원 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을
               목적으로 합니다.
             </p>
           </div>
 
-          {/* 제2조 */}
           <div style={{ marginBottom: '20px' }}>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 700,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '8px',
-              }}
-            >
+            <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제2조(정의)</strong>
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '8px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-2'>
               이 약관에서 사용하는 용어의 정의는 다음과 같습니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               1. "서비스"란 구현되는 단말기(PC, 휴대용 단말기 등 각종 유무선 장치를 포함)와 상관없이
               이용자가 이용할 수 있는 속삭편지 관련 제반 서비스를 의미합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               2. "이용자"란 이 약관에 따라 개발자 팀이 제공하는 서비스를 이용하는 자로, 회원 및
               비회원을 포함합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               3. "회원"이란 개발자 팀에 개인정보를 제공하여 회원등록을 하고, 개발자 팀으로부터
               지속적으로 정보를 제공받으며 서비스를 계속적으로 이용할 수 있는 자를 말합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               4. "비회원"이란 회원가입 없이 개발자 팀이 제공하는 서비스를 이용하는 자를 말합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               5. "아이디(ID)"란 회원의 식별과 서비스 이용을 위하여 회원이 정하고 개발자 팀이
               승인하는 문자 또는 문자와 숫자의 조합을 의미합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black'>
               6. "비밀번호"란 회원이 부여받은 아이디와 일치되는 회원임을 확인하고 비밀을 보호하기
               위하여 회원이 정한 문자(특수문자 포함)와 숫자의 조합을 의미합니다.
             </p>
