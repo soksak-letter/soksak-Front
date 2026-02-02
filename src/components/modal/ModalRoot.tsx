@@ -7,6 +7,8 @@ import LetterSendingConfirmModal from '@/modals/LetterSendingConfirmModal';
 import FriendRequestModal from '@/modals/FriendRequestModal';
 import FriendRequestFailedModal from '@/modals/FriendRequestFailedModal';
 import LetterSendingFailedModal from '@/modals/LetterSendingFailedModal';
+import LogoutConfirmModal from '@/modals/LogoutConfirmModal';
+import WithdrawalConfirmModal from '@/modals/WithdrawalConfirmModal';
 import ConversationRemainingModal from '@/modals/ConversationRemainingModal';
 import StorageConfirmModal from '@/modals/StorageConfirmModal';
 
@@ -35,6 +37,11 @@ export default function ModalRoot() {
     case 'friendRequestFailed':
       return <FriendRequestFailedModal />;
 
+    case 'logoutConfirm':
+      return <LogoutConfirmModal />;
+
+    case 'withdrawalConfirm':
+      return <WithdrawalConfirmModal />;
     case 'conversationRemaining':
       return <ConversationRemainingModal />;
 

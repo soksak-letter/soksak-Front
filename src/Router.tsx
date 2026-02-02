@@ -59,6 +59,14 @@ import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
 
+import SettingPage from './pages/setting/SettingPage';
+import PasswordResetPage from './pages/setting/PasswordResetPage';
+import AlarmSettingPage from './pages/setting/AlarmSettingPage';
+import PersonalConsentPage from './pages/setting/PersonalConsentPage';
+import NoticePage from './pages/setting/NoticePage';
+import TermsOfServicePage from './pages/setting/TermsOfServicePage';
+import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
+
 // ===== Placeholders =====
 const TODOPage = () => <div />;
 
@@ -97,7 +105,7 @@ const router = createBrowserRouter([
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
-              { path: 'setting', element: <TODOPage /> },
+              { path: 'setting', element: <SettingPage /> },
             ],
           },
           // 프레임만
@@ -191,6 +199,14 @@ const router = createBrowserRouter([
           { path: 'feed/public-all', element: <FeedPage /> },
           { path: 'feed/friend-all', element: <FriendFeedPage /> },
 
+          // 설정 페이지들
+          { path: 'setting/pw-reset', element: <PasswordResetPage /> },
+          { path: 'setting/alarm', element: <AlarmSettingPage /> },
+          { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
+          { path: 'setting/notice', element: <NoticePage /> },
+          { path: 'setting/terms', element: <TermsOfServicePage /> },
+          { path: 'setting/privacy', element: <PrivacyPolicyPage /> },
+
           /**
            * letter/{target}/{step} 표준 (비탭)
            * target = anon | other | friend | self
@@ -205,22 +221,20 @@ const router = createBrowserRouter([
             ],
           },
 
-          { path: 'letter/post-other', element: <LetterPostOtherPage /> }, // 기존 라우팅 TODO: 삭제 필요
-          { path: 'letter/:letterId/thread/:threadId', element: <LetterPostOtherPage /> },
-
-          { path: 'letter/reply', element: <LetterReplyPage /> }, // TODO: 삭제 필요
-          { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },
+          { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
+          { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
           { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
-
           { path: 'letter/report', element: <LetterReportPage /> },
           { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
-
-          { path: 'letter/post-self', element: <LetterPostSelfPage /> },
+          // { path: 'letter/post-self', element: <LetterPostSelfPage /> }, // TODO : 미사용 라우터 삭제
           { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
           { path: 'letter/loading', element: <LoadingPage /> },
 
           // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
-          { path: 'letter/other_draft', element: <Navigate to='/letter/other/draft' replace /> },
+          {
+            path: 'letter/other_draft',
+            element: <Navigate to='/letter/other/draft' replace />,
+          },
           { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
 
           { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅

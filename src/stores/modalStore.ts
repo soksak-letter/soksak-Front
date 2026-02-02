@@ -8,6 +8,8 @@ export type ModalType =
   | 'letterSendingFailed'
   | 'friendRequest'
   | 'friendRequestFailed'
+  | 'logoutConfirm'
+  | 'withdrawalConfirm'
   | 'conversationRemaining'
   | 'storageConfirm'
   | null;
@@ -38,6 +40,11 @@ export type ModalPayload = {
   // friendRequestFailed
   onConfirmRequestAgain?: () => void;
 
+  // logoutConfirm
+  onConfirmLogout?: () => void;
+
+  // withdrawalConfirm
+  onConfirmWithdraw?: () => void;
   // conversationRemaining (대화 n회 남음)
   remainingCount?: number;
   onContinueConversation?: () => void;
