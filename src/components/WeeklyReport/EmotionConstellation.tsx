@@ -1,7 +1,16 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+// 1. 데이터 항목에 대한 명확한 타입 정의
+interface KeywordData {
+  keyword?: string; // 키워드 (선택적)
+  count: number; // 해당 키워드의 빈도수
+}
+// 2. 컴포넌트 Props 타입 정의
+interface EmotionConstellationProps {
+  data: KeywordData[];
+}
 
-export function EmotionConstellation({ data }: { data: any[] }) {
+export function EmotionConstellation({ data }: EmotionConstellationProps) {
   const VIEWBOX_WIDTH = 343; // 카드 내부 실질 너비 (375 - 패딩)
   const VIEWBOX_HEIGHT = 200;
 
