@@ -8,6 +8,7 @@ export type ModalType =
   | 'letterSendingFailed'
   | 'friendRequest'
   | 'friendRequestFailed'
+  | 'logoutConfirm'
   | null;
 
 export type ModalPayload = {
@@ -35,6 +36,9 @@ export type ModalPayload = {
 
   // friendRequestFailed
   onConfirmRequestAgain?: () => void;
+
+  // logoutConfirm
+  onConfirmLogout?: () => void;
 };
 
 interface ModalState {
