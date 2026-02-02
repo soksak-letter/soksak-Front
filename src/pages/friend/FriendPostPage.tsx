@@ -55,9 +55,9 @@ export default function FriendPostPage() {
       dateText: parseDate(l.deliveredAt),
       direction: 'received',
       isUnread: l.readAt === null,
-      paperId: l.design.paper.id,
-      stampId: l.design.stamp.id,
-      stampUrl: l.design.stamp.assetUrl,
+      paperId: (l.design.paper.id ?? 0) + 1,
+      stampId: l.design.stamp.id ?? 0,
+      stampUrl: l.design.stamp.assetUrl ?? '',
     }));
 
     const sent: PostItem[] = (data.userLetters ?? []).map((l) => ({
