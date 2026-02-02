@@ -1637,7 +1637,7 @@ export default function PrivacyPolicyPage() {
                 marginBottom: '4px',
               }}
             >
-              웹브라우저 �션 설정을 통해 쿠키 허용, 쿠키 차단 등의 설정을 할 수 있습니다.
+              웹브라우저 옵션 설정을 통해 쿠키 허용, 쿠키 차단 등의 설정을 할 수 있습니다.
             </p>
             <p
               style={{
