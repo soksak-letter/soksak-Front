@@ -9,6 +9,7 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LoadingPage from '../system/LoadingPage';
 
 const LIMIT = {
   TITLE: { MIN: 3, MAX: 20 },
@@ -16,12 +17,20 @@ const LIMIT = {
 } as const;
 
 const AnonDraftPage = () => {
-  const { draft, patchDraft, resetAll } = useLetterStore();
   const { data, isLoading, isError, error } = useDailyQuestion();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
 
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('anon');
+  }, [setActiveTarget]);
 
   const deadlineMs = useMemo(() => {
     if (!data?.expiredAt) return null;
@@ -38,7 +47,6 @@ const AnonDraftPage = () => {
       });
       return;
     }
-    resetAll();
     navigate(-1);
   };
 
@@ -53,7 +61,18 @@ const AnonDraftPage = () => {
     return null;
   };
 
-  const handled = useRef(false);
+  const handleSubmit = () => {
+    const title = draft.title.trim();
+    const content = draft.content.trim();
+    const errorMsg = validate(title, content);
+
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
+    navigate('/letter/anon/decorate');
+  };
 
   // questionId 저장
   useEffect(() => {
@@ -61,6 +80,8 @@ const AnonDraftPage = () => {
 
     if (draft.questionId == null) patchDraft({ questionId: data.id });
   }, [data?.id, draft.questionId, patchDraft]);
+
+  const handled = useRef(false);
 
   useEffect(() => {
     if (!isError || handled.current) return;
@@ -80,19 +101,6 @@ const AnonDraftPage = () => {
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
 
-  const handleSubmit = () => {
-    const title = draft.title.trim();
-    const content = draft.content.trim();
-    const errorMsg = validate(title, content);
-
-    if (errorMsg) {
-      showToast(errorMsg, 'error');
-      return;
-    }
-
-    navigate('/letter/anon/decorate');
-  };
-
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
@@ -109,12 +117,7 @@ const AnonDraftPage = () => {
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
         {isLoading ? (
           <>
-            {/* 질문 스켈레톤 */}
-            <div className='h-6 w-[260px] rounded bg-gray-200 animate-pulse' />
-            <div className='h-6 w-[210px] rounded bg-gray-200 animate-pulse' />
-
-            {/* 타이머 스켈레톤 */}
-            <div className='h-4 w-[160px] rounded bg-gray-200 animate-pulse mt-2' />
+            <LoadingPage />
           </>
         ) : (
           <>
@@ -128,6 +131,7 @@ const AnonDraftPage = () => {
           </>
         )}
       </div>
+
       <div className='px-4'>
         <LetterTextBox
           value={{ title: draft.title, content: draft.content }}

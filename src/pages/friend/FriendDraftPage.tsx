@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
@@ -7,9 +7,19 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
+import { useLetterStore } from '@/stores/letterStore';
 
 export default function FriendDraftPage() {
   const navigate = useNavigate();
+
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+
+  // 페이지 진입 시 target 세팅
+  useEffect(() => {
+    setActiveTarget('friend');
+  }, [setActiveTarget]);
 
   // TODO : friendId는 추후 닉네임 불러올 때 Id로 가져올 거라서 연동 후 사용
   // const params = useParams();

@@ -11,6 +11,17 @@ import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
 
+type ReplyData = {
+  title: string;
+  sentAtText: string;
+  question: string;
+  content: string;
+  paperId: number;
+  fontId: number;
+  stampId: number;
+  stampUrl: string;
+};
+
 const parseSentAt = (isoOrNull: string | null) => {
   if (!isoOrNull) return '-';
 
@@ -46,7 +57,7 @@ export default function LetterReplyPage() {
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
   const { openModal } = useModalStore();
 
-  const view = useMemo(() => {
+  const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
 
     return {
@@ -54,10 +65,10 @@ export default function LetterReplyPage() {
       sentAtText: parseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
-      paperId: data.design.paper.id + 1,
-      fontId: data.design.font.id,
-      stampId: data.design.stamp.id,
-      stampUrl: data.design.stamp.assetUrl,
+      paperId: (data.design.paper.id ?? 0) + 1,
+      fontId: data.design.font.id ?? 0,
+      stampId: data.design.stamp.id ?? 0,
+      stampUrl: data.design.stamp.assetUrl ?? '',
     };
   }, [data]);
 
