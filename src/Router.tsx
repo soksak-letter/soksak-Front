@@ -89,8 +89,6 @@ const router = createBrowserRouter([
             path: 'setting',
             children: [
               { index: true, element: <SettingPage /> },
-              { path: 'terms', element: <TermsOfServicePage /> },
-              { path: 'privacy', element: <PrivacyPolicyPage /> },
             ],
           },
         ],
@@ -145,6 +143,8 @@ const router = createBrowserRouter([
           { path: 'setting/alarm', element: <AlarmSettingPage /> },
           { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
           { path: 'setting/notice', element: <NoticePage /> },
+          { path: 'setting/terms', element: <TermsOfServicePage /> },
+          { path: 'setting/privacy', element: <PrivacyPolicyPage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
