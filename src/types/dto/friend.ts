@@ -18,7 +18,7 @@ export type FriendItem = {
   friendUserId: number;
   nickname: string;
   letterCount: number;
-  recentLetter: RecentLetter;
+  recentLetter: RecentLetter | null;
 };
 
 export type FriendRequestStatus = 'PENDING' | 'REJECTED' | 'DELETED';

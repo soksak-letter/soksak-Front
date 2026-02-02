@@ -41,10 +41,12 @@ export default function FriendInboxPage() {
         friendUserId: f.friendUserId,
         name: f.nickname,
         exchangeCount: f.letterCount,
-        lastDate: f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.'),
-        paperId: Number(f.recentLetter.design.paper?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
-        stampId: Number(f.recentLetter.design.stamp?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
-        stampUrl: f.recentLetter.design.stamp?.assetUrl,
+        lastDate: f.recentLetter?.createdAt
+          ? f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.')
+          : '-',
+        paperId: Number(f.recentLetter?.design.paper?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
+        stampId: Number(f.recentLetter?.design.stamp?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
+        stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
       })),
     [friends],
   );

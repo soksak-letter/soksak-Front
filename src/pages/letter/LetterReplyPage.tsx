@@ -72,6 +72,13 @@ export default function LetterReplyPage() {
     };
   }, [data]);
 
+  const stripQuestionPrefix = (s: string) => s.replace(/^질문\s*#\d+:\s*/, '');
+
+  const formattedQuestionTitle = useMemo(() => {
+    const q = view?.question ?? data?.question ?? '';
+    return stripQuestionPrefix(q);
+  }, [view?.question, data?.question]);
+
   const assets = useMemo(() => {
     if (!view) return null;
 
@@ -128,7 +135,7 @@ export default function LetterReplyPage() {
       <p className='ty-body5 text-[var(--color-text-normal)]'>{view.sentAtText}</p>
 
       <h1 className='mt-1 whitespace-pre-line ty-title2 leading-[140%] text-[var(--color-text-normal)]'>
-        {view.question}
+        {formattedQuestionTitle}
       </h1>
 
       {/* 편지지 컴포넌트 */}

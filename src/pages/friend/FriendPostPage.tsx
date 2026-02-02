@@ -94,7 +94,7 @@ export default function FriendPostPage() {
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 새 편지 작성(친구에게 보내는 편지 작성)
-    navigate('/letter/friend/draft', {
+    navigate('/friend/draft', {
       state: { friendId, friendName },
     });
   };

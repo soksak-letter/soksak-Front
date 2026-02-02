@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { getDailyQuestion } from '@/api/question';
-
-const todayKST = new Intl.DateTimeFormat('sv-SE', {
-  timeZone: 'Asia/Seoul',
-}).format(new Date());
+import { getNowKSTIsoString } from '@/utils/date';
+import { useMemo } from 'react';
 
 export function useDailyQuestion() {
+  const nowKstIso = useMemo(() => getNowKSTIsoString(), []);
+
   return useQuery({
-    queryKey: ['daily-question', todayKST],
-    queryFn: () => getDailyQuestion(todayKST),
+    queryKey: ['daily-question'],
+    queryFn: () => getDailyQuestion(nowKstIso),
     retry: false,
   });
 }

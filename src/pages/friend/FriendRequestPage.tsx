@@ -57,7 +57,7 @@ export default function FriendRequestPage() {
 
     patchDraft({ receiverUserId: user.id });
 
-    navigate('/letter/deco/friend');
+    navigate('/friend/draft');
   };
 
   const handleAccept = (user: RequestUser) => {
