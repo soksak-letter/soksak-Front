@@ -1,7 +1,11 @@
+
 import { useNavigate } from 'react-router-dom';
+import { useModalStore } from '@/stores/modalStore';
+
 
 export default function SettingPage() {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
 
   const handleBack = () => {
     navigate(-1);
@@ -191,7 +195,7 @@ export default function SettingPage() {
           <ul className='flex flex-col gap-[9px]'>
             <li>
               <button
-                onClick={() => navigate('/setting/logout')}
+                onClick={() => openModal('logoutConfirm')}
                 className='w-full text-left py-[3px] ml-[3px]'
                 style={{
                   fontFamily: 'Pretendard',
