@@ -10,7 +10,7 @@ import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useModalStore } from '@/stores/modalStore';
 
 import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 type KeywordLetterItem = {
   letterId: number;
@@ -24,8 +24,8 @@ type KeywordLetterItem = {
 };
 
 const parseDotDate = (s: string) => {
-  const [y, m, d] = s.split('.').map((v) => Number(v));
-  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
+  const date = new Date(s);
+  return date.getTime(); // 정렬을 위해 밀리초(number) 반환
 };
 
 export default function KeywordLetterPage() {
@@ -56,7 +56,7 @@ export default function KeywordLetterPage() {
         letterId: 12,
         title: '이지영선생님러브러브..',
         senderName: '파란수박',
-        receivedAt: '2026-01-02T12:30:00.000Z',
+        receivedAt: '2026-01-02T12:40:00.000Z',
         dateText: '2026.01.02',
         paperId: 2,
         stampId: 3,
@@ -83,8 +83,8 @@ export default function KeywordLetterPage() {
         letterId: 5,
         title: '이지영선생님러브러브..',
         senderName: '파란수박',
-        receivedAt: '2026-01-020T10:00:00.000Z',
-        dateText: '2026.01.20',
+        receivedAt: '2026-01-05T10:00:00.000Z',
+        dateText: '2026.01.05',
         paperId: 1,
         stampId: 1,
         stampUrl: 'https://api.soksak-letter.com/assets/stamps/1.png',
