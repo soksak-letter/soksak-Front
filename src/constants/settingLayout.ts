@@ -13,4 +13,5 @@ export const BUTTON_FONT_SIZE = 16;
 export const BUTTON_LINE_HEIGHT = 25.6;
 export const BUTTON_PADDING_Y = 3;
 export const BUTTON_MARGIN_LEFT = 3;
+export const TAB_BAR_HEIGHT = 85; // px, TabBar.tsx 기준
 // 필요시 추가 상수 정의

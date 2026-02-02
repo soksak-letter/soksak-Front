@@ -1,5 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
+import {
+  HEADER_HEIGHT,
+  PAGE_MAX_WIDTH,
+  PAGE_PADDING_X,
+  PAGE_PADDING_TOP,
+} from '@/constants/settingLayout';
 
 // 목업 데이터
 const MOCK_NOTICES = [
@@ -98,10 +104,18 @@ export default function NoticePage() {
     <div className='min-h-dvh bg-[#FAFAFA]'>
       <SettingHeader title='공지사항' onBack={handleBack} />
       {/* 헤더 높이만큼 여백 */}
-      <div style={{ height: '50px' }} />
+      <div style={{ height: HEADER_HEIGHT }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[16px] pt-[36px]'>
+      <main
+        className='mx-auto w-full'
+        style={{
+          maxWidth: PAGE_MAX_WIDTH,
+          paddingLeft: PAGE_PADDING_X,
+          paddingRight: PAGE_PADDING_X,
+          paddingTop: PAGE_PADDING_TOP,
+        }}
+      >
         {MOCK_NOTICES.map((notice, index) => (
           <NoticeItem
             key={notice.id}

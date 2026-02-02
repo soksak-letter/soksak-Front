@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
+import {
+  HEADER_HEIGHT,
+  PAGE_MAX_WIDTH,
+  PAGE_PADDING_X,
+  PAGE_PADDING_TOP,
+} from '@/constants/settingLayout';
 
 export default function AlarmSettingPage() {
   const navigate = useNavigate();
@@ -16,10 +22,18 @@ export default function AlarmSettingPage() {
     <div className='min-h-dvh bg-[#FAFAFA]'>
       <SettingHeader title='알림' onBack={handleBack} />
       {/* 헤더 높이만큼 여백 */}
-      <div style={{ height: '50px' }} />
+      <div style={{ height: HEADER_HEIGHT }} />
 
       {/* 메인 컨텐츠 */}
-      <main className='mx-auto w-full max-w-[375px] px-[30px] pt-[26px]'>
+      <main
+        className='mx-auto w-full'
+        style={{
+          maxWidth: PAGE_MAX_WIDTH,
+          paddingLeft: PAGE_PADDING_X,
+          paddingRight: PAGE_PADDING_X,
+          paddingTop: PAGE_PADDING_TOP,
+        }}
+      >
         {/* 마케팅 정보 알림 */}
         <div
           style={{
