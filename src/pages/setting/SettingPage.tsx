@@ -94,13 +94,16 @@ export default function SettingPage() {
               <li>
                 <button
                   onClick={() => navigate('/setting/personal-consent')}
-                  className='w-full text-left py-[3px] ml-[3px]'
+                  className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '25.6px',
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
                     color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
                   }}
                 >
                   정보 동의 설정
@@ -145,13 +148,16 @@ export default function SettingPage() {
               <li>
                 <button
                   onClick={() => navigate('/setting/terms')}
-                  className='w-full text-left py-[3px] ml-[3px]'
+                  className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '25.6px',
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
                     color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
                   }}
                 >
                   서비스 이용약관
@@ -160,13 +166,16 @@ export default function SettingPage() {
               <li>
                 <button
                   onClick={() => navigate('/setting/privacy')}
-                  className='w-full text-left py-[3px] ml-[3px]'
+                  className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '25.6px',
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
                     color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
                   }}
                 >
                   개인정보 처리방침
@@ -201,13 +210,16 @@ export default function SettingPage() {
                 <button
                   // TODO: 실제 회원탈퇴 처리 함수(onConfirmWithdraw) 연결 필요
                   onClick={() => openModal('withdrawalConfirm')}
-                  className='w-full text-left py-[3px] ml-[3px]'
+                  className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '25.6px',
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
                     color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
                   }}
                 >
                   회원탈퇴
