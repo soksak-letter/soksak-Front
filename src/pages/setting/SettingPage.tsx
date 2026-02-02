@@ -210,7 +210,7 @@ export default function SettingPage() {
               </li>
               <li>
                 <button
-                  onClick={() => navigate('/setting/withdrawal')}
+                  onClick={() => openModal('withdrawalConfirm')}
                   className='w-full text-left py-[3px] ml-[3px]'
                   style={{
                     fontFamily: 'Pretendard',

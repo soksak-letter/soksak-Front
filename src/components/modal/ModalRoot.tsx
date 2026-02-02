@@ -8,6 +8,7 @@ import FriendRequestModal from '@/modals/FriendRequestModal';
 import FriendRequestFailedModal from '@/modals/FriendRequestFailedModal';
 import LetterSendingFailedModal from '@/modals/LetterSendingFailedModal';
 import LogoutConfirmModal from '@/modals/LogoutConfirmModal';
+import WithdrawalConfirmModal from '@/modals/WithdrawalConfirmModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
@@ -36,6 +37,9 @@ export default function ModalRoot() {
 
     case 'logoutConfirm':
       return <LogoutConfirmModal />;
+
+    case 'withdrawalConfirm':
+      return <WithdrawalConfirmModal />;
 
     default:
       return null;

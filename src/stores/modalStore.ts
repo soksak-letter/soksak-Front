@@ -9,6 +9,7 @@ export type ModalType =
   | 'friendRequest'
   | 'friendRequestFailed'
   | 'logoutConfirm'
+  | 'withdrawalConfirm'
   | null;
 
 export type ModalPayload = {
@@ -39,6 +40,9 @@ export type ModalPayload = {
 
   // logoutConfirm
   onConfirmLogout?: () => void;
+
+  // withdrawalConfirm
+  onConfirmWithdraw?: () => void;
 };
 
 interface ModalState {
