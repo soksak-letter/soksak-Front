@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+import type { CSSProperties, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
 
@@ -20,20 +20,17 @@ const sectionTextStyle = {
   color: '#000000',
 };
 
-function Section({ children, style }: React.PropsWithChildren<{ style?: React.CSSProperties }>) {
+function Section({ children, style }: PropsWithChildren<{ style?: CSSProperties }>) {
   return <div style={{ ...sectionStyle, ...style }}>{children}</div>;
 }
-function SectionTitle({ children }: React.PropsWithChildren) {
+function SectionTitle({ children }: PropsWithChildren) {
   return (
     <p style={sectionTitleStyle}>
       <strong>{children}</strong>
     </p>
   );
 }
-function SectionText({
-  children,
-  style,
-}: React.PropsWithChildren<{ style?: React.CSSProperties }>) {
+function SectionText({ children, style }: PropsWithChildren<{ style?: CSSProperties }>) {
   return <p style={{ ...sectionTextStyle, ...style }}>{children}</p>;
 }
 
