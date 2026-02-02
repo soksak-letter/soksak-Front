@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import PenIcon from '@/assets/icons/PenIcon.svg?react';
@@ -8,6 +8,7 @@ import { useAnonThread } from '@/hooks/mails/useAnonThread';
 import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type PostItem = {
   letterId: number;
@@ -18,7 +19,7 @@ type PostItem = {
   isUnread: boolean;
   paperId: number;
   stampId: number;
-  stampUrl?: string; // TODO : 백엔드에서 받으면 ? 제거
+  stampUrl: string;
 };
 
 const parseDate = (iso: string) => {
@@ -32,71 +33,45 @@ const parseDate = (iso: string) => {
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
   const { threadId: threadIdParam } = useParams();
-
   const threadId = threadIdParam ? Number(threadIdParam) : 0;
+
+  const setFlow = useThreadFlowStore((s) => s.setFlow);
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+
   const { data, isLoading, isError, refetch } = useAnonThread(threadId);
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
-  const questionTitle = data?.firstQuestion ?? '첫번째로 받은 질문입니다.';
-
-  const DUMMY_POSTS: PostItem[] = [
-    {
-      letterId: 1,
-      title: '첫 번째 편지예요',
-      deliveredAt: '2026-01-01T10:00:00.000Z',
-      dateText: '2026.01.01',
-      isMine: false,
-      isUnread: true,
-      paperId: 1,
-      stampId: 1,
-    },
-    {
-      letterId: 2,
-      title: '답장을 보냈어요',
-      deliveredAt: '2026-01-02T12:30:00.000Z',
-      dateText: '2026.01.02',
-      isMine: true,
+  const posts = useMemo<PostItem[]>(() => {
+    const letters = data?.letters ?? [];
+    return letters.map((l) => ({
+      letterId: l.id,
+      title: l.title,
+      deliveredAt: l.deliveredAt,
+      dateText: parseDate(l.deliveredAt),
+      isMine: l.isMine,
       isUnread: false,
-      paperId: 2,
-      stampId: 2,
-    },
-    {
-      letterId: 3,
-      title: '또 다른 편지',
-      deliveredAt: '2026-01-03T18:20:00.000Z',
-      dateText: '2026.01.03',
-      isMine: false,
-      isUnread: false,
-      paperId: 1,
-      stampId: 3,
-    },
-  ];
-
-  const posts: PostItem[] = useMemo(() => {
-    if (data?.letters && data.letters.length > 0) {
-      return data.letters.map((l) => ({
-        letterId: l.id,
-        title: l.title,
-        deliveredAt: l.deliveredAt,
-        dateText: parseDate(l.deliveredAt),
-        isMine: false,
-        isUnread: false,
-        paperId: l.design.paper.id + 1,
-        stampId: l.design.stamp.id,
-      }));
-    }
-    return DUMMY_POSTS;
+      paperId: l.paperId + 1,
+      stampId: l.stampId,
+      stampUrl: l.stampUrl,
+    }));
   }, [data?.letters]);
+
+  // store에 컨텍스트 동기화 (새로고침 대비, 다음 페이지에서 사용하기 위해)
+  useEffect(() => {
+    setFlow({
+      target: 'other',
+      threadId,
+      senderName: senderName,
+    });
+  }, [setFlow, threadId, senderName]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
   const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
 
   // 잘못된 접근 - 404 처리
-  if (!threadIdParam) return <NotFoundPage />;
+  if (!threadIdParam || !threadId) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
     navigate(`/letter/reply/${threadId}/${letterId}`, {
@@ -106,9 +81,8 @@ export default function LetterPostOtherPage() {
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
-    navigate('/letter/other/draft', {
-      state: { threadId, senderName },
-    });
+    navigate('/letter/other/draft');
+    // senderName, threadId는 letterContext store에 저장되어 있다.
   };
 
   return (
@@ -119,7 +93,7 @@ export default function LetterPostOtherPage() {
         <div className='mt-2 text-[13px] text-[#6F6F6F]'>{senderName}님과 이어진 질문</div>
 
         <h2 className='mt-1 ty-title1 leading-[30px] text-[#171717] whitespace-pre-line'>
-          {questionTitle}
+          {formattedQuestionTitle}
         </h2>
 
         {/* 1) 로딩 */}
@@ -185,7 +159,6 @@ export default function LetterPostOtherPage() {
         className='fixed bottom-[112px] right-[calc(50%-187px+20px)] z-50
           h-[56px] w-[56px] rounded-full bg-[var(--color-primary-500)] text-white
           shadow-[0_10px_30px_rgba(0,0,0,0.18)]'
-        aria-label='답장 작성'
       >
         <PenIcon className='ml-3.5' />
       </button>

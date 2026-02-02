@@ -1,5 +1,5 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useEffect, useMemo, useRef } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
@@ -8,6 +8,8 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
+import { useThreadFlowStore } from '@/stores/letterContext';
+import NotFoundPage from '../system/NotFoundPage';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -17,9 +19,8 @@ const LetterSendingPage = () => {
 
   const navigate = useNavigate();
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const threadId = useThreadFlowStore((s) => s.threadId);
 
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
@@ -91,20 +92,6 @@ const LetterSendingPage = () => {
     return { ...basePayload, scheduledAt: scheduled };
   }, [basePayload, safeMode, draft.deliverAtDate]);
 
-  // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
-  useEffect(() => {
-    if (!safeMode) {
-      navigate('/error/404', { replace: true });
-      return;
-    }
-
-    const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
-
-    if (!ok) {
-      navigate('/home/main', { replace: true });
-    }
-  }, [safeMode, selfPayload, sendPayload, navigate]);
-
   // POST 실행
   useEffect(() => {
     if (!safeMode) return;
@@ -125,10 +112,12 @@ const LetterSendingPage = () => {
 
         console.log('[CreateLetter success response]', res);
 
-        navigate('/home/main', {
-          replace: true,
-          state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
-        });
+        // ✅ 테스트: 성공하면 무조건 transition
+        navigate(`/friend/sent-transition/${threadId}`, { replace: true });
+        // navigate('/home/main', {
+        //   replace: true,
+        //   state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
+        // });
       } catch {
         hasSentRef.current = false;
         showToast('편지 전송에 실패했어요.', 'error');
@@ -143,18 +132,36 @@ const LetterSendingPage = () => {
     createSelfLetterMutation,
     navigate,
     showToast,
+    threadId,
   ]);
+
+  // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
+  const needsThreadId = safeMode === 'other';
+  const invalid = !safeMode || (needsThreadId && !threadId);
+
+  if (invalid) {
+    return <NotFoundPage />;
+  }
 
   const getTargetText = () => {
     // TODO : Mock data 제거
     const sender = '개굴';
 
-    if (safeMode === 'anon' || safeMode === 'other') {
+    if (safeMode === 'anon') {
       return (
         <>
           {sender}님의 소중한 편지가
           <br />
           누군가에게 전달되고 있어요.
+        </>
+      );
+    }
+    if (safeMode === 'other') {
+      return (
+        <>
+          {sender}님의 소중한 편지가
+          <br />
+          {senderName}님에게 전달되고 있어요.
         </>
       );
     }

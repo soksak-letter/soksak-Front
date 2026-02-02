@@ -1,18 +1,32 @@
 import type { ApiError } from '../common';
 
-export type AnonMailboxSuccess = {
-  letters: {
-    threadId: number;
-    sender: {
+export type AnonMailboxLetter = {
+  threadId: number;
+
+  sender: {
+    id: number;
+    nickname: string;
+  };
+
+  lastLetterId: number;
+  lastLetterTitle: string;
+  lastLetterPreview: string;
+  deliveredAt: string;
+
+  // design도 paper만 옴 (stamp는 별도 필드)
+  design: {
+    paper: {
       id: number;
-      nickname: string;
+      name: string;
     };
-    lastLetterId: number;
-    lastLetterTitle: string;
-    lastLetterPreview: string;
-    updatedAt: string;
-    paperId: number;
-  }[];
+  };
+
+  stampId: number;
+  stampUrl: string;
+};
+
+export type AnonMailboxSuccess = {
+  letters: AnonMailboxLetter[];
 };
 
 export type AnonMailboxResponse = {

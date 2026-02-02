@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -8,45 +8,93 @@ import { BsQuestionCircle } from 'react-icons/bs';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 import { useLetterStore } from '@/stores/letterStore';
+import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import LoadingPage from '../system/LoadingPage';
+import { Button } from '@/components/common/Button';
+import { validateLetter } from '@/utils/validateLetter';
 
 export default function FriendDraftPage() {
-  const navigate = useNavigate();
+  const { data, isLoading, isError, refetch } = useDailyQuestion();
 
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
   const patchDraft = useLetterStore((s) => s.patchDraft);
+  const resetCurrent = useLetterStore((s) => s.resetCurrent);
+
+  const { showToast } = useGlobalToast();
+  const navigate = useNavigate();
 
   // 페이지 진입 시 target 세팅
   useEffect(() => {
     setActiveTarget('friend');
   }, [setActiveTarget]);
 
-  // TODO : friendId는 추후 닉네임 불러올 때 Id로 가져올 거라서 연동 후 사용
-  // const params = useParams();
-  // const friendId = params.friendId ?? '1';
+  const location = useLocation();
+  const friendName = (location.state as { friendName?: string })?.friendName;
 
-  // TODO: friendName은 실제 데이터로 교체
-  const friendName = useMemo(() => '파란수박', []);
-  const dailyQuestion = useMemo(() => '당신의 인생에 큰 영감을 주는 사람은 누구인가요?', []);
+  // questionId 저장
+  useEffect(() => {
+    const newId = data?.id;
+    if (!newId) return;
 
-  const [letter, setLetter] = useState({
-    title: '',
-    content: '',
-  });
-  const [isPublic, setIsPublic] = useState(false);
+    if (draft.questionId !== newId) {
+      patchDraft({ questionId: newId });
+    }
+  }, [data?.id, draft.questionId, patchDraft]);
 
   const handleSubmit = () => {
-    // TODO:
-    // 1. title 최소/최대 글자 수 조건 확인
-    // 2. content 최소/최대 글자 수 조건 확인
-    // 3. 조건 안 맞으면 토스트/에러 처리
+    if (isLoading) {
+      showToast('질문을 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+
+    const questionId = data?.id;
+    if (isError || !questionId) {
+      showToast('질문을 불러오지 못했어요. 다시 시도해주세요.', 'error');
+      return;
+    }
+
+    const title = draft.title.trim();
+    const content = draft.content.trim();
+    const errorMsg = validateLetter(title, content);
+
+    if (errorMsg) {
+      showToast(errorMsg, 'error');
+      return;
+    }
+
+    patchDraft({ questionId });
+
     navigate('/letter/friend/decorate', {
-      state: {
-        title: letter.title,
-        content: letter.content,
-      },
+      state: { friendName },
     });
   };
+
+  const handleBack = () => {
+    resetCurrent();
+    navigate(-1);
+  };
+
+  const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (isError) {
+    return (
+      <div className='min-h-dvh bg-[var(--color-bg-500)]'>
+        <BackHeader title={`${friendName}에게 보내는 편지`} onBack={handleBack} />
+        <div className='flex flex-col items-center justify-center gap-8 py-30 text-center px-5'>
+          <p className='ty-title3'>질문을 불러오지 못했어요.</p>
+          <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
+            다시 시도
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col'>
@@ -57,22 +105,30 @@ export default function FriendDraftPage() {
             꾸미기
           </button>
         }
+        onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-3'>
         <DailyQuestionBox
-          question={dailyQuestion}
+          question={formattedQuestionText}
           Icon={BsQuestionCircle}
           iconClassName='text-(--color-text-assistive)'
           bubbleBgColor='#414141'
-          bubbleTextStyle='var(--color-white)' // css 문법에 따라 var(--color-...) 형식으로 props 넘겨야 함
+          bubbleTextStyle='var(--color-white)'
         />
       </div>
       <div className='px-4'>
-        <LetterTextBox value={letter} onChange={setLetter} className='w-[343px] h-[394px]' />
+        <LetterTextBox
+          value={{ title: draft.title, content: draft.content }}
+          onChange={(next) => patchDraft(next)}
+          className='w-[343px] h-[394px]'
+        />{' '}
       </div>
       <div className='flex items-center justify-end p-5 -mt-5 gap-2'>
         <span className='ty-body5 text-(--color-text-normal)'>오늘 하루 동안 편지 공개하기</span>
-        <ToggleSwitch checked={isPublic} onCheckedChange={setIsPublic} />
+        <ToggleSwitch
+          checked={draft.isPublic}
+          onCheckedChange={(v) => patchDraft({ isPublic: v })}
+        />
       </div>
       <p className='flex p-5 -mt-3 ty-detailMedium text-(--color-text-assistive)'>
         비방의 언어가 담기면 자동으로 필터링 돼요.

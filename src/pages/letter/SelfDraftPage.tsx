@@ -14,13 +14,9 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import LoadingPage from '../system/LoadingPage';
+import { validateLetter } from '@/utils/validateLetter';
 
 type DateValue = { year: number; month: number; day: number };
-
-const LIMIT = {
-  TITLE: { MIN: 3, MAX: 20 },
-  CONTENT: { MIN: 1, MAX: 500 },
-} as const;
 
 const SelfDraftPage = () => {
   const { data, isLoading, isError, error } = useDailyQuestion();
@@ -147,21 +143,10 @@ const SelfDraftPage = () => {
     });
   };
 
-  const validate = (title: string, content: string) => {
-    if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
-    if (title.length > LIMIT.TITLE.MAX)
-      return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
-    if (content.length < LIMIT.CONTENT.MIN) return '내용을 작성해 주세요!';
-    if (content.length > LIMIT.CONTENT.MAX)
-      return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
-
-    return null;
-  };
-
   const handleSubmit = () => {
     const title = draft.title.trim();
     const content = draft.content.trim();
-    const errorMsg = validate(title, content);
+    const errorMsg = validateLetter(title, content);
 
     if (errorMsg) {
       showToast(errorMsg, 'error');
