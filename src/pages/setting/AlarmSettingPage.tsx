@@ -60,7 +60,77 @@ export default function AlarmSettingPage() {
 
       {/* 메인 컨텐츠 */}
       <main className='mx-auto w-full max-w-[375px] px-[30px] pt-[26px]'>
-        {/* 알림 설정 항목들이 여기에 추가됩니다 */}
+        {/* 마케팅 정보 알림 */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '16px',
+              lineHeight: '25.6px',
+              color: '#000000',
+            }}
+          >
+            마케팅 정보 알림
+          </span>
+          {/* 토글 버튼 (OFF 상태) - 추후 구현 */}
+          <div
+            style={{
+              width: '48px',
+              height: '24px',
+              backgroundColor: '#B1B3B4',
+              borderRadius: '18px',
+            }}
+          />
+        </div>
+
+        {/* 구분선 */}
+        <div
+          style={{
+            width: '100%',
+            height: '1px',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            margin: '10px 0 13px 0',
+          }}
+        />
+
+        {/* 편지 알림 */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Pretendard',
+              fontWeight: 500,
+              fontSize: '16px',
+              lineHeight: '25.6px',
+              color: '#000000',
+            }}
+          >
+            편지 알림
+          </span>
+          {/* 토글 버튼 (ON 상태) - 추후 구현 */}
+          <div
+            style={{
+              width: '48px',
+              height: '24px',
+              backgroundColor: '#FFC8C6',
+              borderRadius: '18px',
+            }}
+          />
+        </div>
       </main>
     </div>
   );
