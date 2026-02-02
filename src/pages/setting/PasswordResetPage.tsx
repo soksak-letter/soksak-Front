@@ -8,7 +8,8 @@ export default function PasswordResetPage() {
   const handleBack = () => {
     navigate(-1);
   };
-	const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } = usePwResetForm();
+  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } =
+    usePwResetForm();
 
   return (
     <div className='min-h-dvh bg-[#FAFAFA]'>
