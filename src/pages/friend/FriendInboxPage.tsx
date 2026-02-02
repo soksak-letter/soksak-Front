@@ -37,7 +37,7 @@ export default function FriendInboxPage() {
   const items = useMemo<FriendInboxItem[]>(
     () =>
       friends.map((f) => ({
-        id: f.id, // id는 threadId의 역할을 합니다.
+        id: f.id,
         friendUserId: f.friendUserId,
         name: f.nickname,
         exchangeCount: f.letterCount,

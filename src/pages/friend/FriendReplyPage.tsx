@@ -102,7 +102,7 @@ export default function FriendReplyPage() {
       receiverUserId: friendId,
     });
 
-    navigate('/letter/friend/draft', {
+    navigate('/friend/draft', {
       state: {
         friendName,
       },

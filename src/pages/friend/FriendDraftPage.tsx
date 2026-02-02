@@ -35,7 +35,7 @@ export default function FriendDraftPage() {
   }, [setActiveTarget]);
 
   const location = useLocation();
-  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
+  const friendName = (location.state as { friendName?: string })?.friendName;
 
   const validate = (title: string, content: string) => {
     if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;

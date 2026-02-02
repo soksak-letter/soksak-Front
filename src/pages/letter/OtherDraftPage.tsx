@@ -84,7 +84,7 @@ const OtherDraftPage = () => {
 
     patchDraft({ questionId });
 
-    navigate('/letter/anon/decorate');
+    navigate('/letter/other/decorate');
   };
 
   const handleBack = () => {
