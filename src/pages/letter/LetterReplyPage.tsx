@@ -10,7 +10,7 @@ import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 type ReplyData = {
   title: string;

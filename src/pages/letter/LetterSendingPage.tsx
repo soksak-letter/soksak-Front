@@ -8,7 +8,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 import NotFoundPage from '../system/NotFoundPage';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';

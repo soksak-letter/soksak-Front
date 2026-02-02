@@ -5,7 +5,7 @@ import { useModalStore } from '@/stores/modalStore';
 import ToastPopup from '@/components/ToastPopup';
 import useToast from '@/hooks/useToast';
 import { useState } from 'react';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 import NotFoundPage from '../system/NotFoundPage';
 
 export default function FriendSentTransitionPage() {

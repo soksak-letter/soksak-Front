@@ -2,7 +2,7 @@ import ModalFrame from '@/components/modal/ModalFrame';
 import { useModalStore } from '@/stores/modalStore';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 import { useLocation } from 'react-router-dom';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 export default function LetterSendingConfirmModal() {
   const { closeModal, payload } = useModalStore();

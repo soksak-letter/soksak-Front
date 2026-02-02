@@ -10,7 +10,7 @@ import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 type SortOrder = 'latest' | 'oldest';
 
