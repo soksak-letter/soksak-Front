@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import SettingHeader from '@/components/common/SettingHeader';
+import pkg from '../../../package.json';
 
 export default function SettingPage() {
   const navigate = useNavigate();
@@ -206,7 +207,7 @@ export default function SettingPage() {
                 color: 'rgba(0, 0, 0, 0.6)',
               }}
             >
-              v1.3
+              v{pkg.version}
             </span>
           </section>
         </main>
