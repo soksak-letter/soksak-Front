@@ -9,6 +9,7 @@ import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
 import { useThreadFlowStore } from '@/stores/letterContext';
+import NotFoundPage from '../system/NotFoundPage';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -19,7 +20,7 @@ const LetterSendingPage = () => {
   const navigate = useNavigate();
 
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
-  const threadId = useThreadFlowStore((s) => s.threadId) ?? 0;
+  const threadId = useThreadFlowStore((s) => s.threadId);
 
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
@@ -91,21 +92,6 @@ const LetterSendingPage = () => {
     return { ...basePayload, scheduledAt: scheduled };
   }, [basePayload, safeMode, draft.deliverAtDate]);
 
-  // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
-  useEffect(() => {
-    if (!safeMode) {
-      navigate('/error/404', { replace: true });
-      return;
-    }
-
-    const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
-    // 테스트용으로 무조건 sent-transition으로 이동
-    // TODO : 기존에는 /home/main, letterCount 10회 확인 로직 추가 필요
-    if (!ok) {
-      navigate('/home/main', { replace: true });
-    }
-  }, [safeMode, selfPayload, sendPayload, navigate]);
-
   // POST 실행
   useEffect(() => {
     if (!safeMode) return;
@@ -146,7 +132,16 @@ const LetterSendingPage = () => {
     createSelfLetterMutation,
     navigate,
     showToast,
+    threadId,
   ]);
+
+  // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
+  const needsThreadId = safeMode === 'other';
+  const invalid = !safeMode || (needsThreadId && !threadId);
+
+  if (invalid) {
+    return <NotFoundPage />;
+  }
 
   const getTargetText = () => {
     // TODO : Mock data 제거
