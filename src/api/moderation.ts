@@ -20,6 +20,10 @@ export const blockUser = async (
 ): Promise<{ result: boolean; message: string }> => {
   const { data } = await axiosInstance.post<BlockUserResponse>(`/block/${targetUserId}`);
 
+  if (data.resultType === 'ERROR') {
+    throw new Error(data.error.reason);
+  }
+
   return {
     result: data.success.result,
     message: data.success.message,
@@ -33,6 +37,10 @@ export const blockUser = async (
 export const getBlockedUsers = async (): Promise<BlockedUser[]> => {
   const { data } = await axiosInstance.get<BlockListResponse>('/block');
 
+  if (data.resultType === 'ERROR') {
+    throw new Error(data.error.reason);
+  }
+
   return data.success.result;
 };
 
@@ -42,6 +50,11 @@ export const getBlockedUsers = async (): Promise<BlockedUser[]> => {
  */
 export const getReportDetail = async (reportId: number): Promise<ReportedUser> => {
   const { data } = await axiosInstance.get<ReportDetailResponse>(`/reports/${reportId}`);
+
+  if (data.resultType === 'ERROR') {
+    throw new Error(data.error.reason);
+  }
+
   return data.success.result;
 };
 
@@ -51,5 +64,10 @@ export const getReportDetail = async (reportId: number): Promise<ReportedUser> =
  */
 export const getRestrictList = async (): Promise<RestrictedUser[]> => {
   const { data } = await axiosInstance.get<RestrictListResponse>('/restrict');
+
+  if (data.resultType === 'ERROR') {
+    throw new Error(data.error.reason);
+  }
+
   return data.success.result;
 };

@@ -1,28 +1,26 @@
 // 신고 / 차단 / 제재 관련 DTO
 
-export interface BlockUserResponse {
-  resultType: 'SUCCESS' | 'ERROR';
-  error: null;
-  success: {
-    message: string;
-    result: boolean;
-  };
+// 공통 에러 타입
+interface ApiError {
+  errorCode: string;
+  reason: string;
 }
 
+// 차단 관련
 export interface BlockedUser {
   blockedUserId: number;
   createdAt: string;
 }
 
-export interface BlockListResponse {
-  resultType: 'SUCCESS' | 'ERROR';
-  error: null;
-  success: {
-    message: string;
-    result: BlockedUser[];
-  };
-}
+export type BlockUserResponse =
+  | { resultType: 'SUCCESS'; error: null; success: { message: string; result: boolean } }
+  | { resultType: 'ERROR'; error: ApiError; success: null };
 
+export type BlockListResponse =
+  | { resultType: 'SUCCESS'; error: null; success: { message: string; result: BlockedUser[] } }
+  | { resultType: 'ERROR'; error: ApiError; success: null };
+
+// 신고 관련
 export interface ReportedUser {
   id: number;
   letterId: number;
@@ -30,15 +28,11 @@ export interface ReportedUser {
   createdAt: string;
 }
 
-export interface ReportDetailResponse {
-  resultType: 'SUCCESS' | 'ERROR';
-  error: null;
-  success: {
-    message: string;
-    result: ReportedUser;
-  };
-}
+export type ReportDetailResponse =
+  | { resultType: 'SUCCESS'; error: null; success: { message: string; result: ReportedUser } }
+  | { resultType: 'ERROR'; error: ApiError; success: null };
 
+// 이용 제한 관련
 export interface RestrictedUser {
   id: number;
   userId: number;
@@ -47,11 +41,6 @@ export interface RestrictedUser {
   endsAt: string;
 }
 
-export interface RestrictListResponse {
-  resultType: 'SUCCESS' | 'ERROR';
-  error: null;
-  success: {
-    message: string;
-    result: RestrictedUser[];
-  };
-}
+export type RestrictListResponse =
+  | { resultType: 'SUCCESS'; error: null; success: { message: string; result: RestrictedUser[] } }
+  | { resultType: 'ERROR'; error: ApiError; success: null };
