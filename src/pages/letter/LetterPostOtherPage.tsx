@@ -71,7 +71,7 @@ export default function LetterPostOtherPage() {
   const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
 
   // 잘못된 접근 - 404 처리
-  if (!threadIdParam) return <NotFoundPage />;
+  if (!threadIdParam || !threadId) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
     navigate(`/letter/reply/${threadId}/${letterId}`, {
