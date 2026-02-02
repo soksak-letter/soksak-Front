@@ -10,6 +10,8 @@ export type ModalType =
   | 'friendRequestFailed'
   | 'logoutConfirm'
   | 'withdrawalConfirm'
+  | 'conversationRemaining'
+  | 'storageConfirm'
   | null;
 
 export type ModalPayload = {
@@ -43,6 +45,14 @@ export type ModalPayload = {
 
   // withdrawalConfirm
   onConfirmWithdraw?: () => void;
+  // conversationRemaining (대화 n회 남음)
+  remainingCount?: number;
+  onContinueConversation?: () => void;
+  onStopConversation?: () => void;
+
+  // storageConfirm
+  onConfirmStorage?: () => void;
+  onExit?: () => void;
 };
 
 interface ModalState {

@@ -34,13 +34,9 @@ const SignInPage = () => {
       password: password,
     };
 
-    console.log(' [로그인 요청] 데이터:', requestData);
-
     try {
       // 3) API 호출 (POST /auth/login) -> 백엔드 주소 확인 필요
       const response = await axiosInstance.post<SignInResponse>('/auth/login', requestData);
-
-      console.log('[로그인 성공] 응답:', response.data);
 
       const { resultType, success, error } = response.data;
 

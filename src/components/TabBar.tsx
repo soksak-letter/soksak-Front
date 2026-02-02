@@ -94,26 +94,36 @@ const TabBar = () => {
   const location = useLocation();
 
   const tabs = [
-    { id: 'home', label: '홈', icon: HomeIcon, route: '/' },
-    { id: 'mail', label: '편지함', icon: MailIcon, route: '/mail' },
-    { id: 'friend', label: '친구', icon: FriendIcon, route: '/friend' },
-    { id: 'report', label: '리포트', icon: ReportIcon, route: '/report' },
-    { id: 'setting', label: '설정', icon: SettingIcon, route: '/setting' },
+    { id: 'home', label: '홈', icon: HomeIcon, route: '/home/main', basePath: '/home' },
+    {
+      id: 'mail',
+      label: '편지함',
+      icon: MailIcon,
+      route: '/letter/inbox-other',
+      basePath: '/letter',
+    },
+    { id: 'friend', label: '친구', icon: FriendIcon, route: '/friend/inbox', basePath: '/friend' },
+    {
+      id: 'report',
+      label: '리포트',
+      icon: ReportIcon,
+      route: '/report/weekly-report',
+      basePath: '/report',
+    },
+    { id: 'setting', label: '설정', icon: SettingIcon, route: '/setting', basePath: '/setting' },
   ];
 
   return (
     <nav
       className='fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[375px] 
-    bg-[#FAFAFA] h-[85px] pt-[5px]
+    bg-[var(--color-bg-500)] h-[85px] pt-[5px]
 
      border-t border-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.08)] h-16 pb-safe'
     >
       <ul className='flex w-full h-full'>
         {tabs.map((tab) => {
           const isActive =
-            tab.route === '/'
-              ? location.pathname === '/' // 홈만 예외(모든 경로가 /로 시작해서)
-              : location.pathname === tab.route || location.pathname.startsWith(`${tab.route}/`);
+            location.pathname === tab.basePath || location.pathname.startsWith(`${tab.basePath}/`);
 
           const Icon = tab.icon;
 
