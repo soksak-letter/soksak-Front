@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-export default function PasswordChangePage() {
+export default function PasswordResetPage() {
   const navigate = useNavigate();
 
   const handleBack = () => {

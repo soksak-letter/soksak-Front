@@ -55,6 +55,7 @@ import WeeklyReportPage from './pages/WeeklyReportPage';
 
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
+import AlarmSettingPage from './pages/setting/AlarmSettingPage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 
@@ -139,6 +140,7 @@ const router = createBrowserRouter([
           { path: 'feed/friend-all', element: <FriendFeedPage /> },
 
           { path: 'setting/pw-reset', element: <PasswordResetPage /> },
+          { path: 'setting/alarm', element: <AlarmSettingPage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
