@@ -12,13 +12,13 @@ export default function TermsOfServicePage() {
     <div className='min-h-screen bg-white'>
       <SettingHeader title='서비스 이용약관' onBack={handleBack} />
       {/* 헤더 높이만큼 여백 */}
-      <div style={{ height: '50px' }} />
+      <div className='h-[50px]' />
 
       {/* 메인 컨텐츠 */}
       <main className='mx-auto w-full max-w-[375px] pb-8'>
-        <div style={{ marginTop: '8px' }} className='px-9'>
+        <div className='px-9 mt-2'>
           {/* 제1조 */}
-          <div style={{ marginBottom: '20px' }}>
+          <div className='mb-5'>
             <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제1조(목적)</strong>
             </p>
@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
             </p>
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
+          <div className='mb-5'>
             <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제2조(정의)</strong>
             </p>
@@ -62,28 +62,11 @@ export default function TermsOfServicePage() {
           </div>
 
           {/* 제3조 */}
-          <div style={{ marginBottom: '20px' }}>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 700,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '8px',
-              }}
-            >
+          <div className='mb-5'>
+            <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제3조(약관 외 준칙)</strong>
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black'>
               이 약관에서 정하지 아니한 사항은 관련 법령 또는 개발자 팀이 정한 서비스의 개별 약관,
               운영정책 및 규칙 등(이하 "세부지침")에 따릅니다. 세부지침과 본 약관이 충돌하는
               경우에는 세부지침이 우선합니다.
@@ -91,68 +74,24 @@ export default function TermsOfServicePage() {
           </div>
 
           {/* 제4조 */}
-          <div style={{ marginBottom: '20px' }}>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 700,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '8px',
-              }}
-            >
+          <div className='mb-5'>
+            <p className='font-pretendard font-bold text-xs leading-[19.2px] text-black mb-2'>
               <strong>제4조(약관의 효력과 변경)</strong>
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               1. 이 약관은 개발자 팀이 운영하는 인터넷서비스에 게시하여 공지함으로써 효력이
               발생합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               2. 개발자 팀은 관계 법령에 위배되지 않는 범위에서 이 약관을 변경할 수 있으며, 약관을
               변경하는 경우 변경 내용과 시행일을 정하여 시행일 7일 전(이용자에게 불리하거나 중대한
               변경은 30일 전)부터 공지합니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-                marginBottom: '4px',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black mb-1'>
               3. 개발자 팀은 기존 이용자에게 변경된 약관, 적용일자 및 주요 변경사항을 전자우편,
               문자메시지, 서비스 내 알림 등 전자적 수단으로 개별 통지할 수 있습니다.
             </p>
-            <p
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#000000',
-              }}
-            >
+            <p className='font-pretendard font-normal text-xs leading-[19.2px] text-black'>
               4. 개발자 팀이 변경 약관을 공지·통지하면서 "변경에 동의하지 않는 경우 일정 기간 내
               계약을 해지할 수 있으며, 기간 내 의사표시가 없으면 변경에 동의한 것으로 본다"는 취지를
               안내하고, 이용자가 그 기간 내 명시적으로 거절하지 않은 경우 변경에 동의한 것으로
