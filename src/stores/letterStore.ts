@@ -32,7 +32,7 @@ const createInitialDraft = (): LetterDraft => ({
 
 const createInitialStyle = (): LetterStyle => ({
   paperId: DEFAULT_PAPER_ID,
-  stampId: null, // TODO : AssetUrl 연동 후 초기값 정의
+  stampId: 0,
   fontId: DEFAULT_FONT_ID,
 });
 

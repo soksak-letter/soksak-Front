@@ -10,92 +10,65 @@ import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type SortOrder = 'latest' | 'oldest';
 
 type InboxOtherLetterItem = {
   letterId: number;
-  threadId: number;
+  threadId: number; // inbox-other에서 처음 저장되는데, receiverUserId, senderUser과 같다.
   question: string;
-  senderName: string;
+  senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
-  // stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
-  // stampUrl: string;
+  stampId: number;
+  stampUrl: string;
 };
 
-const parseDate = (iso: string) => {
-  const d = new Date(iso);
-  const fmt = new Intl.DateTimeFormat('ko-KR', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-  const parts = Object.fromEntries(
-    fmt
-      .formatToParts(d)
-      .filter((p) => p.type !== 'literal')
-      .map((p) => [p.type, p.value]),
-  );
-  return `${parts.year}.${parts.month}.${parts.day}`;
+const parseDate = (input: string | null | undefined) => {
+  if (!input) return '-';
+
+  const d = new Date(input);
+  if (Number.isNaN(d.getTime())) return '-';
+
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+
+  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxOtherPage() {
   const navigate = useNavigate();
   const { data, isError, isLoading, refetch } = useAnonMailbox();
+  const setFlow = useThreadFlowStore((s) => s.setFlow);
 
   const [tab, setTab] = useState<LetterInboxTabKey>('other');
   const [keyword, setKeyword] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
-  const DUMMY_MAILBOX_LETTERS = [
-    {
-      threadId: 1,
-      sender: { id: 2, nickname: '파란수박' },
-      lastLetterId: 9001,
-      lastLetterTitle: '요즘 제일 행복한 순간은?',
-      lastLetterPreview: '나는 요즘…',
-      updatedAt: new Date().toISOString(),
-      paperId: 0,
-    },
-    {
-      threadId: 2,
-      sender: { id: 3, nickname: '초록오이' },
-      lastLetterId: 9002,
-      lastLetterTitle: '오늘 하루를 한 단어로 말하면?',
-      lastLetterPreview: '음…',
-      updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-      paperId: 1,
-    },
-    {
-      threadId: 3,
-      sender: { id: 4, nickname: '노란치즈' },
-      lastLetterId: 9003,
-      lastLetterTitle: '너가 제일 자주 하는 생각은?',
-      lastLetterPreview: '나는…',
-      updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
-      paperId: 2,
-    },
-  ] as const;
-
-  // 서버 응답을 화면 아이템으로 변환 (isUnread 제외)
+  // 서버 응답을 화면 아이템으로 변환
   const items: InboxOtherLetterItem[] = useMemo(() => {
     const serverLetters = data?.letters ?? [];
-    const raw = serverLetters.length > 0 ? serverLetters : DUMMY_MAILBOX_LETTERS;
 
-    return raw.map((x) => ({
-      letterId: x.lastLetterId,
-      threadId: x.threadId,
-      question: x.lastLetterTitle,
-      senderName: x.sender.nickname, // 서버에서 내려주는 랜덤 닉네임
-      receivedAt: parseDate(x.updatedAt),
-      receivedAtMs: new Date(x.updatedAt).getTime(),
-      isUnread: false,
-      paperId: x.paperId + 1,
-    }));
+    return serverLetters.map((x) => {
+      const deliveredAt = x.deliveredAt; // ISO string
+
+      return {
+        letterId: x.lastLetterId,
+        threadId: x.threadId, // = receiverUserId, senderName's id
+        question: x.lastLetterTitle,
+        senderName: x.sender.nickname,
+        receivedAt: parseDate(deliveredAt),
+        receivedAtMs: new Date(deliveredAt).getTime(),
+        isUnread: false,
+        paperId: x.design?.paper?.id ?? 0,
+        stampId: x.stampId ?? 0,
+        stampUrl: (x.stampUrl ?? '').trim(),
+      };
+    });
   }, [data]);
 
   const filtered = useMemo(() => {
@@ -120,10 +93,16 @@ export default function LetterInboxOtherPage() {
     }
   };
 
-  const handleOpenLetter = (item: InboxOtherLetterItem) => {
-    navigate(`/letter/thread/${item.threadId}`, {
-      state: { senderName: item.senderName },
+  const handleOpenThread = (item: InboxOtherLetterItem) => {
+    // Store에 아래 항목 저장
+    setFlow({
+      target: 'other',
+      threadId: item.threadId,
+      senderName: item.senderName,
+      friendName: null,
     });
+
+    navigate(`/letter/thread/${item.threadId}`);
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
@@ -179,7 +158,7 @@ export default function LetterInboxOtherPage() {
                     <button
                       key={it.letterId}
                       type='button'
-                      onClick={() => handleOpenLetter(it)}
+                      onClick={() => handleOpenThread(it)}
                       className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>
@@ -205,6 +184,16 @@ export default function LetterInboxOtherPage() {
                               <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
                             )}
                           </div>
+
+                          {!!it.stampUrl && (
+                            <img
+                              src={it.stampUrl}
+                              alt=''
+                              className='absolute right-1 bottom-3 h-7 w-7 object-contain pointer-events-none'
+                              draggable={false}
+                            />
+                          )}
+
                           {/* 오른쪽 하단 날짜 */}
                           <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
                             {it.receivedAt}

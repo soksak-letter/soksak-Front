@@ -32,6 +32,7 @@ function LetterDecoPage() {
   // senderName 불러오기
   const location = useLocation();
   const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
 
   const { target } = useParams<{ target?: string }>();
 
@@ -102,9 +103,10 @@ function LetterDecoPage() {
     }
 
     openModal('letterSendingConfirm', {
+      friendName,
       onConfirmSending: () => {
         navigate(`/letter/${safeMode}/sending`, {
-          state: { senderName },
+          state: { senderName, friendName },
         });
       },
       onConfirmCancelSending: () => setIsOpen(true),

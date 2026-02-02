@@ -1,11 +1,14 @@
 import type { ApiError } from '../common';
 
 export type SelfMailboxSuccess = {
-  items: {
+  letters: {
     id: number;
+    questionId: number;
     title: string;
     createdAt: string;
     paperId: number;
+    stampId: number;
+    stampUrl: string;
   }[];
 };
 
