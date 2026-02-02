@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
@@ -10,6 +10,9 @@ import LoveIcon from '@/assets/icons/LoveIcon.svg?react';
 
 import stampEx1 from '@/assets/test/stampEx1.svg';
 import stampEx2 from '@/assets/test/stampEx2.svg';
+import { useCreateReview } from '@/hooks/useCreateReview';
+import { useThreadFlowStore } from '@/stores/letterContext';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type ReviewMood = 'meh' | 'good' | 'love';
 
@@ -30,13 +33,55 @@ export default function LetterReviewPage() {
   const [isSliding, setIsSliding] = useState(false);
 
   const percent = useMemo(() => Math.min(100, Math.max(0, temp)), [temp]);
-  const canSubmit = mood !== null;
 
+  // URL params 우선 > 없으면 store로 threadId 받아오기
+  const { threadId: threadIdParam } = useParams<{ threadId?: string }>();
+  const threadIdFromStore = useThreadFlowStore((s) => s.threadId);
+
+  const threadId = threadIdParam ? Number(threadIdParam) : threadIdFromStore;
+
+  const { showToast } = useGlobalToast();
+  const senderName = useThreadFlowStore((s) => s.senderName);
+  // TODO : 내 이름 불러오기
+  const username = '개굴';
+
+  // 서버에 보낼 데이터로 매핑 (reviewTag)
+  const moodToTag = (m: ReviewMood) => {
+    if (m === 'meh') return '그냥 그래요';
+    if (m === 'good') return '좋아요!';
+    return '또 만나고 싶어요';
+  };
+
+  // threadId 없으면 막기
+  const canSubmit = mood !== null && !!threadId;
+  const createReview = useCreateReview();
+
+  // POST 요청
   const handleSubmit = async () => {
-    if (!canSubmit) return;
+    if (!mood) return;
 
-    // await postLetterReview({ letterId, mood, temperature: temp }); TODO
-    navigate(-1);
+    if (!threadId) {
+      showToast('후기를 보낼 수 없어요. (threadId 없음)');
+      return;
+    }
+
+    const body = {
+      temperatureScore: temp,
+      reviewTag: moodToTag(mood),
+    };
+
+    createReview.mutate(
+      { threadId, body },
+      {
+        onSuccess: () => {
+          showToast('후기를 보냈어요!', 'success');
+          navigate('/home/main');
+        },
+        onError: (err) => {
+          showToast(err?.reason ?? '후기 전송 실패. 잠시 후 다시 시도해주세요.');
+        },
+      },
+    );
   };
 
   const testStamps = [
@@ -94,13 +139,13 @@ export default function LetterReviewPage() {
             </div>
           </div>
 
-          <p className='mt-5 ty-title3 text-[#000000]'>파란수박님</p>
+          <p className='mt-5 ty-title3 text-[#000000]'>{senderName}님</p>
         </div>
 
         {/* ===== 카피 ===== */}
         <div className='mt-8'>
           <p className='ty-body2 text-[#000000] leading-[160%]'>
-            개굴님, 파란수박님과의 편지는 어땠나요?
+            {username}님, {senderName}님과의 편지는 어땠나요?
             <br />
             편지 후기를 남겨주세요.
           </p>
@@ -180,7 +225,6 @@ export default function LetterReviewPage() {
                 className='w-[320px] ml-2 appearance-none bg-transparent outline-none'
                 style={
                   {
-                    // @ts-expect-error CSS var
                     '--fill': `${percent}%`,
                   } as React.CSSProperties
                 }
