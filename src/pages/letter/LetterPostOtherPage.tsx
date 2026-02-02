@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import PenIcon from '@/assets/icons/PenIcon.svg?react';
@@ -8,6 +8,7 @@ import { useAnonThread } from '@/hooks/mails/useAnonThread';
 import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type PostItem = {
   letterId: number;
@@ -32,13 +33,12 @@ const parseDate = (iso: string) => {
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
   const { threadId: threadIdParam } = useParams();
-
   const threadId = threadIdParam ? Number(threadIdParam) : 0;
-  const { data, isLoading, isError, refetch } = useAnonThread(threadId);
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const setFlow = useThreadFlowStore((s) => s.setFlow);
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+
+  const { data, isLoading, isError, refetch } = useAnonThread(threadId);
 
   const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
@@ -57,6 +57,15 @@ export default function LetterPostOtherPage() {
     }));
   }, [data?.letters]);
 
+  // store에 컨텍스트 동기화 (새로고침 대비, 다음 페이지에서 사용하기 위해)
+  useEffect(() => {
+    setFlow({
+      target: 'other',
+      threadId,
+      senderName: senderName,
+    });
+  }, [setFlow, threadId, senderName]);
+
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
   const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
@@ -72,9 +81,8 @@ export default function LetterPostOtherPage() {
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
-    navigate('/letter/other/draft', {
-      state: { threadId, senderName },
-    });
+    navigate('/letter/other/draft');
+    // senderName, threadId는 letterContext store에 저장되어 있다.
   };
 
   return (

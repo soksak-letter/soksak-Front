@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -12,6 +12,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useEffect } from 'react';
 import LoadingPage from '../system/LoadingPage';
 import { Button } from '@/components/common/Button';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 const LIMIT = {
   TITLE: { MIN: 3, MAX: 20 },
@@ -34,8 +35,7 @@ const OtherDraftPage = () => {
   }, [setActiveTarget]);
 
   // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
   // TODO : 남은 편지 횟수 처리 필요
   const letterLeft = 4;

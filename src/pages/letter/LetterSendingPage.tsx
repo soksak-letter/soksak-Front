@@ -1,5 +1,5 @@
 import LetterEnvelope from '@/components/letters/LetterEnvelope';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useEffect, useMemo, useRef } from 'react';
 import { useLetterStore } from '@/stores/letterStore';
@@ -8,6 +8,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -17,10 +18,8 @@ const LetterSendingPage = () => {
 
   const navigate = useNavigate();
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
-  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const threadId = useThreadFlowStore((s) => s.threadId) ?? 0;
 
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
@@ -100,7 +99,8 @@ const LetterSendingPage = () => {
     }
 
     const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
-
+    // 테스트용으로 무조건 sent-transition으로 이동
+    // TODO : 기존에는 /home/main, letterCount 10회 확인 로직 추가 필요
     if (!ok) {
       navigate('/home/main', { replace: true });
     }
@@ -126,10 +126,12 @@ const LetterSendingPage = () => {
 
         console.log('[CreateLetter success response]', res);
 
-        navigate('/home/main', {
-          replace: true,
-          state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
-        });
+        // ✅ 테스트: 성공하면 무조건 transition
+        navigate(`/friend/sent-transition/${threadId}`, { replace: true });
+        // navigate('/home/main', {
+        //   replace: true,
+        //   state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
+        // });
       } catch {
         hasSentRef.current = false;
         showToast('편지 전송에 실패했어요.', 'error');
@@ -182,7 +184,7 @@ const LetterSendingPage = () => {
         <>
           {sender}님의 소중한 편지가
           <br />
-          {friendName}님에게 전달되고 있어요.
+          {senderName}님에게 전달되고 있어요.
         </>
       );
     }

@@ -2,12 +2,14 @@ import ModalFrame from '@/components/modal/ModalFrame';
 import { useModalStore } from '@/stores/modalStore';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 import { useLocation } from 'react-router-dom';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 export default function LetterSendingConfirmModal() {
   const { closeModal, payload } = useModalStore();
   const { pathname } = useLocation();
-
   const friendName = payload?.friendName;
+
+  const senderName = useThreadFlowStore((s) => s.senderName);
 
   const handleStay = () => {
     payload?.onConfirmCancelSending?.();
@@ -22,7 +24,7 @@ export default function LetterSendingConfirmModal() {
   const getTargetText = () => {
     // TODO : 추후 라이팅 주소 확인 필요
     if (pathname.includes('/letter/other/decorate') || pathname.includes('/letter/anon/decorate'))
-      return '익명 편지를';
+      return `${senderName}님에게 편지를`;
     if (pathname.includes('/letter/self/decorate')) return '미래의 나에게 편지를';
     if (pathname.includes('/letter/friend/decorate')) return `${friendName}님에게 편지를`;
     return '편지를';

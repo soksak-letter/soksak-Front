@@ -94,7 +94,7 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
                   { path: 'request', element: <FriendRequestPage /> },
-                  { path: 'sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+                  { path: 'sent-transition/:threadId', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
@@ -156,10 +156,10 @@ const router = createBrowserRouter([
                 ],
               },
               { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
-              { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
+              // { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
               { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },
-              { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
+              { path: 'letter/review/:threadId', element: <LetterReviewPage /> },
               { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
               { path: 'letter/loading', element: <LoadingPage /> },
               // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제

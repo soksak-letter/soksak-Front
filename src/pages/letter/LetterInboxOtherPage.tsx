@@ -10,19 +10,20 @@ import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type SortOrder = 'latest' | 'oldest';
 
 type InboxOtherLetterItem = {
   letterId: number;
-  threadId: number;
+  threadId: number; // inbox-other에서 처음 저장되는데, receiverUserId, senderUser과 같다.
   question: string;
-  senderName: string;
+  senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
-  stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  stampId: number;
   stampUrl: string;
 };
 
@@ -42,6 +43,7 @@ const parseDate = (input: string | null | undefined) => {
 export default function LetterInboxOtherPage() {
   const navigate = useNavigate();
   const { data, isError, isLoading, refetch } = useAnonMailbox();
+  const setFlow = useThreadFlowStore((s) => s.setFlow);
 
   const [tab, setTab] = useState<LetterInboxTabKey>('other');
   const [keyword, setKeyword] = useState('');
@@ -56,7 +58,7 @@ export default function LetterInboxOtherPage() {
 
       return {
         letterId: x.lastLetterId,
-        threadId: x.threadId,
+        threadId: x.threadId, // = receiverUserId, senderName's id
         question: x.lastLetterTitle,
         senderName: x.sender.nickname,
         receivedAt: parseDate(deliveredAt),
@@ -92,9 +94,15 @@ export default function LetterInboxOtherPage() {
   };
 
   const handleOpenThread = (item: InboxOtherLetterItem) => {
-    navigate(`/letter/thread/${item.threadId}`, {
-      state: { senderName: item.senderName },
+    // Store에 아래 항목 저장
+    setFlow({
+      target: 'other',
+      threadId: item.threadId,
+      senderName: item.senderName,
+      friendName: null,
     });
+
+    navigate(`/letter/thread/${item.threadId}`);
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;

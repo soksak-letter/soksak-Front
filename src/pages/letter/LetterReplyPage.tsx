@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useMemo } from 'react';
 
@@ -10,6 +10,7 @@ import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
+import { useThreadFlowStore } from '@/stores/letterContext';
 
 type ReplyData = {
   title: string;
@@ -50,11 +51,11 @@ export default function LetterReplyPage() {
   const navigate = useNavigate();
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
+
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
 
-  // SenderName 불러오기
-  const location = useLocation();
-  const senderName = (location.state as { senderName?: string } | null)?.senderName ?? '익명';
   const { openModal } = useModalStore();
 
   const view = useMemo<ReplyData | null>(() => {
@@ -96,14 +97,12 @@ export default function LetterReplyPage() {
   };
 
   const handleReply = () => {
-    navigate('/letter/other/draft', {
-      state: { senderName },
-    });
+    navigate('/letter/other/draft');
   };
 
   const handleEnd = () => {
     openModal('conversationRemaining', {
-      friendName: '파란수박',
+      friendName: senderName,
       remainingCount: 4,
       onContinueConversation: () => {
         // 그냥 닫히고 계속 작성
@@ -111,7 +110,7 @@ export default function LetterReplyPage() {
       onStopConversation: () => {
         // other-stop 페이지로 이동
         navigate('/letter/other-stop', {
-          state: { friendName: '파란수박', totalCount: 7 },
+          state: { friendName: senderName, totalCount: 7 },
         });
       },
     });
