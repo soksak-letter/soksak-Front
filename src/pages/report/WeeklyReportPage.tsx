@@ -160,7 +160,7 @@ export default function WeeklyReportPage() {
             <br />
             주간 마음 리포트가 도착했어요!
           </h2>
-          {/* 상단 “주간 마음 리포트” 카드 (344x307) - TODO: "에잇" 이 컴포넌트 구현하고 변경해주세요*/}
+          {/* 상단 “주간 마음 리포트” 카드 (344x307) */}
           <section className='w-[344px] h-[307px] rounded-xl bg-[var(--color-bg-500)] shadow-[0_2px_10px_rgba(0,0,0,0.06)] px-[16px] py-[8px]'>
             <div className='flex flex-col gap-[32px]'>
               {/* 네트워크/키워드 영역 블랭크 */}
@@ -192,8 +192,8 @@ export default function WeeklyReportPage() {
             </div>
           </section>
 
-          {/* 편지조각 보기 (피그마 375x170) - 블랭크 */}
-          <div className='w-[375px] h-[170px] px-[16px]'>
+          {/* 편지조각 보기- 블랭크 */}
+          <div className='w-full h-[170px] px-[16px]'>
             <div className='h-full w-full py-4'>
               {/* 상단 라벨/버튼 자리 */}
               <div className='flex flex-col gap-[16px]'>
