@@ -45,9 +45,9 @@ export default function PasswordChangePage() {
           className='text-center'
           style={{
             fontFamily: 'Pretendard',
-            fontWeight: 400,
-            fontSize: '16.41px',
-            lineHeight: '20px',
+            fontWeight: 600,
+            fontSize: '18px',
+            lineHeight: '28.8px',
             color: '#000000',
           }}
         >
