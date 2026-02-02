@@ -13,7 +13,8 @@ const SettingHeader: React.FC<SettingHeaderProps> = ({ title, onBack, right }) =
       style={{
         backgroundColor: '#FAFAFA',
         height: '50px',
-        width: '375px',
+        width: '100%',
+        maxWidth: '375px',
         transform: 'translateX(-50%)',
       }}
     >
