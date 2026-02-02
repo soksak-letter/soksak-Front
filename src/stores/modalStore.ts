@@ -9,6 +9,7 @@ export type ModalType =
   | 'friendRequest'
   | 'friendRequestFailed'
   | 'conversationRemaining'
+  | 'letterDetail' // keywordPage에서 편지내용
   | null;
 
 export type ModalPayload = {
@@ -41,6 +42,10 @@ export type ModalPayload = {
   remainingCount?: number;
   onContinueConversation?: () => void;
   onStopConversation?: () => void;
+
+  // letterDetail (편지 상세 모달에서 쓸 데이터)
+  letterId?: number;
+  senderName?: string;
 };
 
 interface ModalState {

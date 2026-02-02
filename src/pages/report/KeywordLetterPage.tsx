@@ -4,9 +4,10 @@ import { LoadingDots } from '@/components/LoadingDots';
 import ModalFrame from '@/components/modal/ModalFrame';
 
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { FONT_ASSET_MAP } from '@/constants/fontAssets';
-import { PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
+import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
+import { useModalStore } from '@/stores/modalStore';
 
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,8 +29,9 @@ const parseDotDate = (s: string) => {
 };
 
 export default function KeywordLetterPage() {
-  const navigate = useNavigate();
   const location = useLocation();
+
+  const { openModal, closeModal, activeModal, payload } = useModalStore();
 
   // 이전 페이지(리포트)에서 전달받은 키워드 정보가 있다고 가정 (예: { keyword: '피곤', count: 5 })
   const selectedKeyword = location.state?.keyword || '피곤';
@@ -103,7 +105,6 @@ export default function KeywordLetterPage() {
   const handleOpenDetail = (item: KeywordLetterItem) => {
     openModal('letterDetail', {
       letterId: item.letterId,
-      senderName: item.senderName,
     });
   };
   return (
@@ -130,21 +131,16 @@ export default function KeywordLetterPage() {
                 key={item.letterId}
                 item={item}
                 EnvelopePreview={EnvelopePreview}
-                onClick={() => navigate(`/letter/${item.letterId}`)}
+                onClick={() => handleOpenDetail(item)}
               />
             );
           })}
-          ;
         </div>
       </main>
       {/* 5. 편지 상세 모달 렌더링 */}
-      {currentModal?.type === 'letterDetail' && (
+      {activeModal === 'letterDetail' && payload?.letterId && (
         <ModalFrame>
-          <LetterDetailModalContent
-            letterId={currentModal.props.letterId}
-            senderName={currentModal.props.senderName}
-            onClose={closeModal}
-          />
+          <LetterDetailModalContent letterId={payload.letterId} onClose={closeModal} />
         </ModalFrame>
       )}
     </div>
@@ -193,17 +189,20 @@ function PostCard({
   );
 }
 /**
- * 📝 LetterDetailModalContent: 모달 내부에 들어갈 실제 편지 내용
+ * LetterDetailModalContent: 모달 내부에 들어갈 실제 편지 내용
  */
 function LetterDetailModalContent({
   letterId,
-  senderName,
   onClose,
 }: {
   letterId: number;
-  senderName: string;
   onClose: () => void;
 }) {
+  /**
+   * useLetterDetail에서 data를 MockData로 주입
+   * TODO:useLetterDetail에서의 Data를 실제 data로 API연동 필요
+   */
+  //임시로 LetterDetail API를 MockData로 연동
   const { data, isLoading, isError } = useLetterDetail(letterId);
 
   if (isLoading)
@@ -220,22 +219,22 @@ function LetterDetailModalContent({
 
   return (
     <div className='flex flex-col items-center animate-in fade-in zoom-in duration-300'>
-      <p className='ty-title3 text-white mb-6'>{senderName}님의 편지</p>
-
       <div onClick={(e) => e.stopPropagation()}>
         {' '}
         {/* 카드 클릭 시 모달 닫힘 방지 */}
         <LetterCard
           PaperBg={paper.Preview}
           font={font.fontFamily}
-          value={{ title: data.title, content: data.content }}
-          className='rotate-1 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
+          value={{ title: data.title, content: data.content }} //data를 MockDATA로 구현
+          className='rotate-4 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
         />
       </div>
-
       <button onClick={onClose} className='mt-8 text-white/70 underline ty-body5'>
         닫기
       </button>
     </div>
   );
 }
+/**
+ * TODO:data를 실제 데이터로 수정 필요
+ */
