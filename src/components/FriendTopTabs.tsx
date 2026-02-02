@@ -16,7 +16,7 @@ export default function FriendTopTabs({
           type='button'
           onClick={() => onChange('inbox')}
           className={clsx(
-            'h-[40px] rounded-md text-sm font-medium transition',
+            'h-[44px] rounded-md ty-body4 transition',
             value === 'inbox'
               ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
               : 'text-[#8C8C8C]',
@@ -28,7 +28,7 @@ export default function FriendTopTabs({
           type='button'
           onClick={() => onChange('request')}
           className={clsx(
-            'h-[40px] rounded-md text-sm font-medium transition',
+            'h-[44px] rounded-md ty-body4 transition',
             value === 'request'
               ? 'bg-white text-[#F5544C] shadow-sm border border-[#F5544C]'
               : 'text-[#8C8C8C]',

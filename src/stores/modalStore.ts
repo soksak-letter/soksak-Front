@@ -5,7 +5,13 @@ export type ModalType =
   | 'onboardingSkipConfirm'
   | 'friendAdded'
   | 'letterSendingConfirm'
+  | 'letterSendingFailed'
   | 'friendRequest'
+  | 'friendRequestFailed'
+  | 'logoutConfirm'
+  | 'withdrawalConfirm'
+  | 'conversationRemaining'
+  | 'storageConfirm'
   | null;
 
 export type ModalPayload = {
@@ -22,10 +28,31 @@ export type ModalPayload = {
 
   // letterSendingConfirm
   onConfirmSending?: () => void;
+  onConfirmCancelSending?: () => void;
+
+  // letterSendingFailed
+  onConfirmSendingAgain?: () => void;
 
   // friendRequest
   onConfirmFriendRequest?: () => void;
   receiverName?: string;
+
+  // friendRequestFailed
+  onConfirmRequestAgain?: () => void;
+
+  // logoutConfirm
+  onConfirmLogout?: () => void;
+
+  // withdrawalConfirm
+  onConfirmWithdraw?: () => void;
+  // conversationRemaining (대화 n회 남음)
+  remainingCount?: number;
+  onContinueConversation?: () => void;
+  onStopConversation?: () => void;
+
+  // storageConfirm
+  onConfirmStorage?: () => void;
+  onExit?: () => void;
 };
 
 interface ModalState {

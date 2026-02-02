@@ -14,7 +14,7 @@ const LetterReportPage = () => {
   const targetUserId = Number(searchParams.get('targetUserId')) || 0;
 
   // 차단 훅
-  const { block, isLoading: isBlocking } = useBlockUser();
+  const { mutateAsync: block, isPending: isBlocking } = useBlockUser();
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
@@ -87,10 +87,10 @@ const LetterReportPage = () => {
     // 차단하기가 활성화된 경우 차단 API 호출
     if (isBlocked && targetUserId) {
       console.log('[LetterReportPage] 차단 API 호출 시작, targetUserId:', targetUserId);
-      const { success, message } = await block(targetUserId);
-      console.log('[LetterReportPage] 차단 API 결과 - success:', success, ', message:', message);
+      const { result, message } = await block(targetUserId);
+      console.log('[LetterReportPage] 차단 API 결과 - result:', result, ', message:', message);
 
-      if (!success) {
+      if (!result) {
         showToast(message, 'error');
         return;
       }

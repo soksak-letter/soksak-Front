@@ -1,12 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import { Button } from '@/components/common/Button';
 import { useModalStore } from '@/stores/modalStore';
 import { useNavigate } from 'react-router-dom';
 import FriendTopTabs from '@/components/FriendTopTabs';
-
-type TabKey = 'inbox' | 'request';
+import { useIncomingFriendRequests } from '@/hooks/friend/useIncomingFriendRequests';
+import { useOutgoingFriendRequests } from '@/hooks/friend/useOutgoingFriendRequests';
+import { useAcceptFriendRequest } from '@/hooks/friend/useAcceptFriendRequest';
+import { useRejectFriendRequest } from '@/hooks/friend/useRejectFriendRequest';
+import { useCancelFriendRequest } from '@/hooks/friend/useCancelFriendRequest';
+import { useLetterStore } from '@/stores/letterStore';
 
 type RequestUser = {
   id: number;
@@ -14,46 +18,69 @@ type RequestUser = {
 };
 
 export default function FriendRequestPage() {
-  const [tab, setTab] = useState<TabKey>('request');
+  const navigate = useNavigate();
+  const openModal = useModalStore((s) => s.openModal);
 
-  // 더미 데이터 (API 붙일 때만 교체)
+  const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+  const { data: incoming = [] } = useIncomingFriendRequests();
+  // TODO : 이전 friend draft를 리셋해야 하는가?
+  // 이전 friend draft 임시저장 -> 다른 친구에게 새로 작성하려고 하면 모달 띄우기
+  // (임시 저장된 글이 있습니다. 삭제하고 새로 작성하시겠어요?)
+  // const resetCurrent = useLetterStore((s) => s.resetCurrent);
+  const { data: outgoing = [] } = useOutgoingFriendRequests();
+
+  const acceptMutation = useAcceptFriendRequest();
+  const rejectMutation = useRejectFriendRequest();
+  const cancelMutation = useCancelFriendRequest();
+
   const received = useMemo<RequestUser[]>(
-    () => [
-      { id: 1, name: '파란수박' },
-      { id: 2, name: '강아지' },
-      { id: 3, name: '키위새' },
-      { id: 4, name: '키위새' },
-    ],
-    [],
+    () =>
+      incoming.map((r) => ({
+        id: r.requesterUserId,
+        name: String(r.requesterUserId), // TODO: nickname 내려오면 교체
+      })),
+    [incoming],
   );
 
-  const sent = useMemo<RequestUser[]>(() => [{ id: 10, name: '파란수박' }], []);
+  const sent = useMemo<RequestUser[]>(
+    () =>
+      outgoing.map((r) => ({
+        id: r.receiverUserId,
+        name: String(r.receiverUserId), // TODO: nickname 내려오면 교체
+      })),
+    [outgoing],
+  );
 
-  const openModal = useModalStore((s) => s.openModal);
-  const navigate = useNavigate();
+  const goWriteLetterTo = (user: RequestUser) => {
+    setActiveTarget('friend');
 
-  const handleAccept = async (user: RequestUser) => {
-    console.log('accept:', user);
-    // TODO: accept API 호출
-    // await acceptFriendRequest(user.id);
+    patchDraft({ receiverUserId: user.id });
 
-    // 친구 추가 성공 모달 오픈
-    openModal('friendAdded', {
-      friendName: user.name,
+    navigate('/friend/draft');
+  };
 
-      // 확인 버튼
-      onConfirm: () => {},
-
-      // 친구에게 편지 쓰기 버튼
-      onWriteLetter: () => {
-        // navigate(`/friend/${user.id}/posts`);
+  const handleAccept = (user: RequestUser) => {
+    acceptMutation.mutate(user.id, {
+      onSuccess: () => {
+        openModal('friendAdded', {
+          friendName: user.name,
+          onConfirm: () => {},
+          onWriteLetter: () => {
+            goWriteLetterTo(user);
+          },
+        });
       },
     });
   };
 
   const handleReject = (user: RequestUser) => {
-    // TODO: reject/cancel API
+    rejectMutation.mutate(user.id);
     console.log('reject:', user);
+  };
+
+  const handleCancel = (user: RequestUser) => {
+    cancelMutation.mutate(user.id);
   };
 
   return (
@@ -61,18 +88,17 @@ export default function FriendRequestPage() {
       <TitleHeader title='친구' />
 
       <main className='px-5 pb-24'>
-        {/* 상단 탭(친구 목록 / 친구 신청) */}
-        <FriendTopTabs
-          value='request'
-          onChange={(tab) => {
-            if (tab === 'inbox') {
-              navigate('/friend/inbox');
-            }
-          }}
-        />
-
-        {/* 본문 */}
-        {tab === 'request' ? (
+        <div className='mx-auto w-full max-w-[343px]'>
+          {/* 상단 탭(친구 목록 / 친구 신청) */}
+          <FriendTopTabs
+            value='request'
+            onChange={(tab) => {
+              if (tab === 'inbox') {
+                navigate('/friend/inbox');
+              }
+            }}
+          />
+          {/* 본문 */}
           <div className='mt-5 space-y-8 '>
             <Section title='받은 신청'>
               {received.length === 0 ? (
@@ -84,21 +110,11 @@ export default function FriendRequestPage() {
                       key={u.id}
                       name={u.name}
                       right={
-                        <div className='flex gap-2 '>
-                          <Button
-                            color='grey'
-                            size='small3'
-                            onClick={() => handleReject(u)}
-                            className='min-w-[72px]'
-                          >
+                        <div className='flex gap-[8px] '>
+                          <Button color='grey' size='small3' onClick={() => handleReject(u)}>
                             거절
                           </Button>
-                          <Button
-                            color='primary'
-                            size='small2'
-                            onClick={() => handleAccept(u)}
-                            className='min-w-[88px]'
-                          >
+                          <Button color='primary' size='small2' onClick={() => handleAccept(u)}>
                             친구 추가
                           </Button>
                         </div>
@@ -113,19 +129,14 @@ export default function FriendRequestPage() {
               {sent.length === 0 ? (
                 <EmptyState text='보낸 신청이 없어요' />
               ) : (
-                <div className='space-y-3'>
+                <div className='space-y-2'>
                   {sent.map((u) => (
                     <RequestRow
                       key={u.id}
                       name={u.name}
                       right={
-                        <Button
-                          color='black'
-                          size='small3'
-                          onClick={() => handleReject(u)}
-                          className='min-w-[72px]'
-                        >
-                          거절
+                        <Button color='black' size='small3' onClick={() => handleCancel(u)}>
+                          취소
                         </Button>
                       }
                     />
@@ -134,9 +145,7 @@ export default function FriendRequestPage() {
               )}
             </Section>
           </div>
-        ) : (
-          <div className='mt-10'>todo</div>
-        )}
+        </div>
       </main>
     </div>
   );
@@ -149,7 +158,7 @@ export default function FriendRequestPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className='mb-3 text-sm font-semibold text-[#171717]'>{title}</h2>
+      <h2 className='mb-3 ty-body2'>{title}</h2>
       {children}
     </section>
   );
@@ -158,7 +167,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function RequestRow({ name, right }: { name: string; right: React.ReactNode }) {
   return (
     <div className='w-[343px] h-[80px] flex items-center justify-between rounded-xl  bg-white px-4 py-4 shadow-[0_0_10px_rgba(0,0,0,0.04)] '>
-      <p className='text-sm font-semibold text-[#171717]'>{name}</p>
+      <p className='ty-body2'>{name}</p>
       {right}
     </div>
   );
@@ -166,8 +175,6 @@ function RequestRow({ name, right }: { name: string; right: React.ReactNode }) {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className='rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-8 text-center text-sm text-[#9B9B9B]'>
-      {text}
-    </div>
+    <div className='px-4 py-8 text-center ty-body3 text-[var(--color-text-assistive)]'>{text}</div>
   );
 }

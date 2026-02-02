@@ -1,136 +1,67 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { blockUser, getBlockedUsers, getReportList, getRestrictList } from '@/api/moderation';
 import type { BlockedUser, ReportedUser, RestrictedUser } from '@/types/dto/moderation';
 
-// 차단 목록 조회 훅
-interface UseBlockedUsersReturn {
-  blockedUsers: BlockedUser[];
-  isLoading: boolean;
-  error: string | null;
-  refetch: () => Promise<void>;
+/**
+ * moderation 도메인 React Query queryKey 모음
+ *
+ * 캐시 무효화(invalidate) 규칙
+ * - 유저 차단 성공 → blocked invalidate
+ */
+export const moderationKeys = {
+  all: ['moderation'] as const,
+  blocked: () => [...moderationKeys.all, 'blocked'] as const,
+  report: (reportId: number) => [...moderationKeys.all, 'report', reportId] as const,
+  restricted: () => [...moderationKeys.all, 'restricted'] as const,
+};
+
+/**
+ * 차단 목록 조회 훅
+ * - GET /block (getBlockedUsers)
+ */
+export function useBlockedUsers() {
+  return useQuery<BlockedUser[]>({
+    queryKey: moderationKeys.blocked(),
+    queryFn: getBlockedUsers,
+  });
 }
 
-export function useBlockedUsers(): UseBlockedUsersReturn {
-  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchBlockedUsers = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await getBlockedUsers();
-      setBlockedUsers(result);
-    } catch {
-      setError('차단 목록을 불러오는데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchBlockedUsers();
-  }, [fetchBlockedUsers]);
-
-  return {
-    blockedUsers,
-    isLoading,
-    error,
-    refetch: fetchBlockedUsers,
-  };
-}
-
-// 유저 차단 훅
+/**
+ * 유저 차단 훅
+ * - POST /block/{targetUserId} (blockUser)
+ * - 성공 시 차단 목록(blocked) invalidate
+ */
 export function useBlockUser() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const block = useCallback(
-    async (targetUserId: number): Promise<{ success: boolean; message: string }> => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const { result, message } = await blockUser(targetUserId);
-        console.log('[useBlockUser] API 응답 message:', message);
-        return { success: result, message };
-      } catch {
-        setError('유저 차단에 실패했습니다.');
-        return { success: false, message: '유저 차단에 실패했습니다.' };
-      } finally {
-        setIsLoading(false);
-      }
+  return useMutation({
+    mutationFn: (targetUserId: number) => blockUser(targetUserId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: moderationKeys.blocked() });
     },
-    [],
-  );
-
-  return {
-    block,
-    isLoading,
-    error,
-  };
+  });
 }
 
-// 신고 내역 조회 훅
-export function useReportList() {
-  const [report, setReport] = useState<ReportedUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchReport = useCallback(async (reportId: number) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await getReportList(reportId);
-      setReport(result);
-    } catch {
-      setError('신고 내역을 불러오는데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  return {
-    report,
-    isLoading,
-    error,
-    fetchReport,
-  };
+/**
+ * 신고 내역 조회 훅
+ * - GET /reports/{reportId} (getReportList)
+ * - reportId가 유효할 때만 쿼리 실행
+ */
+export function useReportList(reportId: number | null) {
+  return useQuery<ReportedUser>({
+    queryKey: moderationKeys.report(reportId!),
+    queryFn: () => getReportList(reportId!),
+    enabled: reportId !== null,
+  });
 }
 
-// 이용 제한 내역 조회 훅
-interface UseRestrictListReturn {
-  restrictedUsers: RestrictedUser[];
-  isLoading: boolean;
-  error: string | null;
-  refetch: () => Promise<void>;
-}
-
-export function useRestrictList(): UseRestrictListReturn {
-  const [restrictedUsers, setRestrictedUsers] = useState<RestrictedUser[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRestrictList = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await getRestrictList();
-      setRestrictedUsers(result);
-    } catch {
-      setError('이용 제한 내역을 불러오는데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchRestrictList();
-  }, [fetchRestrictList]);
-
-  return {
-    restrictedUsers,
-    isLoading,
-    error,
-    refetch: fetchRestrictList,
-  };
+/**
+ * 이용 제한 내역 조회 훅
+ * - GET /restrict (getRestrictList)
+ */
+export function useRestrictList() {
+  return useQuery<RestrictedUser[]>({
+    queryKey: moderationKeys.restricted(),
+    queryFn: getRestrictList,
+  });
 }
