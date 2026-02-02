@@ -40,7 +40,7 @@ const colorToVariant = (color?: string): Letter['variant'] => {
 };
 
 // LetterItem을 Letter 타입으로 변환
-const convertToLetter = (item: LetterItem): Letter => ({
+const convertToLetter = (item: reportetterItem): Letter => ({
   id: String(item.id),
   title: item.title,
   date: item.deliveredAt ?? '',
