@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import usePwResetForm from '@/hooks/usePwResetForm';
+import useSettingPwChangeForm from '@/hooks/useSettingPwChangeForm';
 import SettingHeader from '@/components/common/SettingHeader';
 
 export default function PasswordResetPage() {
@@ -9,7 +9,7 @@ export default function PasswordResetPage() {
     navigate(-1);
   };
   const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } =
-    usePwResetForm();
+    useSettingPwChangeForm();
 
   return (
     <div className='min-h-dvh bg-[#FAFAFA]'>
@@ -21,13 +21,24 @@ export default function PasswordResetPage() {
       <main className='mx-auto w-full max-w-[375px] px-[14px] pt-[33px] pb-24'>
         {/* 안내 문구 */}
         <p className='font-pretendard font-semibold text-sm leading-[23.8px] text-[#171717] mb-4'>
-          새로운 비밀번호를 입력해주세요.
+          비밀번호를 변경하려면 현재 비밀번호를 입력해주세요.
         </p>
         {/* 입력 필드 영역 */}
         <div className='flex flex-col gap-[6px]'>
           <input
             type='password'
-            placeholder='비밀번호'
+            placeholder='현재 비밀번호'
+            value={form.currentPassword}
+            onChange={handleNoSpaceChange('currentPassword', 16)}
+            className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
+            maxLength={16}
+          />
+          {touched.currentPassword && validations.currentPassword.message && (
+            <span className='text-xs text-red-500'>{validations.currentPassword.message}</span>
+          )}
+          <input
+            type='password'
+            placeholder='새 비밀번호'
             value={form.password}
             onChange={handleNoSpaceChange('password', 16)}
             className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
@@ -38,7 +49,7 @@ export default function PasswordResetPage() {
           )}
           <input
             type='password'
-            placeholder='비밀번호 확인'
+            placeholder='새 비밀번호 확인'
             value={form.passwordConfirm}
             onChange={handleNoSpaceChange('passwordConfirm', 16)}
             className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
@@ -55,7 +66,7 @@ export default function PasswordResetPage() {
         {/* 비밀번호를 잊었어요 링크 */}
         <button
           type='button'
-          onClick={() => navigate('/auth/forgot-password')}
+          onClick={() => navigate('/auth/pw-find')}
           className='block w-full text-center mt-7 font-pretendard font-medium text-sm leading-[23.8px] text-[#595959] underline bg-none border-none cursor-pointer'
         >
           비밀번호를 잊었어요
