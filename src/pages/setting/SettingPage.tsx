@@ -149,6 +149,7 @@ export default function SettingPage() {
             <ul className='flex flex-col gap-[9px]'>
               <li>
                 <button
+                  // TODO: 실제 로그아웃 처리 함수(onConfirmLogout) 연결 필요
                   onClick={() => openModal('logoutConfirm')}
                   className='w-full text-left py-[3px] ml-[3px]'
                   style={{
@@ -164,6 +165,7 @@ export default function SettingPage() {
               </li>
               <li>
                 <button
+                  // TODO: 실제 회원탈퇴 처리 함수(onConfirmWithdraw) 연결 필요
                   onClick={() => openModal('withdrawalConfirm')}
                   className='w-full text-left py-[3px] ml-[3px]'
                   style={{
