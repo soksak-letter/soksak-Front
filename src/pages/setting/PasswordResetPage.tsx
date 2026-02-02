@@ -8,7 +8,7 @@ export default function PasswordResetPage() {
   const handleBack = () => {
     navigate(-1);
   };
-  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit } = usePwResetForm();
+	const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } = usePwResetForm();
 
   return (
     <div className='min-h-dvh bg-[#FAFAFA]'>
@@ -32,7 +32,7 @@ export default function PasswordResetPage() {
             className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
             maxLength={16}
           />
-          {validations.password.message && (
+          {touched.password && validations.password.message && (
             <span className='text-xs text-red-500'>{validations.password.message}</span>
           )}
           <input
@@ -43,7 +43,7 @@ export default function PasswordResetPage() {
             className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
             maxLength={16}
           />
-          {validations.passwordConfirm.message && (
+          {touched.passwordConfirm && validations.passwordConfirm.message && (
             <span className='text-xs text-red-500'>{validations.passwordConfirm.message}</span>
           )}
         </div>

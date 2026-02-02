@@ -18,8 +18,7 @@ const usePwResetForm = () => {
 
   const [form, setForm] = useState({ password: '', passwordConfirm: '' });
   const [focusedField, setFocusedField] = useState<string | null>(null);
-
-  // 유효성 검사 상태
+  const [touched, setTouched] = useState<{ password: boolean; passwordConfirm: boolean }>({ password: false, passwordConfirm: false });
   const [validations, setValidations] = useState<{
     password: ValidationResult;
     passwordConfirm: ValidationResult;
@@ -51,6 +50,8 @@ const usePwResetForm = () => {
       }
       // 폼 상태 업데이트
       setForm((prev) => ({ ...prev, [field]: cleanValue }));
+      // touched 처리
+      setTouched((prev) => ({ ...prev, [field]: true }));
     };
 
   // 제출 가능 여부 (비밀번호 2개만 확인)
@@ -88,6 +89,7 @@ const usePwResetForm = () => {
     handleBlur,
     handleNoSpaceChange,
     handleSubmit,
+    touched
   };
 };
 
