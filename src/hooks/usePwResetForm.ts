@@ -9,6 +9,8 @@ interface ValidationResult {
   success: boolean;
   message: string;
 }
+
+type PwResetFormField = 'password' | 'passwordConfirm';
 const usePwResetForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,9 +19,8 @@ const usePwResetForm = () => {
   const token = location.state?.token;
 
   const [form, setForm] = useState({ password: '', passwordConfirm: '' });
-  const [focusedField, setFocusedField] = useState<string | null>(null);
-
-  // 유효성 검사 상태
+  const [focusedField, setFocusedField] = useState<PwResetFormField | null>(null);
+  const [touched, setTouched] = useState<Record<PwResetFormField, boolean>>({ password: false, passwordConfirm: false });
   const [validations, setValidations] = useState<{
     password: ValidationResult;
     passwordConfirm: ValidationResult;
@@ -38,11 +39,11 @@ const usePwResetForm = () => {
   }, [form]);
 
   // 핸들러들 (handleFocus, handleBlur 등 복사)
-  const handleFocus = (field: string) => () => setFocusedField(field);
+  const handleFocus = (field: PwResetFormField) => () => setFocusedField(field);
   const handleBlur = () => setFocusedField(null);
 
   const handleNoSpaceChange =
-    (field: string, maxLength?: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (field: PwResetFormField, maxLength?: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       // 공백 제거
       const cleanValue = removeWhitespace(e.target.value);
       //maxLength가 설정되어 있고, 입력값이 그보다 길면 업데이트 안 함(무시)
@@ -51,6 +52,8 @@ const usePwResetForm = () => {
       }
       // 폼 상태 업데이트
       setForm((prev) => ({ ...prev, [field]: cleanValue }));
+      // touched 처리
+      setTouched((prev) => ({ ...prev, [field]: true }));
     };
 
   // 제출 가능 여부 (비밀번호 2개만 확인)
@@ -88,6 +91,7 @@ const usePwResetForm = () => {
     handleBlur,
     handleNoSpaceChange,
     handleSubmit,
+    touched
   };
 };
 

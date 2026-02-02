@@ -5,6 +5,7 @@ import TitleHeader from '@/components/common/headers/TitleHeader';
 import FriendTopTabs from '@/components/FriendTopTabs';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
+import { useFriends } from '@/hooks/friend/useFriend';
 
 type FriendInboxItem = {
   id: number;
@@ -12,8 +13,6 @@ type FriendInboxItem = {
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
 };
-
-type TabKey = 'list' | 'request';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -25,18 +24,21 @@ const parseDotDate = (s: string) => {
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<TabKey>('list');
   const [keyword, setKeyword] = useState('');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
+
+  const { data: friends = [], isLoading } = useFriends();
 
   const items = useMemo<FriendInboxItem[]>(
-    () => [
-      { id: 1, name: '파란수박', exchangeCount: 22, lastDate: '2026.1.3' },
-      { id: 2, name: '파란수박', exchangeCount: 22, lastDate: '2026.1.3' },
-    ],
-    [],
+    () =>
+      friends.map((f) => ({
+        id: f.friendUserId,
+        name: f.nickname,
+        exchangeCount: f.letterCount,
+        lastDate: f.createdAt.split('T')[0].replaceAll('-', '.'),
+      })),
+    [friends],
   );
-
-  const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
@@ -51,8 +53,11 @@ export default function FriendInboxPage() {
     });
   }, [items, keyword, sortOrder]);
 
+  const isEmptyFriends = !isLoading && items.length === 0;
+  const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
+
   return (
-    <div className='min-h-screen bg-white'>
+    <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='친구' />
 
       <main className='px-5 pb-[95px]'>
@@ -88,32 +93,40 @@ export default function FriendInboxPage() {
 
         {/* 리스트 */}
         <div className='mt-4 space-y-4'>
-          {filtered.map((f) => (
-            <button
-              key={f.id}
-              type='button'
-              onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
-              className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-            >
-              <div className='flex items-center justify-between gap-3'>
-                <div className='flex items-center gap-3'>
-                  <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
-                  <div>
-                    <p className='text-[16px] font-semibold text-[#171717]'>{f.name}</p>
-                    <p className='mt-1 text-[12px] '>편지를 나눈 횟수 {f.exchangeCount}회</p>
+          {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
+          {!isLoading &&
+            filtered.map((f) => (
+              <button
+                key={f.id}
+                type='button'
+                onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
+                className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+              >
+                <div className='flex items-center justify-between gap-3'>
+                  <div className='flex items-center gap-3'>
+                    <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
+                    <div>
+                      <p className='ty-body2'>{f.name}</p>
+                      <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
+                    </div>
                   </div>
+
+                  {/* 봉투 썸네일 자리(나중에 이미지로 교체) */}
+                  <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
                 </div>
 
-                {/* 봉투 썸네일 자리(나중에 이미지로 교체) */}
-                <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
-              </div>
+                <div className='mt-3 flex justify-end ty-detailMedium'>{f.lastDate}</div>
+              </button>
+            ))}
 
-              <div className='mt-3 flex justify-end text-[12px]'>{f.lastDate}</div>
-            </button>
-          ))}
+          {isEmptyFriends && (
+            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
+              아직 친구가 없어요
+            </div>
+          )}
 
-          {filtered.length === 0 && (
-            <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+          {isEmptySearch && (
+            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
               검색 결과가 없어요
             </div>
           )}

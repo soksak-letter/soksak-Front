@@ -8,8 +8,11 @@ export type ModalType =
   | 'letterSendingFailed'
   | 'friendRequest'
   | 'friendRequestFailed'
+  | 'logoutConfirm'
+  | 'withdrawalConfirm'
   | 'conversationRemaining'
   | 'letterDetail' // keywordPage에서 편지내용
+  | 'storageConfirm'
   | null;
 
 export type ModalPayload = {
@@ -38,6 +41,11 @@ export type ModalPayload = {
   // friendRequestFailed
   onConfirmRequestAgain?: () => void;
 
+  // logoutConfirm
+  onConfirmLogout?: () => void;
+
+  // withdrawalConfirm
+  onConfirmWithdraw?: () => void;
   // conversationRemaining (대화 n회 남음)
   remainingCount?: number;
   onContinueConversation?: () => void;
@@ -46,6 +54,10 @@ export type ModalPayload = {
   // letterDetail (편지 상세 모달에서 쓸 데이터)
   letterId?: number;
   senderName?: string;
+
+  // storageConfirm
+  onConfirmStorage?: () => void;
+  onExit?: () => void;
 };
 
 interface ModalState {
