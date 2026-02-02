@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { blockUser, getBlockedUsers, getReportList, getRestrictList } from '@/api/moderation';
+import { blockUser, getBlockedUsers, getReportDetail, getRestrictList } from '@/api/moderation';
 import type { BlockedUser, ReportedUser, RestrictedUser } from '@/types/dto/moderation';
 
 /**
@@ -44,13 +44,13 @@ export function useBlockUser() {
 
 /**
  * 신고 내역 조회 훅
- * - GET /reports/{reportId} (getReportList)
+ * - GET /reports/{reportId} (getReportDetail)
  * - reportId가 유효할 때만 쿼리 실행
  */
-export function useReportList(reportId: number | null) {
+export function useReportDetail(reportId: number | null) {
   return useQuery<ReportedUser>({
     queryKey: moderationKeys.report(reportId!),
-    queryFn: () => getReportList(reportId!),
+    queryFn: () => getReportDetail(reportId!),
     enabled: reportId !== null,
   });
 }

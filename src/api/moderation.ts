@@ -5,7 +5,7 @@ import type {
   BlockedUser,
   BlockListResponse,
   ReportedUser,
-  ReportListResponse,
+  ReportDetailResponse,
   RestrictedUser,
   RestrictListResponse,
 } from '@/types/dto/moderation';
@@ -40,8 +40,8 @@ export const getBlockedUsers = async (): Promise<BlockedUser[]> => {
  * 신고 내역 조회 API
  * GET /reports/{reportId}
  */
-export const getReportList = async (reportId: number): Promise<ReportedUser> => {
-  const { data } = await axiosInstance.get<ReportListResponse>(`/reports/${reportId}`);
+export const getReportDetail = async (reportId: number): Promise<ReportedUser> => {
+  const { data } = await axiosInstance.get<ReportDetailResponse>(`/reports/${reportId}`);
   return data.success.result;
 };
 

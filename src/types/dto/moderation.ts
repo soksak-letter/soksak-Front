@@ -30,7 +30,7 @@ export interface ReportedUser {
   createdAt: string;
 }
 
-export interface ReportListResponse {
+export interface ReportDetailResponse {
   resultType: 'SUCCESS' | 'ERROR';
   error: null;
   success: {
