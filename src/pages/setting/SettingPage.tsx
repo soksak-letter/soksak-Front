@@ -76,13 +76,16 @@ export default function SettingPage() {
               <li>
                 <button
                   onClick={() => navigate('/setting/alarm')}
-                  className='w-full text-left py-[3px] ml-[3px]'
+                  className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '25.6px',
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
                     color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
                   }}
                 >
                   알림
