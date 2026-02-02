@@ -1,3 +1,4 @@
+// 백엔드에 요청용
 export function getNowKSTIsoString(): string {
   const now = new Date();
 
@@ -14,4 +15,10 @@ export function getNowKSTIsoString(): string {
   const ss = String(kstTime.getSeconds()).padStart(2, '0');
 
   return `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss}+09:00`;
+}
+
+// 프론트 쿼리키용
+export function getTodayKstKey(): string {
+  const kstIso = getNowKSTIsoString(); // ...+09:00
+  return kstIso.slice(0, 10); // "YYYY-MM-DD"
 }

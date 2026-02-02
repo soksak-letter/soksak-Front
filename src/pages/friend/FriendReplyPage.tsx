@@ -50,10 +50,9 @@ export default function FriendReplyPage() {
   const navigate = useNavigate();
 
   // letterId, friendId Param으로 불러오기
-  const { letterId: letterIdParam } = useParams();
-  const { friendId: friendIdParam } = useParams();
+  const { letterId: letterIdParam, friendId: friendIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
-  const friendId = Number(friendIdParam);
+  const friendId = friendIdParam ? Number(friendIdParam) : 0;
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const { setActiveTarget, patchDraft } = useLetterStore();
@@ -89,7 +88,7 @@ export default function FriendReplyPage() {
   }, [view]);
 
   // 잘못된 접근 - 404 처리
-  if (!letterIdParam) return <NotFoundPage />;
+  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId)) return <NotFoundPage />;
 
   const handleReport = () => {
     navigate('/letter/report');

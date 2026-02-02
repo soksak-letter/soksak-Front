@@ -67,9 +67,9 @@ export default function FriendPostPage() {
       dateText: parseDate(l.deliveredAt),
       direction: 'sent',
       isUnread: false,
-      paperId: l.design.paper.id,
-      stampId: l.design.stamp.id,
-      stampUrl: l.design.stamp.assetUrl,
+      paperId: (l.design.paper.id ?? 0) + 1,
+      stampId: l.design.stamp.id ?? 0,
+      stampUrl: l.design.stamp.assetUrl ?? '',
     }));
 
     const merged = [...received, ...sent];
@@ -84,7 +84,7 @@ export default function FriendPostPage() {
   const rightLane = useMemo(() => posts.filter((p) => p.direction === 'sent'), [posts]);
 
   // 잘못된 접근 - 404 처리
-  if (!friendIdParam) return <NotFoundPage />;
+  if (!friendIdParam || !Number.isFinite(friendId) || friendId <= 0) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
     navigate(`/friend/thread/${friendId}/${letterId}`, {

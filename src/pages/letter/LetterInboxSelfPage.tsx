@@ -166,7 +166,7 @@ export default function LetterInboxSelfPage() {
                           )}
                         </div>
 
-                        <div className='flex flex-col'>
+                        <div className='relative flex flex-col'>
                           {/* 오른쪽 봉투 썸네일 */}
                           <div className='h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
                             {EnvelopePreview ? (
