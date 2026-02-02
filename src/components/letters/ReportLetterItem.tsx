@@ -29,16 +29,17 @@ export default function ReportLetterItem({ letter, onClick }: ReportLetterItemPr
         className='relative rounded-lg overflow-hidden h-full w-full'
         style={{
           backgroundColor: colors.bg,
-          boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)', // 리포트에서는 그림자를 더 연하게
+          boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.15)', // 리포트에서는 그림자를 더 연하게
         }}
       >
         {/* 봉투 플랩 라인: 104x80 비율에 맞게 좌표 재설정 */}
         <svg className='absolute left-0 top-0 w-full h-full' viewBox='0 0 104 80' fill='none'>
           <path
-            d='M2 2 L52 35 L102 2' // 중앙 뾰족한 부분을 35px 정도로 조절
+            d='M2 2 L48 32 Q52 35 56 32 L102 2' // 중앙 뾰족한 부분을 35px 정도로 조절
             stroke={colors.line}
             strokeWidth='1.2'
             strokeLinecap='round'
+            strokeLinejoin='round'
           />
         </svg>
 
