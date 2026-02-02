@@ -57,6 +57,7 @@ import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
 import AlarmSettingPage from './pages/setting/AlarmSettingPage';
 import PersonalConsentPage from './pages/setting/PersonalConsentPage';
+import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 
@@ -143,6 +144,7 @@ const router = createBrowserRouter([
           { path: 'setting/pw-reset', element: <PasswordResetPage /> },
           { path: 'setting/alarm', element: <AlarmSettingPage /> },
           { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
+          { path: 'setting/notice', element: <NoticePage /> },
 
           /**
            * letter/{target}/{step} 표준 (비탭)
