@@ -1,7 +1,48 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// 토글 버튼 컴포넌트
+interface ToggleButtonProps {
+  isOn: boolean;
+  onToggle: () => void;
+}
+
+function ToggleButton({ isOn, onToggle }: ToggleButtonProps) {
+  return (
+    <button
+      type='button'
+      onClick={onToggle}
+      style={{
+        width: '48px',
+        height: '24px',
+        backgroundColor: isOn ? '#FFC8C6' : '#B1B3B4',
+        borderRadius: '18px',
+        padding: '3px',
+        border: 'none',
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: isOn ? 'flex-end' : 'flex-start',
+        alignItems: 'center',
+        transition: 'background-color 0.2s ease',
+      }}
+    >
+      <div
+        style={{
+          width: '18px',
+          height: '18px',
+          backgroundColor: isOn ? '#F5544C' : '#FFFFFF',
+          borderRadius: '50%',
+          transition: 'background-color 0.2s ease',
+        }}
+      />
+    </button>
+  );
+}
 
 export default function AlarmSettingPage() {
   const navigate = useNavigate();
+  const [marketingAlarm, setMarketingAlarm] = useState(false);
+  const [letterAlarm, setLetterAlarm] = useState(true);
 
   const handleBack = () => {
     navigate(-1);
@@ -80,15 +121,7 @@ export default function AlarmSettingPage() {
           >
             마케팅 정보 알림
           </span>
-          {/* 토글 버튼 (OFF 상태) - 추후 구현 */}
-          <div
-            style={{
-              width: '48px',
-              height: '24px',
-              backgroundColor: '#B1B3B4',
-              borderRadius: '18px',
-            }}
-          />
+          <ToggleButton isOn={marketingAlarm} onToggle={() => setMarketingAlarm(!marketingAlarm)} />
         </div>
 
         {/* 구분선 */}
@@ -121,15 +154,7 @@ export default function AlarmSettingPage() {
           >
             편지 알림
           </span>
-          {/* 토글 버튼 (ON 상태) - 추후 구현 */}
-          <div
-            style={{
-              width: '48px',
-              height: '24px',
-              backgroundColor: '#FFC8C6',
-              borderRadius: '18px',
-            }}
-          />
+          <ToggleButton isOn={letterAlarm} onToggle={() => setLetterAlarm(!letterAlarm)} />
         </div>
       </main>
     </div>
