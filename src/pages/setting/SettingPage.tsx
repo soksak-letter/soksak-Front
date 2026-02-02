@@ -107,7 +107,7 @@ export default function SettingPage() {
             </li>
             <li>
               <button
-                onClick={() => navigate('/setting/consent')}
+                onClick={() => navigate('/setting/personal-consent')}
                 className='w-full text-left py-[3px] ml-[3px]'
                 style={{
                   fontFamily: 'Pretendard',
