@@ -31,8 +31,8 @@ export default function FriendRequestPage() {
   // const { data: outgoing = [] } = useOutgoingFriendRequests();
 
   // 🔧 더미 데이터
-  const incomingDummy = [{ requesterUserId: 101 }];
-  const outgoingDummy = [{ receiverUserId: 202 }];
+  const incomingDummy = [{ requesterUserId: 1 }];
+  const outgoingDummy = [{ receiverUserId: 3 }];
 
   // 🔁 실제 데이터 없으면 더미 사용
   const { data: incomingData } = useIncomingFriendRequests();
