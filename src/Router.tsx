@@ -4,7 +4,6 @@ import App from './App';
 import AppShellLayout from './layouts/AppShellLayout';
 import AppShellWithTab from './layouts/AppShellWithTab';
 
-// import Homepage from './pages/Homepage';
 import MainPage from './pages/main/Mainpage';
 
 import WelcomePage from './pages/login/WelcomePage';
@@ -76,24 +75,29 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to='/home/main' replace /> },
           { path: 'home/main', element: <MainPage /> },
-          { path: 'letter/inbox-other', element: <LetterInboxOtherPage /> },
-          { path: 'letter/inbox-self', element: <LetterInboxSelfPage /> },
-          // { path: 'letter/10-end', element: <LetterTenEndPage /> },
-          // { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
-          { path: 'friend/request', element: <FriendRequestPage /> },
-          { path: 'friend/inbox', element: <FriendInboxPage /> },
-
-          { path: 'friend/sent-transition', element: <FriendSentTransitionPage /> },
-          { path: 'report/weekly-report', element: <WeeklyReportPage /> },
           {
-            path: 'setting',
+            path: '/letter',
             children: [
-              { index: true, element: <SettingPage /> },
+              { index: true, element: <Navigate to='/letter/inbox-other' replace /> },
+              { path: 'inbox-other', element: <LetterInboxOtherPage /> },
+              { path: 'inbox-self', element: <LetterInboxSelfPage /> },
+              // { path: 'letter/10-end', element: <LetterTenEndPage /> },
+              // { path: 'letter/other-stop', element: <LetterOtherStopPage /> },
             ],
           },
+          {
+            path: '/friend',
+            children: [
+              { index: true, element: <Navigate to='/friend/inbox' replace /> },
+              { path: 'inbox', element: <FriendInboxPage /> },
+              { path: 'request', element: <FriendRequestPage /> },
+              { path: 'sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+            ],
+          },
+          { path: 'report/weekly-report', element: <WeeklyReportPage /> },
+          { path: 'setting', element: <SettingPage /> },
         ],
       },
-
       // 프레임만
       {
         element: <AppShellLayout />,
@@ -104,9 +108,6 @@ const router = createBrowserRouter([
           { path: 'error/network', element: <NetworkErrorPage /> },
           { path: 'error/403', element: <ForbiddenPage /> },
           { path: 'error/404', element: <NotFoundPage /> },
-
-          // 기존 라우트
-          // { path: 'splash', element: <SplashPage /> },
 
           {
             path: 'auth',
@@ -139,6 +140,7 @@ const router = createBrowserRouter([
           { path: 'feed/public-all', element: <FeedPage /> },
           { path: 'feed/friend-all', element: <FriendFeedPage /> },
 
+          // 설정 페이지들
           { path: 'setting/pw-reset', element: <PasswordResetPage /> },
           { path: 'setting/alarm', element: <AlarmSettingPage /> },
           { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
@@ -160,22 +162,20 @@ const router = createBrowserRouter([
             ],
           },
 
-          { path: 'letter/post-other', element: <LetterPostOtherPage /> }, // 기존 라우팅 TODO: 삭제 필요
-          { path: 'letter/:letterId/thread/:threadId', element: <LetterPostOtherPage /> },
-
-          { path: 'letter/reply', element: <LetterReplyPage /> }, // TODO: 삭제 필요
-          { path: 'letter/reply/:letterId', element: <LetterReplyPage /> },
+          { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
+          { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
           { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
-
           { path: 'letter/report', element: <LetterReportPage /> },
           { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
-
-          { path: 'letter/post-self', element: <LetterPostSelfPage /> },
+          // { path: 'letter/post-self', element: <LetterPostSelfPage /> }, // TODO : 미사용 라우터 삭제
           { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
           { path: 'letter/loading', element: <LoadingPage /> },
 
           // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
-          { path: 'letter/other_draft', element: <Navigate to='/letter/other/draft' replace /> },
+          {
+            path: 'letter/other_draft',
+            element: <Navigate to='/letter/other/draft' replace />,
+          },
           { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
 
           { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
