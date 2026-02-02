@@ -8,7 +8,7 @@ export default function OnboardingLetterSendPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //   화면 잠깐 보여주고 홈으로 (replace)
+    // 화면 잠깐 보여주고 홈으로 (replace)
     const t = window.setTimeout(() => {
       navigate('/home/main', { replace: true });
     }, 900);

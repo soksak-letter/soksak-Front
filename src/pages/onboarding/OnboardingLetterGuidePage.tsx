@@ -33,7 +33,7 @@ export default function OnboardingLetterGuidePage() {
   const mintPaperId = 1; //  mint paper 선택
   const PaperBg = PAPER_ASSET_MAP[mintPaperId].Preview;
 
-  const fontId = 3; // TODO: 나눔히피체 추가되면 교체해야 함
+  const fontId = 3; // TODO: 나눔히피체가 추가되면 해당 폰트 ID로 교체 필요
   const fontFamily = FONT_ASSET_MAP[fontId].fontFamily;
 
   useEffect(() => {
