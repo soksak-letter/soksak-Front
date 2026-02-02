@@ -14,4 +14,7 @@ export const BUTTON_LINE_HEIGHT = 25.6;
 export const BUTTON_PADDING_Y = 3;
 export const BUTTON_MARGIN_LEFT = 3;
 export const TAB_BAR_HEIGHT = 85; // px, TabBar.tsx 기준
-// 필요시 추가 상수 정의
+
+// 섹션 간 간격
+export const SECTION_SPACING_MEDIUM = 53; // 서비스 정보 정책 섹션 상단 여백
+export const SECTION_SPACING_LARGE = 137; // 계정 관리 섹션 상단 여백

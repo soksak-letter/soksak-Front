@@ -13,6 +13,8 @@ import {
   BUTTON_PADDING_Y,
   BUTTON_LINE_HEIGHT,
   TAB_BAR_HEIGHT,
+  SECTION_SPACING_MEDIUM,
+  SECTION_SPACING_LARGE,
 } from '@/constants/settingLayout';
 
 export default function SettingPage() {
@@ -113,7 +115,9 @@ export default function SettingPage() {
           </section>
 
           {/* 서비스 정보·정책 섹션 */}
-          <section style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: 53 }}>
+          <section
+            style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: SECTION_SPACING_MEDIUM }}
+          >
             <h2
               style={{
                 fontFamily: 'Pretendard',
@@ -185,7 +189,9 @@ export default function SettingPage() {
           </section>
 
           {/* 계정 관리 섹션 */}
-          <section style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: 137 }}>
+          <section
+            style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: SECTION_SPACING_LARGE }}
+          >
             <ul className='flex flex-col gap-[9px]'>
               <li>
                 <button
