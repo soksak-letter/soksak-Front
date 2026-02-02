@@ -1,9 +1,15 @@
 import type { CommonResponse } from './common';
 
-// 이용약관 API 응답 타입
-export interface TermsOfServiceSuccess {
+// 정책 문서 공통 타입
+export interface PolicySuccess {
   title: string;
   content: string;
 }
 
+// 이용약관 API 응답 타입
+export type TermsOfServiceSuccess = PolicySuccess;
 export type TermsOfServiceResponse = CommonResponse<TermsOfServiceSuccess>;
+
+// 개인정보 처리방침 API 응답 타입
+export type PrivacyPolicySuccess = PolicySuccess;
+export type PrivacyPolicyResponse = CommonResponse<PrivacyPolicySuccess>;
