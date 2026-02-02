@@ -13,12 +13,12 @@ export default function SettingPage() {
       <div>
         {/* 헤더 */}
         <header
-          className='flex items-center justify-center px-[21px] py-[13px]'
+          className='fixed top-0 left-1/2 z-50 flex items-center justify-center px-[21px] py-[13px]'
           style={{
             backgroundColor: '#FAFAFA',
             height: '50px',
             width: '375px',
-            margin: '0 auto',
+            transform: 'translateX(-50%)',
           }}
         >
           {/* 뒤로가기 버튼 */}
