@@ -45,27 +45,13 @@ export default function ReportLetterItem({ letter, onClick }: ReportLetterItemPr
         {/* 텍스트 영역: 패딩 최소화 및 폰트 사이즈 하향 */}
         <div className='absolute flex flex-col items-end right-2.5 bottom-2.5 left-2.5'>
           <h3
-            className='text-right w-full overflow-hidden truncate font-semibold'
+            className='ty-detailMedium w-full overflow-hidden truncate '
             style={{
-              color: '#171717',
-              fontSize: '12px', // 리포트에 맞게 12px
               lineHeight: '1.4',
             }}
           >
             {letter.title}
           </h3>
-          <p
-            className='text-right w-full overflow-hidden truncate font-medium'
-            style={{
-              color: '#171717',
-              fontSize: '10px', // 날짜는 작게 10px
-              lineHeight: '1.2',
-              marginTop: '1px',
-              opacity: 0.7, // 날짜는 살짝 흐리게 처리하여 대비 효과
-            }}
-          >
-            {letter.date}
-          </p>
         </div>
       </div>
     </button>

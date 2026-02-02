@@ -5,17 +5,17 @@ import { WeeklyEmotionDistributionCard } from '@/components/WeeklyReport/WeeklyE
 import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFlowCard';
 import { EmotionConstellation } from '@/components/WeeklyReport/EmotionConstellation';
 import { useMemo } from 'react';
-import LetterCarousel from '@/components/letters/LetterCarousel';
 import { useNavigate } from 'react-router-dom';
 import type { Letter } from '@/types/letter';
 import { ROUTES } from '@/routes/paths';
-import type { LetterItem } from '@/types/dto/letter';
 import usePublicLetters from '@/hooks/usePublicLetters';
 import useHomeSummary from '@/hooks/useHomeSummary';
+import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel';
+import type { LetterItem } from '@/types/dto/letter';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 
-// 1. API 응답 형태의 Mock Data (데이터가 오는 곳)
+// API 응답 형태의 Mock Data (데이터가 오는 곳)
 const keywordsMock = [
   { keyword: '운동/건강', count: 1 },
   { keyword: '야근', count: 1 },
@@ -25,29 +25,37 @@ const keywordsMock = [
   { keyword: '기쁨', count: 1 },
   { keyword: '성취', count: 1 },
 ];
-
-/**TODO:편지조각 현재 나에게 보내는
- * 편지API로 MOCkDATA 처리하고 있어서
- * 백에서 넘겨주면 마저 마무리 */
-// API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
-const colorToVariant = (color?: string): Letter['variant'] => {
-  if (!color) return 'blue';
-  // Color_1~4: blue, Color_5~8: pink, 나머지: yellow 등 임시 매핑
-  const colorNum = parseInt(color.replace('Color_', ''), 10);
-  if (colorNum <= 4) return 'blue';
-  if (colorNum <= 8) return 'pink';
-  return 'yellow';
-};
-
-// LetterItem을 Letter 타입으로 변환
-const convertToLetter = (item: reportetterItem): Letter => ({
-  id: String(item.id),
-  title: item.title,
-  date: item.deliveredAt ?? '',
-  variant: colorToVariant(item.design?.paper?.color),
-  link: `/letter/${item.id}`,
-});
-/**TODO:마무리 끝 */
+const reportMockData = [
+  {
+    id: '1',
+    title: '테스트1',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+  {
+    id: '2',
+    title: '테스트2',
+    date: '2024.02.02',
+    variant: 'pink',
+    link: '#',
+  },
+  {
+    id: '3',
+    title: '테스트3',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+  {
+    id: '4',
+    title: '테스트4',
+    date: '2024.02.01',
+    variant: 'blue',
+    link: '#',
+  },
+];
+//MockData 끝
 
 export default function WeeklyReportPage() {
   const navigate = useNavigate();
@@ -62,22 +70,6 @@ export default function WeeklyReportPage() {
       }));
   }, []);
 
-  /**TODO:편지조각 현재 나에게 보내는
-   * 편지API로 구현되고 있어서
-   * 백에서 넘겨주면 마저 마무리 */
-  // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
-  const { data: homeSummary } = useHomeSummary();
-
-  // 공개 편지 API 연동
-  const { letters: publicLettersData } = usePublicLetters({
-    questionId: homeSummary?.todayQuestion?.id ?? null,
-  });
-
-  // API 데이터를 Letter 타입으로 변환
-  const publicLetters: Letter[] = useMemo(() => {
-    return (publicLettersData ?? []).map(convertToLetter);
-  }, [publicLettersData]);
-  /**TODO: 끝 */
   const emotionStatusMock: EmotionStatusKey = 'tired';
 
   const flowMock: WeeklyEmotionFlowItem[] = [
@@ -204,10 +196,10 @@ export default function WeeklyReportPage() {
           </section>
 
           {/* 편지조각 보기 (피그마 375x170) - 블랭크 */}
-          <div className='w-[375px] h-[170px] -mx-4 px-4'>
-            <div className='h-full w-full p-4'>
+          <div className='w-[375px] h-[170px] px-[16px]'>
+            <div className='h-full w-full py-4'>
               {/* 상단 라벨/버튼 자리 */}
-              <div>
+              <div className='flex flex-col gap-[16px]'>
                 <div className='flex items-center justify-between'>
                   <h2 className='ty-body2 text-[var(--color-text-normal)]'>편지조각</h2>
                   <button
@@ -233,11 +225,7 @@ export default function WeeklyReportPage() {
                   </button>
                 </div>
 
-                {/* 편지 캐러셀 */}
-                <LetterCarousel
-                  letters={publicLetters}
-                  emptyMessage='현재 공개된 편지가 더이상 없어요.'
-                />
+                <ReportLetterCarousel letters={reportMockData} />
               </div>
             </div>
           </div>
