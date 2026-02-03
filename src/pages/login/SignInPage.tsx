@@ -48,11 +48,8 @@ const SignInPage = () => {
         const { jwtAccessToken, jwtRefreshToken } = success.result;
 
         // 토큰 저장
-        //localStorage.setItem('accessToken', jwtAccessToken);
-        //localStorage.setItem('refreshToken', jwtRefreshToken);
-
         // (Store가 내부적으로 localStorage 저장도 하고, isLoggedIn 상태도 true로 바꿈)
-        login(jwtAccessToken);
+        login(jwtAccessToken, jwtRefreshToken);
         console.log('토큰 저장 완료! 메인으로 이동');
         navigate('/');
       } else {

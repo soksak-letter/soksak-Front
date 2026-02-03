@@ -15,11 +15,13 @@ import useSignUpForm from '@/hooks/useSignUpForm';
 import { postSignup } from '@/api/auth';
 import type { SignUpRequest } from '@/types/dto/auth';
 import { useState } from 'react';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 // Todo:
 // 1.이메일 중복시 처리
 
 const SignUpPage = () => {
+  const login = useAuthStore((state) => state.login);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -83,11 +85,11 @@ const SignUpPage = () => {
       //  API 호출
       const response = await postSignup(requestBody);
 
-      // 결과 콘솔 출력
-      //console.log('회원가입 Response:', response);
-
       // 4. 성공 시 처리
       if (response.resultType === 'SUCCESS') {
+        const { jwtAccessToken, jwtRefreshToken } = response.success.result.tokens;
+        // 스토어에 저장 (로컬스토리지 저장 + 전역 상태 변경)
+        login(jwtAccessToken, jwtRefreshToken);
         // 성공 시 다음 페이지(프로필 설정)로 이동
         navigate('/auth/profile-setup');
       } else {
