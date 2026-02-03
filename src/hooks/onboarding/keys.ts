@@ -12,6 +12,13 @@
  */
 
 export const onboardingKeys = {
-  allInterests: ['interests', 'all'] as const,
-  myInterests: ['interests', 'me'] as const,
-};
+  // interests
+  allInterests: ['onboarding', 'interests', 'all'] as const,
+  myInterests: ['onboarding', 'interests', 'me'] as const,
+
+  // consents
+  consents: ['onboarding', 'consents'] as const,
+
+  // notification-settings
+  notificationSettings: ['onboarding', 'notification-settings'] as const,
+} as const;
