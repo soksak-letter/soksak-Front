@@ -5,7 +5,7 @@ import { HiEnvelope } from 'react-icons/hi2';
 import { HiClock } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useActivityStore } from '@/stores/activityStore';
 
 const MyPage = () => {
