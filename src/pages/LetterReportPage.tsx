@@ -2,16 +2,26 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
+import {
+  REPORT_REASONS,
+  type LetterReportRequest,
+  type ReportReason,
+} from '@/types/dto/letterReport';
+import { postLetterReport } from '@/api/letterReport';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // state에서 letterId 꺼내기
+  const letterId = location.state?.letterId as number | undefined;
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
-  const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
+  const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
   // 차단하기 토글 상태 (boolean)
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -20,19 +30,33 @@ const LetterReportPage = () => {
   //토스트 상태 관리
   const { toast, visible, showToast, closeToast } = useToast();
 
-  const reasons = [
-    '욕설/비하',
-    '혐오 표현',
-    '성적 불쾌감',
-    '스팸/광고',
-    '도배/반복',
-    '폭력/학대표현',
-    '불법 행위 유도',
-    '사칭/허위정보',
-  ];
+  //신고 사유 배열
+  const reasons = REPORT_REASONS;
+
+  // 잘못된 접근 처리 (URL로 직접 접속했거나 letterId 없이 온 경우)
+  // 1.유효성 검사 (잘못된 접근 처리)
+  useEffect(() => {
+    // letterId가 없으면 경고 띄우고 뒤로가기
+    if (!letterId) {
+      showToast('잘못된 접근입니다.', 'error');
+      const timer = setTimeout(() => navigate(-1), 1500);
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [letterId, navigate, showToast]);
+
+  // 2️. 신고 완료 후 처리
+  useEffect(() => {
+    // 완료 상태(isCompleted)가 true가 되면 메인으로 이동
+    if (isCompleted) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 3000);
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [isCompleted, navigate]);
 
   // 사유 선택 토글 핸들러
-  const handleReasonToggle = (reason: string) => {
+  const handleReasonToggle = (reason: ReportReason) => {
     setSelectedReasons((prev) => {
       const newReasons = prev.includes(reason)
         ? prev.filter((r) => r !== reason)
@@ -42,16 +66,6 @@ const LetterReportPage = () => {
       return newReasons;
     });
   };
-  // 3초 뒤 메인으로 이동
-  useEffect(() => {
-    if (isCompleted) {
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 3000);
-
-      return () => clearTimeout(timer); // cleanup
-    }
-  }, [isCompleted, navigate]);
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
@@ -60,19 +74,43 @@ const LetterReportPage = () => {
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
-
     // 사유가 있으면 정상적으로 토글 상태 변경
     setIsBlocked(nextState);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
       return;
     }
-    setIsCompleted(true); // 완료 화면으로 전환
+    // letterId 유효성 체크
+    if (!letterId) {
+      showToast('신고 대상을 찾을 수 없습니다.', 'error');
+      return;
+    }
+
+    //Body에 담을 데이터 구성
+    const requestBody: LetterReportRequest = {
+      letterId, // 여기서 location.state로 받은 값을 넣습니다.
+      reasons: selectedReasons,
+    };
+
+    try {
+      const response = await postLetterReport(requestBody);
+
+      if (response.resultType === 'SUCCESS') {
+        setIsCompleted(true); //완료화면으로 전환
+      } else {
+        const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
+        showToast(errorMessage, 'error');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast('서버 연결에 실패했습니다.', 'error');
+    }
   };
+
   if (isCompleted) {
     return (
       <div className='w-[375px] h-screen mx-auto  flex flex-col justify-center items-center'>
@@ -112,20 +150,30 @@ const LetterReportPage = () => {
             </p>
           </div>
           {/* 신고 사유 버튼 그리드 */}
-          <div className='grid grid-cols-3 gap-y-[12px] gap-x-[8px] mb-8 place-items-center'>
-            {reasons.map((reason) => {
-              const isSelected = selectedReasons.includes(reason);
-              return (
-                <SelectButton
-                  key={reason}
-                  selected={isSelected}
-                  onClick={() => handleReasonToggle(reason)}
-                  className='w-full! h-[34px]! text-[13px]! px-3! '
-                >
-                  {reason}
-                </SelectButton>
-              );
-            })}
+          <div className='flex flex-col justify-left gap-y-[12px] gap-x-[8px] mb-8 '>
+            {[
+              reasons.slice(0, 3), // 첫 번째 줄 (0, 1, 2)
+              reasons.slice(3, 5), // 두 번째 줄 (3, 4)
+              reasons.slice(5, 7), // 세 번째 줄 (5, 6)
+              reasons.slice(7, 8), // 네 번째 줄 (7)
+            ].map((row, rowIndex) => (
+              <div key={rowIndex} className='flex justify-left gap-x-[8px] w-full'>
+                {row.map((reason) => {
+                  const isSelected = selectedReasons.includes(reason);
+                  return (
+                    <SelectButton
+                      key={reason}
+                      selected={isSelected}
+                      onClick={() => handleReasonToggle(reason)}
+                      // 이미지의 비율을 맞추기 위해 너비를 고정하거나 min-width를 설정합니다.
+                      className='w-auto! h-[44px]! text-[13px]! px-[24px]! rounded-full'
+                    >
+                      {reason}
+                    </SelectButton>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ export type ResultType = 'SUCCESS' | 'FAIL';
 export interface ApiError {
   errorCode: string;
   reason: string;
-  data: Record<string, unknown>; // 빈 객체 {} 도 포함 가능하도록
+  data: Record<string, unknown> | Array<{ field: string; message: string }>; // 빈 객체 {} 도 포함 가능하도록
 }
 
 /**
