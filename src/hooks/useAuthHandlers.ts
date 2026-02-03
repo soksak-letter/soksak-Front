@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { postLogout } from '@/api/auth'; //TODO: 회원탈퇴 API
+import { postLogout, deleteWithdraw } from '@/api/auth'; //TODO: 회원탈퇴 API
 export const useAuthHandlers = () => {
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
@@ -19,25 +19,20 @@ export const useAuthHandlers = () => {
     }
   };
 
-  {
-    /*// 2. 회원탈퇴 핸들러
+  // 2. 회원탈퇴 핸들러
   const handleWithdraw = async () => {
     try {
       // 회원탈퇴 API 호출
-      // await postWithdraw(); 
-      
+      await deleteWithdraw();
+
       console.log('회원탈퇴 성공');
-      
+
       // 탈퇴 후에도 로그아웃 처리와 동일하게 청소 필요
       logout();
       navigate('/splash', { replace: true });
     } catch (error) {
       console.error('회원탈퇴 실패:', error);
-      // 에러 시 토스트 메시지 등을 띄울 수 있음
-      alert('회원탈퇴 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
-*/
-  }
-  return { handleLogout };
+  return { handleLogout, handleWithdraw };
 };

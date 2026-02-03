@@ -14,6 +14,8 @@ import type {
   SocialLoginResponse,
   UsernameExistsRequest,
   UsernameExistsResponse,
+  WithdrawResponse,
+  WithdrawResult,
 } from '@/types/dto/auth';
 import { axiosInstance } from './axios'; // axios 설정 파일 경로
 
@@ -60,6 +62,15 @@ export const postSignin = async (body: SignInRequest) => {
 export const postLogout = async () => {
   // 로그아웃은 보통 Body({})가 비어있어도 됩니다.
   const { data } = await axiosInstance.post<LogoutResponse>('/auth/logout');
+  return data;
+};
+
+/**
+ * 회원탈퇴 API
+ * DELETE /users
+ */
+export const deleteWithdraw = async () => {
+  const { data } = await axiosInstance.delete<WithdrawResponse>('/users');
   return data;
 };
 /**

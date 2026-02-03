@@ -21,7 +21,7 @@ import { useAuthHandlers } from '@/hooks/useAuthHandlers';
 export default function SettingPage() {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
-  const { handleLogout } = useAuthHandlers();
+  const { handleLogout, handleWithdraw } = useAuthHandlers();
 
   const handleBack = () => {
     navigate(-1);
@@ -217,7 +217,9 @@ export default function SettingPage() {
               <li>
                 <button
                   // TODO: 실제 회원탈퇴 처리 함수(onConfirmWithdraw) 연결 필요
-                  onClick={() => openModal('withdrawalConfirm')}
+                  onClick={() =>
+                    openModal('withdrawalConfirm', { onConfirmWithdraw: handleWithdraw })
+                  }
                   className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',

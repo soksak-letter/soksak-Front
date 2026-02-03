@@ -123,6 +123,14 @@ export interface LogoutResult {
 }
 export type LogoutResponse = CommonResponse<LogoutResult>;
 
+//회원탈퇴
+export interface WithdrawResult {
+  result: {
+    status: string;
+  };
+}
+export type WithdrawResponse = CommonResponse<WithdrawResult>;
+
 //Profile-setUp 페이지
 //프로필 닉네임 수정
 // 내가 서버로 보낼 데이터 (Request)
@@ -144,5 +152,3 @@ export interface ProfileImageResult {
   profileImageUrl: string;
 }
 export type ProfileImageResponse = CommonResponse<ProfileImageResult>;
-
-//회원탈퇴
