@@ -65,7 +65,6 @@ import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import FriendReplyPage from './pages/friend/FriendReplyPage';
 
-
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
 import AlarmSettingPage from './pages/setting/AlarmSettingPage';

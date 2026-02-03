@@ -112,20 +112,28 @@ export default function LetterReplyPage() {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
-        // patch 요청
-        if (!threadId) return;
+        if (!threadId) {
+          navigate('error/404', { replace: true });
+          return;
+        }
 
+        // patch 요청
         discardSession.mutate(
           { threadId },
           {
-            onSuccess: () => {
-              // other-stop 페이지로 이동
-              navigate('/letter/other-stop', {
-                state: { totalCount: 7 },
-              });
+            onSuccess: (res) => {
+              if (res.resultType !== 'SUCCESS' || !res.success) {
+                showToast('요청에 실패했습니다. 잠시 후 다시 시도해주세요.', 'error');
+                return;
+              }
+
+              // patch 성공시 응답으로 주고받은 횟수를 받음(maxTurns) > totalCount로 넘김
+              const totalCount = res.success.result.data.maxTurns;
+              navigate('/letter/other-stop', { state: { totalCount } });
             },
-            onError: () => {
-              showToast('요청에 실패했습니다. 잠시 후 다시 요청해주세요.', 'error');
+            onError: (err) => {
+              console.error(err);
+              showToast('요청을 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
             },
           },
         );
