@@ -15,23 +15,14 @@ export const REPORT_REASONS = [
 // 배열의 값들을 유니온 타입으로 추출.
 export type ReportReason = (typeof REPORT_REASONS)[number];
 //신고하기
-export interface letterReportRequest {
+//1. 서버로 보내는
+export interface LetterReportRequest {
   letterId: number;
   reasons: ReportReason[];
 }
-
-export interface letterReportResult {
-  resultType: 'FAIL';
-  error: {
-    errorCode: 'REQ_BAD_REQUEST';
-    reason: '입력값이 잘못되었습니다';
-    data: [
-      {
-        field: 'body.letterId';
-        message: '숫자여야 합니다.';
-      },
-    ];
-  };
-  success: null;
+//2.서버에서 보내오는
+export interface LetterReportResult {
+  message: string;
 }
-export type letterReportResponse = CommonResponse<letterReportResult>;
+
+export type LetterReportResponse = CommonResponse<LetterReportResult>;
