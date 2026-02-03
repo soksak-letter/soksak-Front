@@ -66,7 +66,6 @@ import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import FriendReplyPage from './pages/friend/FriendReplyPage';
 
-
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
 import AlarmSettingPage from './pages/setting/AlarmSettingPage';
@@ -192,7 +191,7 @@ const router = createBrowserRouter([
                 path: 'friend/thread/:friendId/:letterId',
                 element: <FriendReplyPage />,
               },
-              // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },
