@@ -4,23 +4,50 @@ import { HiPaperAirplane } from 'react-icons/hi2';
 import { HiEnvelope } from 'react-icons/hi2';
 import { HiClock } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
+import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
+import { usePostMyActivity } from '@/hooks/onboarding/usePostMyActivity';
+import { useEffect, useMemo, useRef } from 'react';
+import { useActivityStore } from '@/stores/activityStore';
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  // 관심사 조회 (enabled는 true로 두면 됨)
+  const {
+    data: interestsItems, // ← useMyInterests가 items만 반환(select)하는 훅이라면 배열이 바로 옴
+  } = useMyInterests(true);
+
+  // 활동시간 갱신 ping
+  const postActivity = usePostMyActivity();
+  const calledRef = useRef(false);
+
+  useEffect(() => {
+    if (calledRef.current) return;
+    calledRef.current = true;
+    postActivity.mutate({});
+  }, [postActivity]);
+
+  const totalSeconds = useActivityStore((s) => s.totalSeconds);
+  const totalUsageMinutes = Math.floor(totalSeconds / 60);
 
   // Mock data - 실제 사용 시 API에서 가져오기
   const userInfo = {
     nickname: '개굴님',
     email: 'gaegull_01@naver.com',
-    interests: ['감정 💭', '음악 🎵', '직장 👜'],
     temperature: 66,
     sentLetters: 8,
     receivedLetters: 12,
-    totalUsageMinutes: 135,
   };
 
   // 온도값을 0~100으로 clamp
   const safeTemp = Math.max(0, Math.min(100, userInfo.temperature));
+
+  // 렌더용 관심사 문자열 (id,name → name)
+  const interests = useMemo(() => {
+    // 훅이 items 배열(InterestItem[])을 바로 주는 형태라면:
+    if (!interestsItems) return [];
+    return interestsItems.map((it) => it.name);
+  }, [interestsItems]);
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -68,7 +95,7 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {userInfo.interests.map((interest) => (
+            {interests.map((interest) => (
               <span
                 key={interest}
                 className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
@@ -139,7 +166,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>서비스 총 이용시간</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {userInfo.totalUsageMinutes}분
+                {totalUsageMinutes}분
               </span>
             </div>
           </div>
