@@ -14,7 +14,9 @@ export default function ActivityTracker() {
 
   // 1) 최초 로컬 값 불러오기
   useEffect(() => {
-    const saved = Number(localStorage.getItem(STORAGE_KEY) ?? '0');
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const saved = raw !== null ? parseInt(raw, 10) : 0;
+
     if (!Number.isNaN(saved) && saved > 0) hydrate(saved);
   }, [hydrate]);
 
