@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { onboardingKeys } from './keys';
 import { getMyConsents } from '@/api/onboardingSettings';
-import type { ApiError, CommonResponse } from '@/types/dto/common';
+import type { ApiError } from '@/types/dto/common';
 import type { GetConsentsResult } from '@/types/dto/onboardingSettings';
 
 /**
@@ -13,17 +13,17 @@ import type { GetConsentsResult } from '@/types/dto/onboardingSettings';
 
 export function useMyConsents(enabled: boolean = true) {
   return useQuery<
-    CommonResponse<GetConsentsResult>, // TQueryFnData (queryFn 반환)
+    GetConsentsResult, // TQueryFnData (queryFn 반환)
     ApiError, // TError
-    GetConsentsResult // TData (select 이후)
+    GetConsentsResult // TData
   >({
     queryKey: onboardingKeys.consents,
-    queryFn: () => getMyConsents(),
-    enabled,
-    retry: 0,
-    select: (res) => {
+    queryFn: async () => {
+      const res = await getMyConsents();
       if (res.resultType === 'SUCCESS') return res.success;
       throw res.error;
     },
+    enabled,
+    retry: 0,
   });
 }
