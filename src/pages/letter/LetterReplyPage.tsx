@@ -108,9 +108,10 @@ export default function LetterReplyPage() {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
+        // 이 부분에 patch 요청
         // other-stop 페이지로 이동
         navigate('/letter/other-stop', {
-          state: { friendName: senderName, totalCount: 7 },
+          state: { totalCount: 7 },
         });
       },
     });
