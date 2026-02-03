@@ -150,20 +150,30 @@ const LetterReportPage = () => {
             </p>
           </div>
           {/* 신고 사유 버튼 그리드 */}
-          <div className='grid grid-cols-3 gap-y-[12px] gap-x-[8px] mb-8 place-items-center'>
-            {reasons.map((reason) => {
-              const isSelected = selectedReasons.includes(reason);
-              return (
-                <SelectButton
-                  key={reason}
-                  selected={isSelected}
-                  onClick={() => handleReasonToggle(reason)}
-                  className='w-full! h-[44px]! text-[13px]! px-[24px]! '
-                >
-                  {reason}
-                </SelectButton>
-              );
-            })}
+          <div className='flex flex-col justify-left gap-y-[12px] gap-x-[8px] mb-8 '>
+            {[
+              reasons.slice(0, 3), // 첫 번째 줄 (0, 1, 2)
+              reasons.slice(3, 5), // 두 번째 줄 (3, 4)
+              reasons.slice(5, 7), // 세 번째 줄 (5, 6, 7)
+              reasons.slice(7, 8),
+            ].map((row, rowIndex) => (
+              <div key={rowIndex} className='flex justify-left gap-x-[8px] w-full'>
+                {row.map((reason) => {
+                  const isSelected = selectedReasons.includes(reason);
+                  return (
+                    <SelectButton
+                      key={reason}
+                      selected={isSelected}
+                      onClick={() => handleReasonToggle(reason)}
+                      // 이미지의 비율을 맞추기 위해 너비를 고정하거나 min-width를 설정합니다.
+                      className='w-auto! h-[44px]! text-[13px]! px-[24px]! rounded-full'
+                    >
+                      {reason}
+                    </SelectButton>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
