@@ -41,9 +41,6 @@ export default function ActivityTracker() {
 
         lastTickRef.current = now;
         addSeconds(diffSec);
-
-        // 여기서만 API ping
-        mutateRef.current({});
       }, 1000);
     };
 
@@ -77,16 +74,15 @@ export default function ActivityTracker() {
     return () => window.clearInterval(id);
   }, []);
 
-  // 4) 서버 activity ping도 전역에서 같이 (원하면)
+  // 4) 서버 activity ping도 전역에서 같이
   useEffect(() => {
     // “전역 ping”을 원하면 여기서 주기적으로 호출
-    // 예: 60초마다
     const id = window.setInterval(() => {
-      postActivity.mutate({});
+      mutateRef.current({});
     }, 60_000);
 
     return () => window.clearInterval(id);
-  }, [postActivity]);
+  });
 
   return null;
 }
