@@ -63,11 +63,10 @@ axiosInstance.interceptors.response.use(
       //  401 에러 처리 로직
       if (status === 401) {
         // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신 요청 실패 -> 강제 로그아웃)
-        // ->  스플래쉬으로 쫓아냄
+        // -> 자동으로 스플래쉬으로 쫓아냄
         if (originalRequest.url?.includes('/auth/refresh')) {
           isRefreshing = false;
-          //localStorage.removeItem('accessToken');
-          //localStorage.removeItem('refreshToken'); //clear 대신
+
           logout();
 
           onRefreshFailed(error);
@@ -117,7 +116,7 @@ axiosInstance.interceptors.response.use(
           const newAccessToken = data.success.jwtAccessToken;
 
           // 1. 새 토큰 저장
-          //localStorage.setItem('accessToken', newAccessToken);
+
           // 토큰이 갱신됐을 때도 스토어 업데이트 (일관성 유지)
           // RefreshToken은 그대로라면 가져와서 다시 넣어줌
           const currentRefreshToken = localStorage.getItem('refreshToken') || '';
@@ -139,8 +138,6 @@ axiosInstance.interceptors.response.use(
         // 갱신 실패 시 (네트워크 에러 or 위에서 throw한 에러) -> 스플래쉬으로 이동
         isRefreshing = false; // [중요] 상태 초기화
         onRefreshFailed(refreshError);
-        //localStorage.removeItem('accessToken');
-        //localStorage.removeItem('refreshToken'); //clear 대신
         logout();
 
         return Promise.reject(refreshError);
