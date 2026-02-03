@@ -2,11 +2,16 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
-import { REPORT_REASONS, type ReportReason } from '@/types/dto/letterReport';
+import {
+  REPORT_REASONS,
+  type LetterReportRequest,
+  type ReportReason,
+} from '@/types/dto/letterReport';
+import { postLetterReport } from '@/api/letterReport';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -28,6 +33,23 @@ const LetterReportPage = () => {
   //신고 사유 배열
   const reasons = REPORT_REASONS;
 
+  // 잘못된 접근 처리 (URL로 직접 접속했거나 letterId 없이 온 경우)
+  useEffect(() => {
+    if (!letterId) {
+      showToast('잘못된 접근입니다.', 'error');
+      // 잠시 후 뒤로가기 혹은 메인으로
+      const timer = setTimeout(() => navigate(-1), 1500);
+      return () => clearTimeout(timer);
+    }
+    if (isCompleted) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 3000);
+
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [letterId, navigate, showToast, isCompleted]);
+
   // 사유 선택 토글 핸들러
   const handleReasonToggle = (reason: ReportReason) => {
     setSelectedReasons((prev) => {
@@ -39,16 +61,6 @@ const LetterReportPage = () => {
       return newReasons;
     });
   };
-  // 3초 뒤 메인으로 이동
-  useEffect(() => {
-    if (isCompleted) {
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 3000);
-
-      return () => clearTimeout(timer); // cleanup
-    }
-  }, [isCompleted, navigate]);
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
@@ -57,23 +69,43 @@ const LetterReportPage = () => {
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
-    if (!letterId || isNaN(letterId)) {
-      showToast('잘못된 접근입니다.', 'error');
-      return;
-    }
-
     // 사유가 있으면 정상적으로 토글 상태 변경
     setIsBlocked(nextState);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
       return;
     }
-    setIsCompleted(true); // 완료 화면으로 전환
+    // letterId 유효성 체크
+    if (!letterId) {
+      showToast('신고 대상을 찾을 수 없습니다.', 'error');
+      return;
+    }
+
+    //Body에 담을 데이터 구성
+    const requestBody: LetterReportRequest = {
+      letterId: letterId, // 여기서 location.state로 받은 값을 넣습니다.
+      reasons: selectedReasons,
+    };
+
+    try {
+      const response = await postLetterReport(requestBody);
+
+      if (response.resultType === 'SUCCESS') {
+        setIsCompleted(true); //완료화면으로 전환
+      } else {
+        const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
+        showToast(errorMessage, 'error');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast('서버 연결에 실패했습니다.', 'error');
+    }
   };
+
   if (isCompleted) {
     return (
       <div className='w-[375px] h-screen mx-auto  flex flex-col justify-center items-center'>
