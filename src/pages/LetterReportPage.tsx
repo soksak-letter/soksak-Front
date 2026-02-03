@@ -2,16 +2,21 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
+import { REPORT_REASONS, type ReportReason } from '@/types/dto/letterReport';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // state에서 letterId 꺼내기
+  const letterId = location.state?.letterId as number | undefined;
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
-  const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
+  const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
   // 차단하기 토글 상태 (boolean)
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -20,19 +25,11 @@ const LetterReportPage = () => {
   //토스트 상태 관리
   const { toast, visible, showToast, closeToast } = useToast();
 
-  const reasons = [
-    '욕설/비하',
-    '혐오 표현',
-    '성적 불쾌감',
-    '스팸/광고',
-    '도배/반복',
-    '폭력/학대표현',
-    '불법 행위 유도',
-    '사칭/허위정보',
-  ];
+  //신고 사유 배열
+  const reasons = REPORT_REASONS;
 
   // 사유 선택 토글 핸들러
-  const handleReasonToggle = (reason: string) => {
+  const handleReasonToggle = (reason: ReportReason) => {
     setSelectedReasons((prev) => {
       const newReasons = prev.includes(reason)
         ? prev.filter((r) => r !== reason)
@@ -59,6 +56,10 @@ const LetterReportPage = () => {
     if (nextState && selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
+    }
+    if (!letterId || isNaN(letterId)) {
+      showToast('잘못된 접근입니다.', 'error');
+      return;
     }
 
     // 사유가 있으면 정상적으로 토글 상태 변경
