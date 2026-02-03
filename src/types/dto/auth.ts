@@ -118,7 +118,7 @@ export type RefreshTokenResponse = CommonResponse<RefreshTokenResult>;
 // Logout Response
 export interface LogoutResult {
   result: {
-    status: 'Logged Out';
+    status: string;
   };
 }
 export type LogoutResponse = CommonResponse<LogoutResult>;

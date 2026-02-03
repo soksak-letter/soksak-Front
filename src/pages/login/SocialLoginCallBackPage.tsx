@@ -3,9 +3,11 @@ import LoadingPage from '../system/LoadingPage';
 import { postSocialLogin, type SocialProvider } from '@/api/auth';
 import { useEffect, useRef } from 'react';
 import { ROUTES } from '@/routes/paths';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const SocialLoginCallBackPage = () => {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
   const { provider } = useParams();
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
@@ -19,8 +21,7 @@ const SocialLoginCallBackPage = () => {
         const { isNewUser } = data.success; // isNewUser 꺼내기
         // 토큰 저장 및 이동
         const { jwtAccessToken, jwtRefreshToken } = data.success.tokens;
-        localStorage.setItem('accessToken', jwtAccessToken);
-        localStorage.setItem('refreshToken', jwtRefreshToken);
+        login(jwtAccessToken, jwtRefreshToken);
         //  신규 유저 여부에 따라 페이지 이동 분기
         if (isNewUser) {
           console.log('신규 회원입니다. 온보딩으로 이동합니다.');

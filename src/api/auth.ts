@@ -3,6 +3,7 @@ import type {
   AgreementsResponse,
   EmailExistsRequest,
   EmailExistsResponse,
+  LogoutResponse,
   NicknameSetUpRequest,
   NicknameSetUpResponse,
   ProfileImageResponse,
@@ -52,7 +53,15 @@ export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
 };
-
+/**
+ * 로그아웃 API
+ * POST /auth/logou
+ */
+export const postLogout = async () => {
+  // 로그아웃은 보통 Body({})가 비어있어도 됩니다.
+  const { data } = await axiosInstance.post<LogoutResponse>('/auth/logout');
+  return data;
+};
 /**
  * 소셜 로그인 (인가 코드 -> 토큰 교환)
  * @param provider 'google' | 'kakao' | 'naver'
