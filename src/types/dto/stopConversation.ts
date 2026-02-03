@@ -1,11 +1,9 @@
 import type { CommonResponse } from './common';
 
-export type SessionStatus = 'FRIENDS' | 'DISCARDED';
-
 export type SessionData = {
   id: number;
   questionId: number;
-  status: SessionStatus;
+  status: string;
   maxTurns: number;
   startedAt: string; // ISO
   endedAt: string | null; // ISO or null
@@ -18,4 +16,4 @@ export type PatchSessionStatusSuccess = {
   };
 };
 
-export type PatchSessionStatusResponse = CommonResponse<S>;
+export type PatchSessionStatusResponse = CommonResponse<PatchSessionStatusSuccess>;

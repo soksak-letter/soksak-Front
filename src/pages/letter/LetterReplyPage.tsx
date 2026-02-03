@@ -11,6 +11,8 @@ import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { useDiscardSession } from '@/hooks/useDiscardSession';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type ReplyData = {
   title: string;
@@ -49,14 +51,16 @@ const parseSentAt = (isoOrNull: string | null) => {
 
 export default function LetterReplyPage() {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
+  const { showToast } = useGlobalToast();
+
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
-
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
-
-  const { openModal } = useModalStore();
+  const discardSession = useDiscardSession();
+  const threadId = useThreadFlowStore((t) => t.threadId);
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -108,11 +112,23 @@ export default function LetterReplyPage() {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
-        // 이 부분에 patch 요청
-        // other-stop 페이지로 이동
-        navigate('/letter/other-stop', {
-          state: { totalCount: 7 },
-        });
+        // patch 요청
+        if (!threadId) return;
+
+        discardSession.mutate(
+          { threadId },
+          {
+            onSuccess: () => {
+              // other-stop 페이지로 이동
+              navigate('/letter/other-stop', {
+                state: { totalCount: 7 },
+              });
+            },
+            onError: () => {
+              showToast('요청에 실패했습니다. 잠시 후 다시 요청해주세요.', 'error');
+            },
+          },
+        );
       },
     });
   };
