@@ -9,6 +9,7 @@ export const useAuthHandlers = () => {
   const handleLogout = async () => {
     try {
       await postLogout(); // 서버에 "나 간다" 알림
+      console.log('로그아웃성공');
     } catch (error) {
       console.error('로그아웃 실패(토큰만료 등):', error);
     } finally {

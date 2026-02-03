@@ -16,10 +16,12 @@ import {
   SECTION_SPACING_MEDIUM,
   SECTION_SPACING_LARGE,
 } from '@/constants/settingLayout';
+import { useAuthHandlers } from '@/hooks/useAuthHandlers';
 
 export default function SettingPage() {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+  const { handleLogout } = useAuthHandlers();
 
   const handleBack = () => {
     navigate(-1);
@@ -196,7 +198,7 @@ export default function SettingPage() {
               <li>
                 <button
                   // TODO: 실제 로그아웃 처리 함수(onConfirmLogout) 연결 필요
-                  onClick={() => openModal('logoutConfirm')}
+                  onClick={() => openModal('logoutConfirm', { onConfirmLogout: handleLogout })}
                   className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
