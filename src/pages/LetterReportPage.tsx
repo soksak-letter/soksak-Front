@@ -120,7 +120,7 @@ const LetterReportPage = () => {
                   key={reason}
                   selected={isSelected}
                   onClick={() => handleReasonToggle(reason)}
-                  className='w-full! h-[34px]! text-[13px]! px-3! '
+                  className='w-full! h-[44px]! text-[13px]! px-[24px]! '
                 >
                   {reason}
                 </SelectButton>

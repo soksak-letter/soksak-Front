@@ -9,7 +9,7 @@ import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useModalStore } from '@/stores/modalStore';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 type KeywordLetterItem = {
@@ -209,7 +209,7 @@ function LetterDetailModalContent({ letterId }: { letterId: number }) {
     return <div className='bg-white p-6 rounded-xl'>데이터를 불러오지 못했습니다.</div>;
 
   const font = FONT_ASSET_MAP[data.design.font.id] ?? FONT_ASSET_MAP[DEFAULT_FONT_ID];
-  // 서버 ID가 0-based라 오프셋 조정 아니라면 추후 수정 필요
+  // 서버 ID가 0-base이기 때문에 +1해야함
   const paper = PAPER_ASSET_MAP[data.design.paper.id + 1] ?? PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
 
   return (
