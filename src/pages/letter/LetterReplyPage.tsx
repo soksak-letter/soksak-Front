@@ -113,7 +113,7 @@ export default function LetterReplyPage() {
       },
       onStopConversation: () => {
         if (!threadId) {
-          navigate('error/404', { replace: true });
+          navigate('/error/404', { replace: true });
           return;
         }
 
