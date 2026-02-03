@@ -6,10 +6,12 @@ import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 const SignInPage = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const { showToast } = useGlobalToast();
   // 1. DTO에 맞춰 userName으로 상태 관리
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -54,15 +56,15 @@ const SignInPage = () => {
         navigate('/');
       } else {
         // 200 OK지만 실패 로직 (예: 비밀번호 불일치 등 서버가 정의한 에러)
-        console.warn('[로그인 실패] 이유:', error?.reason);
+        showToast(error?.reason, 'error');
       }
     } catch (err: any) {
-      console.error(' [통신 에러]:', err);
+      showToast('통신 에러입니다.', 'error');
       if (err.response) {
         // 서버가 400, 500 등을 보냈을 때
-        console.log(err.response.data?.error?.reason || '서버 오류가 발생했습니다.');
+        showToast(err.response.data?.error?.reason || '서버 오류가 발생했습니다.', 'error');
       } else {
-        console.log('네트워크 연결을 확인해주세요.');
+        showToast('네트워크 연결을 확인해주세요.', 'error');
       }
     }
   };

@@ -57,7 +57,7 @@ export const postSignin = async (body: SignInRequest) => {
 };
 /**
  * 로그아웃 API
- * POST /auth/logou
+ * POST /auth/logout
  */
 export const postLogout = async () => {
   // 로그아웃은 보통 Body({})가 비어있어도 됩니다.
