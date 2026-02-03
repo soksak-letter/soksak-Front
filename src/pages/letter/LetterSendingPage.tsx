@@ -112,12 +112,17 @@ const LetterSendingPage = () => {
 
         console.log('[CreateLetter success response]', res);
 
-        // ✅ 테스트: 성공하면 무조건 transition
-        navigate(`/friend/sent-transition/${threadId}`, { replace: true });
-        // navigate('/home/main', {
-        //   replace: true,
-        //   state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
-        // });
+        // TODO : 실제 응답/스토어 값으로 교체
+        const letterCount = 0; // 임시
+
+        if (letterCount === 10) {
+          navigate(`/friend/sent-transition/${threadId}`, { replace: true });
+        } else {
+          navigate('/home/main', {
+            replace: true,
+            state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
+          });
+        }
       } catch {
         hasSentRef.current = false;
         showToast('편지 전송에 실패했어요.', 'error');

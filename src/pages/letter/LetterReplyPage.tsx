@@ -11,6 +11,8 @@ import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useModalStore } from '@/stores/modalStore';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { useDiscardSession } from '@/hooks/useDiscardSession';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type ReplyData = {
   title: string;
@@ -49,14 +51,16 @@ const parseSentAt = (isoOrNull: string | null) => {
 
 export default function LetterReplyPage() {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
+  const { showToast } = useGlobalToast();
+
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
-
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
-
-  const { openModal } = useModalStore();
+  const discardSession = useDiscardSession();
+  const threadId = useThreadFlowStore((t) => t.threadId);
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -108,10 +112,31 @@ export default function LetterReplyPage() {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
-        // other-stop 페이지로 이동
-        navigate('/letter/other-stop', {
-          state: { friendName: senderName, totalCount: 7 },
-        });
+        if (!threadId) {
+          navigate('/error/404', { replace: true });
+          return;
+        }
+
+        // patch 요청
+        discardSession.mutate(
+          { threadId },
+          {
+            onSuccess: (res) => {
+              if (res.resultType !== 'SUCCESS' || !res.success) {
+                showToast('요청에 실패했습니다. 잠시 후 다시 시도해주세요.', 'error');
+                return;
+              }
+
+              // patch 성공시 응답으로 주고받은 횟수를 받음(maxTurns) > totalCount로 넘김
+              const totalCount = res.success.result.data.maxTurns;
+              navigate('/letter/other-stop', { state: { totalCount } });
+            },
+            onError: (err) => {
+              console.error(err);
+              showToast('요청을 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+            },
+          },
+        );
       },
     });
   };
