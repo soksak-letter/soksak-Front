@@ -11,7 +11,7 @@ export const useAuthHandlers = () => {
       await postLogout(); // 서버에 "나 간다" 알림
       console.log('로그아웃성공');
     } catch (error) {
-      console.error('로그아웃 실패(토큰만료 등):', error);
+      console.error('로그아웃 실패(토큰만료 등)');
     } finally {
       // 성공하든 실패하든 클라이언트는 무조건 로그아웃 처리
       logout();
@@ -31,7 +31,7 @@ export const useAuthHandlers = () => {
       logout();
       navigate('/splash', { replace: true });
     } catch (error) {
-      console.error('회원탈퇴 실패:', error);
+      console.error('회원탈퇴 실패');
     }
   };
   return { handleLogout, handleWithdraw };
