@@ -7,12 +7,20 @@ const STORAGE_KEY = 'soksak_total_seconds';
 export default function ActivityTracker() {
   const addSeconds = useActivityStore((s) => s.addSeconds);
   const hydrate = useActivityStore((s) => s.hydrate);
+
   const postActivity = usePostMyActivity();
+  // 1. mutate를 ref로 고정
+  const mutateRef = useRef(postActivity.mutate);
+
+  // 2. mutate가 바뀌면 ref만 업데이트
+  useEffect(() => {
+    mutateRef.current = postActivity.mutate;
+  }, [postActivity.mutate]);
 
   const intervalRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(Date.now());
 
-  // 1) 최초 로컬 값 불러오기
+  // 3. 최초 로컬스토리지 복구
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
     const saved = raw !== null ? parseInt(raw, 10) : 0;
@@ -20,7 +28,7 @@ export default function ActivityTracker() {
     if (!Number.isNaN(saved) && saved > 0) hydrate(saved);
   }, [hydrate]);
 
-  // 2) visible 상태에서만 초 누적
+  // 4. 실제 타이머 로직
   useEffect(() => {
     const start = () => {
       if (intervalRef.current) return;
@@ -33,6 +41,9 @@ export default function ActivityTracker() {
 
         lastTickRef.current = now;
         addSeconds(diffSec);
+
+        // 여기서만 API ping
+        mutateRef.current({});
       }, 1000);
     };
 
