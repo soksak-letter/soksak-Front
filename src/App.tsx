@@ -3,9 +3,11 @@ import ModalRoot from './components/modal/ModalRoot';
 import ActivityTracker from './components/ActivityTracker';
 
 function App() {
+  const hasToken = Boolean(localStorage.getItem('token'));
+
   return (
     <>
-      <ActivityTracker />
+      {hasToken && <ActivityTracker />}
       <ModalRoot />
       <Outlet />
     </>
