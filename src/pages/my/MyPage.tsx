@@ -5,7 +5,6 @@ import { HiEnvelope } from 'react-icons/hi2';
 import { HiClock } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
-import { usePostMyActivity } from '@/hooks/onboarding/usePostMyActivity';
 import { useEffect, useMemo, useRef } from 'react';
 import { useActivityStore } from '@/stores/activityStore';
 
@@ -16,16 +15,6 @@ const MyPage = () => {
   const {
     data: interestsItems, // ← useMyInterests가 items만 반환(select)하는 훅이라면 배열이 바로 옴
   } = useMyInterests(true);
-
-  // 활동시간 갱신 ping
-  const postActivity = usePostMyActivity();
-  const calledRef = useRef(false);
-
-  useEffect(() => {
-    if (calledRef.current) return;
-    calledRef.current = true;
-    postActivity.mutate({});
-  }, [postActivity]);
 
   const totalSeconds = useActivityStore((s) => s.totalSeconds);
   const totalUsageMinutes = Math.floor(totalSeconds / 60);
