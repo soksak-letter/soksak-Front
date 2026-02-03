@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/useAuthStore';
 import type { RefreshTokenResponse } from '@/types/dto/auth';
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 
@@ -54,20 +55,24 @@ axiosInstance.interceptors.response.use(
     // 에러난 요청의 설정값(url, headers 등)을 가져옵니다.
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
+    const { logout, login } = useAuthStore.getState();
+
     if (error.response) {
       const { status } = error.response;
 
       //  401 에러 처리 로직
       if (status === 401) {
-        // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신도 실패)
-        // ->  온보딩으로 쫓아냅니다.
+        // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신 요청 실패 -> 강제 로그아웃)
+        // ->  온보딩으로 쫓아냄
         if (originalRequest.url?.includes('/auth/refresh')) {
           isRefreshing = false;
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken'); //clear 대신
+          //localStorage.removeItem('accessToken');
+          //localStorage.removeItem('refreshToken'); //clear 대신
+          logout();
+
           onRefreshFailed(error);
           if (window.location.pathname !== '/onboarding') {
-            window.location.href = '/onboarding';
+            window.location.href = '/onboarding'; //navigate로 또는 보통은 logout()이 실행되면 App.tsx에서 감지해서 쫓아내는
           }
           return Promise.reject(error);
         }
@@ -114,8 +119,11 @@ axiosInstance.interceptors.response.use(
             const newAccessToken = data.success.jwtAccessToken;
 
             // 1. 새 토큰 저장
-            localStorage.setItem('accessToken', newAccessToken);
-
+            //localStorage.setItem('accessToken', newAccessToken);
+            // 토큰이 갱신됐을 때도 스토어 업데이트 (일관성 유지)
+            // RefreshToken은 그대로라면 가져와서 다시 넣어줌
+            const currentRefreshToken = localStorage.getItem('refreshToken') || '';
+            login(newAccessToken, currentRefreshToken);
             // 2. 대기열 해소 (기다리던 요청들 재실행)
             isRefreshing = false;
             onRefreshed(newAccessToken);
@@ -126,14 +134,16 @@ axiosInstance.interceptors.response.use(
           } else {
             // [수정 2] 200 OK지만 비즈니스 로직상 실패(FAIL)인 경우 -> 로그아웃 처리
             // 이걸 안 하면 isRefreshing이 true로 남아서 무한 대기 걸림
+            logout();
             throw new Error('Refresh Token Invalid');
           }
         } catch (refreshError) {
           // 갱신 실패 시 (네트워크 에러 or 위에서 throw한 에러) -> [기존 코드]처럼 온보딩으로 이동
           isRefreshing = false; // [중요] 상태 초기화
           onRefreshFailed(refreshError);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken'); //clear 대신
+          //localStorage.removeItem('accessToken');
+          //localStorage.removeItem('refreshToken'); //clear 대신
+          logout();
 
           if (window.location.pathname !== '/onboarding') {
             window.location.href = '/onboarding';

@@ -5,8 +5,10 @@ import type { SignInRequest, SignInResponse } from '@/types/dto/auth';
 import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const SignInPage = () => {
+  const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
   // 1. DTO에 맞춰 userName으로 상태 관리
   const [username, setUserName] = useState('');
@@ -46,9 +48,11 @@ const SignInPage = () => {
         const { jwtAccessToken, jwtRefreshToken } = success.result;
 
         // 토큰 저장
-        localStorage.setItem('accessToken', jwtAccessToken);
-        localStorage.setItem('refreshToken', jwtRefreshToken);
+        //localStorage.setItem('accessToken', jwtAccessToken);
+        //localStorage.setItem('refreshToken', jwtRefreshToken);
 
+        // (Store가 내부적으로 localStorage 저장도 하고, isLoggedIn 상태도 true로 바꿈)
+        login(jwtAccessToken);
         console.log('토큰 저장 완료! 메인으로 이동');
         navigate('/');
       } else {
