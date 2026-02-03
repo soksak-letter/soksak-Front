@@ -191,7 +191,7 @@ const router = createBrowserRouter([
                 path: 'friend/thread/:friendId/:letterId',
                 element: <FriendReplyPage />,
               },
-              // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },
