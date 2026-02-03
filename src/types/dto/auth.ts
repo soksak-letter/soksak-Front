@@ -114,8 +114,14 @@ export interface RefreshTokenResult {
 }
 export type RefreshTokenResponse = CommonResponse<RefreshTokenResult>;
 
+//로그아웃
 // Logout Response
-export type LogoutResponse = CommonResponse<null>;
+export interface LogoutResult {
+  result: {
+    status: 'Logged Out';
+  };
+}
+export type LogoutResponse = CommonResponse<LogoutResult>;
 
 //Profile-setUp 페이지
 //프로필 닉네임 수정
@@ -138,3 +144,5 @@ export interface ProfileImageResult {
   profileImageUrl: string;
 }
 export type ProfileImageResponse = CommonResponse<ProfileImageResult>;
+
+//회원탈퇴
