@@ -31,11 +31,8 @@ const MyPage = () => {
   // 온도값을 0~100으로 clamp
   const safeTemp = Math.max(0, Math.min(100, userInfo.temperature));
 
-  // 렌더용 관심사 문자열 (id,name → name)
   const interests = useMemo(() => {
-    // 훅이 items 배열(InterestItem[])을 바로 주는 형태라면:
-    if (!interestsItems) return [];
-    return interestsItems.map((it) => it.name);
+    return interestsItems ?? [];
   }, [interestsItems]);
 
   return (
@@ -84,12 +81,9 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {interests.map((interest) => (
-              <span
-                key={interest}
-                className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
-              >
-                {interest}
+            {interests.map((item) => (
+              <span key={item.id} className='...'>
+                {item.name}
               </span>
             ))}
           </div>
