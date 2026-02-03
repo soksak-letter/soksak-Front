@@ -16,12 +16,20 @@ export function usePatchMyConsents() {
 
   return useMutation<PatchConsentsResult, ApiError, PatchConsentsBody>({
     mutationFn: async (body) => {
-      const marketingEmailAgreed = Boolean(body.marketingEmailAgreed);
-      const marketingPushAgreed = Boolean(body.marketingPushAgreed);
+      const marketingEmailAgreed =
+        body.marketingEmailAgreed === undefined ? undefined : body.marketingEmailAgreed;
+
+      const marketingPushAgreed =
+        body.marketingPushAgreed === undefined ? undefined : body.marketingPushAgreed;
+
+      // required: 항상 포함
+      const marketingAgreed = (marketingEmailAgreed ?? false) || (marketingPushAgreed ?? false);
 
       const fixedBody: PatchConsentsBody & { marketingAgreed: boolean } = {
         ...body,
-        marketingAgreed: marketingEmailAgreed || marketingPushAgreed,
+        marketingEmailAgreed,
+        marketingPushAgreed,
+        marketingAgreed,
       };
 
       const res = await patchMyConsents(fixedBody);
