@@ -34,21 +34,26 @@ const LetterReportPage = () => {
   const reasons = REPORT_REASONS;
 
   // 잘못된 접근 처리 (URL로 직접 접속했거나 letterId 없이 온 경우)
+  // 1.유효성 검사 (잘못된 접근 처리)
   useEffect(() => {
+    // letterId가 없으면 경고 띄우고 뒤로가기
     if (!letterId) {
       showToast('잘못된 접근입니다.', 'error');
-      // 잠시 후 뒤로가기 혹은 메인으로
       const timer = setTimeout(() => navigate(-1), 1500);
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer); // cleanup
     }
+  }, [letterId, navigate, showToast]);
+
+  // 2️. 신고 완료 후 처리
+  useEffect(() => {
+    // 완료 상태(isCompleted)가 true가 되면 메인으로 이동
     if (isCompleted) {
       const timer = setTimeout(() => {
         navigate('/');
       }, 3000);
-
       return () => clearTimeout(timer); // cleanup
     }
-  }, [letterId, navigate, showToast, isCompleted]);
+  }, [isCompleted, navigate]);
 
   // 사유 선택 토글 핸들러
   const handleReasonToggle = (reason: ReportReason) => {
@@ -87,7 +92,7 @@ const LetterReportPage = () => {
 
     //Body에 담을 데이터 구성
     const requestBody: LetterReportRequest = {
-      letterId: letterId, // 여기서 location.state로 받은 값을 넣습니다.
+      letterId, // 여기서 location.state로 받은 값을 넣습니다.
       reasons: selectedReasons,
     };
 
