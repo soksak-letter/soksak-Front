@@ -154,8 +154,8 @@ const LetterReportPage = () => {
             {[
               reasons.slice(0, 3), // 첫 번째 줄 (0, 1, 2)
               reasons.slice(3, 5), // 두 번째 줄 (3, 4)
-              reasons.slice(5, 7), // 세 번째 줄 (5, 6, 7)
-              reasons.slice(7, 8),
+              reasons.slice(5, 7), // 세 번째 줄 (5, 6)
+              reasons.slice(7, 8), // 네 번째 줄 (7)
             ].map((row, rowIndex) => (
               <div key={rowIndex} className='flex justify-left gap-x-[8px] w-full'>
                 {row.map((reason) => {
