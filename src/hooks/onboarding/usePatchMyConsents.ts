@@ -16,20 +16,12 @@ export function usePatchMyConsents() {
 
   return useMutation<PatchConsentsResult, ApiError, PatchConsentsBody>({
     mutationFn: async (body) => {
-      const marketingEmailAgreed =
-        body.marketingEmailAgreed === undefined ? undefined : body.marketingEmailAgreed;
-
-      const marketingPushAgreed =
-        body.marketingPushAgreed === undefined ? undefined : body.marketingPushAgreed;
-
-      // required: 항상 포함
-      const marketingAgreed = (marketingEmailAgreed ?? false) || (marketingPushAgreed ?? false);
+      const marketingEmail = body.marketingEmailAgreed ?? false;
+      const marketingPush = body.marketingPushAgreed ?? false;
 
       const fixedBody: PatchConsentsBody & { marketingAgreed: boolean } = {
         ...body,
-        marketingEmailAgreed,
-        marketingPushAgreed,
-        marketingAgreed,
+        marketingAgreed: marketingEmail || marketingPush, // required 항상 포함
       };
 
       const res = await patchMyConsents(fixedBody);
@@ -37,8 +29,8 @@ export function usePatchMyConsents() {
       if (res.resultType === 'SUCCESS') return res.success;
       throw res.error;
     },
-    onSuccess: async () => {
-      await qc.invalidateQueries({ queryKey: onboardingKeys.consents });
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: onboardingKeys.consents });
     },
   });
 }
