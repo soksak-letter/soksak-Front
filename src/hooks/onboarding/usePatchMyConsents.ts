@@ -16,12 +16,17 @@ export function usePatchMyConsents() {
 
   return useMutation<PatchConsentsResult, ApiError, PatchConsentsBody>({
     mutationFn: async (body) => {
-      const marketingEmail = body.marketingEmailAgreed ?? false;
-      const marketingPush = body.marketingPushAgreed ?? false;
+      const marketingEmailAgreed = body.marketingEmailAgreed;
+      const marketingPushAgreed = body.marketingPushAgreed;
+
+      // required는 "true인 것만" 반영
+      const marketingAgreed = marketingEmailAgreed === true || marketingPushAgreed === true;
 
       const fixedBody: PatchConsentsBody & { marketingAgreed: boolean } = {
         ...body,
-        marketingAgreed: marketingEmail || marketingPush, // required 항상 포함
+        marketingEmailAgreed,
+        marketingPushAgreed,
+        marketingAgreed,
       };
 
       const res = await patchMyConsents(fixedBody);
