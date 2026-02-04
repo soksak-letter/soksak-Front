@@ -9,6 +9,7 @@ import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { getParseDate } from '@/utils/date';
 
 type PostItem = {
   letterId: number;
@@ -20,14 +21,6 @@ type PostItem = {
   paperId: number;
   stampId: number;
   stampUrl: string;
-};
-
-const parseDate = (iso: string) => {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
 };
 
 export default function LetterPostOtherPage() {
@@ -49,7 +42,7 @@ export default function LetterPostOtherPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: parseDate(l.deliveredAt),
+      dateText: getParseDate(l.deliveredAt),
       isMine: l.isMine,
       isUnread: false,
       paperId: l.design?.paperId ?? 0,
