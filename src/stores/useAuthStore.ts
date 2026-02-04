@@ -1,18 +1,28 @@
+// 의도: 로그인 여부는 “토큰 존재 여부”로만 판단
+
 import { create } from 'zustand';
 
-interface AuthState {
-  isLoggedIn: boolean; // 전역에서 바라볼 로그인 상태
+type LoginPayload = {
+  accessToken?: string;
+  refreshToken?: string;
+};
 
-  // App.tsx에서 쓰기 쉬운 별칭(리뷰 의도: localStorage 직접 안 봄)
+interface AuthState {
+  // “로그인 상태 = 토큰 존재 여부”로 관리
+  isLoggedIn: boolean;
   hasToken: boolean;
-  // localStorage 값과 스토어 상태를 다시 맞추는 용도
+
+  // localStorage와 스토어 상태 재동기화
   sync: () => void;
 
-  login: (accessToken: string, refreshToken: string) => void; // 인자 추가
+  // 토큰 저장(선택) + 상태 갱신
+  // eslint-disable-next-line no-unused-vars
+  login: (payload: LoginPayload) => void;
+
+  // 토큰 제거 + 상태 갱신
   logout: () => void;
 }
 
-// 프로젝트가 token 단일키/ accessToken 키가 섞일 수 있어서 안전하게 OR 체크
 const TOKEN_KEY = 'token';
 const ACCESS_KEY = 'accessToken';
 const REFRESH_KEY = 'refreshToken';
@@ -32,14 +42,14 @@ export const useAuthStore = create<AuthState>((set) => {
       set({ isLoggedIn: next, hasToken: next });
     },
 
-    login: (accessToken, refreshToken) => {
-      localStorage.setItem(ACCESS_KEY, accessToken);
+    login: ({ accessToken, refreshToken }) => {
+      // 필요할 때만 저장
+      if (accessToken) localStorage.setItem(ACCESS_KEY, accessToken);
+      if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
 
-      if (refreshToken !== undefined) {
-        localStorage.setItem(REFRESH_KEY, refreshToken);
-      }
-
-      set({ isLoggedIn: true, hasToken: true }); // 전역 알림: 로그인
+      // “토큰 존재 여부” 기준으로 상태 확정
+      const next = readHasToken();
+      set({ isLoggedIn: next, hasToken: next }); // 전역 알림: 로그인
     },
 
     logout: () => {
