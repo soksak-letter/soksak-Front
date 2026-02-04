@@ -100,7 +100,6 @@ export default function LetterReplyPage() {
     navigate('/letter/report', {
       state: {
         letterId: Number(letterIdParam),
-        stampId: view?.stampId,
         stampUrl: view?.stampUrl,
       },
     }); //신고페이지로 letterId 보내기
