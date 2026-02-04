@@ -23,6 +23,7 @@ const initialState = {
   sessionId: null,
   friendName: null,
   senderName: null,
+  letterCount: null,
 };
 
 export const useThreadFlowStore = create<ThreadFlow>((set) => ({

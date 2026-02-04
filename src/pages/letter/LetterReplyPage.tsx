@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useMemo } from 'react';
 
@@ -26,6 +26,10 @@ type ReplyData = {
   stampUrl: string;
 };
 
+type LetterReplyLocationState = {
+  isMine?: boolean;
+};
+
 export default function LetterReplyPage() {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
@@ -38,6 +42,10 @@ export default function LetterReplyPage() {
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const discardSession = useDiscardSession();
   const sessionId = useThreadFlowStore((t) => t.sessionId);
+
+  const location = useLocation();
+  const state = location.state as LetterReplyLocationState | null;
+  const isMine = state?.isMine ?? false;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -147,14 +155,16 @@ export default function LetterReplyPage() {
         className='rotate-1 mt-5'
       />
 
-      <div className='mt-6 grid grid-cols-2 gap-3'>
-        <Button className='w-full' color='grey' onClick={handleEnd}>
-          편지 끝내기
-        </Button>
-        <Button className='w-full' onClick={handleReply}>
-          답장하기
-        </Button>
-      </div>
+      {!isMine && (
+        <div className='mt-6 grid grid-cols-2 gap-3'>
+          <Button className='w-full' color='grey' onClick={handleEnd}>
+            편지 끝내기
+          </Button>
+          <Button className='w-full' onClick={handleReply}>
+            답장하기
+          </Button>
+        </div>
+      )}
     </>
   );
 
@@ -163,13 +173,15 @@ export default function LetterReplyPage() {
       <BackHeader
         title={`${senderName}님의 편지`}
         rightElement={
-          <button
-            type='button'
-            onClick={handleReport}
-            className='ty-body5 font-medium text-[var(--color-primary-500)]'
-          >
-            신고하기
-          </button>
+          !isMine ? (
+            <button
+              type='button'
+              onClick={handleReport}
+              className='ty-body5 font-medium text-[var(--color-primary-500)]'
+            >
+              신고하기
+            </button>
+          ) : null
         }
       />
       <main className='px-5 pb-[28px]'>{content}</main>

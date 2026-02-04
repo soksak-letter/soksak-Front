@@ -67,9 +67,9 @@ export default function LetterPostOtherPage() {
   // 잘못된 접근 - 404 처리
   if (!sessionIdParam || !sessionId) return <NotFoundPage />;
 
-  const handleOpenLetterDetail = (letterId: number) => {
-    navigate(`/letter/reply/${sessionId}/${letterId}`, {
-      state: { sessionId, letterId, senderName },
+  const handleOpenLetterDetail = (item: PostItem) => {
+    navigate(`/letter/reply/${sessionId}/${item.letterId}`, {
+      state: { sessionId, letterId: item.letterId, senderName, isMine: item.isMine },
     });
   };
 
@@ -125,7 +125,7 @@ export default function LetterPostOtherPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p)}
                     />
                   );
                 })}
@@ -142,7 +142,7 @@ export default function LetterPostOtherPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p)}
                     />
                   );
                 })}
