@@ -44,7 +44,7 @@ export default function LetterPostOtherPage() {
       deliveredAt: l.deliveredAt,
       dateText: getParseDate(l.deliveredAt),
       isMine: l.isMine,
-      isUnread: false,
+      isUnread: l.readAt === null,
       paperId: l.design?.paperId ?? 0,
       stampId: l.design?.stampId ?? 0,
       stampUrl: (l.design?.stampUrl ?? '').trim(),
@@ -203,7 +203,6 @@ function PostCard({
 
         <div className='mt-1 flex items-center gap-1'>
           <p className='ty-detailMedium'>{item.dateText}</p>
-          {/* TODO : Unread 상태 전역으로 관리? */}
           {item.isUnread && <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />}
         </div>
       </div>

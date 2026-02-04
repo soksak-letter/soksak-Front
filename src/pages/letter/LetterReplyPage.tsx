@@ -13,6 +13,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useDiscardSession } from '@/hooks/useDiscardSession';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { getParseSentAt } from '@/utils/date';
 
 type ReplyData = {
   title: string;
@@ -23,30 +24,6 @@ type ReplyData = {
   fontId: number;
   stampId: number;
   stampUrl: string;
-};
-
-const parseSentAt = (isoOrNull: string | null) => {
-  if (!isoOrNull) return '-';
-
-  const d = new Date(isoOrNull);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  let hours = d.getHours(); // 0 ~ 23
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-
-  const isPM = hours >= 12;
-  const ampm = isPM ? 'PM' : 'AM';
-
-  hours = hours % 12;
-  if (hours === 0) hours = 12;
-
-  const hh = String(hours).padStart(2, '0');
-
-  return `${y}.${m}.${day} ${hh}:${minutes} ${ampm}`;
 };
 
 export default function LetterReplyPage() {
@@ -67,7 +44,7 @@ export default function LetterReplyPage() {
 
     return {
       title: data.title,
-      sentAtText: parseSentAt(data.deliveredAt),
+      sentAtText: getParseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
       paperId: (data.design.paper.id ?? 0) + 1,

@@ -11,6 +11,7 @@ import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { getParseDate } from '@/utils/date';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -26,19 +27,6 @@ type InboxOtherLetterItem = {
   paperId: number;
   stampId: number;
   stampUrl: string;
-};
-
-const parseDate = (input: string | null | undefined) => {
-  if (!input) return '-';
-
-  const d = new Date(input);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxOtherPage() {
@@ -62,7 +50,7 @@ export default function LetterInboxOtherPage() {
         sessionId: x.sessionId,
         question: x.lastLetterTitle,
         senderName: x.sender.nickname,
-        receivedAt: parseDate(deliveredAt),
+        receivedAt: getParseDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
         letterCount: x.sender.letterCount,
         isUnread: false,
