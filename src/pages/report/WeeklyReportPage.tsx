@@ -11,7 +11,7 @@ import { ROUTES } from '@/routes/paths';
 import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel';
 import type { FeedLetter } from '@/types/letter';
 
-// import StampIcon from '@/assets/icons/StampIcon.svg?react';
+import OnboardingStamp from '@/assets/icons/OnboardingStamp.svg?react';
 
 // API 응답 형태의 Mock Data (데이터가 오는 곳)
 const keywordsMock = [
@@ -109,55 +109,37 @@ export default function WeeklyReportPage() {
   ] as unknown as Parameters<typeof WeeklyEmotionDistributionCard>[0]['data'];
 
   return (
-    <div className='relative isolate min-h-[100dvh] bg-[#FFEEED] overflow-x-hidden'>
+    <div className='relative min-h-full w-full overflow-hidden bg-[#FFEEED]'>
       {/* 배경 레이어(스크롤해도 고정) */}
-      <div className='pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#FFEEED]'>
-        {/*
-        // 우표 배경
-        <div className='absolute inset-0'>
-          <div
-            className='absolute left-[-48px] top-[72px]'
-            style={{
-              width: 90,
-              height: 93,
-              transform: 'rotate(20.41deg)',
-              opacity: 0.22,
-            }}
-          >
-            <div className='h-full w-full p-[6px]'>
-              <StampIcon className='h-full w-full' />
-            </div>
-          </div>
-
-          <div
-            className='absolute right-[-32px] top-[260px]'
-            style={{
-              width: 76.78,
-              height: 81.64,
-              transform: 'rotate(-12deg)',
-              opacity: 0.18,
-            }}
-          >
-            <div className='h-full w-full p-[6px]'>
-              <StampIcon className='h-full w-full' />
-            </div>
-          </div>
-
-          <div
-            className='absolute left-[24px] top-[420px]'
-            style={{
-              width: 76.78,
-              height: 81.64,
-              transform: 'rotate(20.41deg)',
-              opacity: 0.16,
-            }}
-          >
-            <div className='h-full w-full p-[6px]'>
-              <StampIcon className='h-full w-full' />
-            </div>
+      <div className='pointer-events-none absolute inset-0 z-0'>
+        {/* 우표 배경 */}
+        {/* 우표 1 */}
+        <div
+          className='absolute left-[-36px] top-[90px] opacity-[0.22]'
+          style={{ width: 90, height: 94, transform: 'rotate(-20.41deg)' }}
+        >
+          <div className='h-full w-full'>
+            <OnboardingStamp className='h-full w-full' />
           </div>
         </div>
-        */}
+        {/* 우표 2 */}
+        <div
+          className='absolute right-[-18px] top-[10px] opacity-[0.22]'
+          style={{ width: 90, height: 88, transform: 'rotate(16deg)' }}
+        >
+          <div className='h-full w-full'>
+            <OnboardingStamp className='h-full w-full' />
+          </div>
+        </div>
+        {/* 우표 3 */}
+        <div
+          className='absolute left-[160px] top-[408px] opacity-[0.22]'
+          style={{ width: 90, height: 100, transform: 'rotate(-20deg)' }}
+        >
+          <div className='h-full w-full'>
+            <OnboardingStamp className='h-full w-full' />
+          </div>
+        </div>
       </div>
 
       {/* 실제 스크롤 콘텐츠 */}
