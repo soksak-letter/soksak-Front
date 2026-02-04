@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { postSignup } from '@/api/auth';
+import { postSignin, postSignup } from '@/api/auth';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
-import type { SignUpRequest } from '@/types/dto/auth';
+import type { SignInRequest, SignUpRequest } from '@/types/dto/auth';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 
+//---회원가입----
 export const useSignupMutation = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
@@ -28,6 +29,34 @@ export const useSignupMutation = () => {
       // 네트워크 에러 처리
       showToast('네트워크 오류입니다', 'error');
       navigate('/error/500');
+    },
+  });
+};
+//--로그인----
+
+export const useSigninMutation = () => {
+  const login = useAuthStore((state) => state.login);
+  const navigate = useNavigate();
+  const { showToast } = useGlobalToast();
+
+  return useMutation({
+    mutationFn: (requestData: SignInRequest) => postSignin(requestData),
+    onSuccess: (response) => {
+      if (response.resultType === 'SUCCESS' && response.success) {
+        const { jwtAccessToken, jwtRefreshToken } = response.success.result;
+        login(jwtAccessToken, jwtRefreshToken);
+        navigate('/');
+      } else {
+        showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
+      }
+    },
+    onError: (err: any) => {
+      if (err === '401') {
+        showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
+      } else {
+        const errorMessage = err.response?.data?.error?.reason || '서버 오류가 발생했습니다.';
+        showToast(errorMessage, 'error');
+      }
     },
   });
 };
