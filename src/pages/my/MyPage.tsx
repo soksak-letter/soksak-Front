@@ -82,7 +82,10 @@ const MyPage = () => {
 
           <div className='flex gap-2 flex-wrap justify-center'>
             {interests.map((item) => (
-              <span key={item.id} className='...'>
+              <span
+                key={item.id}
+                className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
+              >
                 {item.name}
               </span>
             ))}
