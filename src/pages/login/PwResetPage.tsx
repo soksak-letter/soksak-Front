@@ -1,12 +1,8 @@
 import { Button } from '@/components/common/Button';
-import usePwResetForm from '@/hooks/usePwResetForm';
+import usePwResetForm from '@/hooks/auth/usePwResetForm';
 import { blockSpaceKey, getBorderColor, getMessageColor } from '@/utils/inputUtils';
 
-import { useNavigate } from 'react-router-dom';
-
 const PwResetPage = () => {
-  const navigate = useNavigate();
-
   const {
     form,
     validations,

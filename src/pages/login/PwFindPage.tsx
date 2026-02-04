@@ -27,7 +27,7 @@ const PwFindPage = () => {
   // 버튼 비활성화 조건
   // 1. 이메일 형식이 틀림
   // 2. 로딩 중
-  const isButtonDisabled = !isFormatValid || apiStatus === 'loading';
+  const isButtonDisabled = !isFormatValid || apiStatus === 'pending';
   // 메시지 표시 로직
   // 1. API 에러가 있으면 API 에러 메시지 (빨강)
   // 2. API 성공이면 성공 메시지 (초록/파랑)
@@ -96,7 +96,7 @@ const PwFindPage = () => {
               className={` transition-colors`}
             >
               {/* 상태에 따라 버튼 텍스트 변경: 요청중 / 다시 요청 / 인증 요청 */}
-              {apiStatus === 'loading'
+              {apiStatus === 'pending'
                 ? '요청중'
                 : apiStatus === 'success'
                   ? '다시 요청'

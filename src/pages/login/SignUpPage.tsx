@@ -3,7 +3,7 @@ import ToastCheck from '@/assets/icons/ToastCheck.svg?react';
 import CheckBlank from '@/assets/icons/CheckBlank.svg?react';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
-import useTermsAgree from '@/hooks/useTermsAgree';
+import useTermsAgree from '@/hooks/auth/useTermsAgree';
 import TermItem from '@/components/TermItem';
 import {
   blockSpaceKey,
