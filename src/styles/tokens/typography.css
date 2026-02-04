@@ -52,6 +52,7 @@
     font-weight: 400;
     src:
       local('Nanum BaeEunHye'),
+      url('../../assets/fonts/NanumBaeEunHye.woff') format('woff'),
       url('../../assets/fonts/NanumBaeEunHye.woff2') format('woff2');
   }
 
