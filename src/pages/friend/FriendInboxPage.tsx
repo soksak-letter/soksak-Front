@@ -141,7 +141,7 @@ export default function FriendInboxPage() {
                         {f.stampUrl ? (
                           <img
                             src={f.stampUrl}
-                            className='absolute right-2 bottom-5 h-6 w-6 object-contain'
+                            className='absolute right-2.5 bottom-6 h-6 w-6 object-contain'
                             draggable={false}
                           />
                         ) : null}

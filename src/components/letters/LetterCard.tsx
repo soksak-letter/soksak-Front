@@ -29,11 +29,11 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
           {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}
         </div>
 
-        {/* 텍스트 레이어 (라인 위) */}
+        {/* 텍스트 레이어 */}
         <div
           className='relative z-10'
           style={{
-            paddingTop: 28,
+            paddingTop: 40,
             paddingLeft: PADDING_X,
             paddingRight: PADDING_X,
             paddingBottom: PADDING_BOTTOM,

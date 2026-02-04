@@ -180,7 +180,7 @@ export default function LetterInboxOtherPage() {
                             <img
                               src={it.stampUrl}
                               alt=''
-                              className='absolute right-1 bottom-3 h-7 w-7 object-contain pointer-events-none'
+                              className='absolute right-2.5 bottom-6 h-7 w-7 object-contain pointer-events-none'
                               draggable={false}
                             />
                           )}

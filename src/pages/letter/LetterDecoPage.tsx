@@ -8,12 +8,12 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
 import LetterStyleContent from '@/components/BottomSheet/letterStyle/LetterStyleContent';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
-import LetterEnvelope from '@/components/letters/LetterEnvelope';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 type StyleTab = 'font' | 'paper' | 'stamp';
@@ -61,13 +61,18 @@ function LetterDecoPage() {
     PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
 
   const PaperBg = paperAsset.Preview;
-  const envelopeColor = paperAsset.envelopeColor;
+
+  const envelopeAsset =
+    (style.paperId != null ? ENVELOPE_ASSET_MAP[style.paperId] : undefined) ??
+    ENVELOPE_ASSET_MAP[DEFAULT_PAPER_ID];
+
+  const EnvelopePreview = envelopeAsset?.Preview;
+
+  const stampUrl = selectedStamp?.assetUrl ?? '';
 
   const fontFamily =
     (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
     FONT_ASSET_MAP[DEFAULT_FONT_ID].fontFamily;
-
-  const stampUrl = selectedStamp?.assetUrl ?? '';
 
   useEffect(() => {
     setIsOpen(true);
@@ -128,22 +133,31 @@ function LetterDecoPage() {
         <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
       </div>
       {/* 편지 미리보기 Wrapper */}
-      <div className='relative mx-auto w-full max-w-[320px] aspect-[2/3]'>
+      <div className='relative mx-auto w-full aspect-[2/3]'>
         {selectedTab === 'stamp' ? (
-          <div className='absolute inset-0 flex justify-center'>
-            <LetterEnvelope
-              paperColor={envelopeColor}
-              stampSrc={stampUrl}
-              stampAlt={selectedStamp?.name ?? '우표 이미지'}
-              className='mt-20 -rotate-4 shadow-sm'
-            />
+          <div className='absolute inset-0 flex justify-center mt-5'>
+            <div className='relative w-[360px] h-[270px] -rotate-3'>
+              {EnvelopePreview ? (
+                <EnvelopePreview className='h-full w-full drop-shadow-[0_10px_25px_rgba(0,0,0,0.10)]' />
+              ) : (
+                <div className='h-full w-full rounded-xl bg-[#F2F2F2] drop-shadow-[0_10px_25px_rgba(0,0,0,0.10)]' />
+              )}
+
+              {!!stampUrl && (
+                <img
+                  src={stampUrl}
+                  className='absolute -rotate-5 right-[30px] bottom-[40px] h-[90px] w-[90px] object-contain pointer-events-none'
+                  draggable={false}
+                />
+              )}
+            </div>
           </div>
         ) : (
           <LetterCard
             PaperBg={PaperBg}
             font={fontFamily}
             value={{ title: draft.title, content: draft.content }}
-            className='-rotate-1 mt-10'
+            className='mt-5'
           />
         )}
       </div>

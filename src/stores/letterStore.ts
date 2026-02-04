@@ -32,7 +32,7 @@ const createInitialDraft = (): LetterDraft => ({
 
 const createInitialStyle = (): LetterStyle => ({
   paperId: DEFAULT_PAPER_ID,
-  stampId: 0,
+  stampId: 1,
   fontId: DEFAULT_FONT_ID,
 });
 
