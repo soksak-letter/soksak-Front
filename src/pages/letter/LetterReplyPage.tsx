@@ -97,7 +97,9 @@ export default function LetterReplyPage() {
   if (!letterIdParam) return <NotFoundPage />;
 
   const handleReport = () => {
-    navigate('/letter/report', { state: { letterId: Number(letterIdParam) } }); //신고페이지로 letterId 보내기
+    navigate('/letter/report', {
+      state: { letterId: Number(letterIdParam), stampId: view?.stampId, stampUrl: view?.stampUrl },
+    }); //신고페이지로 letterId 보내기
   };
 
   const handleReply = () => {
