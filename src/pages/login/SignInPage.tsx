@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import { useSigninMutation } from '@/hooks/auth/useAuthMutation';
+import { useSigninMutation } from '@/hooks/auth/mutation/useAuthMutation';
 import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

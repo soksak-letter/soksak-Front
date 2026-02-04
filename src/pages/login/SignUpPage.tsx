@@ -11,9 +11,9 @@ import {
   getBorderColor,
   getMessageColor,
 } from '@/utils/inputUtils';
-import useSignUpForm from '@/hooks/useSignUpForm';
+import useSignUpForm from '@/hooks/auth/useSignUpForm';
 import type { SignUpRequest } from '@/types/dto/auth';
-import { useSignupMutation } from '@/hooks/auth/useAuthMutation';
+import { useSignupMutation } from '@/hooks/auth/mutation/useAuthMutation';
 
 const SignUpPage = () => {
   const { mutate: signupMutate, isPending } = useSignupMutation();

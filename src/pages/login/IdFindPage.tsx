@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button';
 import ToastPopup from '@/components/ToastPopup';
-import useFindAccount from '@/hooks/useFindAccount';
+import useFindAccount from '@/hooks/auth/useFindAccount';
 import { useState } from 'react';
 
 const IdFindPage = () => {
