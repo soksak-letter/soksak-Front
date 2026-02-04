@@ -82,7 +82,7 @@ export default function ActivityTracker() {
     }, 60_000);
 
     return () => window.clearInterval(id);
-  });
+  }, []);
 
   return null;
 }
