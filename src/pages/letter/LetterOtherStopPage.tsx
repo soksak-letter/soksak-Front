@@ -15,7 +15,13 @@ type OtherStopLocationState = {
 export default function OtherStopPage() {
   const navigate = useNavigate();
   const { letterId: letterIdParam } = useParams();
-  const letterId = letterIdParam ? Number(letterIdParam) : navigate('/error/404');
+  const letterId = letterIdParam ? Number(letterIdParam) : null;
+
+  useEffect(() => {
+    if (!letterId) {
+      navigate('/error/404', { replace: true });
+    }
+  }, [letterId, navigate]);
 
   const { showToast } = useGlobalToast();
 
