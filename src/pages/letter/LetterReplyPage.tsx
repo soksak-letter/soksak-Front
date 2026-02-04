@@ -38,6 +38,7 @@ export default function LetterReplyPage() {
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const letterCount = Number(useThreadFlowStore((l) => l.letterCount) ?? '0');
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const discardSession = useDiscardSession();
@@ -90,9 +91,11 @@ export default function LetterReplyPage() {
   };
 
   const handleEnd = () => {
+    const remainingCount = Math.max(0, 10 - letterCount);
+
     openModal('conversationRemaining', {
       friendName: senderName,
-      remainingCount: 4,
+      remainingCount,
       onContinueConversation: () => {
         // 그냥 닫히고 계속 작성
       },

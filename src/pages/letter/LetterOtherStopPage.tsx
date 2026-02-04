@@ -1,26 +1,26 @@
 import { Button } from '@/components/common/Button';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import LetterEndedEnvelope from '@/assets/icons/LetterEndedEnvelope.svg?react';
-
-type LocationState = {
-  friendName?: string;
-  totalCount?: number; // 7
-  // 필요하면 friendId/sessionId/letterId 추가
-  // friendId?: string;
-  // letterId?: string;
-};
+import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useEffect } from 'react';
 
 export default function OtherStopPage() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const s = (state ?? {}) as LocationState;
+  const { letterId: letterIdParam } = useParams();
+  const letterId = letterIdParam ? Number(letterIdParam) : navigate('/error/404');
 
-  // TODO: 앞 페이지에서 넘겨주는 값으로 교체
-  const receiver = s.friendName ?? '파란수박';
-  const totalCount = typeof s.totalCount === 'number' ? s.totalCount : 7;
+  const { showToast } = useGlobalToast();
 
-  // TODO: 실제 식별자 있으면 교체
-  const letterId = '1';
+  const sessionId = useThreadFlowStore((s) => s.sessionId);
+  const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const letterCount = Number(useThreadFlowStore((l) => l.letterCount));
+
+  useEffect(() => {
+    if (letterCount == null) {
+      showToast('편지를 나눈 횟수를 불러오지 못했어요. 잠시 후 다시 시도해주세요.', 'error');
+    }
+  }, [letterCount, showToast]);
 
   const handleGoToReview = () => {
     navigate(`/letter/review/${letterId}`);
@@ -31,7 +31,8 @@ export default function OtherStopPage() {
       {/* Header */}
       <header className='flex flex-col justify-start gap-2'>
         <p className='ty-body1 leading-tight'>
-          {receiver}님과 <span className='text-[var(--color-primary-500)]'>{totalCount}회</span>
+          {senderName}님과
+          <span className='text-[var(--color-primary-500)]'>{letterCount}회</span>
           의 대화를
           <br />
           나누었어요.
@@ -42,7 +43,7 @@ export default function OtherStopPage() {
       <section className='mt-15 flex flex-col items-center'>
         <LetterEndedEnvelope className='block' />
         <Link
-          to={`/friend/post/${letterId}`}
+          to={`/letter/thread/${sessionId}`}
           className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기
