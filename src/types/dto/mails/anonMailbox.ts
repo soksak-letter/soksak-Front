@@ -1,7 +1,7 @@
 import type { ApiError } from '../common';
 
 export type AnonMailboxLetter = {
-  threadId: number;
+  sessionId: number;
 
   sender: {
     id: number;

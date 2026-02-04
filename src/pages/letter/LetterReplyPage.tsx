@@ -60,7 +60,7 @@ export default function LetterReplyPage() {
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const discardSession = useDiscardSession();
-  const threadId = useThreadFlowStore((t) => t.threadId);
+  const sessionId = useThreadFlowStore((t) => t.sessionId);
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -112,14 +112,14 @@ export default function LetterReplyPage() {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
-        if (!threadId) {
+        if (!sessionId) {
           navigate('/error/404', { replace: true });
           return;
         }
 
         // patch 요청
         discardSession.mutate(
-          { threadId },
+          { sessionId },
           {
             onSuccess: (res) => {
               if (res.resultType !== 'SUCCESS' || !res.success) {

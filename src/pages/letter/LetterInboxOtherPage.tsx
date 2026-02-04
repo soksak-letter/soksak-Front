@@ -16,7 +16,7 @@ type SortOrder = 'latest' | 'oldest';
 
 type InboxOtherLetterItem = {
   letterId: number;
-  threadId: number; // inbox-other에서 처음 저장되는데, receiverUserId, senderUser과 같다.
+  sessionId: number;
   question: string;
   senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
@@ -58,7 +58,7 @@ export default function LetterInboxOtherPage() {
 
       return {
         letterId: x.lastLetterId,
-        threadId: x.threadId, // = receiverUserId, senderName's id
+        sessionId: x.sessionId,
         question: x.lastLetterTitle,
         senderName: x.sender.nickname,
         receivedAt: parseDate(deliveredAt),
@@ -97,12 +97,12 @@ export default function LetterInboxOtherPage() {
     // Store에 아래 항목 저장
     setFlow({
       target: 'other',
-      threadId: item.threadId,
+      sessionId: item.sessionId,
       senderName: item.senderName,
       friendName: null,
     });
 
-    navigate(`/letter/thread/${item.threadId}`);
+    navigate(`/letter/thread/${item.sessionId}`);
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;

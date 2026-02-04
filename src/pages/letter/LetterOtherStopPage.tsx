@@ -5,7 +5,7 @@ import LetterEndedEnvelope from '@/assets/icons/LetterEndedEnvelope.svg?react';
 type LocationState = {
   friendName?: string;
   totalCount?: number; // 7
-  // 필요하면 friendId/threadId/letterId 추가
+  // 필요하면 friendId/sessionId/letterId 추가
   // friendId?: string;
   // letterId?: string;
 };

@@ -32,13 +32,13 @@ const parseDate = (iso: string) => {
 
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
-  const { threadId: threadIdParam } = useParams();
-  const threadId = threadIdParam ? Number(threadIdParam) : 0;
+  const { sessionId: sessionIdParam } = useParams();
+  const sessionId = sessionIdParam ? Number(sessionIdParam) : 0;
 
   const setFlow = useThreadFlowStore((s) => s.setFlow);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
-  const { data, isLoading, isError, refetch } = useAnonThread(threadId);
+  const { data, isLoading, isError, refetch } = useAnonThread(sessionId);
 
   const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
@@ -61,28 +61,28 @@ export default function LetterPostOtherPage() {
   useEffect(() => {
     setFlow({
       target: 'other',
-      threadId,
+      sessionId,
       senderName: senderName,
     });
-  }, [setFlow, threadId, senderName]);
+  }, [setFlow, sessionId, senderName]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
   const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
 
   // 잘못된 접근 - 404 처리
-  if (!threadIdParam || !threadId) return <NotFoundPage />;
+  if (!sessionIdParam || !sessionId) return <NotFoundPage />;
 
   const handleOpenLetterDetail = (letterId: number) => {
-    navigate(`/letter/reply/${threadId}/${letterId}`, {
-      state: { threadId, letterId, senderName },
+    navigate(`/letter/reply/${sessionId}/${letterId}`, {
+      state: { sessionId, letterId, senderName },
     });
   };
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
     navigate('/letter/other/draft');
-    // senderName, threadId는 letterContext store에 저장되어 있다.
+    // senderName, sessionId는 letterContext store에 저장되어 있다.
   };
 
   return (

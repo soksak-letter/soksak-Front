@@ -3,10 +3,10 @@ import { axiosInstance } from './axios';
 import type { CommonResponse } from '@/types/dto/common';
 
 export async function postCreateReview(
-  threadId: number,
+  sessionId: number,
   body: CreateReviewBody,
 ): Promise<CreateReviewSuccess> {
-  const res = await axiosInstance.post(`/matching/sessions/${threadId}/reviews`, body);
+  const res = await axiosInstance.post(`/matching/sessions/${sessionId}/reviews`, body);
 
   const data = res.data as CommonResponse<CreateReviewSuccess>;
 

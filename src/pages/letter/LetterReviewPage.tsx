@@ -34,11 +34,11 @@ export default function LetterReviewPage() {
 
   const percent = useMemo(() => Math.min(100, Math.max(0, temp)), [temp]);
 
-  // URL params 우선 > 없으면 store로 threadId 받아오기
-  const { threadId: threadIdParam } = useParams<{ threadId?: string }>();
-  const threadIdFromStore = useThreadFlowStore((s) => s.threadId);
+  // URL params 우선 > 없으면 store로 sessionId 받아오기
+  const { sessionId: sessionIdParam } = useParams<{ sessionId?: string }>();
+  const sessionIdFormStore = useThreadFlowStore((s) => s.sessionId);
 
-  const threadId = threadIdParam ? Number(threadIdParam) : threadIdFromStore;
+  const sessionId = sessionIdParam ? Number(sessionIdParam) : sessionIdFormStore;
 
   const { showToast } = useGlobalToast();
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
@@ -52,15 +52,15 @@ export default function LetterReviewPage() {
     return '또 만나고 싶어요';
   };
 
-  // threadId 없으면 막기
+  // sessionId 없으면 막기
   const createReview = useCreateReview();
-  const canSubmit = mood !== null && !!threadId && !createReview.isPending;
+  const canSubmit = mood !== null && !!sessionId && !createReview.isPending;
 
   // POST 요청
   const handleSubmit = async () => {
     if (!mood || createReview.isPending) return;
 
-    if (!threadId) {
+    if (!sessionId) {
       showToast('후기를 보낼 수 없어요. (threadId 없음)');
       return;
     }
@@ -71,7 +71,7 @@ export default function LetterReviewPage() {
     };
 
     createReview.mutate(
-      { threadId, body },
+      { sessionId, body },
       {
         onSuccess: () => {
           showToast('후기를 보냈어요!', 'success');

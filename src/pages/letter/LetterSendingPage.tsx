@@ -20,7 +20,7 @@ const LetterSendingPage = () => {
   const navigate = useNavigate();
 
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
-  const threadId = useThreadFlowStore((s) => s.threadId);
+  const sessionId = useThreadFlowStore((s) => s.sessionId);
 
   const { target } = useParams<{ target?: string }>();
   // 중복 POST 방지용
@@ -116,7 +116,7 @@ const LetterSendingPage = () => {
         const letterCount = 0; // 임시
 
         if (letterCount === 10) {
-          navigate(`/friend/sent-transition/${threadId}`, { replace: true });
+          navigate(`/friend/sent-transition/${sessionId}`, { replace: true });
         } else {
           navigate('/home/main', {
             replace: true,
@@ -137,12 +137,12 @@ const LetterSendingPage = () => {
     createSelfLetterMutation,
     navigate,
     showToast,
-    threadId,
+    sessionId,
   ]);
 
   // 잘못된 접근 방어 (URL로 직접 접근, 꾸미기/작성 흐름 없이 들어온 경우)
-  const needsThreadId = safeMode === 'other';
-  const invalid = !safeMode || (needsThreadId && !threadId);
+  const needsSessionId = safeMode === 'other';
+  const invalid = !safeMode || (needsSessionId && !sessionId);
 
   if (invalid) {
     return <NotFoundPage />;
