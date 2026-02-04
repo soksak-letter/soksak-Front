@@ -79,7 +79,7 @@ export function WeeklyEmotionFlowCard({
   const R = 4;
 
   return (
-    <section className='w-[343px] rounded-xl bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)]'>
+    <section className='w-[343px] rounded-xl bg-[var(--color-bg-500)] p-[16px] shadow-[0_2px_10px_rgba(0,0,0,0.06)]'>
       <header className='mb-3'>
         <h3 className='ty-title3 leading-[150%]'>{title}</h3>
         <p className='mt-1 ty-body5 leading-[150%] text-[var(--color-text-alternative)]'>
