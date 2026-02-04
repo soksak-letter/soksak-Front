@@ -4,11 +4,14 @@ export type AnonThreadLetter = {
   id: number;
   title: string;
   deliveredAt: string;
+  readAt: string;
   isMine: boolean;
 
-  paperId: number;
-  stampId: number;
-  stampUrl: string;
+  design: {
+    paperId: number;
+    stampId: number;
+    stampUrl: string;
+  };
 };
 
 export type AnonThreadSuccess = {
