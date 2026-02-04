@@ -130,13 +130,13 @@ function LetterDecoPage() {
         onBack={handleBack}
       />
       <div className='p-5'>
-        <p className='ty-title2'>편지를 마음껏 꾸며보세요.</p>
+        <p className='ty-title2'>편지를 마음껏 꾸며보세요!</p>
       </div>
       {/* 편지 미리보기 Wrapper */}
       <div className='relative mx-auto w-full aspect-[2/3]'>
         {selectedTab === 'stamp' ? (
-          <div className='absolute inset-0 flex justify-center mt-5'>
-            <div className='relative w-[360px] h-[270px] -rotate-3'>
+          <div className='absolute inset-0 flex justify-center'>
+            <div className='relative w-[340px] h-[250px] -rotate-3'>
               {EnvelopePreview ? (
                 <EnvelopePreview className='h-full w-full drop-shadow-[0_10px_25px_rgba(0,0,0,0.10)]' />
               ) : (
@@ -167,7 +167,7 @@ function LetterDecoPage() {
           onClose={closeSheet}
           overlay={false}
           closeOnOutside={false}
-          height={362}
+          height={340}
           draggable={true}
           minHeight={100}
         >
