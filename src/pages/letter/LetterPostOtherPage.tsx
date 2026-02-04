@@ -36,6 +36,7 @@ export default function LetterPostOtherPage() {
   const sessionId = sessionIdParam ? Number(sessionIdParam) : 0;
 
   const setFlow = useThreadFlowStore((s) => s.setFlow);
+  const resetFlow = useThreadFlowStore((s) => s.resetFlow);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
   const { data, isLoading, isError, refetch } = useAnonThread(sessionId);
@@ -51,9 +52,9 @@ export default function LetterPostOtherPage() {
       dateText: parseDate(l.deliveredAt),
       isMine: l.isMine,
       isUnread: false,
-      paperId: l.paperId + 1,
-      stampId: l.stampId,
-      stampUrl: l.stampUrl,
+      paperId: l.design?.paperId ?? 0,
+      stampId: l.design?.stampId ?? 0,
+      stampUrl: (l.design?.stampUrl ?? '').trim(),
     }));
   }, [data?.letters]);
 
@@ -85,9 +86,15 @@ export default function LetterPostOtherPage() {
     // senderName, sessionId는 letterContext store에 저장되어 있다.
   };
 
+  const handleBack = () => {
+    // store에 저장해둔 sessionId, letterCount, senderName 삭제
+    // flow가 이어져야만 저장 가능
+    resetFlow();
+  };
+
   return (
     <div className='min-h-screen bg-[#fafafa]'>
-      <BackHeader title='익명 편지' />
+      <BackHeader title='익명 편지' onBack={handleBack} />
 
       <main className='px-5 pb-[110px]'>
         <div className='mt-2 text-[13px] text-[#6F6F6F]'>{senderName}님과 이어진 질문</div>

@@ -11,9 +11,7 @@ type ThreadFlow = {
   friendName: string | null; // friend 모드에서 상대 이름
   senderName: string | null; // other/anon에서 보여줄 상대 이름
 
-  // 필요하면 나중에 추가
-  // lastLetterId?: number | null;
-  // letterCount?: number | null;
+  letterCount?: number | null;
 
   // eslint-disable-next-line no-unused-vars
   setFlow: (partial: Partial<Omit<ThreadFlow, 'setFlow' | 'resetFlow'>>) => void;
@@ -24,7 +22,7 @@ const initialState = {
   target: null,
   sessionId: null,
   friendName: null,
-  senderName: null, // 나
+  senderName: null,
 };
 
 export const useThreadFlowStore = create<ThreadFlow>((set) => ({

@@ -21,6 +21,7 @@ type InboxOtherLetterItem = {
   senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
+  letterCount: number;
   isUnread: boolean;
   paperId: number;
   stampId: number;
@@ -63,10 +64,11 @@ export default function LetterInboxOtherPage() {
         senderName: x.sender.nickname,
         receivedAt: parseDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
+        letterCount: x.sender.letterCount,
         isUnread: false,
-        paperId: x.design?.paper?.id ?? 0,
-        stampId: x.stampId ?? 0,
-        stampUrl: (x.stampUrl ?? '').trim(),
+        paperId: x.design?.paperId ?? 0,
+        stampId: x.design?.stampId ?? 0,
+        stampUrl: (x.design?.stampUrl ?? '').trim(),
       };
     });
   }, [data]);
@@ -100,6 +102,7 @@ export default function LetterInboxOtherPage() {
       sessionId: item.sessionId,
       senderName: item.senderName,
       friendName: null,
+      letterCount: item.letterCount,
     });
 
     navigate(`/letter/thread/${item.sessionId}`);
