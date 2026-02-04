@@ -51,11 +51,16 @@ export const useSigninMutation = () => {
       }
     },
     onError: (err: any) => {
-      if (err === '401') {
+      const status = err.response?.status; // 여기에 401, 400 등이 담김
+      const reason = err.response.data?.error?.reason;
+
+      if (status === 401) {
         showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
+      } else if (reason) {
+        // 서버가 에러 상태 코드와 함께 JSON 메시지를 보낸 경우
+        showToast(reason, 'error');
       } else {
-        const errorMessage = err.response?.data?.error?.reason || '서버 오류가 발생했습니다.';
-        showToast(errorMessage, 'error');
+        showToast('네트워크 연결이 원활하지 않습니다.', 'error');
       }
     },
   });
