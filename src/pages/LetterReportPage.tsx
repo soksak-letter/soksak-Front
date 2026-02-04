@@ -12,6 +12,7 @@ import {
   type ReportReason,
 } from '@/types/dto/letterReport';
 import { postLetterReport } from '@/api/letterReport';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -19,8 +20,8 @@ const LetterReportPage = () => {
 
   // state에서 letterId와 stamp 꺼내기
   const letterId = location.state?.letterId as number | undefined;
-  const stampId = location.state?.stampId;
   const stampUrl = location.state?.stampUrl;
+  const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
@@ -151,13 +152,14 @@ const LetterReportPage = () => {
                 )}
               </div>
             </div>
-            <span className='ty-body2'>파란수박님</span>
+            <span className='ty-body2'>{senderName}님</span>
           </div>
         </div>
 
         <div className='px-4'>
           {/* 안내 문구 */}
           <div className='mb-6'>
+            {/*TTODO:내 닉네임 불러오기 API*/}
             <h2 className='ty-body2 mb-1'>개굴님, 신고 사유를 선택해주세요.</h2>
             <p className='ty-body5 text-[#595959]'>
               해당 내역은 마이페이지 - 신고 내역에서 확인할 수 있습니다.
