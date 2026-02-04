@@ -177,7 +177,7 @@ export default function LetterReplyPage() {
   return (
     <div className='min-h-dvh bg-[var(--color-bg-500)]'>
       <BackHeader
-        title={`${senderName}님의 편지`}
+        title={isMine ? `${senderName}님의 편지` : '내가 쓴 편지'}
         rightElement={
           !isMine ? (
             <button

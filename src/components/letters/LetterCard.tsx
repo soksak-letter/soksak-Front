@@ -21,7 +21,7 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
         style={{
           width: CARD_W,
           height: CARD_H,
-          border: '1px solid rgba(0,0,0,0.15)',
+          border: 'none',
           fontFamily: font,
         }}
       >

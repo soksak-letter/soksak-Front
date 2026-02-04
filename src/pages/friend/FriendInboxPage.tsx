@@ -7,6 +7,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { getParseDate } from '@/utils/date';
 
 type FriendInboxItem = {
   id: number;
@@ -20,12 +21,6 @@ type FriendInboxItem = {
 };
 
 type SortOrder = 'latest' | 'oldest';
-
-const parseDotDate = (s: string) => {
-  // '2026.1.3' -> Date
-  const [y, m, d] = s.split('.').map((v) => Number(v));
-  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
-};
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
@@ -64,8 +59,8 @@ export default function FriendInboxPage() {
 
     // 정렬 (최신순 기본 / 역순)
     return [...result].sort((a, b) => {
-      const ta = parseDotDate(a.lastDate);
-      const tb = parseDotDate(b.lastDate);
+      const ta = Number(getParseDate(a.lastDate));
+      const tb = Number(getParseDate(b.lastDate));
       return sortOrder === 'latest' ? tb - ta : ta - tb;
     });
   }, [items, keyword, sortOrder]);
@@ -121,12 +116,12 @@ export default function FriendInboxPage() {
                   key={f.id}
                   type='button'
                   onClick={() => handleOpenThread(f)}
-                  className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                  className='w-full h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                 >
                   {/* 상단: 프로필 + 봉투 */}
                   <div className='flex items-center justify-between gap-3'>
-                    <div className='flex flex-col items-start gap-3'>
-                      {/* 프로필 사진 */}
+                    <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
+                      {/* TODO : 프로필 사진 불러오기 */}
                       <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
                       <div>
                         <p className='ty-body2'>{f.name}</p>
@@ -135,8 +130,8 @@ export default function FriendInboxPage() {
                     </div>
 
                     {/* 오른쪽: 봉투 + 스탬프 + 날짜 */}
-                    <div className='flex flex-col gap-2 mt-2'>
-                      <div className='relative h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
+                    <div className='flex flex-col gap-1'>
+                      <div className='relative h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
                         {EnvelopePreview ? (
                           <EnvelopePreview className='h-full w-full' />
                         ) : (
@@ -146,8 +141,7 @@ export default function FriendInboxPage() {
                         {f.stampUrl ? (
                           <img
                             src={f.stampUrl}
-                            alt=''
-                            className='absolute right-1 bottom-3 h-7 w-7 object-contain'
+                            className='absolute right-2 bottom-5 h-6 w-6 object-contain'
                             draggable={false}
                           />
                         ) : null}

@@ -39,6 +39,7 @@ const createInitialStyle = (): LetterStyle => ({
 type LetterStore = {
   // 현재 작성 모드
   activeTarget: Target;
+  // eslint-disable-next-line no-unused-vars
   setActiveTarget: (t: Target) => void;
 
   // target별 상태
@@ -50,7 +51,9 @@ type LetterStore = {
   getStyle: () => LetterStyle;
 
   // 현재 target에만 patch
+  // eslint-disable-next-line no-unused-vars
   patchDraft: (partial: Partial<LetterDraft>) => void;
+  // eslint-disable-next-line no-unused-vars
   patchStyle: (partial: Partial<LetterStyle>) => void;
 
   // reset도 현재 target만 / 전체 다 가능

@@ -16,9 +16,11 @@ type LetterStyle = {
 
 interface LetterStyleContentProps {
   selectedTab: StyleTab;
+  // eslint-disable-next-line no-unused-vars
   onChangeTab: (tab: StyleTab) => void;
 
   value: LetterStyle;
+  // eslint-disable-next-line no-unused-vars
   onChange?: (next: Partial<LetterStyle>) => void;
 
   papers: { id: number; color: string }[];
