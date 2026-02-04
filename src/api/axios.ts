@@ -5,7 +5,9 @@ import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig 
 // 1. 토큰 재발급 관리 변수
 let isRefreshing = false;
 let refreshSubscribers: Array<{
+  // eslint-disable-next-line no-unused-vars
   resolve: (token: string) => void;
+  // eslint-disable-next-line no-unused-vars
   reject: (error: unknown) => void;
 }> = [];
 
@@ -122,8 +124,13 @@ axiosInstance.interceptors.response.use(
 
         // 토큰이 갱신됐을 때도 스토어 업데이트 (일관성 유지)
         // RefreshToken은 그대로라면 가져와서 다시 넣어줌
-        const currentRefreshToken = localStorage.getItem('refreshToken') || '';
-        login(newAccessToken, currentRefreshToken);
+        const currentRefreshToken = localStorage.getItem('refreshToken') || undefined;
+
+        login({
+          accessToken: newAccessToken,
+          refreshToken: currentRefreshToken,
+        });
+
         // 2. 대기열 해소 (기다리던 요청들 재실행)
         isRefreshing = false;
         onRefreshed(newAccessToken);

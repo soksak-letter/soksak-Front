@@ -3,10 +3,12 @@ import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
 import type { SignInRequest, SignInResponse } from '@/types/dto/auth';
 import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import axios from 'axios';
+import type { CommonResponse } from '@/types/dto/common';
 
 const SignInPage = () => {
   const login = useAuthStore((state) => state.login);
@@ -51,19 +53,26 @@ const SignInPage = () => {
 
         // 토큰 저장
         // (Store가 내부적으로 localStorage 저장도 하고, isLoggedIn 상태도 true로 바꿈)
-        login(jwtAccessToken, jwtRefreshToken);
+        login({ accessToken: jwtAccessToken, refreshToken: jwtRefreshToken });
         console.log('토큰 저장 완료! 메인으로 이동');
         navigate('/');
       } else {
         // 200 OK지만 실패 로직 (예: 비밀번호 불일치 등 서버가 정의한 에러)
         showToast(error?.reason, 'error');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       showToast('통신 에러입니다.', 'error');
-      if (err.response) {
+
+      if (axios.isAxiosError(err)) {
+        const data = err.response?.data as CommonResponse<null> | undefined;
+
         // 서버가 400, 500 등을 보냈을 때
-        showToast(err.response.data?.error?.reason || '서버 오류가 발생했습니다.', 'error');
+        showToast(
+          data?.resultType === 'FAIL' ? data.error.reason : '서버 오류가 발생했습니다.',
+          'error',
+        );
       } else {
+        // axios 에러가 아닌 경우 (네트워크 단절 등)
         showToast('네트워크 연결을 확인해주세요.', 'error');
       }
     }
