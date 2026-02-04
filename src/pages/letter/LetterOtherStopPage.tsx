@@ -1,9 +1,16 @@
 import { Button } from '@/components/common/Button';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import LetterEndedEnvelope from '@/assets/icons/LetterEndedEnvelope.svg?react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useEffect } from 'react';
+import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+
+type OtherStopLocationState = {
+  totalCount?: number;
+  paperId?: number;
+  stampId?: number;
+  stampUrl?: string;
+};
 
 export default function OtherStopPage() {
   const navigate = useNavigate();
@@ -15,6 +22,15 @@ export default function OtherStopPage() {
   const sessionId = useThreadFlowStore((s) => s.sessionId);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
   const letterCount = Number(useThreadFlowStore((l) => l.letterCount));
+
+  const location = useLocation();
+  const state = location.state as OtherStopLocationState | null;
+
+  const paperId = state?.paperId ?? 0;
+  const stampUrl = (state?.stampUrl ?? '').trim();
+
+  const envelopeAsset = ENVELOPE_ASSET_MAP[paperId];
+  const EnvelopePreview = envelopeAsset?.Preview;
 
   useEffect(() => {
     if (letterCount == null) {
@@ -41,7 +57,23 @@ export default function OtherStopPage() {
 
       {/* Envelope + Link */}
       <section className='mt-15 flex flex-col items-center'>
-        <LetterEndedEnvelope className='block' />
+        <div className='relative h-23 w-25 flex items-center justify-center'>
+          {EnvelopePreview ? (
+            <EnvelopePreview className='h-full w-full' />
+          ) : (
+            <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+          )}
+
+          {!!stampUrl && (
+            <img
+              src={stampUrl}
+              alt=''
+              className='absolute right-[10px] bottom-[10px] h-7 w-7 object-contain pointer-events-none'
+              draggable={false}
+            />
+          )}
+        </div>
+
         <Link
           to={`/letter/thread/${sessionId}`}
           className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'

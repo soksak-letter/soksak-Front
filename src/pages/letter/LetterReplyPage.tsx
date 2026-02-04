@@ -114,10 +114,13 @@ export default function LetterReplyPage() {
                 showToast('요청에 실패했습니다. 잠시 후 다시 시도해주세요.', 'error');
                 return;
               }
-
-              // patch 성공시 응답으로 주고받은 횟수를 받음(maxTurns) > totalCount로 넘김
-              const totalCount = res.success.result.data.maxTurns;
-              navigate('/letter/other-stop', { state: { totalCount } });
+              navigate('/letter/other-stop', {
+                state: {
+                  paperId: view?.paperId ?? 1,
+                  stampId: view?.stampId ?? 1,
+                  stampUrl: view?.stampUrl ?? '',
+                },
+              });
             },
             onError: (err) => {
               console.error(err);
