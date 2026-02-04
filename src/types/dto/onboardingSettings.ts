@@ -1,12 +1,3 @@
-export type InterestItem = {
-  id: number;
-  name: string;
-};
-
-export type GetInterestsResult = {
-  items: InterestItem[];
-};
-
 export type GetConsentsResult = {
   termsAgreed: boolean;
   privacyAgreed: boolean;
