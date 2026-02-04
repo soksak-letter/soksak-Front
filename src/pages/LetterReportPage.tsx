@@ -17,8 +17,10 @@ const LetterReportPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // state에서 letterId 꺼내기
+  // state에서 letterId와 stamp 꺼내기
   const letterId = location.state?.letterId as number | undefined;
+  const stampId = location.state?.stampId;
+  const stampUrl = location.state?.stampUrl;
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
@@ -136,7 +138,19 @@ const LetterReportPage = () => {
           {' '}
           {/* 프로필 영역 */}
           <div className='flex flex-col items-center mt-10 mb-8'>
-            <div className='w-24 h-24 bg-[#FFC8C6] rounded-full mb-3'></div>
+            <div className='w-[100px] h-[100px] bg-[#FFC8C6] rounded-full mb-3 overflow-hidden'>
+              <div className='w-full h-full flex items-center justify-center'>
+                {stampUrl ? (
+                  <img
+                    src={stampUrl}
+                    alt='우편 이미지'
+                    className='object-contain max-w-[65%] max-h-[65%] rotate-6 '
+                  />
+                ) : (
+                  <div />
+                )}
+              </div>
+            </div>
             <span className='ty-body2'>파란수박님</span>
           </div>
         </div>
