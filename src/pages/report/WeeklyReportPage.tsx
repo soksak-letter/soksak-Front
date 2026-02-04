@@ -12,6 +12,7 @@ import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel
 import type { FeedLetter } from '@/types/letter';
 
 import OnboardingStamp from '@/assets/icons/OnboardingStamp.svg?react';
+import WeeklyMindLetterSection from '@/components/WeeklyReport/WeeklyMindLetterSection';
 
 // API 응답 형태의 Mock Data (데이터가 오는 곳)
 const keywordsMock = [
@@ -225,7 +226,15 @@ export default function WeeklyReportPage() {
           <WeeklyEmotionFlowCard data={flowMock} />
 
           {/* “주간 마음 편지” 블랭크 섹션 */}
-          <section className='w-[343px] h-[381px] rounded-xl bg-[var(--color-secondary-300)] p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)]'></section>
+          <WeeklyMindLetterSection
+            receiverName='개굴'
+            body={
+              '이번 주는 ‘피곤’과 ‘노력’이라는 단어를 가장 많이 사용하셨네요.\n\n그래도 주 후반부에는 ‘설렘’과 ‘뿌듯함’도 함께 느껴져서 다행이에요.\n\n다음 주는 잠시 쉬어가는 시간을 가져보는 건 어떨까요?'
+            }
+            onClick={() => {
+              console.log('다음 주 편지 쓰기');
+            }}
+          />
         </div>
       </main>
     </div>
