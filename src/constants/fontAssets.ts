@@ -27,9 +27,33 @@ export const FONT_ASSET_MAP: Record<number, FontAsset> = {
     sampleEn: 'Try using Soksak letters',
   },
   4: {
+    label: '나눔 바른히피체',
+    fontFamily: 'NanumBarunHipi, cursive',
+    sampleKo: '3개월 후 나에게 보내보세요.',
+    sampleEn: 'Try using Soksak letters',
+  },
+  5: {
+    label: '나눔 아빠글씨체',
+    fontFamily: 'NanumAbbaGeulsi, cursive',
+    sampleKo: '혹은 익명으로 편지를 나눠보세요.',
+    sampleEn: 'Try using Soksak letters',
+  },
+  6: {
+    label: '나눔 바른펜체',
+    fontFamily: 'NanumBarunpen, cursive',
+    sampleKo: '편지로 새로운 인연을 만나보세요.',
+    sampleEn: 'Try using Soksak letters',
+  },
+  7: {
+    label: '나눔 손글씨 다행체',
+    fontFamily: 'NanumDaheng, cursive',
+    sampleKo: '3개월 후 나에게 보내보세요.',
+    sampleEn: 'Try using Soksak letters',
+  },
+  8: {
     label: '나눔 손글씨 느릿느릿체',
     fontFamily: 'NanumNeuritNeurit, cursive',
-    sampleKo: '편지로 새로운 인연을 만나보세요.',
+    sampleKo: '혹은 익명으로 편지를 나눠보세요.',
     sampleEn: 'Try using Soksak letters',
   },
 };

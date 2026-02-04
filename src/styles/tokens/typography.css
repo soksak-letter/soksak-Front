@@ -65,6 +65,42 @@
   }
 
   @font-face {
+    font-family: 'NanumBarunHipi';
+    font-weight: 400;
+    src:
+      local('Nanum BarunHipi'),
+      url('../../assets/fonts/NanumBarunHipi.woff') format('woff'),
+      url('../../assets/fonts/NanumBarunHipi.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumAbbaGeulsi';
+    font-weight: 400;
+    src:
+      local('Nanum AbbaGeulsi'),
+      url('../../assets/fonts/NanumAbbaGeulsi.woff') format('woff'),
+      url('../../assets/fonts/NanumAbbaGeulsi.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumBarunpen';
+    font-weight: 400;
+    src:
+      local('Nanum Barunpen'),
+      url('../../assets/fonts/NanumBarunpen.woff') format('woff'),
+      url('../../assets/fonts/NanumBarunpen.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'NanumDaheng';
+    font-weight: 400;
+    src:
+      local('Nanum Daheng'),
+      url('../../assets/fonts/NanumDaheng.woff') format('woff'),
+      url('../../assets/fonts/NanumDaheng.woff2') format('woff2');
+  }
+
+  @font-face {
     font-family: 'NanumNeuritNeurit';
     font-weight: 400;
     src:
