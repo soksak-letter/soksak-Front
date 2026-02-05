@@ -83,7 +83,16 @@ export default function LetterReplyPage() {
   if (!letterIdParam) return <NotFoundPage />;
 
   const handleReport = () => {
-    navigate('/letter/report');
+    if (!view) {
+      showToast('편지를 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+    navigate('/letter/report', {
+      state: {
+        letterId: Number(letterIdParam),
+        stampUrl: view?.stampUrl,
+      },
+    }); //신고페이지로 letterId 보내기
   };
 
   const handleReply = () => {

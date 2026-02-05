@@ -16,10 +16,12 @@ import {
   SECTION_SPACING_MEDIUM,
   SECTION_SPACING_LARGE,
 } from '@/constants/settingLayout';
+import { useAuthHandlers } from '@/hooks/auth/useAuthHandlers';
 
 export default function SettingPage() {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+  const { handleLogout, handleWithdraw } = useAuthHandlers();
 
   const handleBack = () => {
     navigate(-1);
@@ -196,7 +198,7 @@ export default function SettingPage() {
               <li>
                 <button
                   // TODO: 실제 로그아웃 처리 함수(onConfirmLogout) 연결 필요
-                  onClick={() => openModal('logoutConfirm')}
+                  onClick={() => openModal('logoutConfirm', { onConfirmLogout: handleLogout })}
                   className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
@@ -215,7 +217,9 @@ export default function SettingPage() {
               <li>
                 <button
                   // TODO: 실제 회원탈퇴 처리 함수(onConfirmWithdraw) 연결 필요
-                  onClick={() => openModal('withdrawalConfirm')}
+                  onClick={() =>
+                    openModal('withdrawalConfirm', { onConfirmWithdraw: handleWithdraw })
+                  }
                   className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',

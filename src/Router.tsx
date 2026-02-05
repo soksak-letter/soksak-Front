@@ -60,6 +60,7 @@ import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
+import OnboardingLetterSendPage from './pages/onboarding/OnboardingLetterSendPage';
 
 import FriendReplyPage from './pages/friend/FriendReplyPage';
 
@@ -150,6 +151,7 @@ const router = createBrowserRouter([
                   { path: 'letter-intro', element: <OnboardingLetterIntroPage /> },
                   { path: 'letter-write', element: <OnboardingLetterWritePage /> },
                   { path: 'letter-guide', element: <OnboardingLetterGuidePage /> },
+                  { path: 'letter-send', element: <OnboardingLetterSendPage /> },
                 ],
               },
               { path: 'feed/public-all', element: <FeedPage /> },

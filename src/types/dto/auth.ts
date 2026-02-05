@@ -114,8 +114,22 @@ export interface RefreshTokenResult {
 }
 export type RefreshTokenResponse = CommonResponse<RefreshTokenResult>;
 
+//로그아웃
 // Logout Response
-export type LogoutResponse = CommonResponse<null>;
+export interface LogoutResult {
+  result: {
+    status: string;
+  };
+}
+export type LogoutResponse = CommonResponse<LogoutResult>;
+
+//회원탈퇴
+export interface WithdrawResult {
+  result: {
+    status: string;
+  };
+}
+export type WithdrawResponse = CommonResponse<WithdrawResult>;
 
 //Profile-setUp 페이지
 //프로필 닉네임 수정

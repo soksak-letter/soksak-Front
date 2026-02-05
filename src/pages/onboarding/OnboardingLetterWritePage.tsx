@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 
+import { useLetterStore } from '@/stores/letterStore';
+
 type LetterValue = {
   title: string;
   content: string;
@@ -21,13 +23,20 @@ export default function OnboardingLetterWritePage() {
   const isContentValid = value.content.trim().length > 0;
   const isValid = useMemo(() => isTitleValid && isContentValid, [isTitleValid, isContentValid]);
 
+  const { patchDraft } = useLetterStore();
+
   const handleNext = () => {
     if (!isValid) return;
 
+    const nextTitle = value.title.trim();
+    const nextContent = value.content.trim();
+
+    patchDraft({ title: nextTitle, content: nextContent });
+
     navigate('/onboarding/letter-guide', {
       state: {
-        title: value.title.trim(),
-        content: value.content.trim(),
+        title: nextTitle,
+        content: nextContent,
       },
     });
   };
