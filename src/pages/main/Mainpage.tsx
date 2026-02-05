@@ -121,7 +121,7 @@ const MainPage = () => {
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='text-base font-semibold text-[#171717]'>공개 편지</h2>
           <button
-            onClick={() => navigate('/feed/public')}
+            onClick={() => navigate('/feed/public-all')}
             className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
           >
             <span>전체보기</span>
@@ -147,7 +147,7 @@ const MainPage = () => {
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='text-base font-semibold text-[#171717]'>친구 편지</h2>
           <button
-            onClick={() => navigate('/feed/friend')}
+            onClick={() => navigate('/feed/friend-all')}
             className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
           >
             <span>전체보기</span>

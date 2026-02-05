@@ -52,7 +52,7 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/report/WeeklyReportPage';
-// import KeywordLetterPage from './pages/report/KeywordLetterPage';
+import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import MyPage from './pages/my/MyPage';
 import InquiryPage from './pages/my/InquiryPage';
@@ -60,8 +60,6 @@ import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
-
-import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import FriendReplyPage from './pages/friend/FriendReplyPage';
 
@@ -169,7 +167,6 @@ const router = createBrowserRouter([
                 ],
               },
               { path: 'letter/thread/:sessionId', element: <LetterPostOtherPage /> },
-              // { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
               { path: 'letter/reply/:sessionId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },
               { path: 'letter/review/:sessionId', element: <LetterReviewPage /> },
@@ -187,7 +184,7 @@ const router = createBrowserRouter([
                 path: 'friend/thread/:friendId/:letterId',
                 element: <FriendReplyPage />,
               },
-              // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },

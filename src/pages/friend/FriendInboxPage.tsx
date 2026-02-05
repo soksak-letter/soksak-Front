@@ -15,6 +15,7 @@ type FriendInboxItem = {
   name: string;
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
+  lastAtMs: number;
   paperId: number;
   stampId: number;
   stampUrl: string;
@@ -31,18 +32,24 @@ export default function FriendInboxPage() {
 
   const items = useMemo<FriendInboxItem[]>(
     () =>
-      friends.map((f) => ({
-        id: f.id,
-        friendUserId: f.friendUserId,
-        name: f.nickname,
-        exchangeCount: f.letterCount,
-        lastDate: f.recentLetter?.createdAt
-          ? f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.')
-          : '-',
-        paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
-        stampId: Number(f.recentLetter?.design.stamp?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
-        stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
-      })),
+      friends.map((f) => {
+        const iso = f.recentLetter?.createdAt ?? null;
+        const ms = iso ? new Date(iso).getTime() : 0;
+
+        return {
+          id: f.id,
+          friendUserId: f.friendUserId,
+          name: f.nickname,
+          exchangeCount: f.letterCount,
+
+          lastDate: iso ? getParseDate(iso) : '-', // UI용
+          lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
+
+          paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
+          stampId: Number(f.recentLetter?.design.stamp?.id ?? 0),
+          stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
+        };
+      }),
     [friends],
   );
 
@@ -54,17 +61,12 @@ export default function FriendInboxPage() {
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
-
     const result = !k ? items : items.filter((x) => x.name.includes(k));
 
-    // 정렬 (최신순 기본 / 역순)
     return [...result].sort((a, b) => {
-      const ta = Number(getParseDate(a.lastDate));
-      const tb = Number(getParseDate(b.lastDate));
-      return sortOrder === 'latest' ? tb - ta : ta - tb;
+      return sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs;
     });
   }, [items, keyword, sortOrder]);
-
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
 
