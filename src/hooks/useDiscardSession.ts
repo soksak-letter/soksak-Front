@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { patchSessionStatus } from '@/api/stopConversation';
 
-type Vars = { threadId: number };
+type Vars = { sessionId: number };
 
 export function useDiscardSession() {
   return useMutation({
-    mutationFn: ({ threadId }: Vars) => patchSessionStatus(threadId),
+    mutationFn: ({ sessionId }: Vars) => patchSessionStatus(sessionId),
   });
 }

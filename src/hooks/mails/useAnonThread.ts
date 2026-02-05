@@ -1,11 +1,11 @@
 import { getAnonThread } from '@/api/mails/anonThread';
 import { useQuery } from '@tanstack/react-query';
 
-export function useAnonThread(threadId: number) {
+export function useAnonThread(sessionId: number) {
   return useQuery({
-    queryKey: ['anon-thread', threadId],
-    queryFn: () => getAnonThread(threadId),
-    enabled: Number.isFinite(threadId) && threadId > 0,
+    queryKey: ['anon-thread', sessionId],
+    queryFn: () => getAnonThread(sessionId),
+    enabled: Number.isFinite(sessionId) && sessionId > 0,
     retry: false,
   });
 }

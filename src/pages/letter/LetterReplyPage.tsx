@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useMemo } from 'react';
 
@@ -13,6 +13,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useDiscardSession } from '@/hooks/useDiscardSession';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { getParseSentAt } from '@/utils/date';
 
 type ReplyData = {
   title: string;
@@ -25,28 +26,8 @@ type ReplyData = {
   stampUrl: string;
 };
 
-const parseSentAt = (isoOrNull: string | null) => {
-  if (!isoOrNull) return '-';
-
-  const d = new Date(isoOrNull);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  let hours = d.getHours(); // 0 ~ 23
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-
-  const isPM = hours >= 12;
-  const ampm = isPM ? 'PM' : 'AM';
-
-  hours = hours % 12;
-  if (hours === 0) hours = 12;
-
-  const hh = String(hours).padStart(2, '0');
-
-  return `${y}.${m}.${day} ${hh}:${minutes} ${ampm}`;
+type LetterReplyLocationState = {
+  isMine?: boolean;
 };
 
 export default function LetterReplyPage() {
@@ -57,17 +38,22 @@ export default function LetterReplyPage() {
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const letterCount = Number(useThreadFlowStore((l) => l.letterCount) ?? '0');
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const discardSession = useDiscardSession();
-  const threadId = useThreadFlowStore((t) => t.threadId);
+  const sessionId = useThreadFlowStore((t) => t.sessionId);
+
+  const location = useLocation();
+  const state = location.state as LetterReplyLocationState | null;
+  const isMine = state?.isMine ?? false;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
 
     return {
       title: data.title,
-      sentAtText: parseSentAt(data.deliveredAt),
+      sentAtText: getParseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
       paperId: (data.design.paper.id ?? 0) + 1,
@@ -97,7 +83,16 @@ export default function LetterReplyPage() {
   if (!letterIdParam) return <NotFoundPage />;
 
   const handleReport = () => {
-    navigate('/letter/report', { state: { letterId: Number(letterIdParam) } }); //신고페이지로 letterId 보내기
+    if (!view) {
+      showToast('편지를 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+    navigate('/letter/report', {
+      state: {
+        letterId: Number(letterIdParam),
+        stampUrl: view?.stampUrl,
+      },
+    }); //신고페이지로 letterId 보내기
   };
 
   const handleReply = () => {
@@ -105,31 +100,36 @@ export default function LetterReplyPage() {
   };
 
   const handleEnd = () => {
+    const remainingCount = Math.max(0, 10 - letterCount);
+
     openModal('conversationRemaining', {
       friendName: senderName,
-      remainingCount: 4,
+      remainingCount,
       onContinueConversation: () => {
         // 그냥 닫히고 계속 작성
       },
       onStopConversation: () => {
-        if (!threadId) {
+        if (!sessionId) {
           navigate('/error/404', { replace: true });
           return;
         }
 
         // patch 요청
         discardSession.mutate(
-          { threadId },
+          { sessionId },
           {
             onSuccess: (res) => {
               if (res.resultType !== 'SUCCESS' || !res.success) {
                 showToast('요청에 실패했습니다. 잠시 후 다시 시도해주세요.', 'error');
                 return;
               }
-
-              // patch 성공시 응답으로 주고받은 횟수를 받음(maxTurns) > totalCount로 넘김
-              const totalCount = res.success.result.data.maxTurns;
-              navigate('/letter/other-stop', { state: { totalCount } });
+              navigate('/letter/other-stop', {
+                state: {
+                  paperId: view?.paperId ?? 1,
+                  stampId: view?.stampId ?? 1,
+                  stampUrl: view?.stampUrl ?? '',
+                },
+              });
             },
             onError: (err) => {
               console.error(err);
@@ -170,29 +170,33 @@ export default function LetterReplyPage() {
         className='rotate-1 mt-5'
       />
 
-      <div className='mt-6 grid grid-cols-2 gap-3'>
-        <Button className='w-full' color='grey' onClick={handleEnd}>
-          편지 끝내기
-        </Button>
-        <Button className='w-full' onClick={handleReply}>
-          답장하기
-        </Button>
-      </div>
+      {!isMine && (
+        <div className='mt-6 grid grid-cols-2 gap-3'>
+          <Button className='w-full' color='grey' onClick={handleEnd}>
+            편지 끝내기
+          </Button>
+          <Button className='w-full' onClick={handleReply}>
+            답장하기
+          </Button>
+        </div>
+      )}
     </>
   );
 
   return (
     <div className='min-h-dvh bg-[var(--color-bg-500)]'>
       <BackHeader
-        title={`${senderName}님의 편지`}
+        title={isMine ? '내가 쓴 편지' : `${senderName}님의 편지`}
         rightElement={
-          <button
-            type='button'
-            onClick={handleReport}
-            className='ty-body5 font-medium text-[var(--color-primary-500)]'
-          >
-            신고하기
-          </button>
+          !isMine ? (
+            <button
+              type='button'
+              onClick={handleReport}
+              className='ty-body5 font-medium text-[var(--color-primary-500)]'
+            >
+              신고하기
+            </button>
+          ) : null
         }
       />
       <main className='px-5 pb-[28px]'>{content}</main>

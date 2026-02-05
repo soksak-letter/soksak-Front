@@ -16,9 +16,11 @@ type LetterStyle = {
 
 interface LetterStyleContentProps {
   selectedTab: StyleTab;
+  // eslint-disable-next-line no-unused-vars
   onChangeTab: (tab: StyleTab) => void;
 
   value: LetterStyle;
+  // eslint-disable-next-line no-unused-vars
   onChange?: (next: Partial<LetterStyle>) => void;
 
   papers: { id: number; color: string }[];
@@ -113,7 +115,7 @@ export default function LetterStyleContent({
               onClick={() => onChange?.({ stampId: s.id })}
               className={[
                 'relative overflow-hidden shadow-md transition-all duration-200',
-                'scale-90 -rotate-2',
+                'scale-80 -rotate-2',
               ].join(' ')}
               style={
                 value.stampId === s.id
