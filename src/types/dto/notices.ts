@@ -5,7 +5,6 @@ export interface NoticeItem {
   id: number;
   title: string;
   summary: string | null;
-  pinned: boolean;
   createdAt: string;
 }
 
