@@ -134,10 +134,12 @@ const LetterReportPage = () => {
             return;
           }
 
-          const { result, message } = await block(parsedTargetUserId);
-
-          if (!result) {
-            showToast(message, 'error');
+          try {
+            await block(parsedTargetUserId);
+          } catch (blockError) {
+            const errorMessage =
+              blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
+            showToast(errorMessage, 'error');
             return;
           }
         }
