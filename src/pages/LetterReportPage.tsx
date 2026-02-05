@@ -147,11 +147,8 @@ const LetterReportPage = () => {
             showToast('차단 대상을 찾을 수 없습니다.', 'error');
           } else {
             try {
-              const blockResponse = await block(parsedTargetUserId);
-              if (!blockResponse?.result) {
-                const errorMessage = blockResponse?.message || '차단에 실패했습니다.';
-                showToast(errorMessage, 'error');
-              }
+              await block(parsedTargetUserId);
+              // 성공 시 훅이 정상 반환됨, 실패 시 에러가 throw됨
             } catch (blockError) {
               const errorMessage =
                 blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
