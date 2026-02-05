@@ -145,21 +145,18 @@ const LetterReportPage = () => {
         if (isBlocked) {
           if (!isValidTargetUserId) {
             showToast('차단 대상을 찾을 수 없습니다.', 'error');
-            return;
-          }
-
-          try {
-            const blockResponse = await block(parsedTargetUserId);
-            if (!blockResponse?.result) {
-              const errorMessage = blockResponse?.message || '차단에 실패했습니다.';
+          } else {
+            try {
+              const blockResponse = await block(parsedTargetUserId);
+              if (!blockResponse?.result) {
+                const errorMessage = blockResponse?.message || '차단에 실패했습니다.';
+                showToast(errorMessage, 'error');
+              }
+            } catch (blockError) {
+              const errorMessage =
+                blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
               showToast(errorMessage, 'error');
-              return;
             }
-          } catch (blockError) {
-            const errorMessage =
-              blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
-            showToast(errorMessage, 'error');
-            return;
           }
         }
 
