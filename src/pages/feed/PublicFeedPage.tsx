@@ -78,21 +78,13 @@ export default function FeedPage() {
 
       {/* 상단 질문 섹션 */}
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        {isQuestionLoading ? (
-          <>
-            <LoadingPage />
-          </>
-        ) : (
-          <>
-            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
-              {formattedQuestionText}
-            </p>
-            <div className='flex items-center ty-body2'>
-              <span className='text-[#F2261C]'>{mmss}</span>
-              <span className='text-black ml-1'>후에 질문이 사라져요.</span>
-            </div>
-          </>
-        )}
+        <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
+          {formattedQuestionText}
+        </p>
+        <div className='flex items-center ty-body2'>
+          <span className='text-[#F2261C]'>{mmss}</span>
+          <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+        </div>
       </div>
 
       {/* 편지 리스트 섹션 */}
