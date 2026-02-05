@@ -7,18 +7,7 @@ import {
   PAGE_PADDING_TOP,
 } from '@/constants/settingLayout';
 import { useNotices } from '@/hooks/useNotices';
-
-// 날짜 포맷 함수
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) {
-    return '-';
-  }
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}.${month}.${day}`;
-}
+import { formatDate } from '@/utils/dateUtils';
 
 // 공지사항 아이템 컴포넌트
 interface NoticeItemProps {
