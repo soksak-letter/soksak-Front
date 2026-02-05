@@ -6,7 +6,7 @@ import {
   PAGE_PADDING_X,
   PAGE_PADDING_TOP,
 } from '@/constants/settingLayout';
-import { useNotices } from '@/hooks/useNotices';
+import { useNotices } from '@/hooks/setting/useNotices';
 import { formatDate } from '@/utils/dateUtils';
 
 // 공지사항 아이템 컴포넌트

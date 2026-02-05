@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
-import { useTermsOfService } from '@/hooks/useTermsOfService';
+import { useTermsOfService } from '@/hooks/setting/useTermsOfService';
 
 const contentStyle: CSSProperties = {
   fontFamily: 'Pretendard',
