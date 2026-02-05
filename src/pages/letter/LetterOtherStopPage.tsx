@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useEffect } from 'react';
 
 type OtherStopLocationState = {
   totalCount?: number;
@@ -26,6 +27,12 @@ export default function OtherStopPage() {
 
   const envelopeAsset = ENVELOPE_ASSET_MAP[paperId];
   const EnvelopePreview = envelopeAsset?.Preview;
+
+  useEffect(() => {
+    if (!sessionId) {
+      navigate('/error/404', { replace: true });
+    }
+  }, [sessionId, navigate]);
 
   const handleGoToReview = () => {
     navigate(`/letter/review/${sessionId}`);
