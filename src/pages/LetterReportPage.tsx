@@ -5,14 +5,9 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 
-import { useBlockUser } from '@/hooks/useModeration';
+import { useBlockUser, useLetterReport } from '@/hooks/useModeration';
 
-import {
-  REPORT_REASONS,
-  type LetterReportRequest,
-  type ReportReason,
-} from '@/types/dto/letterReport';
-import { postLetterReport } from '@/api/letterReport';
+import { REPORT_REASONS, type ReportReason } from '@/types/dto/letterReport';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
@@ -46,6 +41,8 @@ const LetterReportPage = () => {
 
   // 차단 훅
   const { mutateAsync: block, isPending: isBlocking } = useBlockUser();
+  // 신고 훅
+  const { mutateAsync: report, isPending: isReporting } = useLetterReport();
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
@@ -53,7 +50,6 @@ const LetterReportPage = () => {
   const [isBlocked, setIsBlocked] = useState(false);
 
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //토스트 상태 관리
   const { showToast } = useGlobalToast();
@@ -114,7 +110,7 @@ const LetterReportPage = () => {
 
   const handleSubmit = async () => {
     // 이미 제출 중이면 중복 실행 방지
-    if (isSubmitting) {
+    if (isReporting || isBlocking) {
       return;
     }
 
@@ -130,43 +126,29 @@ const LetterReportPage = () => {
       return;
     }
 
-    // Body에 담을 데이터 구성
-    const requestBody: LetterReportRequest = {
-      letterId,
-      reasons: selectedReasons,
-    };
-
-    setIsSubmitting(true);
     try {
-      const response = await postLetterReport(requestBody);
+      // 신고 API 호출
+      await report({ letterId, reasons: selectedReasons });
 
-      if (response.resultType === 'SUCCESS') {
-        // 차단하기가 활성화된 경우 차단 API 호출
-        if (isBlocked) {
-          if (!isValidTargetUserId) {
-            showToast('차단 대상을 찾을 수 없습니다.', 'error');
-          } else {
-            try {
-              await block(parsedTargetUserId);
-              // 성공 시 훅이 정상 반환됨, 실패 시 에러가 throw됨
-            } catch (blockError) {
-              const errorMessage =
-                blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
-              showToast(errorMessage, 'error');
-            }
+      // 차단하기가 활성화된 경우 차단 API 호출
+      if (isBlocked) {
+        if (!isValidTargetUserId) {
+          showToast('차단 대상을 찾을 수 없습니다.', 'error');
+        } else {
+          try {
+            await block(parsedTargetUserId);
+          } catch (blockError) {
+            const errorMessage =
+              blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
+            showToast(errorMessage, 'error');
           }
         }
-        // 신고 성공 시, 차단 성공/실패와 관계없이 완료화면 전환
-        setIsCompleted(true);
-      } else {
-        const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
-        showToast(errorMessage, 'error');
       }
+      // 신고 성공 시, 차단 성공/실패와 관계없이 완료화면 전환
+      setIsCompleted(true);
     } catch (error) {
-      console.error(error);
-      showToast('서버 연결에 실패했습니다.', 'error');
-    } finally {
-      setIsSubmitting(false);
+      const errorMessage = error instanceof Error ? error.message : '신고 처리에 실패했습니다.';
+      showToast(errorMessage, 'error');
     }
   };
 
@@ -191,8 +173,8 @@ const LetterReportPage = () => {
           <BackHeader
             title='신고'
             rightElement={
-              <button onClick={handleSubmit} disabled={isBlocking || isSubmitting}>
-                {isSubmitting || isBlocking ? '처리중...' : '완료'}
+              <button onClick={handleSubmit} disabled={isBlocking || isReporting}>
+                {isReporting || isBlocking ? '처리중...' : '완료'}
               </button>
             }
           />{' '}
