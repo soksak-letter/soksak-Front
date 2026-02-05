@@ -4,8 +4,7 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
-import useToast from '@/hooks/useToast';
-import ToastPopup from '@/components/ToastPopup';
+
 import {
   REPORT_REASONS,
   type LetterReportRequest,
@@ -13,6 +12,9 @@ import {
 } from '@/types/dto/letterReport';
 import { postLetterReport } from '@/api/letterReport';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const LetterReportPage = () => {
   const [isCompleted, setIsCompleted] = useState(false);
 
   //토스트 상태 관리
-  const { toast, visible, showToast, closeToast } = useToast();
+  const { showToast } = useGlobalToast();
 
   //신고 사유 배열
   const reasons = REPORT_REASONS;
@@ -202,16 +204,6 @@ const LetterReportPage = () => {
           className={!isBlocked ? '!bg-[#CBCCCD] [&>span]:!bg-[#E5E6E6]' : ''}
         />
       </div>
-      {toast && (
-        <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50'>
-          <ToastPopup
-            status={toast.status} // 'error' | 'success'
-            message={toast.message} // '신고 사유를 선택해주세요.'
-            visible={visible} // 애니메이션 제어
-            onClose={closeToast} // 즉시 닫기
-          />
-        </div>
-      )}
     </div>
   );
 };

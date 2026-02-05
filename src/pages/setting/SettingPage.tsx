@@ -16,7 +16,7 @@ import {
   SECTION_SPACING_MEDIUM,
   SECTION_SPACING_LARGE,
 } from '@/constants/settingLayout';
-import { useAuthHandlers } from '@/hooks/useAuthHandlers';
+import { useAuthHandlers } from '@/hooks/auth/useAuthHandlers';
 
 export default function SettingPage() {
   const navigate = useNavigate();
