@@ -159,8 +159,8 @@ const LetterReportPage = () => {
             }
           }
         }
-
-        setIsCompleted(true); // 완료화면으로 전환
+        // 신고 성공 시, 차단 성공/실패와 관계없이 완료화면 전환
+        setIsCompleted(true);
       } else {
         const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
         showToast(errorMessage, 'error');
