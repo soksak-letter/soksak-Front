@@ -1,11 +1,12 @@
 import type { ApiError } from '../common';
 
 export type AnonMailboxLetter = {
-  threadId: number;
+  sessionId: number;
 
   sender: {
     id: number;
     nickname: string;
+    letterCount: number;
   };
 
   lastLetterId: number;
@@ -13,16 +14,11 @@ export type AnonMailboxLetter = {
   lastLetterPreview: string;
   deliveredAt: string;
 
-  // design도 paper만 옴 (stamp는 별도 필드)
   design: {
-    paper: {
-      id: number;
-      name: string;
-    };
+    paperId: number;
+    stampId: number;
+    stampUrl: string;
   };
-
-  stampId: number;
-  stampUrl: string;
 };
 
 export type AnonMailboxSuccess = {

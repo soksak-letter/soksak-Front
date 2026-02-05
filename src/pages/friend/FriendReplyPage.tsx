@@ -10,6 +10,7 @@ import LetterCard from '@/components/letters/LetterCard';
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useLetterStore } from '@/stores/letterStore';
+import { getParseSentAt } from '@/utils/date';
 
 type ReplyData = {
   title: string;
@@ -22,28 +23,9 @@ type ReplyData = {
   stampUrl: string;
 };
 
-const parseSentAt = (isoOrNull: string | null) => {
-  if (!isoOrNull) return '-';
-
-  const d = new Date(isoOrNull);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  let hours = d.getHours(); // 0 ~ 23
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-
-  const isPM = hours >= 12;
-  const ampm = isPM ? 'PM' : 'AM';
-
-  hours = hours % 12;
-  if (hours === 0) hours = 12;
-
-  const hh = String(hours).padStart(2, '0');
-
-  return `${y}.${m}.${day} ${hh}:${minutes} ${ampm}`;
+type LocationState = {
+  friendName?: string;
+  direction?: 'received' | 'sent';
 };
 
 export default function FriendReplyPage() {
@@ -59,14 +41,16 @@ export default function FriendReplyPage() {
 
   // FriendName 불러오기
   const location = useLocation();
-  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
+  const state = (location.state as LocationState) ?? null;
+  const friendName = state?.friendName ?? '친구';
+  const direction = state?.direction;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
 
     return {
       title: data.title,
-      sentAtText: parseSentAt(data.deliveredAt),
+      sentAtText: getParseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
       paperId: (data.design.paper.id ?? 0) + 1,
@@ -88,7 +72,8 @@ export default function FriendReplyPage() {
   }, [view]);
 
   // 잘못된 접근 - 404 처리
-  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId)) return <NotFoundPage />;
+  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId) || !direction)
+    return <NotFoundPage />;
 
   const handleReport = () => {
     navigate('/letter/report');
@@ -134,27 +119,30 @@ export default function FriendReplyPage() {
         PaperBg={assets.paper.Preview}
         font={assets.font.fontFamily}
         value={{ title: view.title, content: view.content }}
-        className='rotate-1 mt-5'
+        className='mt-5'
       />
-
-      <Button className='w-full mt-6' onClick={handleReply}>
-        답장하기
-      </Button>
+      {direction === 'received' && (
+        <Button className='w-full mt-6' onClick={handleReply}>
+          답장하기
+        </Button>
+      )}
     </>
   );
 
   return (
     <div className='min-h-dvh bg-[var(--color-bg-500)]'>
       <BackHeader
-        title={`${friendName}님의 편지`}
+        title={direction === 'received' ? `${friendName}님의 편지` : '내가 쓴 편지'}
         rightElement={
-          <button
-            type='button'
-            onClick={handleReport}
-            className='ty-body5 font-medium text-[var(--color-primary-500)]'
-          >
-            신고하기
-          </button>
+          direction === 'received' ? (
+            <button
+              type='button'
+              onClick={handleReport}
+              className='ty-body5 font-medium text-[var(--color-primary-500)]'
+            >
+              신고하기
+            </button>
+          ) : null
         }
       />
       <main className='px-5 pb-[28px]'>{content}</main>

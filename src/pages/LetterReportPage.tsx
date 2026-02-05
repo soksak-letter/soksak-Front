@@ -2,17 +2,30 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 import useToast from '@/hooks/useToast';
 import ToastPopup from '@/components/ToastPopup';
 import { useBlockUser } from '@/hooks/useModeration';
+import {
+  REPORT_REASONS,
+  type LetterReportRequest,
+  type ReportReason,
+} from '@/types/dto/letterReport';
+import { postLetterReport } from '@/api/letterReport';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  // targetUserId 파싱 및 유효성 검사
+  // state에서 letterId와 stamp 꺼내기
+  const letterId = location.state?.letterId as number | undefined;
+  const stampUrl = location.state?.stampUrl;
+  const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
+
+  // targetUserId 파싱 및 유효성 검사 (차단용)
   const rawTargetUserId = searchParams.get('targetUserId');
   const parsedTargetUserId = rawTargetUserId ? Number(rawTargetUserId) : NaN;
   const isValidTargetUserId = !Number.isNaN(parsedTargetUserId) && parsedTargetUserId > 0;
@@ -21,7 +34,7 @@ const LetterReportPage = () => {
   const { mutateAsync: block, isPending: isBlocking } = useBlockUser();
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
-  const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
+  const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
   // 차단하기 토글 상태 (boolean)
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -30,19 +43,33 @@ const LetterReportPage = () => {
   //토스트 상태 관리
   const { toast, visible, showToast, closeToast } = useToast();
 
-  const reasons = [
-    '욕설/비하',
-    '혐오 표현',
-    '성적 불쾌감',
-    '스팸/광고',
-    '도배/반복',
-    '폭력/학대표현',
-    '불법 행위 유도',
-    '사칭/허위정보',
-  ];
+  //신고 사유 배열
+  const reasons = REPORT_REASONS;
+
+  // 잘못된 접근 처리 (URL로 직접 접속했거나 letterId 없이 온 경우)
+  // 1.유효성 검사 (잘못된 접근 처리)
+  useEffect(() => {
+    // letterId가 없으면 경고 띄우고 뒤로가기
+    if (!letterId) {
+      showToast('잘못된 접근입니다.', 'error');
+      const timer = setTimeout(() => navigate(-1), 1500);
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [letterId, navigate, showToast]);
+
+  // 2️. 신고 완료 후 처리
+  useEffect(() => {
+    // 완료 상태(isCompleted)가 true가 되면 메인으로 이동
+    if (isCompleted) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 3000);
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [isCompleted, navigate]);
 
   // 사유 선택 토글 핸들러
-  const handleReasonToggle = (reason: string) => {
+  const handleReasonToggle = (reason: ReportReason) => {
     setSelectedReasons((prev) => {
       const newReasons = prev.includes(reason)
         ? prev.filter((r) => r !== reason)
@@ -52,16 +79,6 @@ const LetterReportPage = () => {
       return newReasons;
     });
   };
-  // 3초 뒤 메인으로 이동
-  useEffect(() => {
-    if (isCompleted) {
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 3000);
-
-      return () => clearTimeout(timer); // cleanup
-    }
-  }, [isCompleted, navigate]);
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
@@ -75,7 +92,6 @@ const LetterReportPage = () => {
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
-
     // 사유가 있으면 정상적으로 토글 상태 변경
     // console.log('[LetterReportPage] 차단 상태 변경:', nextState);
     setIsBlocked(nextState);
@@ -88,24 +104,48 @@ const LetterReportPage = () => {
       return;
     }
 
-    // 차단하기가 활성화된 경우 차단 API 호출
-    if (isBlocked) {
-      if (!isValidTargetUserId) {
-        showToast('차단 대상을 찾을 수 없습니다.', 'error');
-        return;
-      }
-
-      const { result, message } = await block(parsedTargetUserId);
-
-      if (!result) {
-        showToast(message, 'error');
-        return;
-      }
-      showToast(message, 'success');
+    // letterId 유효성 체크
+    if (!letterId) {
+      showToast('신고 대상을 찾을 수 없습니다.', 'error');
+      return;
     }
 
-    setIsCompleted(true);
+    // Body에 담을 데이터 구성
+    const requestBody: LetterReportRequest = {
+      letterId,
+      reasons: selectedReasons,
+    };
+
+    try {
+      const response = await postLetterReport(requestBody);
+
+      if (response.resultType === 'SUCCESS') {
+        // 차단하기가 활성화된 경우 차단 API 호출
+        if (isBlocked) {
+          if (!isValidTargetUserId) {
+            showToast('차단 대상을 찾을 수 없습니다.', 'error');
+            return;
+          }
+
+          const { result, message } = await block(parsedTargetUserId);
+
+          if (!result) {
+            showToast(message, 'error');
+            return;
+          }
+        }
+
+        setIsCompleted(true); // 완료화면으로 전환
+      } else {
+        const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
+        showToast(errorMessage, 'error');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast('서버 연결에 실패했습니다.', 'error');
+    }
   };
+
   if (isCompleted) {
     return (
       <div className='w-[375px] h-screen mx-auto  flex flex-col justify-center items-center'>
@@ -138,34 +178,57 @@ const LetterReportPage = () => {
           {' '}
           {/* 프로필 영역 */}
           <div className='flex flex-col items-center mt-10 mb-8'>
-            <div className='w-24 h-24 bg-[#FFC8C6] rounded-full mb-3'></div>
-            <span className='ty-body2'>파란수박님</span>
+            <div className='w-[100px] h-[100px] bg-[#FFC8C6] rounded-full mb-3 overflow-hidden'>
+              <div className='w-full h-full flex items-center justify-center'>
+                {stampUrl ? (
+                  <img
+                    src={stampUrl}
+                    alt='우편 이미지'
+                    className='object-contain max-w-[65%] max-h-[65%] rotate-6 '
+                  />
+                ) : (
+                  <div />
+                )}
+              </div>
+            </div>
+            <span className='ty-body2'>{senderName}님</span>
           </div>
         </div>
 
         <div className='px-4'>
           {/* 안내 문구 */}
           <div className='mb-6'>
+            {/*TTODO:내 닉네임 불러오기 API*/}
             <h2 className='ty-body2 mb-1'>개굴님, 신고 사유를 선택해주세요.</h2>
             <p className='ty-body5 text-[#595959]'>
               해당 내역은 마이페이지 - 신고 내역에서 확인할 수 있습니다.
             </p>
           </div>
           {/* 신고 사유 버튼 그리드 */}
-          <div className='grid grid-cols-3 gap-y-[12px] gap-x-[8px] mb-8 place-items-center'>
-            {reasons.map((reason) => {
-              const isSelected = selectedReasons.includes(reason);
-              return (
-                <SelectButton
-                  key={reason}
-                  selected={isSelected}
-                  onClick={() => handleReasonToggle(reason)}
-                  className='w-full! h-[34px]! text-[13px]! px-3! '
-                >
-                  {reason}
-                </SelectButton>
-              );
-            })}
+          <div className='flex flex-col justify-left gap-y-[12px] gap-x-[8px] mb-8 '>
+            {[
+              reasons.slice(0, 3), // 첫 번째 줄 (0, 1, 2)
+              reasons.slice(3, 5), // 두 번째 줄 (3, 4)
+              reasons.slice(5, 7), // 세 번째 줄 (5, 6)
+              reasons.slice(7, 8), // 네 번째 줄 (7)
+            ].map((row, rowIndex) => (
+              <div key={rowIndex} className='flex justify-left gap-x-[8px] w-full'>
+                {row.map((reason) => {
+                  const isSelected = selectedReasons.includes(reason);
+                  return (
+                    <SelectButton
+                      key={reason}
+                      selected={isSelected}
+                      onClick={() => handleReasonToggle(reason)}
+                      // 이미지의 비율을 맞추기 위해 너비를 고정하거나 min-width를 설정합니다.
+                      className='w-auto! h-[44px]! text-[13px]! px-[24px]! rounded-full'
+                    >
+                      {reason}
+                    </SelectButton>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </div>

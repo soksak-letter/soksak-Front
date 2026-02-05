@@ -5,7 +5,7 @@ import { useModalStore } from '@/stores/modalStore';
 import ToastPopup from '@/components/ToastPopup';
 import useToast from '@/hooks/useToast';
 import { useState } from 'react';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 import NotFoundPage from '../system/NotFoundPage';
 
 export default function FriendSentTransitionPage() {
@@ -13,13 +13,13 @@ export default function FriendSentTransitionPage() {
   const { toast, visible, showToast, closeToast } = useToast();
 
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
-  const threadId = useThreadFlowStore((s) => s.threadId);
+  const sessionId = useThreadFlowStore((s) => s.sessionId);
 
   const navigate = useNavigate();
 
   const [isRequested, setIsRequested] = useState(false);
 
-  if (!threadId) {
+  if (!sessionId) {
     return <NotFoundPage />;
   }
 
@@ -34,7 +34,7 @@ export default function FriendSentTransitionPage() {
   };
 
   const handleGoToReview = () => {
-    navigate(`/letter/review/${threadId}`);
+    navigate(`/letter/review/${sessionId}`);
   };
 
   return (
@@ -53,7 +53,7 @@ export default function FriendSentTransitionPage() {
       <section className='mt-15 flex flex-col items-center'>
         <LetterEndedEnvelope className='block' />
         <Link
-          to={`/letter/thread/${threadId}`}
+          to={`/letter/thread/${sessionId}`}
           className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기

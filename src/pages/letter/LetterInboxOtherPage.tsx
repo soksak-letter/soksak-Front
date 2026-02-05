@@ -10,34 +10,23 @@ import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { useThreadFlowStore } from '@/stores/letterContext';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { getParseDate } from '@/utils/date';
 
 type SortOrder = 'latest' | 'oldest';
 
 type InboxOtherLetterItem = {
   letterId: number;
-  threadId: number; // inbox-other에서 처음 저장되는데, receiverUserId, senderUser과 같다.
+  sessionId: number;
   question: string;
   senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
+  letterCount: number;
   isUnread: boolean;
   paperId: number;
   stampId: number;
   stampUrl: string;
-};
-
-const parseDate = (input: string | null | undefined) => {
-  if (!input) return '-';
-
-  const d = new Date(input);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxOtherPage() {
@@ -58,15 +47,16 @@ export default function LetterInboxOtherPage() {
 
       return {
         letterId: x.lastLetterId,
-        threadId: x.threadId, // = receiverUserId, senderName's id
+        sessionId: x.sessionId,
         question: x.lastLetterTitle,
         senderName: x.sender.nickname,
-        receivedAt: parseDate(deliveredAt),
+        receivedAt: getParseDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
+        letterCount: x.sender.letterCount,
         isUnread: false,
-        paperId: x.design?.paper?.id ?? 0,
-        stampId: x.stampId ?? 0,
-        stampUrl: (x.stampUrl ?? '').trim(),
+        paperId: x.design?.paperId ?? 0,
+        stampId: x.design?.stampId ?? 0,
+        stampUrl: (x.design?.stampUrl ?? '').trim(),
       };
     });
   }, [data]);
@@ -97,12 +87,13 @@ export default function LetterInboxOtherPage() {
     // Store에 아래 항목 저장
     setFlow({
       target: 'other',
-      threadId: item.threadId,
+      sessionId: item.sessionId,
       senderName: item.senderName,
       friendName: null,
+      letterCount: item.letterCount,
     });
 
-    navigate(`/letter/thread/${item.threadId}`);
+    navigate(`/letter/thread/${item.sessionId}`);
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
@@ -189,7 +180,7 @@ export default function LetterInboxOtherPage() {
                             <img
                               src={it.stampUrl}
                               alt=''
-                              className='absolute right-1 bottom-3 h-7 w-7 object-contain pointer-events-none'
+                              className='absolute right-2.5 bottom-6 h-7 w-7 object-contain pointer-events-none'
                               draggable={false}
                             />
                           )}

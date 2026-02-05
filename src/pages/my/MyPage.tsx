@@ -4,23 +4,36 @@ import { HiPaperAirplane } from 'react-icons/hi2';
 import { HiEnvelope } from 'react-icons/hi2';
 import { HiClock } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
+import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
+import { useMemo } from 'react';
+import { useActivityStore } from '@/stores/activityStore';
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  // 관심사 조회 (enabled는 true로 두면 됨)
+  const {
+    data: interestsItems, // ← useMyInterests가 items만 반환(select)하는 훅이라면 배열이 바로 옴
+  } = useMyInterests(true);
+
+  const totalSeconds = useActivityStore((s) => s.totalSeconds);
+  const totalUsageMinutes = Math.floor(totalSeconds / 60);
 
   // Mock data - 실제 사용 시 API에서 가져오기
   const userInfo = {
     nickname: '개굴님',
     email: 'gaegull_01@naver.com',
-    interests: ['감정 💭', '음악 🎵', '직장 👜'],
     temperature: 66,
     sentLetters: 8,
     receivedLetters: 12,
-    totalUsageMinutes: 135,
   };
 
   // 온도값을 0~100으로 clamp
   const safeTemp = Math.max(0, Math.min(100, userInfo.temperature));
+
+  const interests = useMemo(() => {
+    return interestsItems ?? [];
+  }, [interestsItems]);
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -68,12 +81,12 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {userInfo.interests.map((interest) => (
+            {interests.map((item) => (
               <span
-                key={interest}
+                key={item.id}
                 className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
               >
-                {interest}
+                {item.name}
               </span>
             ))}
           </div>
@@ -139,7 +152,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>서비스 총 이용시간</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {userInfo.totalUsageMinutes}분
+                {totalUsageMinutes}분
               </span>
             </div>
           </div>

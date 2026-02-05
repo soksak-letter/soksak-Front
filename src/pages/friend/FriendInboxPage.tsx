@@ -7,6 +7,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { getParseDate } from '@/utils/date';
 
 type FriendInboxItem = {
   id: number;
@@ -14,18 +15,13 @@ type FriendInboxItem = {
   name: string;
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
+  lastAtMs: number;
   paperId: number;
   stampId: number;
   stampUrl: string;
 };
 
 type SortOrder = 'latest' | 'oldest';
-
-const parseDotDate = (s: string) => {
-  // '2026.1.3' -> Date
-  const [y, m, d] = s.split('.').map((v) => Number(v));
-  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
-};
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
@@ -36,18 +32,24 @@ export default function FriendInboxPage() {
 
   const items = useMemo<FriendInboxItem[]>(
     () =>
-      friends.map((f) => ({
-        id: f.id,
-        friendUserId: f.friendUserId,
-        name: f.nickname,
-        exchangeCount: f.letterCount,
-        lastDate: f.recentLetter?.createdAt
-          ? f.recentLetter.createdAt.split('T')[0].replaceAll('-', '.')
-          : '-',
-        paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
-        stampId: Number(f.recentLetter?.design.stamp?.id ?? 0), // TODO : 백엔드 필드 수정 예정, DTO 수정 필요
-        stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
-      })),
+      friends.map((f) => {
+        const iso = f.recentLetter?.createdAt ?? null;
+        const ms = iso ? new Date(iso).getTime() : 0;
+
+        return {
+          id: f.id,
+          friendUserId: f.friendUserId,
+          name: f.nickname,
+          exchangeCount: f.letterCount,
+
+          lastDate: iso ? getParseDate(iso) : '-', // UI용
+          lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
+
+          paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
+          stampId: Number(f.recentLetter?.design.stamp?.id ?? 0),
+          stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
+        };
+      }),
     [friends],
   );
 
@@ -59,17 +61,12 @@ export default function FriendInboxPage() {
 
   const filtered = useMemo(() => {
     const k = keyword.trim();
-
     const result = !k ? items : items.filter((x) => x.name.includes(k));
 
-    // 정렬 (최신순 기본 / 역순)
     return [...result].sort((a, b) => {
-      const ta = parseDotDate(a.lastDate);
-      const tb = parseDotDate(b.lastDate);
-      return sortOrder === 'latest' ? tb - ta : ta - tb;
+      return sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs;
     });
   }, [items, keyword, sortOrder]);
-
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
 
@@ -121,12 +118,12 @@ export default function FriendInboxPage() {
                   key={f.id}
                   type='button'
                   onClick={() => handleOpenThread(f)}
-                  className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                  className='w-full h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                 >
                   {/* 상단: 프로필 + 봉투 */}
                   <div className='flex items-center justify-between gap-3'>
-                    <div className='flex flex-col items-start gap-3'>
-                      {/* 프로필 사진 */}
+                    <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
+                      {/* TODO : 프로필 사진 불러오기 */}
                       <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
                       <div>
                         <p className='ty-body2'>{f.name}</p>
@@ -135,8 +132,8 @@ export default function FriendInboxPage() {
                     </div>
 
                     {/* 오른쪽: 봉투 + 스탬프 + 날짜 */}
-                    <div className='flex flex-col gap-2 mt-2'>
-                      <div className='relative h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
+                    <div className='flex flex-col gap-1'>
+                      <div className='relative h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
                         {EnvelopePreview ? (
                           <EnvelopePreview className='h-full w-full' />
                         ) : (
@@ -146,8 +143,7 @@ export default function FriendInboxPage() {
                         {f.stampUrl ? (
                           <img
                             src={f.stampUrl}
-                            alt=''
-                            className='absolute right-1 bottom-3 h-7 w-7 object-contain'
+                            className='absolute right-2.5 bottom-6 h-6 w-6 object-contain'
                             draggable={false}
                           />
                         ) : null}

@@ -8,6 +8,7 @@ import NotFoundPage from '../system/NotFoundPage';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { getParseDate } from '@/utils/date';
 
 type Direction = 'received' | 'sent';
 
@@ -22,14 +23,6 @@ type PostItem = {
   paperId: number;
   stampId: number;
   stampUrl?: string;
-};
-
-const parseDate = (iso: string) => {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
 };
 
 export default function FriendPostPage() {
@@ -52,7 +45,7 @@ export default function FriendPostPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: parseDate(l.deliveredAt),
+      dateText: getParseDate(l.deliveredAt),
       direction: 'received',
       isUnread: l.readAt === null,
       paperId: (l.design.paper.id ?? 0) + 1,
@@ -64,7 +57,7 @@ export default function FriendPostPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: parseDate(l.deliveredAt),
+      dateText: getParseDate(l.deliveredAt),
       direction: 'sent',
       isUnread: false,
       paperId: (l.design.paper.id ?? 0) + 1,
@@ -86,9 +79,9 @@ export default function FriendPostPage() {
   // 잘못된 접근 - 404 처리
   if (!friendIdParam || !Number.isFinite(friendId) || friendId <= 0) return <NotFoundPage />;
 
-  const handleOpenLetterDetail = (letterId: number) => {
+  const handleOpenLetterDetail = (letterId: number, direction: Direction) => {
     navigate(`/friend/thread/${friendId}/${letterId}`, {
-      state: { friendId, friendName, letterId },
+      state: { friendId, friendName, letterId, direction },
     });
   };
 
@@ -141,7 +134,7 @@ export default function FriendPostPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p.letterId, p.direction)}
                     />
                   );
                 })}
@@ -158,7 +151,7 @@ export default function FriendPostPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p.letterId, p.direction)}
                     />
                   );
                 })}
@@ -207,7 +200,7 @@ function PostCard({
             alt='우표'
             className='
               absolute
-              right-[14px] bottom-[14px]
+              right-[14px] bottom-[18px]
               h-[34px] w-[34px]
               pointer-events-none
             '
