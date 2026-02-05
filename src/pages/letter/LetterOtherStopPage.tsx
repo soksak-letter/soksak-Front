@@ -1,5 +1,5 @@
 import { Button } from '@/components/common/Button';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useEffect } from 'react';
@@ -14,15 +14,6 @@ type OtherStopLocationState = {
 
 export default function OtherStopPage() {
   const navigate = useNavigate();
-  const { letterId: letterIdParam } = useParams();
-  const letterId = letterIdParam ? Number(letterIdParam) : null;
-
-  useEffect(() => {
-    if (!letterId) {
-      navigate('/error/404', { replace: true });
-    }
-  }, [letterId, navigate]);
-
   const { showToast } = useGlobalToast();
 
   const sessionId = useThreadFlowStore((s) => s.sessionId);
@@ -46,7 +37,7 @@ export default function OtherStopPage() {
   }, [letterCount, showToast]);
 
   const handleGoToReview = () => {
-    navigate(`/letter/review/${letterId}`);
+    navigate(`/letter/review/${sessionId}`);
   };
 
   return (
