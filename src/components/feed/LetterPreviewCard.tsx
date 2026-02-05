@@ -1,52 +1,35 @@
+import { DEFAULT_THEME, PAPER_THEME } from '@/constants/paperTheme';
 import { useState } from 'react';
-
-export type LetterPreviewVariant = 'blue' | 'green' | 'yellow';
 
 interface LetterPreviewCardProps {
   title: string;
   content: string;
+  paperId: number;
   likes: number;
-  variant?: LetterPreviewVariant;
-  isLikedInitial?: boolean;
-  onLike?: () => void;
+  isLiked: boolean;
+  onToggleLike?: () => void;
+  disabled?: boolean;
 }
-
-const variantColors: Record<LetterPreviewVariant, string> = {
-  blue: '#E1F2FD',
-  green: '#D8F3EE',
-  yellow: '#FFF9E2',
-};
-
-const variantTitleColors: Record<LetterPreviewVariant, string> = {
-  blue: '#171717',
-  green: '#000000',
-  yellow: '#000000',
-};
 
 export default function LetterPreviewCard({
   title,
   content,
+  paperId,
   likes,
-  variant = 'blue',
-  isLikedInitial = false,
-  onLike,
+  isLiked,
+  onToggleLike,
+  disabled,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(isLikedInitial);
-  const backgroundColor = variantColors[variant];
-  const titleColor = variantTitleColors[variant];
+
+  const theme = PAPER_THEME[paperId] ?? DEFAULT_THEME;
+  const backgroundColor = theme.bg;
+  const titleColor = theme.title;
 
   // 글자 수가 230자 이상인 경우 펼치기 버튼 표시
   const isExpandable = content.length >= 230;
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    onLike?.();
-  };
-
-  const handleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const handleExpand = () => setIsExpanded((p) => !p);
 
   return (
     <div className='w-full rounded-lg overflow-hidden shadow-sm'>
@@ -131,8 +114,9 @@ export default function LetterPreviewCard({
         {/* 좋아요 */}
         <div className='flex items-center gap-1 justify-end'>
           <button
-            onClick={handleLike}
-            className='flex items-center justify-center w-[22px] h-[22px]'
+            onClick={onToggleLike}
+            disabled={disabled}
+            className='flex items-center justify-center w-[22px] h-[22px] disabled:opacity-50'
           >
             <svg width='22' height='22' viewBox='0 0 22 22' fill='none'>
               <path
@@ -143,6 +127,7 @@ export default function LetterPreviewCard({
               />
             </svg>
           </button>
+
           <span
             style={{
               fontFamily: 'Pretendard',
