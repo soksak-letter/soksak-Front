@@ -69,7 +69,7 @@ export default function FriendFeedPage() {
   const formattedQuestionText = (questionData?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
-    <div className='min-h-dvh' style={{ backgroundColor: '#FAFAFA' }}>
+    <div className='min-h-dvh pb-24' style={{ backgroundColor: '#FAFAFA' }}>
       {/* 고정 상단바 */}
       <FeedHeader title='친구 편지' />
 
