@@ -1,8 +1,7 @@
 import { Button } from '@/components/common/Button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import { useGlobalToast } from '@/components/toast/ToastProvider';
-import { useEffect } from 'react';
+
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 
 type OtherStopLocationState = {
@@ -14,12 +13,10 @@ type OtherStopLocationState = {
 
 export default function OtherStopPage() {
   const navigate = useNavigate();
-  const { showToast } = useGlobalToast();
 
   const sessionId = useThreadFlowStore((s) => s.sessionId);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
-  const letterCountRaw = useThreadFlowStore((l) => l.letterCount);
-  const letterCount = letterCountRaw != null ? Number(letterCountRaw) : null;
+  const letterCount = useThreadFlowStore((l) => l.letterCount) ?? 0;
 
   const location = useLocation();
   const state = location.state as OtherStopLocationState | null;
@@ -29,12 +26,6 @@ export default function OtherStopPage() {
 
   const envelopeAsset = ENVELOPE_ASSET_MAP[paperId];
   const EnvelopePreview = envelopeAsset?.Preview;
-
-  useEffect(() => {
-    if (letterCount === null || Number.isNaN(letterCount)) {
-      showToast('편지를 나눈 횟수를 불러오지 못했어요. 잠시 후 다시 시도해주세요.', 'error');
-    }
-  }, [letterCount, showToast]);
 
   const handleGoToReview = () => {
     navigate(`/letter/review/${sessionId}`);
