@@ -7,6 +7,9 @@ type ThreadFlow = {
   // 한 사람과의 대화방(세션/스레드) 식별자
   sessionId: number | null;
 
+  // 상대방 userId (신고/차단 시 필요)
+  senderId: number | null;
+
   // UI 표시용
   friendName: string | null; // friend 모드에서 상대 이름
   senderName: string | null; // other/anon에서 보여줄 상대 이름
@@ -21,6 +24,7 @@ type ThreadFlow = {
 const initialState = {
   target: null,
   sessionId: null,
+  senderId: null,
   friendName: null,
   senderName: null,
   letterCount: null,

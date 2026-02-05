@@ -25,9 +25,21 @@ const LetterReportPage = () => {
   const stampUrl = location.state?.stampUrl;
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
 
+  // store에서 senderId 가져오기 (fallback용)
+  const senderIdFromStore = useThreadFlowStore((s) => s.senderId);
+
   // targetUserId 파싱 및 유효성 검사 (차단용)
-  const rawTargetUserId = searchParams.get('targetUserId');
-  const parsedTargetUserId = rawTargetUserId ? Number(rawTargetUserId) : NaN;
+  // 우선순위: query param > state > store
+  const rawTargetUserIdFromQuery = searchParams.get('targetUserId');
+  const targetUserIdFromState = location.state?.targetUserId as number | undefined;
+  const parsedTargetUserId =
+    rawTargetUserIdFromQuery !== null
+      ? Number(rawTargetUserIdFromQuery)
+      : typeof targetUserIdFromState === 'number'
+        ? targetUserIdFromState
+        : typeof senderIdFromStore === 'number'
+          ? senderIdFromStore
+          : NaN;
   const isValidTargetUserId = !Number.isNaN(parsedTargetUserId) && parsedTargetUserId > 0;
 
   // 차단 훅
