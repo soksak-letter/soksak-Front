@@ -49,7 +49,7 @@ const usePwResetForm = () => {
     if (!canSubmit || isPending) return;
 
     if (!token) {
-      showToast('인증 정보가 만료되었습니다.다시 인증해주세요.', 'error');
+      showToast('인증 정보가 만료되었습니다. 다시 인증해주세요.', 'error');
       navigate('/auth/pw-find');
       return;
     }

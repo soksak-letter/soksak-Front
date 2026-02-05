@@ -49,7 +49,7 @@ const ProfileSetUpPage = () => {
   };
 
   // 3. 완료 버튼 핸들러 (API 연동)
-  const handleOnboading = async () => {
+  const handleOnboarding = async () => {
     if (!isValid || isPending) return;
 
     setupProfile({ nickname, profileImage });
@@ -167,7 +167,7 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboading} disabled={!isValid || isPending}>
+        <Button onClick={handleOnboarding} disabled={!isValid || isPending}>
           시작하기
         </Button>
       </div>

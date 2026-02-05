@@ -53,7 +53,6 @@ const useFindAccount = (type: FindType) => {
       }, 1000);
     } else if (timeLeft === 0) {
       setIsTimerActive(false); // 시간 초과
-      setIsTimerActive(false);
       setServerMessage('인증 시간이 만료되었습니다. 다시 요청해주세요.');
     }
     return () => clearInterval(timer);
