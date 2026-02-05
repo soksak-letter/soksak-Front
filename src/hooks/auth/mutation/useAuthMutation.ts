@@ -19,7 +19,7 @@ export const useSignupMutation = () => {
         const { jwtAccessToken, jwtRefreshToken } = response.success.result.tokens;
         // 토큰 저장
         // (Store가 내부적으로 localStorage 저장도 하고, isLoggedIn 상태도 true로 바꿈)
-        login(jwtAccessToken, jwtRefreshToken);
+        login({ accessToken: jwtAccessToken, refreshToken: jwtRefreshToken });
         navigate('/auth/profile-setup');
       } else {
         // API 레벨의 에러 처리
@@ -45,7 +45,7 @@ export const useSigninMutation = () => {
     onSuccess: (response) => {
       if (response.resultType === 'SUCCESS' && response.success) {
         const { jwtAccessToken, jwtRefreshToken } = response.success.result;
-        login(jwtAccessToken, jwtRefreshToken);
+        login({ accessToken: jwtAccessToken, refreshToken: jwtRefreshToken });
         navigate('/');
       } else {
         showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
@@ -80,7 +80,10 @@ export const useSocialLoginMutation = () => {
         const { isNewUser, tokens } = data.success;
 
         // 토큰 저장
-        login(tokens.jwtAccessToken, tokens.jwtRefreshToken);
+        login({
+          accessToken: tokens.jwtAccessToken,
+          refreshToken: tokens.jwtRefreshToken,
+        });
 
         // 신규/기존 유저 분기 처리
         if (isNewUser) {
