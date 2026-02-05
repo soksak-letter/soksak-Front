@@ -5,34 +5,20 @@ import QuestionCard from '../../components/common/QuestionCard';
 import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
 import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
-import type { Letter } from '../../types/letter';
-import type { LetterItem } from '../../types/dto/letter';
-import useHomeSummary from '../../hooks/useHomeSummary';
-import usePublicLetters from '../../hooks/usePublicLetters';
-import useFriendLetters from '../../hooks/useFriendLetters';
+import { useHomeSummary } from '../../hooks/useHomeSummary';
+import { useFriendPublicLetters, useOtherPublicLetters } from '../../hooks/usePublicLetters';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStore } from '@/stores/letterStore';
 import { useLocation } from 'react-router-dom';
 import type { ToastLocationState } from '@/types/toastLocationState';
+import { DEFAULT_THEME, PAPER_THEME } from '@/constants/paperTheme';
 
-// API color 값을 variant로 매핑 (임시: 추후 백엔드와 협의 필요)
-const colorToVariant = (color?: string): Letter['variant'] => {
-  if (!color) return 'blue';
-  // Color_1~4: blue, Color_5~8: pink, 나머지: yellow 등 임시 매핑
-  const colorNum = parseInt(color.replace('Color_', ''), 10);
-  if (colorNum <= 4) return 'blue';
-  if (colorNum <= 8) return 'pink';
-  return 'yellow';
-};
-
-// LetterItem을 Letter 타입으로 변환
-const convertToLetter = (item: LetterItem): Letter => ({
-  id: String(item.id),
-  title: item.title,
-  date: item.deliveredAt ?? '',
-  variant: colorToVariant(item.design?.paper?.color),
-  link: `/letter/${item.id}`,
-});
+interface FeedLetter {
+  letterId: number;
+  title: string;
+  deliveredAt: string;
+  paperId: number;
+}
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -45,23 +31,36 @@ const MainPage = () => {
   const { data: homeSummary, isLoading: summaryLoading, timeLeft } = useHomeSummary();
 
   // 공개 편지 API 연동
-  const { letters: publicLettersData } = usePublicLetters({
-    questionId: homeSummary?.todayQuestion?.id ?? null,
-  });
+  const { data: otherPublicLetters, isLoading: isOtherLettersLoading } = useOtherPublicLetters();
 
   // 친구 편지 API 연동
-  const { letters: friendLettersData } = useFriendLetters({
-    questionId: homeSummary?.todayQuestion?.id ?? null,
-  });
+  const { data: friendPublicLetters, isLoading: isFriendLettersLoading } = useFriendPublicLetters();
+
+  // 캐러셀 컬러 - paperId와 연동
+  const getTheme = (paperId?: number) => PAPER_THEME[paperId ?? 0] ?? DEFAULT_THEME;
 
   // API 데이터를 Letter 타입으로 변환
-  const publicLetters: Letter[] = useMemo(() => {
-    return (publicLettersData ?? []).map(convertToLetter);
-  }, [publicLettersData]);
+  const otherLetters = useMemo<FeedLetter[]>(
+    () =>
+      otherPublicLetters?.map((l) => ({
+        letterId: l.id,
+        title: l.title ?? '',
+        deliveredAt: l.deliveredAt ?? '',
+        paperId: l.design?.paper?.id ?? 1,
+      })) ?? [],
+    [otherPublicLetters],
+  );
 
-  const friendLetters: Letter[] = useMemo(() => {
-    return (friendLettersData ?? []).map(convertToLetter);
-  }, [friendLettersData]);
+  const friendLetters = useMemo<FeedLetter[]>(
+    () =>
+      friendPublicLetters?.map((l) => ({
+        letterId: l.id,
+        title: l.title ?? '',
+        deliveredAt: l.deliveredAt ?? '',
+        paperId: l.design?.paper?.id ?? 1,
+      })) ?? [],
+    [friendPublicLetters],
+  );
 
   // 편지 발송 후 성공 토스트 뜨면 resetAll 실행
   useEffect(() => {
@@ -138,7 +137,7 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel letters={publicLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
+        <LetterCarousel letters={otherLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
       </section>
 
       {/* 친구 편지 섹션 */}

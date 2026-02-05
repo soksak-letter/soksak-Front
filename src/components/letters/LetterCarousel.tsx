@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Letter } from '../../types/letter';
+import type { Letter } from '@/types/letter';
 import LetterItem from './LetterItem';
 import EmptyStateCard from './EmptyStateCard';
 
