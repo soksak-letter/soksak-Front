@@ -4,8 +4,9 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
-import { useGlobalToast } from '@/components/toast/ToastProvider';
+
 import { useBlockUser } from '@/hooks/useModeration';
+
 import {
   REPORT_REASONS,
   type LetterReportRequest,
@@ -13,6 +14,8 @@ import {
 } from '@/types/dto/letterReport';
 import { postLetterReport } from '@/api/letterReport';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
