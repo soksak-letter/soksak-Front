@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { postSignin, postSignup } from '@/api/auth';
+import { postSignin, postSignup, postSocialLogin, type SocialProvider } from '@/api/auth';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import type { SignInRequest, SignUpRequest } from '@/types/dto/auth';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { ROUTES } from '@/routes/paths';
 
 //---회원가입----
 export const useSignupMutation = () => {
@@ -62,6 +63,38 @@ export const useSigninMutation = () => {
       } else {
         showToast('네트워크 연결이 원활하지 않습니다.', 'error');
       }
+    },
+  });
+};
+//-------소셜로그인---------
+export const useSocialLoginMutation = () => {
+  const login = useAuthStore((state) => state.login);
+  const navigate = useNavigate();
+
+  return useMutation({
+    // mutationFn: 소셜 로그인 API 호출
+    mutationFn: ({ provider, code }: { provider: SocialProvider; code: string }) =>
+      postSocialLogin(provider, code),
+    onSuccess: (data) => {
+      if (data.resultType === 'SUCCESS') {
+        const { isNewUser, tokens } = data.success;
+
+        // 토큰 저장
+        login(tokens.jwtAccessToken, tokens.jwtRefreshToken);
+
+        // 신규/기존 유저 분기 처리
+        if (isNewUser) {
+          navigate(ROUTES.auth.terms, { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
+      } else {
+        throw new Error('로그인 처리 실패');
+      }
+    },
+    onError: (error) => {
+      console.error('소셜 로그인 에러:', error);
+      navigate(ROUTES.auth.welcome, { replace: true });
     },
   });
 };
