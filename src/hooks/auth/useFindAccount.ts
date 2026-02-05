@@ -92,7 +92,7 @@ const useFindAccount = (type: FindType) => {
   // 3. 인증 요청 (이메일 발송) & 재전송
   const handleAuthRequest = async () => {
     if (!validate.email(email).success) return;
-
+    setIsAuthVerified(false);
     authRequest.mutate(
       { type: apiType, email },
       {
@@ -106,6 +106,10 @@ const useFindAccount = (type: FindType) => {
             setServerMessage(response.error.reason || '가입되지 않은 이메일입니다.');
             setIsTimerActive(false);
           }
+        },
+        onError: () => {
+          setServerMessage('오류가 발생했습니다.');
+          setIsTimerActive(false);
         },
       },
     );
@@ -126,9 +130,17 @@ const useFindAccount = (type: FindType) => {
               setServerMessage('');
               setResetToken(jwtAccessToken);
             } else {
+              setIsAuthVerified(false);
               showToast('인증번호가 일치하지 않습니다.', 'error');
             }
+          } else {
+            setIsAuthVerified(false);
+            showToast(response.error.reason || '인증을 실패했습니다.', 'error');
           }
+        },
+        onError: () => {
+          setIsAuthVerified(false);
+          showToast('인증 확인 중 오류가 발생했습니다.', 'error');
         },
       },
     );
@@ -144,7 +156,12 @@ const useFindAccount = (type: FindType) => {
             navigate('/auth/id-verify', {
               state: { id: response.success.username, date: response.success.createdAt },
             });
+          } else {
+            showToast('회원 정보를 찾을 수 없습니다.', 'error');
           }
+        },
+        onError: () => {
+          showToast('서버 오류가 발생했습니다.', 'error');
         },
       });
     } else {
@@ -152,11 +169,12 @@ const useFindAccount = (type: FindType) => {
       navigate('/auth/pw-reset', { state: { email, token: resetToken } }); // 이메일 넘겨줌
     }
   };
+  const isTimerExpired = timeLeft === 0;
   return {
     email,
     authCode,
     validation: validate.email(email), // 형식 검사 결과 ({ success, message })
-    apiStatus: authRequest.status, // API 상태 ('idle', 'loading', 'success', 'error')
+    apiStatus: isTimerExpired ? 'error' : authRequest.status, // 타이머 만효 시 상태 보정
     serverMessage, // 서버로부터 받은 메시지 (또는 에러 메시지)
     isAuthVerified, // 최종 인증 완료 여부
     formattedTime: formatTime(timeLeft), // 05:00 형식 시간

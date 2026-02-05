@@ -48,7 +48,7 @@ const usePwResetForm = () => {
   const handleSubmit = async () => {
     if (!canSubmit || isPending) return;
 
-    if (!token) {
+    if (typeof token !== 'string' || token.length === 0) {
       showToast('인증 정보가 만료되었습니다. 다시 인증해주세요.', 'error');
       navigate('/auth/pw-find');
       return;
