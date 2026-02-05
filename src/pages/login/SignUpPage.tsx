@@ -3,7 +3,7 @@ import ToastCheck from '@/assets/icons/ToastCheck.svg?react';
 import CheckBlank from '@/assets/icons/CheckBlank.svg?react';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
-import useTermsAgree from '@/hooks/useTermsAgree';
+import useTermsAgree from '@/hooks/auth/useTermsAgree';
 import TermItem from '@/components/TermItem';
 import {
   blockSpaceKey,
@@ -11,18 +11,12 @@ import {
   getBorderColor,
   getMessageColor,
 } from '@/utils/inputUtils';
-import useSignUpForm from '@/hooks/useSignUpForm';
-import { postSignup } from '@/api/auth';
+import useSignUpForm from '@/hooks/auth/useSignUpForm';
 import type { SignUpRequest } from '@/types/dto/auth';
-import { useState } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
-
-// Todo:
-// 1.이메일 중복시 처리
+import { useSignupMutation } from '@/hooks/auth/mutation/useAuthMutation';
 
 const SignUpPage = () => {
-  const login = useAuthStore((state) => state.login);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { mutate: signupMutate, isPending } = useSignupMutation();
   const navigate = useNavigate();
 
   const {
@@ -61,10 +55,7 @@ const SignUpPage = () => {
    * [API 연결] 회원가입 요청 핸들러
    */
   const handleSignupSubmit = async () => {
-    if (!canSubmit || isSubmitting) return;
-
-    // 버튼 잠금 시작
-    setIsSubmitting(true);
+    if (!canSubmit || isPending) return;
 
     // 1. 요청 데이터(Request Body) 생성
     // 훅에서 가져온 form 데이터와 약관 동의 상태를 합침
@@ -81,29 +72,8 @@ const SignUpPage = () => {
       marketingPushAgreed: agreements.marketingPush, // 선택 마케팅 푸시
     };
 
-    try {
-      //  API 호출
-      const response = await postSignup(requestBody);
-
-      // 4. 성공 시 처리
-      if (response.resultType === 'SUCCESS') {
-        const { jwtAccessToken, jwtRefreshToken } = response.success.result.tokens;
-        // 스토어에 저장 (로컬스토리지 저장 + 전역 상태 변경)
-        login(jwtAccessToken, jwtRefreshToken);
-        // 성공 시 다음 페이지(프로필 설정)로 이동
-        navigate('/auth/profile-setup');
-      } else {
-        // 실패 시 처리 (에러 메시지 출력)
-        console.error('회원가입 실패:', response.error);
-        console.log(response.error?.reason || '회원가입에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('네트워크 또는 서버 에러:', error);
-      navigate('/error/500');
-    } finally {
-      // 성공하든 실패하든, 무조건 마지막엔 버튼 잠금 해제
-      setIsSubmitting(false);
-    }
+    // mutate 호출
+    signupMutate(requestBody);
   };
 
   //  이메일 전용 테두리 색상 계산 함수 (컴포넌트 내부)
@@ -353,7 +323,7 @@ const SignUpPage = () => {
         <Button
           onClick={handleSignupSubmit}
           disabled={!canSubmit} // 필수 항목 미동의 시 비활성
-          className={`w-[342px] h-[48px] ${!canSubmit || isSubmitting ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
+          className={`w-[342px] h-[48px] ${!canSubmit || isPending ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
         >
           다음
         </Button>

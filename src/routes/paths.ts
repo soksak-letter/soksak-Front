@@ -11,4 +11,7 @@ export const ROUTES = {
   report: {
     keyword: '/report/keyword-letter',
   },
+  setting: {
+    setting: '/setting',
+  },
 } as const;

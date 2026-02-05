@@ -1,17 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { validate } from '@/utils/validate';
 import { removeWhitespace } from '@/utils/inputUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { patchResetPassword } from '@/api/findAccount';
-
-// 검사 결과 타입 정의
-interface ValidationResult {
-  success: boolean;
-  message: string;
-}
+import { useResetPasswordMutation } from './mutation/useFindAccountMutation';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 type PwResetFormField = 'password' | 'passwordConfirm';
 const usePwResetForm = () => {
+  const { showToast } = useGlobalToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,23 +16,14 @@ const usePwResetForm = () => {
 
   const [form, setForm] = useState({ password: '', passwordConfirm: '' });
   const [focusedField, setFocusedField] = useState<PwResetFormField | null>(null);
-  const [touched, setTouched] = useState<Record<PwResetFormField, boolean>>({ password: false, passwordConfirm: false });
-  const [validations, setValidations] = useState<{
-    password: ValidationResult;
-    passwordConfirm: ValidationResult;
-  }>({
-    password: { success: false, message: '' },
-    passwordConfirm: { success: false, message: '' },
-  });
 
-  // 유효성 검사 (useEffect)
-  useEffect(() => {
-    const newValidations = {
-      password: validate.password(form.password),
-      passwordConfirm: validate.passwordConfirm(form.password, form.passwordConfirm),
-    };
-    setValidations(newValidations);
-  }, [form]);
+  // TanStack Query Mutation 도입
+  const { mutate: resetPassword, isPending } = useResetPasswordMutation();
+
+  const validations = {
+    password: validate.password(form.password),
+    passwordConfirm: validate.passwordConfirm(form.password, form.passwordConfirm),
+  };
 
   // 핸들러들 (handleFocus, handleBlur 등 복사)
   const handleFocus = (field: PwResetFormField) => () => setFocusedField(field);
@@ -52,8 +39,6 @@ const usePwResetForm = () => {
       }
       // 폼 상태 업데이트
       setForm((prev) => ({ ...prev, [field]: cleanValue }));
-      // touched 처리
-      setTouched((prev) => ({ ...prev, [field]: true }));
     };
 
   // 제출 가능 여부 (비밀번호 2개만 확인)
@@ -61,37 +46,27 @@ const usePwResetForm = () => {
 
   // --- API 호출 핸들러 ---
   const handleSubmit = async () => {
-    if (!canSubmit) return;
+    if (!canSubmit || isPending) return;
 
-    if (!token) {
-      alert('인증 정보가 없습니다. 다시 시도해주세요.');
+    if (typeof token !== 'string' || token.length === 0) {
+      showToast('인증 정보가 만료되었습니다. 다시 인증해주세요.', 'error');
+      navigate('/auth/pw-find');
       return;
     }
 
-    try {
-      const response = await patchResetPassword(
-        { password: form.password }, // Body
-        token, // Header Token
-      );
-
-      if (response.resultType === 'SUCCESS') {
-        navigate('/auth/signin'); // 로그인 페이지로 이동
-      } else {
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // Mutation 실행
+    resetPassword({ password: form.password, token });
   };
   return {
     form,
     validations,
     focusedField,
     canSubmit,
+    isPending,
     handleFocus,
     handleBlur,
     handleNoSpaceChange,
     handleSubmit,
-    touched
   };
 };
 

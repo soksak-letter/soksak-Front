@@ -17,6 +17,7 @@ import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 
+
 const LetterReportPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
