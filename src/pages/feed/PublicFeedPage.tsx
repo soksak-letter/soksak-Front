@@ -45,14 +45,10 @@ export default function FeedPage() {
     [publicLetters],
   );
 
-  const handleLike = (letterId: number, prevLiked: boolean) => {
+  const handleLike = (letterId: number, nextLiked: boolean) => {
     if (createLike.isPending || deleteLike.isPending) return;
-
-    if (prevLiked) {
-      deleteLike.mutate(letterId);
-    } else {
-      createLike.mutate(letterId);
-    }
+    if (nextLiked) createLike.mutate(letterId);
+    else deleteLike.mutate(letterId);
   };
 
   const deadlineMs = useMemo(() => {
@@ -108,7 +104,7 @@ export default function FeedPage() {
             paperId={l.paperId}
             likes={l.likes}
             isLikedInitial={l.isLiked}
-            onLike={() => handleLike(l.letterId, l.isLiked)}
+            onLike={(nextLiked) => handleLike(l.letterId, nextLiked)}
           />
         ))}
         {letters.length <= 1 && <EmptyFeedCard />}

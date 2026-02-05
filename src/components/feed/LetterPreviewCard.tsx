@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface LetterPreviewCardProps {
   title: string;
@@ -6,7 +6,8 @@ interface LetterPreviewCardProps {
   paperId: number;
   likes: number;
   isLikedInitial?: boolean;
-  onLike?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onLike?: (nextLiked: boolean) => void;
 }
 
 type PaperTheme = { bg: string; title: string };
@@ -48,14 +49,22 @@ export default function LetterPreviewCard({
     setIsLiked((prev) => {
       const next = !prev;
       setLikeCount((c) => c + (next ? 1 : -1));
+      onLike?.(next);
       return next;
     });
-    onLike?.();
   };
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+  useEffect(() => {
+    setIsLiked(isLikedInitial);
+  }, [isLikedInitial]);
+
+  useEffect(() => {
+    setLikeCount(likes);
+  }, [likes]);
 
   return (
     <div className='w-full rounded-lg overflow-hidden shadow-sm'>

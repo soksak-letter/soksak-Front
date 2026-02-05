@@ -20,7 +20,7 @@ export async function postLetterLike(letterId: number): Promise<CreateLikeSucces
 }
 
 export async function deleteLetterLike(letterId: number): Promise<CreateLikeSuccess> {
-  const res = await axiosInstance.post(`/letters/${letterId}/like`);
+  const res = await axiosInstance.delete(`/letters/${letterId}/like`);
 
   const data = res.data as CreateLikeResponse;
 
