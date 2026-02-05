@@ -1,23 +1,22 @@
 import type { ApiError } from '../common';
 
+export type AnonThreadLetter = {
+  id: number;
+  title: string;
+  deliveredAt: string;
+  readAt: string | null;
+  isMine: boolean;
+
+  design: {
+    paperId: number;
+    stampId: number;
+    stampUrl: string;
+  };
+};
+
 export type AnonThreadSuccess = {
   firstQuestion: string;
-  letters: {
-    id: number;
-    title: string;
-    deliveredAt: string;
-    design: {
-      paper: {
-        id: number;
-        name: string;
-      };
-      stamp: {
-        id: number;
-        name: string;
-        assetUrl: string;
-      };
-    };
-  }[];
+  letters: AnonThreadLetter[];
 };
 
 export type AnonThreadResponse = {

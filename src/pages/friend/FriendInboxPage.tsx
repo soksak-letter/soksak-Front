@@ -6,21 +6,22 @@ import FriendTopTabs from '@/components/FriendTopTabs';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
+import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { getParseDate } from '@/utils/date';
 
 type FriendInboxItem = {
   id: number;
+  friendUserId: number;
   name: string;
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
+  lastAtMs: number;
+  paperId: number;
+  stampId: number;
+  stampUrl: string;
 };
 
 type SortOrder = 'latest' | 'oldest';
-
-const parseDotDate = (s: string) => {
-  // '2026.1.3' -> Date
-  const [y, m, d] = s.split('.').map((v) => Number(v));
-  return new Date(y, (m ?? 1) - 1, d ?? 1).getTime();
-};
 
 export default function FriendInboxPage() {
   const navigate = useNavigate();
@@ -31,26 +32,41 @@ export default function FriendInboxPage() {
 
   const items = useMemo<FriendInboxItem[]>(
     () =>
-      friends.map((f) => ({
-        id: f.friendUserId,
-        name: f.nickname,
-        exchangeCount: f.letterCount,
-        lastDate: f.createdAt.split('T')[0].replaceAll('-', '.'),
-      })),
+      friends.map((f) => {
+        const iso = f.recentLetter?.createdAt ?? null;
+        const ms = iso ? new Date(iso).getTime() : 0;
+
+        return {
+          id: f.id,
+          friendUserId: f.friendUserId,
+          name: (f.nickname ?? '').trim(),
+          exchangeCount: f.letterCount,
+
+          lastDate: iso ? getParseDate(iso) : '-', // UI용
+          lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
+
+          paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
+          stampId: Number(f.recentLetter?.design.stamp?.id ?? 0),
+          stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
+        };
+      }),
     [friends],
   );
 
-  const filtered = useMemo(() => {
-    const k = keyword.trim();
-
-    const result = !k ? items : items.filter((x) => x.name.includes(k));
-
-    // 정렬 (최신순 기본 / 역순)
-    return [...result].sort((a, b) => {
-      const ta = parseDotDate(a.lastDate);
-      const tb = parseDotDate(b.lastDate);
-      return sortOrder === 'latest' ? tb - ta : ta - tb;
+  const handleOpenThread = (item: FriendInboxItem) => {
+    navigate(`/friend/thread/${item.friendUserId}`, {
+      state: { friendId: item.friendUserId, friendName: item.name },
     });
+  };
+
+  const filtered = useMemo(() => {
+    const k = keyword.trim().toLowerCase();
+
+    const result = !k ? items : items.filter((x) => (x.name ?? '').toLowerCase().includes(k));
+
+    return [...result].sort((a, b) =>
+      sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs,
+    );
   }, [items, keyword, sortOrder]);
 
   const isEmptyFriends = !isLoading && items.length === 0;
@@ -95,29 +111,54 @@ export default function FriendInboxPage() {
         <div className='mt-4 space-y-4'>
           {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
           {!isLoading &&
-            filtered.map((f) => (
-              <button
-                key={f.id}
-                type='button'
-                onClick={() => navigate(`/friend/${f.id}/posts`)} // TODO 여기 유저 id 생기면 수정
-                className='w-[343px] h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-              >
-                <div className='flex items-center justify-between gap-3'>
-                  <div className='flex items-center gap-3'>
-                    <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
-                    <div>
-                      <p className='ty-body2'>{f.name}</p>
-                      <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
+            filtered.map((f) => {
+              const envelopeAsset = ENVELOPE_ASSET_MAP[f.paperId];
+              const EnvelopePreview = envelopeAsset?.Preview;
+
+              return (
+                <button
+                  key={f.id}
+                  type='button'
+                  onClick={() => handleOpenThread(f)}
+                  className='w-full h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                >
+                  {/* 상단: 프로필 + 봉투 */}
+                  <div className='flex items-center justify-between gap-3'>
+                    <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
+                      {/* TODO : 프로필 사진 불러오기 */}
+                      <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
+                      <div>
+                        <p className='ty-body2'>{f.name}</p>
+                        <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
+                      </div>
+                    </div>
+
+                    {/* 오른쪽: 봉투 + 스탬프 + 날짜 */}
+                    <div className='flex flex-col gap-1'>
+                      <div className='relative h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
+                        {EnvelopePreview ? (
+                          <EnvelopePreview className='h-full w-full' />
+                        ) : (
+                          <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+                        )}
+
+                        {f.stampUrl ? (
+                          <img
+                            src={f.stampUrl}
+                            className='absolute right-2.5 bottom-6 h-6 w-6 object-contain'
+                            draggable={false}
+                          />
+                        ) : null}
+                      </div>
+
+                      <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                        {f.lastDate}
+                      </div>
                     </div>
                   </div>
-
-                  {/* 봉투 썸네일 자리(나중에 이미지로 교체) */}
-                  <div className='h-12 w-16 rounded-xl bg-[#F2F2F2]' />
-                </div>
-
-                <div className='mt-3 flex justify-end ty-detailMedium'>{f.lastDate}</div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
 
           {isEmptyFriends && (
             <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>

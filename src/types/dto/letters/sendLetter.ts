@@ -9,7 +9,7 @@ type BaseCreateLetterBody = {
 };
 
 export type CreateLetterBody = BaseCreateLetterBody & {
-  receiverUserId?: number; // friend에서만 들어감
+  receiverUserId?: number;
 };
 
 export type CreateSelfLetterBody = BaseCreateLetterBody & {

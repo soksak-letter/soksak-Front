@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getHomeSummary } from '@/api/home';
 import type { HomeSummaryResult } from '@/types/dto/home';
-import useCountdown from './useCountdown';
+import useCountdown from './auth/useCountdown';
 
 interface UseHomeSummaryReturn {
   data: HomeSummaryResult | null;

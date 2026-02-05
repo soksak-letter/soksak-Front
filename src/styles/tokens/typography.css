@@ -24,8 +24,8 @@
     font-weight: 400;
     src:
       local('Pretendard Regular'),
-      url('../../assets/fonts/Pretendard-Regular.woff') format('woff'),
-      url('../../assets/fonts/Pretendard-Regular.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Regular.woff') format('woff');
   }
 
   @font-face {
@@ -33,8 +33,8 @@
     font-weight: 500;
     src:
       local('Pretendard Medium'),
-      url('../../assets/fonts/Pretendard-Medium.woff') format('woff'),
-      url('../../assets/fonts/Pretendard-Medium.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Medium.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Medium.woff') format('woff');
   }
 
   @font-face {
@@ -42,8 +42,8 @@
     font-weight: 700;
     src:
       local('Pretendard Bold'),
-      url('../../assets/fonts/Pretendard-Bold.woff') format('woff'),
-      url('../../assets/fonts/Pretendard-Bold.woff2') format('woff2');
+      url('../../assets/fonts/Pretendard-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Bold.woff') format('woff');
   }
 
   /* ===== Nanum Fonts ===== */
@@ -52,7 +52,8 @@
     font-weight: 400;
     src:
       local('Nanum BaeEunHye'),
-      url('../../assets/fonts/NanumBaeEunHye.woff2') format('woff2');
+      url('../../assets/fonts/NanumBaeEunHye.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBaeEunHye.woff') format('woff');
   }
 
   @font-face {
@@ -60,8 +61,44 @@
     font-weight: 400;
     src:
       local('Nanum BiSang'),
-      url('../../assets/fonts/NanumBiSang.woff') format('woff'),
-      url('../../assets/fonts/NanumBiSang.woff2') format('woff2');
+      url('../../assets/fonts/NanumBiSang.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBiSang.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumBarunHipi';
+    font-weight: 400;
+    src:
+      local('Nanum BarunHipi'),
+      url('../../assets/fonts/NanumBarunHipi.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBarunHipi.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumAbbaGeulsi';
+    font-weight: 400;
+    src:
+      local('Nanum AbbaGeulsi'),
+      url('../../assets/fonts/NanumAbbaGeulsi.woff2') format('woff2'),
+      url('../../assets/fonts/NanumAbbaGeulsi.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumBarunpen';
+    font-weight: 400;
+    src:
+      local('Nanum Barunpen'),
+      url('../../assets/fonts/NanumBarunpen.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBarunpen.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumDaheng';
+    font-weight: 400;
+    src:
+      local('Nanum Daheng'),
+      url('../../assets/fonts/NanumDaheng.woff2') format('woff2'),
+      url('../../assets/fonts/NanumDaheng.woff') format('woff');
   }
 
   @font-face {
@@ -69,8 +106,8 @@
     font-weight: 400;
     src:
       local('Nanum NeuritNeurit'),
-      url('../../assets/fonts/NanumNeuritNeurit.woff') format('woff'),
-      url('../../assets/fonts/NanumNeuritNeurit.woff2') format('woff2');
+      url('../../assets/fonts/NanumNeuritNeurit.woff2') format('woff2'),
+      url('../../assets/fonts/NanumNeuritNeurit.woff') format('woff');
   }
 
   :root {

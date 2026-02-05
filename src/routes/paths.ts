@@ -8,4 +8,10 @@ export const ROUTES = {
     signup: '/auth/signup',
     terms: '/auth/terms',
   },
+  report: {
+    keyword: '/report/keyword-letter',
+  },
+  setting: {
+    setting: '/setting',
+  },
 } as const;

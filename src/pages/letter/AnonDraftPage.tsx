@@ -4,17 +4,13 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from '@/hooks/auth/useCountdown';
 import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingPage from '../system/LoadingPage';
-
-const LIMIT = {
-  TITLE: { MIN: 3, MAX: 20 },
-  CONTENT: { MIN: 1, MAX: 500 },
-} as const;
+import { validateLetter } from '@/utils/validateLetter';
 
 const AnonDraftPage = () => {
   const { data, isLoading, isError, error } = useDailyQuestion();
@@ -50,21 +46,10 @@ const AnonDraftPage = () => {
     navigate(-1);
   };
 
-  const validate = (title: string, content: string) => {
-    if (title.length < LIMIT.TITLE.MIN) return `제목을 ${LIMIT.TITLE.MIN}자 이상 입력해주세요.`;
-    if (title.length > LIMIT.TITLE.MAX)
-      return `제목은 최대 ${LIMIT.TITLE.MAX}자까지 입력할 수 있어요.`;
-    if (content.length < LIMIT.CONTENT.MIN) return '내용을 작성해 주세요!';
-    if (content.length > LIMIT.CONTENT.MAX)
-      return `내용은 최대 ${LIMIT.CONTENT.MAX}자까지 입력할 수 있어요.`;
-
-    return null;
-  };
-
   const handleSubmit = () => {
     const title = draft.title.trim();
     const content = draft.content.trim();
-    const errorMsg = validate(title, content);
+    const errorMsg = validateLetter(title, content);
 
     if (errorMsg) {
       showToast(errorMsg, 'error');

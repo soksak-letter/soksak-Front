@@ -3,43 +3,43 @@ import ToastCheck from '@/assets/icons/ToastCheck.svg?react';
 import CheckBlank from '@/assets/icons/CheckBlank.svg?react';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useNavigate } from 'react-router-dom';
-import useTermsAgree from '@/hooks/useTermsAgree';
+import useTermsAgree from '@/hooks/auth/useTermsAgree';
 import TermItem from '@/components/TermItem';
 
-import { patchAgreements } from '@/api/auth';
-
 import { ROUTES } from '@/routes/paths';
+import { usePatchMyConsents } from '@/hooks/onboarding/usePatchMyConsents';
 
 const TermCheckPage = () => {
   const navigate = useNavigate();
   // 전체동의 관리하는 커스텀 훅
   const { agreements, isAllChecked, isFormValid, handleCheck, handleAllCheck } = useTermsAgree();
 
+  // PATCH /users/me/consents
+  const patchConsents = usePatchMyConsents();
+
   //온보딩으로(다음 클릭시)
-  const handleOnboading = async () => {
+  const handleOnboading = () => {
     if (!isFormValid) return;
 
-    try {
-      // 2. 서버로 보낼 데이터 포맷 맞추기 (Hook 상태 -> API DTO)
-      const requestData = {
-        termsAgreed: agreements.terms,
-        privacyAgreed: agreements.privacy,
-        ageOver14Agreed: agreements.age,
-        marketingEmailAgreed: agreements.marketingEmail,
-        marketingPushAgreed: agreements.marketingPush,
-      };
+    // 서버 DTO로 매핑
+    const requestData = {
+      termsAgreed: agreements.terms,
+      privacyAgreed: agreements.privacy,
+      ageOver14Agreed: agreements.age,
+      marketingEmailAgreed: agreements.marketingEmail,
+      marketingPushAgreed: agreements.marketingPush,
+    };
 
-      // 3. API 호출
-      await patchAgreements(requestData);
-
-      console.log('약관 동의 전송 성공');
-
-      // 4. 성공 시 다음 페이지 이동
-      navigate(ROUTES.onboarding.start);
-    } catch (error) {
-      console.error('약관 동의 전송 실패:', error);
-    }
+    patchConsents.mutate(requestData, {
+      onSuccess: () => {
+        navigate(ROUTES.onboarding.start);
+      },
+      onError: (err) => {
+        console.error('약관 동의 저장 실패:', err);
+      },
+    });
   };
+
   // 상세 보기 클릭 핸들러 (페이지 이동)
   const handleOpenDetail = (type: string) => {
     navigate(`/setting/${type}`);
@@ -100,7 +100,7 @@ const TermCheckPage = () => {
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
         <Button
           onClick={handleOnboading}
-          disabled={!isFormValid} // 필수 항목 미동의 시 비활성
+          disabled={!isFormValid || patchConsents.isPending} // 필수 항목 미동의 시 비활성
           className={`w-[342px] h-[48px] ${!isFormValid ? 'bg-[#E5E6E6] text-[#8C8C8C]' : ''}`}
         >
           시작하기

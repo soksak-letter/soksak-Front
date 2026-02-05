@@ -1,8 +1,11 @@
 import type {
   AgreementsRequest,
   AgreementsResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
   EmailExistsRequest,
   EmailExistsResponse,
+  LogoutResponse,
   NicknameSetUpRequest,
   NicknameSetUpResponse,
   ProfileImageResponse,
@@ -13,6 +16,7 @@ import type {
   SocialLoginResponse,
   UsernameExistsRequest,
   UsernameExistsResponse,
+  WithdrawResponse,
 } from '@/types/dto/auth';
 import { axiosInstance } from './axios'; // axios 설정 파일 경로
 
@@ -51,6 +55,35 @@ export const postCheckUsernameExists = async (body: UsernameExistsRequest) => {
 export const postSignin = async (body: SignInRequest) => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/login', body);
   return data;
+};
+/**
+ * 로그아웃 API
+ * POST /auth/logout
+ */
+export const postLogout = async () => {
+  // 로그아웃은 보통 Body({})가 비어있어도 됩니다.
+  const { data } = await axiosInstance.post<LogoutResponse>('/auth/logout');
+  return data;
+};
+
+/**
+ * 회원탈퇴 API
+ * DELETE /users
+ */
+export const deleteWithdraw = async () => {
+  const { data } = await axiosInstance.delete<WithdrawResponse>('/users');
+  return data;
+};
+
+/**
+ * 비밀번호 재설정(설정 페이지)API
+ * PATCH /auth/change-password
+ */
+export const patchChangePassword = async (
+  data: ChangePasswordRequest,
+): Promise<ChangePasswordResponse> => {
+  const response = await axiosInstance.patch<ChangePasswordResponse>('/auth/change-password', data);
+  return response.data;
 };
 
 /**

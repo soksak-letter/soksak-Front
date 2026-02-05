@@ -51,13 +51,18 @@ import LetterPostSelfPage from './pages/letter/LetterPostSelfPage';
 import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
-import WeeklyReportPage from './pages/WeeklyReportPage';
+import WeeklyReportPage from './pages/report/WeeklyReportPage';
+import KeywordLetterPage from './pages/report/KeywordLetterPage';
+
 import MyPage from './pages/my/MyPage';
 import InquiryPage from './pages/my/InquiryPage';
 import SplashPage from './pages/login/SplashPage';
 import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
+import OnboardingLetterSendPage from './pages/onboarding/OnboardingLetterSendPage';
+
+import FriendReplyPage from './pages/friend/FriendReplyPage';
 
 import SettingPage from './pages/setting/SettingPage';
 import PasswordResetPage from './pages/setting/PasswordResetPage';
@@ -102,7 +107,7 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
                   { path: 'request', element: <FriendRequestPage /> },
-                  { path: 'sent-transition', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
@@ -147,6 +152,7 @@ const router = createBrowserRouter([
                   { path: 'letter-intro', element: <OnboardingLetterIntroPage /> },
                   { path: 'letter-write', element: <OnboardingLetterWritePage /> },
                   { path: 'letter-guide', element: <OnboardingLetterGuidePage /> },
+                  { path: 'letter-send', element: <OnboardingLetterSendPage /> },
                 ],
               },
               { path: 'feed/public-all', element: <FeedPage /> },
@@ -161,15 +167,12 @@ const router = createBrowserRouter([
                   { path: 'draft', element: <LetterDraftRoute /> },
                   { path: 'decorate', element: <LetterDecoPage /> },
                   { path: 'sending', element: <LetterSendingPage /> },
-                  // { path: 'sent-transition', element: <LetterSendingPage /> }, TODO: 예디랑 논의 필요
                 ],
               },
-              { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
-              { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
-              { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
+              { path: 'letter/thread/:sessionId', element: <LetterPostOtherPage /> },
+              { path: 'letter/reply/:sessionId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },
-              { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
-              // { path: 'letter/post-self', element: <LetterPostSelfPage /> }, // TODO : 미사용 라우터 삭제
+              { path: 'letter/review/:sessionId', element: <LetterReviewPage /> },
               { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
               { path: 'letter/loading', element: <LoadingPage /> },
               // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
@@ -179,14 +182,12 @@ const router = createBrowserRouter([
               },
               { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
               { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
-              { path: 'friend/post/:letterId', element: <FriendPostPage /> }, // 기존 라우팅
-              { path: 'friend/:friendId/thread/:threadId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
-              { path: 'friend/:friendId/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
+              { path: 'friend/thread/:friendId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
               {
-                path: 'friend/:friendId/thread/:threadId/letters/:letterId',
-                element: <LetterReplyPage />,
+                path: 'friend/thread/:friendId/:letterId',
+                element: <FriendReplyPage />,
               },
-              { path: 'report/keyword-letter', element: <TODOPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },

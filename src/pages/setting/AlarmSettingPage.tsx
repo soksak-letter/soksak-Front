@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -8,14 +8,60 @@ import {
   PAGE_PADDING_X,
   PAGE_PADDING_TOP,
 } from '@/constants/settingLayout';
+import { useMyNotificationSettings } from '@/hooks/onboarding/useMyNotificationSettings';
+import { usePatchMyNotificationSettings } from '@/hooks/onboarding/usePatchMyNotificationSettings';
 
 export default function AlarmSettingPage() {
   const navigate = useNavigate();
-  const [marketingAlarm, setMarketingAlarm] = useState(false);
-  const [letterAlarm, setLetterAlarm] = useState(true);
 
   const handleBack = () => {
     navigate(-1);
+  };
+
+  // GET /users/me/notification-settings
+  const { data } = useMyNotificationSettings(true);
+
+  // PATCH /users/me/notification-settings
+  const patchSettings = usePatchMyNotificationSettings();
+
+  // 서버값을 UI 토글에 반영
+  const [marketingAlarm, setMarketingAlarm] = useState(false);
+  const [letterAlarm, setLetterAlarm] = useState(true);
+
+  useEffect(() => {
+    if (!data) return;
+    setMarketingAlarm(data.marketing);
+    setLetterAlarm(data.letter);
+  }, [data]);
+
+  const handleToggleMarketing = (next: boolean) => {
+    const prev = marketingAlarm;
+
+    setMarketingAlarm(next); // UI 즉시 반영(낙관적)
+    patchSettings.mutate(
+      { marketing: next, letter: letterAlarm },
+      {
+        onError: () => {
+          // 실패하면 롤백(최소 안전장치)
+          setMarketingAlarm(prev);
+        },
+      },
+    );
+  };
+
+  const handleToggleLetter = (next: boolean) => {
+    const prev = letterAlarm;
+
+    setLetterAlarm(next);
+
+    patchSettings.mutate(
+      { marketing: marketingAlarm, letter: next },
+      {
+        onError: () => {
+          setLetterAlarm(prev);
+        },
+      },
+    );
   };
 
   return (
@@ -56,9 +102,10 @@ export default function AlarmSettingPage() {
           </span>
           <ToggleSwitch
             checked={marketingAlarm}
-            onCheckedChange={setMarketingAlarm}
+            onCheckedChange={handleToggleMarketing}
             className='ml-2'
             aria-label='마케팅 정보 알림 토글'
+            disabled={patchSettings.isPending}
           />
         </div>
 
@@ -94,9 +141,10 @@ export default function AlarmSettingPage() {
           </span>
           <ToggleSwitch
             checked={letterAlarm}
-            onCheckedChange={setLetterAlarm}
+            onCheckedChange={handleToggleLetter}
             className='ml-2'
             aria-label='편지 도착 알림 토글'
+            disabled={patchSettings.isPending}
           />
         </div>
       </main>

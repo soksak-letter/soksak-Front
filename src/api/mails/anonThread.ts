@@ -2,9 +2,9 @@ import { axiosInstance } from '@/api/axios';
 import type { ApiError } from '@/types/dto/common';
 import type { AnonThreadResponse, AnonThreadSuccess } from '@/types/dto/mails/anonThread';
 
-export async function getAnonThread(threadId: number): Promise<AnonThreadSuccess> {
+export async function getAnonThread(sessionId: number): Promise<AnonThreadSuccess> {
   const { data } = await axiosInstance.get<AnonThreadResponse>(
-    `/mailbox/anonymous/threads/${threadId}/letters`,
+    `/mailbox/anonymous/threads/${sessionId}/letters`,
   );
 
   if (data.resultType !== 'SUCCESS' || !data.success) {

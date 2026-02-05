@@ -15,31 +15,27 @@ type SortOrder = 'latest' | 'oldest';
 
 type InboxSelfLetterItem = {
   letterId: number;
-  // questionId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  questionId: number; // TODO : 백엔드 필드 수정 후 연동 필요
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
-  // stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
-  // stampUrl: string;
+  stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  stampUrl: string;
 };
 
-const parseDate = (iso: string) => {
-  const d = new Date(iso);
-  const fmt = new Intl.DateTimeFormat('ko-KR', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-  const parts = Object.fromEntries(
-    fmt
-      .formatToParts(d)
-      .filter((p) => p.type !== 'literal')
-      .map((p) => [p.type, p.value]),
-  );
-  return `${parts.year}.${parts.month}.${parts.day}`;
+const parseDate = (input: string | null | undefined) => {
+  if (!input) return '-';
+
+  const d = new Date(input);
+  if (Number.isNaN(d.getTime())) return '-';
+
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+
+  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxSelfPage() {
@@ -52,15 +48,18 @@ export default function LetterInboxSelfPage() {
 
   // 서버 응답 -> 화면 아이템으로 변환 (isUnread 제외)
   const items: InboxSelfLetterItem[] = useMemo(() => {
-    const raw = data?.items ?? [];
+    const raw = data?.letters ?? [];
 
     return raw.map((x) => ({
       letterId: x.id,
+      questionId: x.questionId,
       title: x.title,
       receivedAt: parseDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
       isUnread: false,
       paperId: x.paperId + 1,
+      stampId: x.stampId,
+      stampUrl: x.stampUrl,
     }));
   }, [data]);
 
@@ -167,7 +166,7 @@ export default function LetterInboxSelfPage() {
                           )}
                         </div>
 
-                        <div className='flex flex-col'>
+                        <div className='relative flex flex-col'>
                           {/* 오른쪽 봉투 썸네일 */}
                           <div className='h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
                             {EnvelopePreview ? (
@@ -176,6 +175,16 @@ export default function LetterInboxSelfPage() {
                               <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
                             )}
                           </div>
+
+                          {!!it.stampUrl && (
+                            <img
+                              src={it.stampUrl}
+                              alt=''
+                              className='absolute right-1 bottom-3 h-7 w-7 object-contain pointer-events-none'
+                              draggable={false}
+                            />
+                          )}
+
                           {/* 오른쪽 하단 날짜 */}
                           <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
                             {it.receivedAt}

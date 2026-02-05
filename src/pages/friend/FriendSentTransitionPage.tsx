@@ -5,23 +5,27 @@ import { useModalStore } from '@/stores/modalStore';
 import ToastPopup from '@/components/ToastPopup';
 import useToast from '@/hooks/useToast';
 import { useState } from 'react';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
+import NotFoundPage from '../system/NotFoundPage';
 
 export default function FriendSentTransitionPage() {
   const { openModal } = useModalStore();
   const { toast, visible, showToast, closeToast } = useToast();
 
+  const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
+  const sessionId = useThreadFlowStore((s) => s.sessionId);
+
   const navigate = useNavigate();
 
   const [isRequested, setIsRequested] = useState(false);
 
-  // mock data
-  // TODO : 앞 페이지랑 props 연결하기
-  const receiver = '파란수박';
-  const letterId = '1';
+  if (!sessionId) {
+    return <NotFoundPage />;
+  }
 
   const handleFriendRequest = () => {
     openModal('friendRequest', {
-      receiverName: receiver,
+      receiverName: senderName,
       onConfirmFriendRequest: () => {
         setIsRequested(true);
         showToast('친구 신청이 완료되었습니다!', 'success');
@@ -30,7 +34,7 @@ export default function FriendSentTransitionPage() {
   };
 
   const handleGoToReview = () => {
-    navigate(`/letter/review/${letterId}`);
+    navigate(`/letter/review/${sessionId}`);
   };
 
   return (
@@ -38,7 +42,7 @@ export default function FriendSentTransitionPage() {
       {/* Header */}
       <header className='flex flex-col justify-start gap-2'>
         <p className='ty-body1 leading-tight'>
-          {receiver}님과 <span className='text-(--color-primary-500)'>10회</span>의 대화를
+          {senderName}님과 <span className='text-(--color-primary-500)'>10회</span>의 대화를
           <br />
           모두 나누었어요.
         </p>
@@ -49,7 +53,7 @@ export default function FriendSentTransitionPage() {
       <section className='mt-15 flex flex-col items-center'>
         <LetterEndedEnvelope className='block' />
         <Link
-          to={`/friend/post/${letterId}`}
+          to={`/letter/thread/${sessionId}`}
           className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기
