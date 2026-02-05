@@ -4,7 +4,7 @@ export type AnonThreadLetter = {
   id: number;
   title: string;
   deliveredAt: string;
-  readAt: string;
+  readAt: string | null;
   isMine: boolean;
 
   design: {

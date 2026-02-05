@@ -27,7 +27,8 @@ export default function OtherStopPage() {
 
   const sessionId = useThreadFlowStore((s) => s.sessionId);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
-  const letterCount = Number(useThreadFlowStore((l) => l.letterCount));
+  const letterCountRaw = useThreadFlowStore((l) => l.letterCount);
+  const letterCount = letterCountRaw != null ? Number(letterCountRaw) : null;
 
   const location = useLocation();
   const state = location.state as OtherStopLocationState | null;
@@ -39,7 +40,7 @@ export default function OtherStopPage() {
   const EnvelopePreview = envelopeAsset?.Preview;
 
   useEffect(() => {
-    if (letterCount == null) {
+    if (letterCount === null || Number.isNaN(letterCount)) {
       showToast('편지를 나눈 횟수를 불러오지 못했어요. 잠시 후 다시 시도해주세요.', 'error');
     }
   }, [letterCount, showToast]);
