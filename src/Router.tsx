@@ -188,96 +188,25 @@ const router = createBrowserRouter([
               },
               { path: 'report/keyword-letter', element: <TODOPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
-              { path: 'my/my-page', element: <TODOPage /> },
+
+              { path: 'my/my-page', element: <MyPage /> },
               { path: 'my/limits', element: <TODOPage /> },
               { path: 'my/complain', element: <TODOPage /> },
+              { path: 'my/inquiry', element: <InquiryPage /> },
+
+              // 설정 페이지들
+              { path: 'setting/pw-reset', element: <PasswordResetPage /> },
+              { path: 'setting/alarm', element: <AlarmSettingPage /> },
+              { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
+              { path: 'setting/notice', element: <NoticePage /> },
+              { path: 'setting/terms', element: <TermsOfServicePage /> },
+              { path: 'setting/privacy', element: <PrivacyPolicyPage /> },
+              { path: 'setting/guideline', element: <CommunityGuidelinePage /> },
 
               // 404 처리
               { path: '*', element: <NotFoundPage /> },
             ],
           },
-
-          { path: 'feed/public-all', element: <FeedPage /> },
-          { path: 'feed/friend-all', element: <FriendFeedPage /> },
-
-          // 설정 페이지들
-          { path: 'setting/pw-reset', element: <PasswordResetPage /> },
-          { path: 'setting/alarm', element: <AlarmSettingPage /> },
-          { path: 'setting/personal-consent', element: <PersonalConsentPage /> },
-          { path: 'setting/notice', element: <NoticePage /> },
-          { path: 'setting/terms', element: <TermsOfServicePage /> },
-          { path: 'setting/privacy', element: <PrivacyPolicyPage /> },
-          { path: 'setting/guideline', element: <CommunityGuidelinePage /> },
-
-          /**
-           * letter/{target}/{step} 표준 (비탭)
-           * target = anon | other | friend | self
-           */
-          {
-            path: 'letter/:target',
-            children: [
-              { path: 'draft', element: <LetterDraftRoute /> },
-              { path: 'decorate', element: <LetterDecoPage /> },
-              { path: 'sending', element: <LetterSendingPage /> },
-              // { path: 'sent-transition', element: <LetterSendingPage /> }, TODO: 예디랑 논의 필요
-            ],
-          },
-
-          { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
-          { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
-          { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
-          { path: 'letter/report', element: <LetterReportPage /> },
-          { path: 'letter/review/:letterId', element: <LetterReviewPage /> },
-          // { path: 'letter/post-self', element: <LetterPostSelfPage /> }, // TODO : 미사용 라우터 삭제
-          { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
-          { path: 'letter/loading', element: <LoadingPage /> },
-
-          // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
-          {
-            path: 'letter/other_draft',
-            element: <Navigate to='/letter/other/draft' replace />,
-          },
-          { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
-
-          { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
-          { path: 'friend/post/:letterId', element: <FriendPostPage /> }, // 기존 라우팅
-          { path: 'friend/:friendId/thread/:threadId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
-          { path: 'friend/:friendId/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
-          {
-            path: 'friend/:friendId/thread/:threadId/letters/:letterId',
-            element: <LetterReplyPage />,
-          },
-
-          { path: 'report/keyword-letter', element: <TODOPage /> },
-          { path: 'report/keyword-letter-indi', element: <TODOPage /> },
-
-          { path: 'my/my-page', element: <MyPage /> },
-          { path: 'my/limits', element: <TODOPage /> },
-          { path: 'my/complain', element: <TODOPage /> },
-          { path: 'my/inquiry', element: <InquiryPage /> },
-
-          // 404 처리
-          { path: '*', element: <NotFoundPage /> },
-
-          // 기존 코드. 주석처리
-          // {
-          // path: 'letter/anon-draft',
-          // element: <AnonDraftPage />,
-          // },
-          // {
-          // path: 'letter/other-draft',
-          // element: <OtherDraftPage />,
-          // },
-          // {
-          // path: 'letter/self-draft',
-          // element: <SelfDraftPage />,
-          // },
-          // {
-          // path: 'letter/:mode-decorate',
-          // element: <LetterDecoPage />,
-          // },
-
-          // { path: 'letter/report', element: <LetterReportPage /> },
         ],
       },
     ],
