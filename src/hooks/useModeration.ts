@@ -1,39 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { blockUser, getBlockedUsers, getReportDetail, getRestrictList } from '@/api/moderation';
-import type { BlockedUser, ReportedUser, RestrictedUser } from '@/types/dto/moderation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { blockUser } from '@/api/moderation';
 
 /**
  * moderation 도메인 React Query queryKey 모음
- *
- * 캐시 무효화(invalidate) 규칙
- * - 유저 차단 성공 → blocked invalidate
  */
 export const moderationKeys = {
   all: ['moderation'] as const,
   blocked: () => [...moderationKeys.all, 'blocked'] as const,
-  report: (reportId: number) => [...moderationKeys.all, 'report', reportId] as const,
-  restricted: () => [...moderationKeys.all, 'restricted'] as const,
 };
-
-/**
- * 차단 목록 조회 훅
- * - GET /block (getBlockedUsers)
- */
-export function useBlockedUsers() {
-  return useQuery<BlockedUser[]>({
-    queryKey: moderationKeys.blocked(),
-    queryFn: async () => {
-      const res = await getBlockedUsers();
-      const data = res.data;
-
-      if (data.resultType === 'SUCCESS') {
-        return data.success.result;
-      }
-
-      throw new Error(data.error?.reason ?? '차단 목록 조회에 실패했습니다.');
-    },
-  });
-}
 
 /**
  * 유저 차단 훅
@@ -59,48 +33,6 @@ export function useBlockUser() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: moderationKeys.blocked() });
-    },
-  });
-}
-
-/**
- * 신고 내역 조회 훅
- * - GET /reports/{reportId} (getReportDetail)
- * - reportId가 유효할 때만 쿼리 실행
- */
-export function useReportDetail(reportId: number | null) {
-  return useQuery<ReportedUser>({
-    queryKey: moderationKeys.report(reportId!),
-    queryFn: async () => {
-      const res = await getReportDetail(reportId!);
-      const data = res.data;
-
-      if (data.resultType === 'SUCCESS') {
-        return data.success.result;
-      }
-
-      throw new Error(data.error?.reason ?? '신고 내역 조회에 실패했습니다.');
-    },
-    enabled: reportId !== null,
-  });
-}
-
-/**
- * 이용 제한 내역 조회 훅
- * - GET /restrict (getRestrictList)
- */
-export function useRestrictList() {
-  return useQuery<RestrictedUser[]>({
-    queryKey: moderationKeys.restricted(),
-    queryFn: async () => {
-      const res = await getRestrictList();
-      const data = res.data;
-
-      if (data.resultType === 'SUCCESS') {
-        return data.success.result;
-      }
-
-      throw new Error(data.error?.reason ?? '이용 제한 내역 조회에 실패했습니다.');
     },
   });
 }
