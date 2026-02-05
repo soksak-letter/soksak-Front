@@ -40,7 +40,7 @@ export interface FindIdResult {
 }
 export type FindIdResponse = CommonResponse<FindIdResult>;
 
-//비밀번호 재설정
+//비밀번호 초기화(비밀번호 재설정 페이지)
 //1.서버로 보낼 데이터(Request)
 export interface ResetPasswordRequest {
   password: string;
