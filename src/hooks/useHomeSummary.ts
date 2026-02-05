@@ -1,67 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useMemo, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getHomeSummary } from '@/api/home';
-import type { HomeSummaryResult } from '@/types/dto/home';
-import useCountdown from './useCountdown';
+import { getNowKSTIsoString, getTodayKstKey } from '@/utils/date';
+import useCountdown from '@/hooks/useCountdown';
 
-interface UseHomeSummaryReturn {
-  data: HomeSummaryResult | null;
-  isLoading: boolean;
-  error: string | null;
-  timeLeft: string;
-  isExpired: boolean;
-  refetch: () => Promise<void>;
-}
+export function useHomeSummary() {
+  const nowKstIso = useMemo(() => getNowKSTIsoString(), []);
+  const todayKstKey = useMemo(() => getTodayKstKey(), []);
 
-function useHomeSummary(): UseHomeSummaryReturn {
-  const [data, setData] = useState<HomeSummaryResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchSummary = useCallback(async (showLoading = true) => {
-    if (showLoading) {
-      setIsLoading(true);
-    }
-    setError(null);
-    try {
-      const response = await getHomeSummary();
-      if (response.resultType === 'SUCCESS') {
-        setData(response.success);
-      } else {
-        setError(response.error?.reason || '홈 정보를 불러오는데 실패했습니다.');
+  const query = useQuery({
+    queryKey: ['home-summary', todayKstKey],
+    queryFn: () => getHomeSummary(nowKstIso),
+    retry: false,
+    select: (res) => {
+      if (res.resultType !== 'SUCCESS' || !res.success) {
+        throw new Error(res.error?.reason || '홈 정보를 불러오는데 실패했습니다.');
       }
-    } catch {
-      setError('홈 정보를 불러오는데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
-
-  // expiredAt을 밀리초로 변환
-  const deadlineMs = data?.todayQuestion?.expiredAt
-    ? new Date(data.todayQuestion.expiredAt).getTime()
-    : 0;
-
-  const { mmss: timeLeft, isExpired } = useCountdown(deadlineMs, {
-    onExpire: () => {
-      // 만료 시 새 데이터 불러오기 (스켈레톤 표시 안 함)
-      if (deadlineMs > 0) {
-        fetchSummary(false);
-      }
+      return res.success;
     },
   });
 
+  const deadlineMs = useMemo(() => {
+    const iso = query.data?.todayQuestion?.expiredAt;
+    if (!iso) return null;
+    const t = new Date(iso).getTime();
+    return Number.isNaN(t) ? null : t;
+  }, [query.data?.todayQuestion?.expiredAt]);
+
+  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now() + 60000);
+
+  useEffect(() => {
+    if (!isExpired) return;
+    query.refetch();
+  }, [isExpired]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return {
-    data,
-    isLoading,
-    error,
-    timeLeft,
+    data: query.data ?? null,
+    isLoading: query.isLoading,
+    isRefetching: query.isRefetching,
+    error: query.error ? (query.error as Error).message : null,
+    timeLeft: mmss,
     isExpired,
-    refetch: fetchSummary,
+    refetch: query.refetch,
   };
 }
-
-export default useHomeSummary;

@@ -1,3 +1,7 @@
+// feed와 같은 API 요청 - detail: boolean값에 따라 다른 응답
+// 해당 API는 detail: false로 요청하는 경우로,
+// 피드가 아닌 메인페이지에 사용되는 간소화된 정보를 받습니다.
+
 import type {
   PublicLettersParams,
   PublicLettersResponse,
@@ -19,7 +23,6 @@ export const getPublicLetters = async (params: PublicLettersParams) => {
       size: params.size ?? 10,
     },
   });
-  // console.log('공개 편지 API 응답:', data);
   return data;
 };
 
@@ -35,6 +38,5 @@ export const getFriendLetters = async (params: FriendLettersParams) => {
       size: params.size ?? 10,
     },
   });
-  // console.log('친구 편지 API 응답:', data);
   return data;
 };

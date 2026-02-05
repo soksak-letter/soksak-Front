@@ -8,8 +8,9 @@ import { axiosInstance } from './axios';
  * - 편지 여행 카드 데이터 (통계)
  * - 유저 프로필 사진, 닉네임
  */
-export const getHomeSummary = async () => {
-  const { data } = await axiosInstance.get<HomeSummaryResponse>('/home/summary');
-  // console.log('홈 요약 정보 API 응답:', data);
+export const getHomeSummary = async (nowKstIso: string) => {
+  const { data } = await axiosInstance.get<HomeSummaryResponse>('/home/summary', {
+    params: { date: nowKstIso },
+  });
   return data;
 };
