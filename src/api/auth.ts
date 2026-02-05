@@ -76,7 +76,7 @@ export const deleteWithdraw = async () => {
 };
 
 /**
- * 바말번호 재설정ㄴ API
+ * 비밀번호 재설정(설정 페이지)API
  * PATCH /auth/change-password
  */
 export const changePassword = async (

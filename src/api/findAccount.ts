@@ -55,7 +55,7 @@ export const postFindId = async (body: FindIdRequest) => {
 };
 
 /**
- * 바말번호 재설정ㄴ API
+ * 바말번호 초기화(비빌번호 재설정페이지) API
  * (이메일 인증 완료 후 호출하여 아이디를 받아옴)
  * @param body { email: string }
  */
