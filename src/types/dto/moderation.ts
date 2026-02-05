@@ -10,11 +10,11 @@ export interface BlockedUser {
 
 export type BlockUserResponse =
   | { resultType: 'SUCCESS'; error: null; success: { message: string; result: boolean } }
-  | { resultType: 'ERROR'; error: ApiError; success: null };
+  | { resultType: 'FAIL'; error: ApiError; success: null };
 
 export type BlockListResponse =
   | { resultType: 'SUCCESS'; error: null; success: { message: string; result: BlockedUser[] } }
-  | { resultType: 'ERROR'; error: ApiError; success: null };
+  | { resultType: 'FAIL'; error: ApiError; success: null };
 
 // 신고 관련
 export interface ReportedUser {
@@ -26,7 +26,7 @@ export interface ReportedUser {
 
 export type ReportDetailResponse =
   | { resultType: 'SUCCESS'; error: null; success: { message: string; result: ReportedUser } }
-  | { resultType: 'ERROR'; error: ApiError; success: null };
+  | { resultType: 'FAIL'; error: ApiError; success: null };
 
 // 이용 제한 관련
 export interface RestrictedUser {
@@ -39,4 +39,4 @@ export interface RestrictedUser {
 
 export type RestrictListResponse =
   | { resultType: 'SUCCESS'; error: null; success: { message: string; result: RestrictedUser[] } }
-  | { resultType: 'ERROR'; error: ApiError; success: null };
+  | { resultType: 'FAIL'; error: ApiError; success: null };
