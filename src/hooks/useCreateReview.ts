@@ -4,13 +4,13 @@ import type { CreateReviewBody, CreateReviewSuccess } from '@/types/dto/review';
 import { postCreateReview } from '@/api/review';
 
 type CreateReviewVars = {
-  threadId: number;
+  sessionId: number;
   body: CreateReviewBody;
 };
 
 export function useCreateReview() {
   return useMutation<CreateReviewSuccess, ApiError, CreateReviewVars>({
-    mutationFn: ({ threadId, body }) => postCreateReview(threadId, body),
+    mutationFn: ({ sessionId, body }) => postCreateReview(sessionId, body),
     retry: 0,
   });
 }

@@ -9,6 +9,7 @@ import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
+import { getParseDate } from '@/utils/date';
 
 type PostItem = {
   letterId: number;
@@ -22,23 +23,16 @@ type PostItem = {
   stampUrl: string;
 };
 
-const parseDate = (iso: string) => {
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
-};
-
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
-  const { threadId: threadIdParam } = useParams();
-  const threadId = threadIdParam ? Number(threadIdParam) : 0;
+  const { sessionId: sessionIdParam } = useParams();
+  const sessionId = sessionIdParam ? Number(sessionIdParam) : 0;
 
   const setFlow = useThreadFlowStore((s) => s.setFlow);
+  const resetFlow = useThreadFlowStore((s) => s.resetFlow);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
-  const { data, isLoading, isError, refetch } = useAnonThread(threadId);
+  const { data, isLoading, isError, refetch } = useAnonThread(sessionId);
 
   const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
@@ -48,12 +42,12 @@ export default function LetterPostOtherPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: parseDate(l.deliveredAt),
+      dateText: getParseDate(l.deliveredAt),
       isMine: l.isMine,
-      isUnread: false,
-      paperId: l.paperId + 1,
-      stampId: l.stampId,
-      stampUrl: l.stampUrl,
+      isUnread: l.readAt === null,
+      paperId: l.design?.paperId ?? 0,
+      stampId: l.design?.stampId ?? 0,
+      stampUrl: (l.design?.stampUrl ?? '').trim(),
     }));
   }, [data?.letters]);
 
@@ -61,33 +55,39 @@ export default function LetterPostOtherPage() {
   useEffect(() => {
     setFlow({
       target: 'other',
-      threadId,
+      sessionId,
       senderName: senderName,
     });
-  }, [setFlow, threadId, senderName]);
+  }, [setFlow, sessionId, senderName]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
   const rightLane = useMemo(() => posts.filter((p) => p.isMine === true), [posts]);
 
   // 잘못된 접근 - 404 처리
-  if (!threadIdParam || !threadId) return <NotFoundPage />;
+  if (!sessionIdParam || !sessionId) return <NotFoundPage />;
 
-  const handleOpenLetterDetail = (letterId: number) => {
-    navigate(`/letter/reply/${threadId}/${letterId}`, {
-      state: { threadId, letterId, senderName },
+  const handleOpenLetterDetail = (item: PostItem) => {
+    navigate(`/letter/reply/${sessionId}/${item.letterId}`, {
+      state: { sessionId, letterId: item.letterId, senderName, isMine: item.isMine },
     });
   };
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
     navigate('/letter/other/draft');
-    // senderName, threadId는 letterContext store에 저장되어 있다.
+    // senderName, sessionId는 letterContext store에 저장되어 있다.
+  };
+
+  const handleBack = () => {
+    // store에 저장해둔 sessionId, letterCount, senderName 삭제
+    // flow가 이어져야만 저장 가능
+    resetFlow();
   };
 
   return (
     <div className='min-h-screen bg-[#fafafa]'>
-      <BackHeader title='익명 편지' />
+      <BackHeader title='익명 편지' onBack={handleBack} />
 
       <main className='px-5 pb-[110px]'>
         <div className='mt-2 text-[13px] text-[#6F6F6F]'>{senderName}님과 이어진 질문</div>
@@ -125,7 +125,7 @@ export default function LetterPostOtherPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p)}
                     />
                   );
                 })}
@@ -142,7 +142,7 @@ export default function LetterPostOtherPage() {
                       key={p.letterId}
                       item={p}
                       EnvelopePreview={EnvelopePreview}
-                      onClick={() => handleOpenLetterDetail(p.letterId)}
+                      onClick={() => handleOpenLetterDetail(p)}
                     />
                   );
                 })}
@@ -203,7 +203,6 @@ function PostCard({
 
         <div className='mt-1 flex items-center gap-1'>
           <p className='ty-detailMedium'>{item.dateText}</p>
-          {/* TODO : Unread 상태 전역으로 관리? */}
           {item.isUnread && <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />}
         </div>
       </div>
