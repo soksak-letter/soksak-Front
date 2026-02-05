@@ -46,7 +46,7 @@ const useFindAccount = (type: FindType) => {
 
   // --- [타이머 로직] ---
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval>; //TypeScript가 NodeJS 환경의 타입을 찾지 못해 빨간줄 뜨는 오류 수정
     if (isTimerActive && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
