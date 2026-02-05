@@ -17,7 +17,6 @@ import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 
-
 const LetterReportPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -150,7 +149,12 @@ const LetterReportPage = () => {
           }
 
           try {
-            await block(parsedTargetUserId);
+            const blockResponse = await block(parsedTargetUserId);
+            if (!blockResponse?.result) {
+              const errorMessage = blockResponse?.message || '차단에 실패했습니다.';
+              showToast(errorMessage, 'error');
+              return;
+            }
           } catch (blockError) {
             const errorMessage =
               blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
