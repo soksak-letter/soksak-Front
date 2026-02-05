@@ -31,7 +31,7 @@ export function useBlockUser() {
         };
       }
 
-      throw new Error(data.error?.reason ?? '유저 차단에 실패했습니다.');
+      throw data.error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: moderationKeys.blocked() });
@@ -54,7 +54,7 @@ export function useLetterReport() {
         };
       }
 
-      throw new Error(data.error?.reason ?? '신고에 실패했습니다.');
+      throw data.error;
     },
   });
 }
