@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
-import { formatDate } from '@/utils/dateUtils';
+import { formatDate } from '@/utils/date';
 
 const IdVerifyPage = () => {
   const navigate = useNavigate();

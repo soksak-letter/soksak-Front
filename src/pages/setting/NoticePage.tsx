@@ -7,7 +7,7 @@ import {
   PAGE_PADDING_TOP,
 } from '@/constants/settingLayout';
 import { useNotices } from '@/hooks/setting/useNotices';
-import { formatDate } from '@/utils/dateUtils';
+import { formatDate } from '@/utils/date';
 
 // 공지사항 아이템 컴포넌트
 interface NoticeItemProps {
