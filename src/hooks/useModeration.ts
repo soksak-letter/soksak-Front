@@ -22,7 +22,16 @@ export const moderationKeys = {
 export function useBlockedUsers() {
   return useQuery<BlockedUser[]>({
     queryKey: moderationKeys.blocked(),
-    queryFn: getBlockedUsers,
+    queryFn: async () => {
+      const res = await getBlockedUsers();
+      const data = res.data;
+
+      if (data.resultType === 'SUCCESS') {
+        return data.success.result;
+      }
+
+      throw new Error(data.error?.reason ?? '차단 목록 조회에 실패했습니다.');
+    },
   });
 }
 
@@ -35,7 +44,19 @@ export function useBlockUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (targetUserId: number) => blockUser(targetUserId),
+    mutationFn: async (targetUserId: number) => {
+      const res = await blockUser(targetUserId);
+      const data = res.data;
+
+      if (data.resultType === 'SUCCESS') {
+        return {
+          result: data.success.result,
+          message: data.success.message,
+        };
+      }
+
+      throw new Error(data.error?.reason ?? '유저 차단에 실패했습니다.');
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: moderationKeys.blocked() });
     },
@@ -50,7 +71,16 @@ export function useBlockUser() {
 export function useReportDetail(reportId: number | null) {
   return useQuery<ReportedUser>({
     queryKey: moderationKeys.report(reportId!),
-    queryFn: () => getReportDetail(reportId!),
+    queryFn: async () => {
+      const res = await getReportDetail(reportId!);
+      const data = res.data;
+
+      if (data.resultType === 'SUCCESS') {
+        return data.success.result;
+      }
+
+      throw new Error(data.error?.reason ?? '신고 내역 조회에 실패했습니다.');
+    },
     enabled: reportId !== null,
   });
 }
@@ -62,6 +92,15 @@ export function useReportDetail(reportId: number | null) {
 export function useRestrictList() {
   return useQuery<RestrictedUser[]>({
     queryKey: moderationKeys.restricted(),
-    queryFn: getRestrictList,
+    queryFn: async () => {
+      const res = await getRestrictList();
+      const data = res.data;
+
+      if (data.resultType === 'SUCCESS') {
+        return data.success.result;
+      }
+
+      throw new Error(data.error?.reason ?? '이용 제한 내역 조회에 실패했습니다.');
+    },
   });
 }
