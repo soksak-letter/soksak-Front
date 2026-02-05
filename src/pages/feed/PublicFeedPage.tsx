@@ -10,7 +10,7 @@ import ErrorPage from '../system/ErrorPage';
 import { useOtherPublicFeed } from '@/hooks/usePublicFeed';
 
 interface FeedLetter {
-  id: string;
+  id: string; // =letterId, 좋아요 클릭시 해당 id 기반으로 요청
   title: string;
   content: string;
   likes: number;
@@ -33,6 +33,7 @@ export default function FeedPage() {
     // TODO : 좋아요 연동
     console.log('좋아요', id);
   };
+
   const letters = useMemo<FeedLetter[]>(
     () =>
       publicLetters?.map((l) => ({
@@ -100,7 +101,8 @@ export default function FeedPage() {
             content={l.content}
             likes={l.likes}
             variant={l.variant}
-            onLike={() => handleLike}
+            onLike={() => handleLike(l.id)}
+            isLikedInitial={l.isLiked}
           />
         ))}
       </section>

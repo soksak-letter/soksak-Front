@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// TODO : 봉투 컬러 paperId 따라가기
 export type LetterPreviewVariant = 'blue' | 'green' | 'yellow';
 
 interface LetterPreviewCardProps {

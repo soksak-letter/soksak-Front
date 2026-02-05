@@ -39,7 +39,7 @@ export default function FriendInboxPage() {
         return {
           id: f.id,
           friendUserId: f.friendUserId,
-          name: f.nickname,
+          name: (f.nickname ?? '').trim(),
           exchangeCount: f.letterCount,
 
           lastDate: iso ? getParseDate(iso) : '-', // UI용
@@ -60,13 +60,15 @@ export default function FriendInboxPage() {
   };
 
   const filtered = useMemo(() => {
-    const k = keyword.trim();
-    const result = !k ? items : items.filter((x) => x.name.includes(k));
+    const k = keyword.trim().toLowerCase();
 
-    return [...result].sort((a, b) => {
-      return sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs;
-    });
+    const result = !k ? items : items.filter((x) => (x.name ?? '').toLowerCase().includes(k));
+
+    return [...result].sort((a, b) =>
+      sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs,
+    );
   }, [items, keyword, sortOrder]);
+
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
 
