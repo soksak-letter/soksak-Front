@@ -79,7 +79,7 @@ export const deleteWithdraw = async () => {
  * 비밀번호 재설정(설정 페이지)API
  * PATCH /auth/change-password
  */
-export const changePassword = async (
+export const patchChangePassword = async (
   data: ChangePasswordRequest,
 ): Promise<ChangePasswordResponse> => {
   const response = await axiosInstance.patch<ChangePasswordResponse>('/auth/change-password', data);
