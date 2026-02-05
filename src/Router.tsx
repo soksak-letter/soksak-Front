@@ -52,7 +52,7 @@ import LetterReplyPage from './pages/letter/LetterReplyPage';
 import LetterPostOtherPage from './pages/letter/LetterPostOtherPage';
 
 import WeeklyReportPage from './pages/report/WeeklyReportPage';
-// import KeywordLetterPage from './pages/report/KeywordLetterPage';
+import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import MyPage from './pages/my/MyPage';
 import InquiryPage from './pages/my/InquiryPage';
@@ -61,8 +61,6 @@ import LetterOtherStopPage from './pages/letter/LetterOtherStopPage';
 import GuestGate from './routes/GuestGate';
 import EntryRoute from './routes/EntryRoute';
 import OnboardingLetterSendPage from './pages/onboarding/OnboardingLetterSendPage';
-
-import KeywordLetterPage from './pages/report/KeywordLetterPage';
 
 import FriendReplyPage from './pages/friend/FriendReplyPage';
 
@@ -108,7 +106,7 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
                   { path: 'request', element: <FriendRequestPage /> },
-                  { path: 'sent-transition/:threadId', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
@@ -170,11 +168,10 @@ const router = createBrowserRouter([
                   { path: 'sending', element: <LetterSendingPage /> },
                 ],
               },
-              { path: 'letter/thread/:threadId', element: <LetterPostOtherPage /> },
-              // { path: 'letter/reply/:letterId', element: <LetterReplyPage /> }, // TODO : 예디) 이 주소는 뭔가요?
-              { path: 'letter/reply/:threadId/:letterId', element: <LetterReplyPage /> },
+              { path: 'letter/thread/:sessionId', element: <LetterPostOtherPage /> },
+              { path: 'letter/reply/:sessionId/:letterId', element: <LetterReplyPage /> },
               { path: 'letter/report', element: <LetterReportPage /> },
-              { path: 'letter/review/:threadId', element: <LetterReviewPage /> },
+              { path: 'letter/review/:sessionId', element: <LetterReviewPage /> },
               { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
               { path: 'letter/loading', element: <LoadingPage /> },
               // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
@@ -185,13 +182,11 @@ const router = createBrowserRouter([
               { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
               { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
               { path: 'friend/thread/:friendId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
-              // { path: 'friend/thread/:threadId/draft', element: <FriendDraftPage /> }, // 작성 버튼 눌렀을 때, 새 편지 작성
-              // => TODO : 이 부분은 그냥 /friend/draft로 들어가도 되지 않나요? 어차피 thread의 경우 시간 순으로 나열되는데? 친구에 대한 정보는 가지고 있습니다.
               {
                 path: 'friend/thread/:friendId/:letterId',
                 element: <FriendReplyPage />,
               },
-              // { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
               { path: 'report/keyword-letter-indi', element: <TODOPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },

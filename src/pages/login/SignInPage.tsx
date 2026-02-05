@@ -2,8 +2,14 @@ import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
 import { useSigninMutation } from '@/hooks/auth/mutation/useAuthMutation';
 import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
+import axios from 'axios';
+import type { CommonResponse } from '@/types/dto/common';
+
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -33,8 +39,10 @@ const SignInPage = () => {
   const handleLogin = async () => {
     if (!canSubmit || isPending) return;
 
+
     // mutation 실행
     loginMutate({ username, password });
+
   };
   // 2) 보낼 데이터 준비 (SignInRequest 타입 준수)
   // const requestData: SignInRequest = {

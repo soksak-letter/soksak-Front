@@ -2,14 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
-import LetterEnvelope from '@/components/letters/LetterEnvelope';
 
+import ReviewIcon from '@/assets/icons/reviewIcon.svg?react';
 import SadModalIcon from '@/assets/icons/SadModalIcon.svg?react';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
 import LoveIcon from '@/assets/icons/LoveIcon.svg?react';
 
-import stampEx1 from '@/assets/test/stampEx1.svg';
-import stampEx2 from '@/assets/test/stampEx2.svg';
 import { useCreateReview } from '@/hooks/useCreateReview';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
@@ -29,16 +27,16 @@ export default function LetterReviewPage() {
   const navigate = useNavigate();
 
   const [mood, setMood] = useState<ReviewMood | null>(null);
-  const [temp, setTemp] = useState<number>(0);
+  const [temp, setTemp] = useState<number>(36.5);
   const [isSliding, setIsSliding] = useState(false);
 
   const percent = useMemo(() => Math.min(100, Math.max(0, temp)), [temp]);
 
-  // URL params 우선 > 없으면 store로 threadId 받아오기
-  const { threadId: threadIdParam } = useParams<{ threadId?: string }>();
-  const threadIdFromStore = useThreadFlowStore((s) => s.threadId);
+  // URL params 우선 > 없으면 store로 sessionId 받아오기
+  const { sessionId: sessionIdParam } = useParams<{ sessionId?: string }>();
+  const sessionIdFormStore = useThreadFlowStore((s) => s.sessionId);
 
-  const threadId = threadIdParam ? Number(threadIdParam) : threadIdFromStore;
+  const sessionId = sessionIdParam ? Number(sessionIdParam) : sessionIdFormStore;
 
   const { showToast } = useGlobalToast();
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
@@ -52,18 +50,22 @@ export default function LetterReviewPage() {
     return '또 만나고 싶어요';
   };
 
-  // threadId 없으면 막기
+  // sessionId 없으면 막기
   const createReview = useCreateReview();
-  const canSubmit = mood !== null && !!threadId && !createReview.isPending;
+  const canSubmit = mood !== null && !!sessionId && !createReview.isPending;
 
   // POST 요청
   const handleSubmit = async () => {
-    if (!mood || createReview.isPending) return;
-
-    if (!threadId) {
-      showToast('후기를 보낼 수 없어요. (threadId 없음)');
+    if (!mood) {
+      showToast('기분을 선택해주세요.');
       return;
     }
+    if (!sessionId) {
+      navigate('/error/404', { replace: true });
+      return;
+    }
+
+    if (createReview.isPending) return;
 
     const body = {
       temperatureScore: temp,
@@ -71,7 +73,7 @@ export default function LetterReviewPage() {
     };
 
     createReview.mutate(
-      { threadId, body },
+      { sessionId, body },
       {
         onSuccess: () => {
           showToast('후기를 보냈어요!', 'success');
@@ -83,20 +85,6 @@ export default function LetterReviewPage() {
       },
     );
   };
-
-  const testStamps = [
-    { id: 'stamp-1', src: stampEx1 },
-    { id: 'stamp-2', src: stampEx2 },
-  ];
-
-  // 피그마 봉투 사이즈 (W 174.54 / H 97.98)
-  const FIGMA_W = 174.54;
-  const FIGMA_H = 97.98;
-
-  // LetterEnvelope 기본이 296.45 x 162.52 라는 전제에서 스케일
-  const BASE_W = 296.45;
-  const scale = FIGMA_W / BASE_W; // ≈ 0.589
-  const rotateDeg = -4.03;
 
   return (
     <div className='min-h-dvh bg-[#FAFAFA]'>
@@ -118,27 +106,9 @@ export default function LetterReviewPage() {
       />
 
       <div className='px-5 pb-10'>
-        {/* ===== 봉투: 디자인처럼 중앙 고정 ===== */}
+        {/* ===== 익명 프로필 ===== */}
         <div className='mt-6 flex flex-col items-center'>
-          <div
-            className='flex items-center justify-center'
-            style={{ width: FIGMA_W, height: FIGMA_H }}
-          >
-            <div
-              style={{
-                transform: `scale(${scale}) rotate(${rotateDeg}deg)`,
-                transformOrigin: 'center',
-              }}
-            >
-              <LetterEnvelope
-                paperColor='#EBF7DF'
-                stampSrc={testStamps[0].src}
-                stampAlt='우표 이미지'
-                className='shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-[6px]'
-              />
-            </div>
-          </div>
-
+          <ReviewIcon className='w-26 h-26' />
           <p className='mt-5 ty-title3 text-[#000000]'>{senderName}님</p>
         </div>
 
@@ -204,7 +174,7 @@ export default function LetterReviewPage() {
               onTouchStart={() => setIsSliding(true)}
               onTouchEnd={() => setIsSliding(false)}
             >
-              {(isSliding || temp !== 0) && (
+              {isSliding && (
                 <div
                   className='pointer-events-none absolute -bottom-7 ml-2 ty-body4 text-[var(--color-primary-500)]'
                   style={{
@@ -220,6 +190,7 @@ export default function LetterReviewPage() {
                 type='range'
                 min={0}
                 max={100}
+                step={0.5}
                 value={temp}
                 onChange={(e) => setTemp(Number(e.target.value))}
                 className='w-[320px] ml-2 appearance-none bg-transparent outline-none'
