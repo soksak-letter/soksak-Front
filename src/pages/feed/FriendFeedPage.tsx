@@ -45,10 +45,11 @@ export default function FriendFeedPage() {
     [publicLetters],
   );
 
-  const handleLike = (letterId: number, nextLiked: boolean) => {
+  const handleToggleLike = (letterId: number, isLiked: boolean) => {
     if (createLike.isPending || deleteLike.isPending) return;
-    if (nextLiked) createLike.mutate(letterId);
-    else deleteLike.mutate(letterId);
+
+    if (isLiked) deleteLike.mutate(letterId);
+    else createLike.mutate(letterId);
   };
 
   const deadlineMs = useMemo(() => {
@@ -103,8 +104,9 @@ export default function FriendFeedPage() {
             content={l.content}
             paperId={l.paperId}
             likes={l.likes}
-            isLikedInitial={l.isLiked}
-            onLike={(nextLiked) => handleLike(l.letterId, nextLiked)}
+            isLiked={l.isLiked}
+            disabled={createLike.isPending || deleteLike.isPending}
+            onToggleLike={() => handleToggleLike(l.letterId, l.isLiked)}
           />
         ))}
         {letters.length <= 1 && <EmptyFeedCard />}

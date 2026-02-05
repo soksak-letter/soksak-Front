@@ -1,18 +1,24 @@
-import { useMutation } from '@tanstack/react-query';
-import type { ApiError } from '@/types/dto/common';
-import type { CreateLikeSuccess } from '@/types/dto/like';
 import { deleteLetterLike, postLetterLike } from '@/api/like';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useCreateLike() {
-  return useMutation<CreateLikeSuccess, ApiError, number>({
-    mutationFn: (letterId) => postLetterLike(letterId),
-    retry: 0,
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (letterId: number) => postLetterLike(letterId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['other-public-feed'] });
+      qc.invalidateQueries({ queryKey: ['friend-public-feed'] });
+    },
   });
 }
 
 export function useDeleteLike() {
-  return useMutation<CreateLikeSuccess, ApiError, number>({
-    mutationFn: (letterId) => deleteLetterLike(letterId),
-    retry: 0,
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (letterId: number) => deleteLetterLike(letterId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['other-public-feed'] });
+      qc.invalidateQueries({ queryKey: ['friend-public-feed'] });
+    },
   });
 }

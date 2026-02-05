@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface LetterPreviewCardProps {
   title: string;
   content: string;
   paperId: number;
   likes: number;
-  isLikedInitial?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  onLike?: (nextLiked: boolean) => void;
+  isLiked: boolean;
+  onToggleLike?: () => void;
+  disabled?: boolean;
 }
 
 type PaperTheme = { bg: string; title: string };
@@ -31,12 +31,11 @@ export default function LetterPreviewCard({
   content,
   paperId,
   likes,
-  isLikedInitial = false,
-  onLike,
+  isLiked,
+  onToggleLike,
+  disabled,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(isLikedInitial);
-  const [likeCount, setLikeCount] = useState(likes);
 
   const theme = PAPER_THEME[paperId] ?? DEFAULT_THEME;
   const backgroundColor = theme.bg;
@@ -45,26 +44,7 @@ export default function LetterPreviewCard({
   // 글자 수가 230자 이상인 경우 펼치기 버튼 표시
   const isExpandable = content.length >= 230;
 
-  const handleLike = () => {
-    setIsLiked((prev) => {
-      const next = !prev;
-      setLikeCount((c) => c + (next ? 1 : -1));
-      onLike?.(next);
-      return next;
-    });
-  };
-
-  const handleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  useEffect(() => {
-    setIsLiked(isLikedInitial);
-  }, [isLikedInitial]);
-
-  useEffect(() => {
-    setLikeCount(likes);
-  }, [likes]);
+  const handleExpand = () => setIsExpanded((p) => !p);
 
   return (
     <div className='w-full rounded-lg overflow-hidden shadow-sm'>
@@ -149,8 +129,9 @@ export default function LetterPreviewCard({
         {/* 좋아요 */}
         <div className='flex items-center gap-1 justify-end'>
           <button
-            onClick={handleLike}
-            className='flex items-center justify-center w-[22px] h-[22px]'
+            onClick={onToggleLike}
+            disabled={disabled}
+            className='flex items-center justify-center w-[22px] h-[22px] disabled:opacity-50'
           >
             <svg width='22' height='22' viewBox='0 0 22 22' fill='none'>
               <path
@@ -161,6 +142,7 @@ export default function LetterPreviewCard({
               />
             </svg>
           </button>
+
           <span
             style={{
               fontFamily: 'Pretendard',
@@ -170,7 +152,7 @@ export default function LetterPreviewCard({
               color: '#595959',
             }}
           >
-            {likeCount}
+            {likes}
           </span>
         </div>
       </div>
