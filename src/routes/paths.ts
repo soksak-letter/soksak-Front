@@ -12,6 +12,6 @@ export const ROUTES = {
     keyword: '/report/keyword-letter',
   },
   setting: {
-    pwReset: '/setting/pw-reset',
+    setting: '/setting',
   },
 } as const;

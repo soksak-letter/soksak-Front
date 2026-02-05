@@ -16,7 +16,7 @@ export const useChangePasswordMutation = () => {
       }),
     onSuccess: (response) => {
       if (response.resultType === 'SUCCESS') {
-        navigate(ROUTES.setting.pwReset); // 설정 메인으로 이동
+        navigate(ROUTES.setting.setting); // 설정 메인으로 이동
       } else {
         showToast(response.error?.reason || '비밀번호 변경에 실패했습니다.', 'error');
       }
