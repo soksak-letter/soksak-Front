@@ -76,7 +76,13 @@ export default function FriendReplyPage() {
     return <NotFoundPage />;
 
   const handleReport = () => {
-    navigate('/letter/report');
+    navigate('/letter/report', {
+      state: {
+        letterId,
+        stampUrl: view?.stampUrl,
+        targetUserId: friendId,
+      },
+    });
   };
 
   const handleReply = () => {
