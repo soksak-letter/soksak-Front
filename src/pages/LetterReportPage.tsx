@@ -39,6 +39,7 @@ const LetterReportPage = () => {
   const [isBlocked, setIsBlocked] = useState(false);
 
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //토스트 상태 관리
   const { toast, visible, showToast, closeToast } = useToast();
@@ -98,6 +99,11 @@ const LetterReportPage = () => {
   };
 
   const handleSubmit = async () => {
+    // 이미 제출 중이면 중복 실행 방지
+    if (isSubmitting) {
+      return;
+    }
+
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
@@ -116,6 +122,7 @@ const LetterReportPage = () => {
       reasons: selectedReasons,
     };
 
+    setIsSubmitting(true);
     try {
       const response = await postLetterReport(requestBody);
 
@@ -143,6 +150,8 @@ const LetterReportPage = () => {
     } catch (error) {
       console.error(error);
       showToast('서버 연결에 실패했습니다.', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,8 +176,8 @@ const LetterReportPage = () => {
           <BackHeader
             title='신고'
             rightElement={
-              <button onClick={handleSubmit} disabled={isBlocking}>
-                {isBlocking ? '처리중...' : '완료'}
+              <button onClick={handleSubmit} disabled={isBlocking || isSubmitting}>
+                {isSubmitting || isBlocking ? '처리중...' : '완료'}
               </button>
             }
           />{' '}
