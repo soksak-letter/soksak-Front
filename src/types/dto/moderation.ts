@@ -1,10 +1,6 @@
 // 신고 / 차단 / 제재 관련 DTO
 
-// 공통 에러 타입
-interface ApiError {
-  errorCode: string;
-  reason: string;
-}
+import type { ApiError } from './common';
 
 // 차단 관련
 export interface BlockedUser {
