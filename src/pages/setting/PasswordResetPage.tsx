@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useSettingPwChangeForm from '@/hooks/useSettingPwChangeForm';
+import useSettingPwChangeForm from '@/hooks/auth/useSettingPwChangeForm';
 import SettingHeader from '@/components/common/SettingHeader';
 
 export default function PasswordResetPage() {
@@ -8,7 +8,7 @@ export default function PasswordResetPage() {
   const handleBack = () => {
     navigate(-1);
   };
-  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } =
+  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched, isPending } =
     useSettingPwChangeForm();
 
   return (
@@ -96,7 +96,7 @@ export default function PasswordResetPage() {
         <button
           type='button'
           onClick={handleSubmit}
-          disabled={!canSubmit}
+          disabled={!canSubmit || isPending}
           className='w-full h-12 bg-[#F5544C] rounded-lg shadow-md font-pretendard font-medium text-base leading-[25.6px] text-white border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
         >
           비밀번호 변경
