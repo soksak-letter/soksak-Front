@@ -23,6 +23,11 @@ type ReplyData = {
   stampUrl: string;
 };
 
+type LocationState = {
+  friendName?: string;
+  direction?: 'received' | 'sent';
+};
+
 export default function FriendReplyPage() {
   const navigate = useNavigate();
 
@@ -36,8 +41,9 @@ export default function FriendReplyPage() {
 
   // FriendName 불러오기
   const location = useLocation();
-  const friendName = (location.state as { friendName?: string } | null)?.friendName ?? '친구';
-  const direction = (location.state as { direction?: string } | null)?.direction ?? '';
+  const state = (location.state as LocationState) ?? null;
+  const friendName = state?.friendName ?? '친구';
+  const direction = state?.direction;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -66,7 +72,8 @@ export default function FriendReplyPage() {
   }, [view]);
 
   // 잘못된 접근 - 404 처리
-  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId)) return <NotFoundPage />;
+  if (!letterIdParam || !friendIdParam || Number.isNaN(friendId) || !direction)
+    return <NotFoundPage />;
 
   const handleReport = () => {
     navigate('/letter/report');
