@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { blockUser } from '@/api/moderation';
+import { postLetterReport } from '@/api/letterReport';
+import type { LetterReportRequest } from '@/types/dto/letterReport';
 
 /**
  * moderation 도메인 React Query queryKey 모음
@@ -33,6 +35,26 @@ export function useBlockUser() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: moderationKeys.blocked() });
+    },
+  });
+}
+
+/**
+ * 편지 신고 훅
+ * - POST /reports (postLetterReport)
+ */
+export function useLetterReport() {
+  return useMutation({
+    mutationFn: async (body: LetterReportRequest) => {
+      const data = await postLetterReport(body);
+
+      if (data.resultType === 'SUCCESS') {
+        return {
+          message: data.success.message,
+        };
+      }
+
+      throw new Error(data.error?.reason ?? '신고에 실패했습니다.');
     },
   });
 }
