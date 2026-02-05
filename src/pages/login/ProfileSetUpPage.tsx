@@ -3,17 +3,13 @@ import BackHeader from '@/components/common/headers/BackHeader';
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
 
-import { patchNickname, postProfileImage } from '@/api/auth';
-
-import { ROUTES } from '@/routes/paths';
+import { useProfileSetupMutation } from '@/hooks/auth/mutation/useProfileMutation';
 
 const ProfileSetUpPage = () => {
-  const navigate = useNavigate();
   //  닉네임 입력 상태 관리
   const [nickname, setNickname] = useState('');
 
@@ -22,10 +18,12 @@ const ProfileSetUpPage = () => {
   //프로필 사진 업로드 상태 관리
   const [profileImage, setProfileImage] = useState<File | null>(null); // 업로드할 파일 객체
   const [previewUrl, setPreviewUrl] = useState<string>(''); // 화면에 보여줄 미리보기 URL
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
 
   // 파일 인풋 제어를 위한 ref
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // TanStack Query Mutation 도입
+  const { mutate: setupProfile, isPending } = useProfileSetupMutation();
 
   // 유효성 검사 결과 객체 받기
   const validationResult = validate.nickname(nickname);
@@ -35,13 +33,13 @@ const ProfileSetUpPage = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setProfileImage(file); // 이전 URL 해제
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
       }
       // 미리보기 URL 생성
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
+      setProfileImage(file); // 실제 파일 저장하기
     }
   };
 
@@ -52,23 +50,9 @@ const ProfileSetUpPage = () => {
 
   // 3. 완료 버튼 핸들러 (API 연동)
   const handleOnboading = async () => {
-    if (!isValid || isLoading) return;
+    if (!isValid || isPending) return;
 
-    setIsLoading(true);
-    try {
-      // (1) 닉네임 변경 요청
-      await patchNickname({ nickname });
-
-      // (2) 프로필 이미지가 있다면 업로드 요청
-      if (profileImage) {
-        await postProfileImage(profileImage);
-      }
-      navigate(ROUTES.onboarding.start);
-    } catch (error) {
-      console.error('프로필 설정 실패:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    setupProfile({ nickname, profileImage });
   };
 
   // 테두리 색상 결정
@@ -183,7 +167,7 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboading} disabled={!isValid || isLoading}>
+        <Button onClick={handleOnboading} disabled={!isValid || isPending}>
           시작하기
         </Button>
       </div>

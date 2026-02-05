@@ -15,7 +15,6 @@ import type {
   UsernameExistsRequest,
   UsernameExistsResponse,
   WithdrawResponse,
-  WithdrawResult,
 } from '@/types/dto/auth';
 import { axiosInstance } from './axios'; // axios 설정 파일 경로
 
