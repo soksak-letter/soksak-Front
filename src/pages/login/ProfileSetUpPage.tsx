@@ -1,15 +1,17 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-
 import React, { useEffect, useRef, useState } from 'react';
-
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
-
-import { useProfileSetupMutation } from '@/hooks/auth/mutation/useProfileMutation';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/routes/paths';
+import { patchNickname, postProfileImage } from '@/api/auth';
+import { useGlobalToast } from '@/components/toast/ToastProvider';
 
 const ProfileSetUpPage = () => {
+  const navigate = useNavigate();
+  const { showToast } = useGlobalToast();
   //  닉네임 입력 상태 관리
   const [nickname, setNickname] = useState('');
 
@@ -22,8 +24,9 @@ const ProfileSetUpPage = () => {
   // 파일 인풋 제어를 위한 ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // TanStack Query Mutation 도입
-  const { mutate: setupProfile, isPending } = useProfileSetupMutation();
+  //닉네임이 성공했는지 기록하는 상태
+  const [isNicknameSaved, setIsNicknameSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 유효성 검사 결과 객체 받기
   const validationResult = validate.nickname(nickname);
@@ -50,9 +53,29 @@ const ProfileSetUpPage = () => {
 
   // 3. 완료 버튼 핸들러 (API 연동)
   const handleOnboarding = async () => {
-    if (!isValid || isPending) return;
+    if (!isValid || isLoading) return;
 
-    setupProfile({ nickname, profileImage });
+    setIsLoading(true);
+    try {
+      // Step 1: 닉네임 변경 (성공한 적이 없을 때만 실행)
+      if (!isNicknameSaved) {
+        await patchNickname({ nickname });
+        setIsNicknameSaved(true); // 성공 기록
+      }
+
+      // Step 2: 이미지 업로드
+      if (profileImage) {
+        await postProfileImage(profileImage);
+      }
+
+      // 전체 성공 시 이동
+      navigate(ROUTES.onboarding.start);
+    } catch (error: unknown) {
+      // 상세한 에러 피드백
+      showToast('설정 중 에러가 발생했습니다.', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 테두리 색상 결정
@@ -68,6 +91,8 @@ const ProfileSetUpPage = () => {
     // 입력 길이 제한 (UX용)
     if (value.length <= 16) {
       setNickname(value);
+      // 닉네임을 수정하면 다시 저장해야 하므로 상태 초기화
+      setIsNicknameSaved(false);
     }
   };
 
@@ -167,7 +192,7 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboarding} disabled={!isValid || isPending}>
+        <Button onClick={handleOnboarding} disabled={!isValid || isLoading}>
           시작하기
         </Button>
       </div>
