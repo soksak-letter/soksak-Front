@@ -2,22 +2,22 @@ import { useMemo } from 'react';
 import FeedHeader from '../../components/common/headers/FeedHeader';
 import LetterPreviewCard from '../../components/feed/LetterPreviewCard';
 import FloatingButton from '../../components/common/FloatingButton';
-import type { LetterPreviewVariant } from '../../components/feed/LetterPreviewCard';
 import LoadingPage from '../system/LoadingPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import useCountdown from '@/hooks/useCountdown';
 import ErrorPage from '../system/ErrorPage';
 import { useOtherPublicFeed } from '@/hooks/usePublicFeed';
+import { useCreateLike, useDeleteLike } from '@/hooks/useCreateLetterLike';
+import EmptyFeedCard from '@/components/feed/EmptyFeedCard';
 
 interface FeedLetter {
-  id: string; // =letterId, 좋아요 클릭시 해당 id 기반으로 요청
+  letterId: number; // =letterId, 좋아요 클릭시 해당 id 기반으로 요청
   title: string;
   content: string;
   likes: number;
   isLiked: boolean;
   deliveredAt: string;
   paperId: number;
-  variant: LetterPreviewVariant;
 }
 
 export default function FeedPage() {
@@ -28,26 +28,32 @@ export default function FeedPage() {
   } = useDailyQuestion();
 
   const { data: publicLetters, isLoading: isLettersLoading } = useOtherPublicFeed();
-
-  const handleLike = (id: string) => {
-    // TODO : 좋아요 연동
-    console.log('좋아요', id);
-  };
+  const createLike = useCreateLike();
+  const deleteLike = useDeleteLike();
 
   const letters = useMemo<FeedLetter[]>(
     () =>
       publicLetters?.map((l) => ({
-        id: String(l.id),
+        letterId: l.id,
         title: l.title ?? '',
         content: l.content ?? '',
         likes: l.likes ?? 0,
         isLiked: l.isLiked ?? false,
         deliveredAt: l.deliveredAt ?? '',
         paperId: l.design?.paper?.id ?? 1,
-        variant: 'public' as LetterPreviewVariant,
       })) ?? [],
     [publicLetters],
   );
+
+  const handleLike = (letterId: number, prevLiked: boolean) => {
+    if (createLike.isPending || deleteLike.isPending) return;
+
+    if (prevLiked) {
+      deleteLike.mutate(letterId);
+    } else {
+      createLike.mutate(letterId);
+    }
+  };
 
   const deadlineMs = useMemo(() => {
     if (!questionData?.expiredAt) return null;
@@ -96,15 +102,16 @@ export default function FeedPage() {
       <section className='px-4 py-4 space-y-4'>
         {letters.map((l) => (
           <LetterPreviewCard
-            key={l.id}
+            key={l.letterId}
             title={l.title}
             content={l.content}
+            paperId={l.paperId}
             likes={l.likes}
-            variant={l.variant}
-            onLike={() => handleLike(l.id)}
             isLikedInitial={l.isLiked}
+            onLike={() => handleLike(l.letterId, l.isLiked)}
           />
         ))}
+        {letters.length <= 1 && <EmptyFeedCard />}
       </section>
 
       {/* 플로팅 버튼 */}

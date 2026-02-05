@@ -1,47 +1,55 @@
 import { useState } from 'react';
 
-// TODO : 봉투 컬러 paperId 따라가기
-export type LetterPreviewVariant = 'blue' | 'green' | 'yellow';
-
 interface LetterPreviewCardProps {
   title: string;
   content: string;
+  paperId: number;
   likes: number;
-  variant?: LetterPreviewVariant;
   isLikedInitial?: boolean;
   onLike?: () => void;
 }
 
-const variantColors: Record<LetterPreviewVariant, string> = {
-  blue: '#E1F2FD',
-  green: '#D8F3EE',
-  yellow: '#FFF9E2',
+type PaperTheme = { bg: string; title: string };
+
+const PAPER_THEME: Record<number, PaperTheme> = {
+  1: { bg: '#D8F3EE', title: '#171717' },
+  2: { bg: '#E8E4F3', title: '#171717' },
+  3: { bg: '#E1F3FE', title: '#171717' },
+  4: { bg: '#FFF9E2', title: '#171717' },
+  5: { bg: '#FFF7FF', title: '#171717' },
+  6: { bg: '#E4DAC4', title: '#171717' },
+  7: { bg: '#F5F0E7', title: '#171717' },
+  8: { bg: '#F5F0E8', title: '#171717' },
+  9: { bg: '#E6E6E6', title: '#171717' },
 };
 
-const variantTitleColors: Record<LetterPreviewVariant, string> = {
-  blue: '#171717',
-  green: '#000000',
-  yellow: '#000000',
-};
+const DEFAULT_THEME: PaperTheme = { bg: '#D8F3EE', title: '#171717' };
 
 export default function LetterPreviewCard({
   title,
   content,
+  paperId,
   likes,
-  variant = 'blue',
   isLikedInitial = false,
   onLike,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(isLikedInitial);
-  const backgroundColor = variantColors[variant];
-  const titleColor = variantTitleColors[variant];
+  const [likeCount, setLikeCount] = useState(likes);
+
+  const theme = PAPER_THEME[paperId] ?? DEFAULT_THEME;
+  const backgroundColor = theme.bg;
+  const titleColor = theme.title;
 
   // 글자 수가 230자 이상인 경우 펼치기 버튼 표시
   const isExpandable = content.length >= 230;
 
   const handleLike = () => {
-    setIsLiked(!isLiked);
+    setIsLiked((prev) => {
+      const next = !prev;
+      setLikeCount((c) => c + (next ? 1 : -1));
+      return next;
+    });
     onLike?.();
   };
 
@@ -153,7 +161,7 @@ export default function LetterPreviewCard({
               color: '#595959',
             }}
           >
-            {likes}
+            {likeCount}
           </span>
         </div>
       </div>
