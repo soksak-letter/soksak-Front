@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 interface DatePickerWheelProps {
   value?: { month: number; day: number; year: number };
+  // eslint-disable-next-line no-unused-vars
   onDateChange?: (date: { month: number; day: number; year: number }) => void;
 }
 
@@ -22,11 +23,23 @@ const MONTHS = [
 
 const ITEM_HEIGHT = 44; // 각 항목의 높이 (픽셀)
 
+// 해당 월의 일수 가져오기
+// 컴포넌트 밖으로 빼서 의존성 경고/재생성 방지
+const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
+
 export default function DatePickerWheel({ value, onDateChange }: DatePickerWheelProps) {
   const currentDate = useMemo(() => new Date(), []);
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
-  const [selectedDay, setSelectedDay] = useState(currentDate.getDate());
-  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+
+  // value 있으면 value로 초기화, 없으면 오늘 날짜
+  const initial = value ?? {
+    month: currentDate.getMonth(),
+    day: currentDate.getDate(),
+    year: currentDate.getFullYear(),
+  };
+
+  const [selectedMonth, setSelectedMonth] = useState(initial.month);
+  const [selectedDay, setSelectedDay] = useState(initial.day);
+  const [selectedYear, setSelectedYear] = useState(initial.year);
 
   const monthRef = useRef<HTMLDivElement>(null);
   const dayRef = useRef<HTMLDivElement>(null);
@@ -38,13 +51,21 @@ export default function DatePickerWheel({ value, onDateChange }: DatePickerWheel
     onDateChangeRef.current = onDateChange;
   }, [onDateChange]);
 
-  // 연도 생성 (현재 연도 - 5년부터 현재 연도 + 10년까지)
-  const years = Array.from({ length: 16 }, (_, i) => currentDate.getFullYear() - 5 + i);
+  // years는 렌더마다 새로 만들지 말고 ref로 1회 고정 (useMemo 추가 없이)
+  const yearsRef = useRef<number[]>([]);
+  if (yearsRef.current.length === 0) {
+    const base = currentDate.getFullYear() - 5;
+    yearsRef.current = Array.from({ length: 16 }, (_, i) => base + i);
+  }
+  const years = yearsRef.current;
 
-  // 해당 월의 일수 가져오기
-  const getDaysInMonth = (month: number, year: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
+  // value 사용: 외부에서 값 내려오면 내부 상태 동기화
+  useEffect(() => {
+    if (!value) return;
+    setSelectedMonth(value.month);
+    setSelectedDay(value.day);
+    setSelectedYear(value.year);
+  }, [value]);
 
   const days = Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
 
@@ -54,6 +75,7 @@ export default function DatePickerWheel({ value, onDateChange }: DatePickerWheel
 
   const handleScroll = (
     ref: React.RefObject<HTMLDivElement | null>,
+    // eslint-disable-next-line no-unused-vars
     setter: (value: number) => void,
     offset: number = 0,
   ) => {
@@ -73,7 +95,7 @@ export default function DatePickerWheel({ value, onDateChange }: DatePickerWheel
     scrollToIndex(monthRef, selectedMonth);
     scrollToIndex(dayRef, selectedDay - 1);
     scrollToIndex(yearRef, years.indexOf(selectedYear));
-  }, []);
+  }, [selectedMonth, selectedDay, selectedYear, years]);
 
   useEffect(() => {
     // 선택한 월의 일수를 초과하는 경우 일자 조정
@@ -82,7 +104,7 @@ export default function DatePickerWheel({ value, onDateChange }: DatePickerWheel
       setSelectedDay(maxDays);
       scrollToIndex(dayRef, maxDays - 1);
     }
-  }, [selectedMonth, selectedYear]);
+  }, [selectedMonth, selectedYear, selectedDay]);
 
   const getItemClass = (isSelected: boolean, position: 'above' | 'selected' | 'below') => {
     if (isSelected) {
