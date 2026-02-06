@@ -1,6 +1,8 @@
 import type {
   AgreementsRequest,
   AgreementsResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
   EmailExistsRequest,
   EmailExistsResponse,
   LogoutResponse,
@@ -72,6 +74,18 @@ export const deleteWithdraw = async () => {
   const { data } = await axiosInstance.delete<WithdrawResponse>('/users');
   return data;
 };
+
+/**
+ * 비밀번호 재설정(설정 페이지)API
+ * PATCH /auth/change-password
+ */
+export const patchChangePassword = async (
+  data: ChangePasswordRequest,
+): Promise<ChangePasswordResponse> => {
+  const response = await axiosInstance.patch<ChangePasswordResponse>('/auth/change-password', data);
+  return response.data;
+};
+
 /**
  * 소셜 로그인 (인가 코드 -> 토큰 교환)
  * @param provider 'google' | 'kakao' | 'naver'

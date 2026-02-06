@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useModalStore } from '@/stores/modalStore';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from '@/hooks/auth/useCountdown';
 import { MdCalendarToday } from 'react-icons/md';
 
 import BackHeader from '@/components/common/headers/BackHeader';

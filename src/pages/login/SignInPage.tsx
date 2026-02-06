@@ -5,12 +5,6 @@ import { blockSpaceKey, removeWhitespace } from '@/utils/inputUtils';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuthStore } from '@/stores/useAuthStore';
-import { useGlobalToast } from '@/components/toast/ToastProvider';
-import axios from 'axios';
-import type { CommonResponse } from '@/types/dto/common';
-
-
 const SignInPage = () => {
   const navigate = useNavigate();
   // 1. DTO에 맞춰 userName으로 상태 관리
@@ -39,10 +33,8 @@ const SignInPage = () => {
   const handleLogin = async () => {
     if (!canSubmit || isPending) return;
 
-
     // mutation 실행
     loginMutate({ username, password });
-
   };
   // 2) 보낼 데이터 준비 (SignInRequest 타입 준수)
   // const requestData: SignInRequest = {

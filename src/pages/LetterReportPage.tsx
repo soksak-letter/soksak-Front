@@ -2,28 +2,47 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import { SelectButton } from '@/components/common/SelectButton';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SleepIcon from '@/assets/icons/SleepIcon.svg?react';
 
-import {
-  REPORT_REASONS,
-  type LetterReportRequest,
-  type ReportReason,
-} from '@/types/dto/letterReport';
-import { postLetterReport } from '@/api/letterReport';
+import { useBlockUser, useLetterReport } from '@/hooks/useModeration';
+
+import { REPORT_REASONS, type ReportReason } from '@/types/dto/letterReport';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 
-
 const LetterReportPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   // state에서 letterId와 stamp 꺼내기
   const letterId = location.state?.letterId as number | undefined;
   const stampUrl = location.state?.stampUrl;
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
+
+  // store에서 senderId 가져오기 (fallback용)
+  const senderIdFromStore = useThreadFlowStore((s) => s.senderId);
+
+  // targetUserId 파싱 및 유효성 검사 (차단용)
+  // 우선순위: query param > state > store
+  const rawTargetUserIdFromQuery = searchParams.get('targetUserId');
+  const targetUserIdFromState = location.state?.targetUserId as number | undefined;
+  const parsedTargetUserId =
+    rawTargetUserIdFromQuery !== null
+      ? Number(rawTargetUserIdFromQuery)
+      : typeof targetUserIdFromState === 'number'
+        ? targetUserIdFromState
+        : typeof senderIdFromStore === 'number'
+          ? senderIdFromStore
+          : NaN;
+  const isValidTargetUserId = !Number.isNaN(parsedTargetUserId) && parsedTargetUserId > 0;
+
+  // 차단 훅
+  const { mutateAsync: block, isPending: isBlocking } = useBlockUser();
+  // 신고 훅
+  const { mutateAsync: report, isPending: isReporting } = useLetterReport();
 
   // 선택된 신고 사유들을 관리하는 상태 (배열)
   const [selectedReasons, setSelectedReasons] = useState<ReportReason[]>([]);
@@ -74,45 +93,62 @@ const LetterReportPage = () => {
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
+    // console.log('[LetterReportPage] 차단 토글 변경:', nextState);
+    // console.log('[LetterReportPage] 현재 선택된 사유:', selectedReasons);
+    // console.log('[LetterReportPage] targetUserId:', targetUserId);
+
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
+      // console.log('[LetterReportPage] 사유 없이 차단 시도 - 차단됨');
       showToast('신고 사유를 선택해주세요.', 'error');
       return; // 상태 변경 안 하고 함수 종료
     }
     // 사유가 있으면 정상적으로 토글 상태 변경
+    // console.log('[LetterReportPage] 차단 상태 변경:', nextState);
     setIsBlocked(nextState);
   };
 
   const handleSubmit = async () => {
+    // 이미 제출 중이면 중복 실행 방지
+    if (isReporting || isBlocking) {
+      return;
+    }
+
     // 선택된 사유가 0개이면 안내창 띄우기
     if (selectedReasons.length === 0) {
       showToast('신고 사유를 선택해주세요.', 'error');
       return;
     }
+
     // letterId 유효성 체크
     if (!letterId) {
       showToast('신고 대상을 찾을 수 없습니다.', 'error');
       return;
     }
 
-    //Body에 담을 데이터 구성
-    const requestBody: LetterReportRequest = {
-      letterId, // 여기서 location.state로 받은 값을 넣습니다.
-      reasons: selectedReasons,
-    };
-
     try {
-      const response = await postLetterReport(requestBody);
+      // 신고 API 호출
+      await report({ letterId, reasons: selectedReasons });
 
-      if (response.resultType === 'SUCCESS') {
-        setIsCompleted(true); //완료화면으로 전환
-      } else {
-        const errorMessage = response.error?.reason || '신고 처리에 실패했습니다.';
-        showToast(errorMessage, 'error');
+      // 차단하기가 활성화된 경우 차단 API 호출
+      if (isBlocked) {
+        if (!isValidTargetUserId) {
+          showToast('차단 대상을 찾을 수 없습니다.', 'error');
+        } else {
+          try {
+            await block(parsedTargetUserId);
+          } catch (blockError) {
+            const errorMessage =
+              blockError instanceof Error ? blockError.message : '차단에 실패했습니다.';
+            showToast(errorMessage, 'error');
+          }
+        }
       }
+      // 신고 성공 시, 차단 성공/실패와 관계없이 완료화면 전환
+      setIsCompleted(true);
     } catch (error) {
-      console.error(error);
-      showToast('서버 연결에 실패했습니다.', 'error');
+      const errorMessage = error instanceof Error ? error.message : '신고 처리에 실패했습니다.';
+      showToast(errorMessage, 'error');
     }
   };
 
@@ -134,7 +170,14 @@ const LetterReportPage = () => {
     <div className='w-[375px] h-screen relative mx-auto'>
       <div>
         <div className='flex justify-center items-center h-[77px]'>
-          <BackHeader title='신고' rightElement={<button onClick={handleSubmit}>완료</button>} />{' '}
+          <BackHeader
+            title='신고'
+            rightElement={
+              <button onClick={handleSubmit} disabled={isBlocking || isReporting}>
+                {isReporting || isBlocking ? '처리중...' : '완료'}
+              </button>
+            }
+          />{' '}
           {/*  헤더 */}
         </div>
         <div>

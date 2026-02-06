@@ -38,6 +38,7 @@ export default function LetterReplyPage() {
   const { letterId: letterIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const senderId = useThreadFlowStore((s) => s.senderId);
   const letterCount = Number(useThreadFlowStore((l) => l.letterCount) ?? '0');
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
@@ -91,8 +92,9 @@ export default function LetterReplyPage() {
       state: {
         letterId: Number(letterIdParam),
         stampUrl: view?.stampUrl,
+        targetUserId: senderId,
       },
-    }); //신고페이지로 letterId 보내기
+    }); //신고페이지로 letterId, targetUserId 보내기
   };
 
   const handleReply = () => {

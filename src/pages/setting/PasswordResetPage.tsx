@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useSettingPwChangeForm from '@/hooks/useSettingPwChangeForm';
+import useSettingPwChangeForm from '@/hooks/auth/useSettingPwChangeForm';
 import SettingHeader from '@/components/common/SettingHeader';
 
 export default function PasswordResetPage() {
@@ -8,7 +8,7 @@ export default function PasswordResetPage() {
   const handleBack = () => {
     navigate(-1);
   };
-  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched } =
+  const { form, validations, handleNoSpaceChange, handleSubmit, canSubmit, touched, isPending } =
     useSettingPwChangeForm();
 
   return (
@@ -24,45 +24,59 @@ export default function PasswordResetPage() {
           비밀번호를 변경하려면 현재 비밀번호를 입력해주세요.
         </p>
         {/* 입력 필드 영역 */}
-        <div className='flex flex-col gap-[6px]'>
-          <input
-            type='password'
-            placeholder='현재 비밀번호'
-            value={form.currentPassword}
-            onChange={handleNoSpaceChange('currentPassword', 16)}
-            className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
-            maxLength={16}
-          />
-          {touched.currentPassword && validations.currentPassword.message && (
-            <span className='text-xs text-red-500'>{validations.currentPassword.message}</span>
-          )}
-          <input
-            type='password'
-            placeholder='새 비밀번호'
-            value={form.password}
-            onChange={handleNoSpaceChange('password', 16)}
-            className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
-            maxLength={16}
-          />
-          {touched.password && validations.password.message && (
-            <span className='text-xs text-red-500'>{validations.password.message}</span>
-          )}
-          <input
-            type='password'
-            placeholder='새 비밀번호 확인'
-            value={form.passwordConfirm}
-            onChange={handleNoSpaceChange('passwordConfirm', 16)}
-            className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
-            maxLength={16}
-          />
-          {touched.passwordConfirm && validations.passwordConfirm.message && (
-            <span className='text-xs text-red-500'>{validations.passwordConfirm.message}</span>
-          )}
+        <div className='flex flex-col gap-[10px]'>
+          <div className='flex flex-col gap-[8px]'>
+            <input
+              type='password'
+              placeholder='현재 비밀번호'
+              value={form.currentPassword}
+              onChange={handleNoSpaceChange('currentPassword', 16)}
+              className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
+              maxLength={16}
+            />
+            <p
+              className={`ty-detail px-1 ${touched.currentPassword && !validations.currentPassword.success ? 'text-red-500' : 'text-[#8C8C8C]'}`}
+            >
+              {touched.currentPassword && !validations.currentPassword.success
+                ? validations.currentPassword.message
+                : '사용 중인 비밀번호를 입력해주세요.'}
+            </p>
+          </div>
+          <div className='flex flex-col gap-[8px]'>
+            <input
+              type='password'
+              placeholder='새 비밀번호'
+              value={form.password}
+              onChange={handleNoSpaceChange('password', 16)}
+              className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
+              maxLength={16}
+            />
+            <p
+              className={`ty-detail px-1 ${touched.password && !validations.password.success ? 'text-red-500' : 'text-[#8C8C8C]'}`}
+            >
+              {touched.password && !validations.password.success
+                ? validations.password.message
+                : '새 비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.'}
+            </p>
+          </div>
+          <div className='flex flex-col gap-[8px]'>
+            <input
+              type='password'
+              placeholder='새 비밀번호 확인'
+              value={form.passwordConfirm}
+              onChange={handleNoSpaceChange('passwordConfirm', 16)}
+              className='w-full h-12 bg-white border border-[#E5E6E6] rounded-lg px-4 font-pretendard font-medium text-sm text-[#171717] outline-none placeholder:text-[#8C8C8C]'
+              maxLength={16}
+            />
+            <p
+              className={`ty-detail px-1 ${touched.passwordConfirm && !validations.passwordConfirm.success ? 'text-red-500' : 'text-[#8C8C8C]'}`}
+            >
+              {touched.passwordConfirm && !validations.passwordConfirm.success
+                ? validations.passwordConfirm.message
+                : '새 비밀번호를 다시 입력해주세요.'}
+            </p>
+          </div>
         </div>
-        {/* 도움말 텍스트 */}
-        <p className='font-pretendard font-normal text-xs leading-[19.2px] text-[#595959] mt-2'>
-          비밀번호는 영문, 숫자를 포함하여 최대 16자리까지 입력 가능합니다.
-        </p>
         {/* 비밀번호를 잊었어요 링크 */}
         <button
           type='button'
@@ -82,7 +96,7 @@ export default function PasswordResetPage() {
         <button
           type='button'
           onClick={handleSubmit}
-          disabled={!canSubmit}
+          disabled={!canSubmit || isPending}
           className='w-full h-12 bg-[#F5544C] rounded-lg shadow-md font-pretendard font-medium text-base leading-[25.6px] text-white border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
         >
           비밀번호 변경

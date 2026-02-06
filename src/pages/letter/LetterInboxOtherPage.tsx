@@ -18,6 +18,7 @@ type SortOrder = 'latest' | 'oldest';
 type InboxOtherLetterItem = {
   letterId: number;
   sessionId: number;
+  senderId: number; // 상대방 userId (신고/차단 시 필요)
   question: string;
   senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
@@ -48,6 +49,7 @@ export default function LetterInboxOtherPage() {
       return {
         letterId: x.lastLetterId,
         sessionId: x.sessionId,
+        senderId: x.sender.id,
         question: x.lastLetterTitle,
         senderName: x.sender.nickname,
         receivedAt: getParseDate(deliveredAt),
@@ -88,6 +90,7 @@ export default function LetterInboxOtherPage() {
     setFlow({
       target: 'other',
       sessionId: item.sessionId,
+      senderId: item.senderId,
       senderName: item.senderName,
       friendName: null,
       letterCount: item.letterCount,

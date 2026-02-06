@@ -4,7 +4,7 @@ import LetterTextBox from '@/components/letters/LetterTextBox';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from '@/hooks/auth/useCountdown';
 import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
