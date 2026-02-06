@@ -1,9 +1,6 @@
-export type LetterVariant = 'blue' | 'pink' | 'yellow';
-
-export interface Letter {
-  id: string;
+export interface FeedLetter {
+  letterId: number;
   title: string;
-  date: string;
-  variant?: LetterVariant;
-  link: string;
+  deliveredAt: string;
+  paperId: number;
 }

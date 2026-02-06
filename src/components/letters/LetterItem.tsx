@@ -1,29 +1,14 @@
-import type { Letter } from '../../types/letter';
+import { DEFAULT_THEME, makeEnvelopeLineColor, PAPER_THEME } from '@/constants/paperTheme';
+import { getParseDate } from '@/utils/date';
 
 interface LetterItemProps {
-  letter: Letter;
+  letter: FeedLetter;
   onClick: () => void;
 }
 
-// 피그마 디자인에서 추출한 정확한 색상값
-const variantStyles = {
-  blue: {
-    bg: '#E2F3FE', // rgb(226, 243, 254) - 피그마: rgb(0.884, 0.953, 0.996)
-    line: '#AEDEFA', // rgb(174, 222, 250) - 피그마: rgb(0.682, 0.871, 0.988)
-  },
-  pink: {
-    bg: '#FFC8C6', // rgb(255, 200, 198) - 피그마: rgb(0.999, 0.786, 0.776)
-    line: '#FFA39E', // rgb(255, 163, 158) - 피그마: rgb(0.999, 0.639, 0.621)
-  },
-  yellow: {
-    bg: '#F3EFB9', // rgb(243, 239, 185) - 피그마: rgb(0.951, 0.936, 0.747)
-    line: '#D9D6AA', // rgb(217, 214, 170) - 피그마: rgb(0.854, 0.840, 0.666)
-  },
-};
-
 export default function LetterItem({ letter, onClick }: LetterItemProps) {
-  const variant = letter.variant || 'blue';
-  const colors = variantStyles[variant];
+  const theme = PAPER_THEME[letter.paperId ?? 1] ?? DEFAULT_THEME;
+  const lineColor = makeEnvelopeLineColor(theme.bg);
 
   return (
     <button
@@ -39,7 +24,7 @@ export default function LetterItem({ letter, onClick }: LetterItemProps) {
       <div
         className='relative rounded-lg overflow-hidden h-full'
         style={{
-          backgroundColor: colors.bg,
+          backgroundColor: theme.bg,
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
         }}
       >
@@ -57,7 +42,7 @@ export default function LetterItem({ letter, onClick }: LetterItemProps) {
         >
           <path
             d='M0 0 L62.5 45 L125 0'
-            stroke={colors.line}
+            stroke={lineColor}
             strokeWidth='1'
             strokeLinecap='round'
             fill='none'
@@ -103,7 +88,7 @@ export default function LetterItem({ letter, onClick }: LetterItemProps) {
               whiteSpace: 'nowrap',
             }}
           >
-            {letter.date}
+            {getParseDate(letter.deliveredAt)}
           </p>
         </div>
       </div>

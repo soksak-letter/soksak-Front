@@ -1,17 +1,20 @@
-/* eslint-disable no-undef */
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { Letter } from '../../types/letter';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import LetterItem from './LetterItem';
 import EmptyStateCard from './EmptyStateCard';
+import type { FeedLetter } from '@/types/letter';
 
 interface LetterCarouselProps {
-  letters: Letter[];
+  letters: FeedLetter[];
   emptyMessage?: string;
+  // eslint-disable-next-line no-unused-vars
+  onLetterClick?: (letter: FeedLetter) => void;
 }
 
-export default function LetterCarousel({ letters, emptyMessage }: LetterCarouselProps) {
-  const navigate = useNavigate();
+export default function LetterCarousel({
+  letters,
+  emptyMessage,
+  onLetterClick,
+}: LetterCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const isPointerDownRef = useRef(false);
@@ -46,14 +49,12 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
   }, []);
 
   const handleCardClick = useCallback(
-    (letter: Letter) => {
+    (letter: FeedLetter) => {
       // 드래그 중이었다면 클릭 이벤트 무시
-      if (isDraggingRef.current) {
-        return;
-      }
-      navigate(letter.link);
+      if (isDraggingRef.current) return;
+      onLetterClick?.(letter);
     },
-    [navigate],
+    [onLetterClick],
   );
 
   // 드래그 시작
@@ -205,7 +206,11 @@ export default function LetterCarousel({ letters, emptyMessage }: LetterCarousel
             }}
           >
             {letters.map((letter) => (
-              <div key={letter.id} className='flex-shrink-0' style={{ width: `${CARD_WIDTH}px` }}>
+              <div
+                key={letter.letterId}
+                className='flex-shrink-0'
+                style={{ width: `${CARD_WIDTH}px` }}
+              >
                 <LetterItem letter={letter} onClick={() => handleCardClick(letter)} />
               </div>
             ))}
