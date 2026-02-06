@@ -1,13 +1,13 @@
 import React from 'react';
-import mint from '@/assets/letter_envelope/mint.svg?react';
-import purple from '@/assets/letter_envelope/purple.svg?react';
-import blue from '@/assets/letter_envelope/blue.svg?react';
-import yellow from '@/assets/letter_envelope/yellow.svg?react';
-import pink from '@/assets/letter_envelope/pink.svg?react';
-import paper from '@/assets/letter_envelope/paper.svg?react';
-import beige from '@/assets/letter_envelope/beige.svg?react';
-import vintage from '@/assets/letter_envelope/vintage.svg?react';
-import grey from '@/assets/letter_envelope/grey.svg?react';
+import mint from '@/assets/letter_envelope/Mint.svg?react';
+import purple from '@/assets/letter_envelope/Purple.svg?react';
+import blue from '@/assets/letter_envelope/Blue.svg?react';
+import yellow from '@/assets/letter_envelope/Yellow.svg?react';
+import pink from '@/assets/letter_envelope/Pink.svg?react';
+import paper from '@/assets/letter_envelope/Paper.svg?react';
+import beige from '@/assets/letter_envelope/Beige.svg?react';
+import vintage from '@/assets/letter_envelope/Vintage.svg?react';
+import grey from '@/assets/letter_envelope/Grey.svg?react';
 
 export type EnvelopeAsset = {
   label: string;
