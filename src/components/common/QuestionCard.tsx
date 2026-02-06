@@ -51,7 +51,7 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
         {profileImageUrl && (
           <div
             onClick={handleMypage}
-            className='flex-shrink-0 rounded-full overflow-hidden'
+            className='flex-shrink-0 rounded-full overflow-hidden cursor-pointer'
             style={{
               width: '47px',
               height: '48px',

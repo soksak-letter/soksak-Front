@@ -15,6 +15,6 @@ export const ROUTES = {
     setting: '/setting',
   },
   my: {
-    mypage: 'my/my-page',
+    mypage: '/my/my-page',
   },
 } as const;
