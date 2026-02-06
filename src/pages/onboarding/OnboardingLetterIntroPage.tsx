@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import HappyModalIcon from '@/assets/icons/HappyModalIcon.svg?react';
-import MintPaper from '@/assets/papers/Mint.svg?react';
+import MintPaper from '@/assets/papers/mint.svg?react';
 
 export default function OnboardingLetterIntroPage() {
   const navigate = useNavigate();
