@@ -4,36 +4,25 @@ import { HiPaperAirplane } from 'react-icons/hi2';
 import { HiEnvelope } from 'react-icons/hi2';
 import { HiClock } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
-import { useMemo } from 'react';
+
 import { useActivityStore } from '@/stores/activityStore';
+import { useMyProfile } from '@/hooks/useMyProfile';
 
 const MyPage = () => {
   const navigate = useNavigate();
 
   // 관심사 조회 (enabled는 true로 두면 됨)
-  const {
-    data: interestsItems, // ← useMyInterests가 items만 반환(select)하는 훅이라면 배열이 바로 옴
-  } = useMyInterests(true);
+  const { data: response, isLoading, isError } = useMyProfile();
 
   const totalSeconds = useActivityStore((s) => s.totalSeconds);
   const totalUsageMinutes = Math.floor(totalSeconds / 60);
 
-  // Mock data - 실제 사용 시 API에서 가져오기
-  const userInfo = {
-    nickname: '개굴님',
-    email: 'gaegull_01@naver.com',
-    temperature: 66,
-    sentLetters: 8,
-    receivedLetters: 12,
-  };
-
+  // 2. 로딩 및 에러 처리 (필수)
+  if (isLoading) return <div className='w-[375px] mx-auto py-20 text-center'>로딩 중...</div>;
+  if (isError || !response)
+    return <div className='w-[375px] mx-auto py-20 text-center'>데이터를 가져오지 못했습니다.</div>;
   // 온도값을 0~100으로 clamp
-  const safeTemp = Math.max(0, Math.min(100, userInfo.temperature));
-
-  const interests = useMemo(() => {
-    return interestsItems ?? [];
-  }, [interestsItems]);
+  const safeTemp = Math.max(0, Math.min(100, response.temperatureAvg));
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -51,8 +40,8 @@ const MyPage = () => {
 
           {/* User Info */}
           <div className='flex-1 min-w-0 pb-1'>
-            <p className='ty-body4 text-[var(--color-text-normal)]'>{userInfo.nickname}</p>
-            <p className='ty-body5 text-[var(--color-text-assistive)] truncate'>{userInfo.email}</p>
+            <p className='ty-body4 text-[var(--color-text-normal)]'>{response.nickname}</p>
+            <p className='ty-body5 text-[var(--color-text-assistive)] truncate'>{response.email}</p>
           </div>
 
           {/* Edit Button */}
@@ -81,7 +70,7 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {interests.map((item) => (
+            {response.interests.map((item) => (
               <span
                 key={item.id}
                 className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
@@ -132,7 +121,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 보낸 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {userInfo.sentLetters}통
+                {response.sentLettersCount}통
               </span>
             </div>
 
@@ -142,7 +131,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 받은 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {userInfo.receivedLetters}통
+                {response.receivedLettersCount}통
               </span>
             </div>
 
