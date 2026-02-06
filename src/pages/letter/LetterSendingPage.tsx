@@ -97,18 +97,44 @@ const LetterSendingPage = () => {
     if (!safeMode) return;
     if (hasSentRef.current) return;
 
-    const payloadToUse = safeMode === 'self' ? selfPayload : sendPayload;
+    // 분기별로 payload를 따로 확정해서 타입 좁히기
+    if (safeMode === 'self') {
+      if (!selfPayload) return;
 
-    if (!payloadToUse) return;
+      hasSentRef.current = true;
+
+      (async () => {
+        try {
+          const res = await createSelfLetterMutation.mutateAsync(selfPayload);
+          console.log('[CreateSelfLetter success response]', res);
+
+          if (letterCount === 10) {
+            navigate(`/friend/sent-transition/${sessionId}`, { replace: true });
+          } else {
+            navigate('/home/main', {
+              replace: true,
+              state: { toast: { status: 'success', message: '편지를 전송했어요!' } },
+            });
+          }
+        } catch {
+          hasSentRef.current = false;
+          showToast('편지 전송에 실패했어요.', 'error');
+          navigate(-1);
+        }
+      })();
+
+      return;
+    }
+
+    // anon/other/friend
+    if (!sendPayload) return;
 
     hasSentRef.current = true;
 
     (async () => {
       try {
-        const res =
-          safeMode === 'self'
-            ? await createSelfLetterMutation.mutateAsync(payloadToUse)
-            : await createLetterMutation.mutateAsync(payloadToUse);
+        const res = await createLetterMutation.mutateAsync(sendPayload);
+        console.log('[CreateLetter success response]', res);
 
         console.log('[CreateLetter success response]', res);
 
