@@ -1,3 +1,6 @@
+import { ROUTES } from '@/routes/paths';
+import { useNavigate } from 'react-router-dom';
+
 interface QuestionCardProps {
   question: string;
   timeLeft: string;
@@ -5,6 +8,10 @@ interface QuestionCardProps {
 }
 
 export default function QuestionCard({ question, timeLeft, profileImageUrl }: QuestionCardProps) {
+  const navigate = useNavigate();
+  const handleMypage = () => {
+    navigate(ROUTES.my.mypage);
+  };
   return (
     <div
       className='w-full px-4 py-2.5'
@@ -43,6 +50,7 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
         {/* 프로필 이미지 */}
         {profileImageUrl && (
           <div
+            onClick={handleMypage}
             className='flex-shrink-0 rounded-full overflow-hidden'
             style={{
               width: '47px',
