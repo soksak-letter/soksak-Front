@@ -51,10 +51,8 @@ export default function LetterCarousel({
   const handleCardClick = useCallback(
     (letter: FeedLetter) => {
       // 드래그 중이었다면 클릭 이벤트 무시
-      if (isDraggingRef.current) {
-        onLetterClick?.(letter);
-        return;
-      }
+      if (isDraggingRef.current) return;
+      onLetterClick?.(letter);
     },
     [onLetterClick],
   );
