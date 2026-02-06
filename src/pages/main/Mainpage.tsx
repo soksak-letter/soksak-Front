@@ -12,13 +12,6 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useLocation } from 'react-router-dom';
 import type { ToastLocationState } from '@/types/toastLocationState';
 
-interface FeedLetter {
-  letterId: number;
-  title: string;
-  deliveredAt: string;
-  paperId: number;
-}
-
 const MainPage = () => {
   const navigate = useNavigate();
 
