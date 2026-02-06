@@ -136,8 +136,6 @@ const LetterSendingPage = () => {
         const res = await createLetterMutation.mutateAsync(sendPayload);
         console.log('[CreateLetter success response]', res);
 
-        console.log('[CreateLetter success response]', res);
-
         if (letterCount === 10) {
           navigate(`/friend/sent-transition/${sessionId}`, { replace: true });
         } else {

@@ -37,7 +37,7 @@ function useFriendLetters({
       try {
         // API가 배열을 직접 반환한다고 가정
         // (cursor/size 파라미터는 API 시그니처에 맞춰 조정해야 함)
-        const items = await await getFriendPublicLetters();
+        const items = await getFriendPublicLetters();
 
         // const response = await getFriendPublicLetters({
         // questionId,
