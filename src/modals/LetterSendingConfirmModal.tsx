@@ -53,7 +53,7 @@ export default function LetterSendingConfirmModal() {
           <button
             type='button'
             onClick={handleStay}
-            className='h-14 bg-[#B1B3B4] ty-body3 text-(--color-white)'
+            className='h-14 bg-[#B1B3B4] ty-body3 text-[var(--color-white)]'
           >
             계속 꾸미기
           </button>
@@ -61,7 +61,7 @@ export default function LetterSendingConfirmModal() {
           <button
             type='button'
             onClick={handleSubmit}
-            className='h-14 bg-[#F5544C] ty-body3 text-(--color-white)'
+            className='h-14 bg-[#F5544C] ty-body3 text-[var(--color-white)]'
           >
             이대로 전송하기
           </button>

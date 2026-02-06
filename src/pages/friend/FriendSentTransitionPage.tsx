@@ -42,7 +42,7 @@ export default function FriendSentTransitionPage() {
       {/* Header */}
       <header className='flex flex-col justify-start gap-2'>
         <p className='ty-body1 leading-tight'>
-          {senderName}님과 <span className='text-(--color-primary-500)'>10회</span>의 대화를
+          {senderName}님과 <span className='text-[var(--color-primary-500)]'>10회</span>의 대화를
           <br />
           모두 나누었어요.
         </p>
@@ -54,7 +54,7 @@ export default function FriendSentTransitionPage() {
         <LetterEndedEnvelope className='block' />
         <Link
           to={`/letter/thread/${sessionId}`}
-          className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
+          className='ty-body5 text-[var(--color-text-assistive)] mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기
         </Link>

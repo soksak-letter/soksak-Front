@@ -35,7 +35,7 @@ export default function FriendRequestModal() {
           <button
             type='button'
             onClick={handleStay}
-            className='h-14 bg-[#B1B3B4] ty-body3 text-(--color-white)'
+            className='h-14 bg-[#B1B3B4] ty-body3 text-[var(--color-white)]'
           >
             나가기
           </button>
@@ -43,7 +43,7 @@ export default function FriendRequestModal() {
           <button
             type='button'
             onClick={handleSubmit}
-            className='h-14 bg-[#F5544C] ty-body3 text-(--color-white)'
+            className='h-14 bg-[#F5544C] ty-body3 text-[var(--color-white)]'
           >
             친구 신청하기
           </button>

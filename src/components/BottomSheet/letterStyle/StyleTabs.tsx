@@ -2,6 +2,7 @@ type StyleTab = 'font' | 'paper' | 'stamp';
 
 type StyleTabProps = {
   selectedTab: StyleTab;
+  // eslint-disable-next-line no-unused-vars
   onChangeTab: (tab: StyleTab) => void;
 };
 
@@ -13,7 +14,7 @@ const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
           onClick={() => onChangeTab('font')}
           className={
             selectedTab === 'font'
-              ? 'ty-body3 text-(--color-primary-500)'
+              ? 'ty-body3 text-[var(--color-primary-500)]'
               : 'ty-body3 text-black/40'
           }
         >
@@ -24,7 +25,7 @@ const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
           onClick={() => onChangeTab('paper')}
           className={
             selectedTab === 'paper'
-              ? 'ty-body3 text-(--color-primary-500)'
+              ? 'ty-body3 text-[var(--color-primary-500)]'
               : 'ty-body3 text-black/40'
           }
         >
@@ -35,7 +36,7 @@ const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
           onClick={() => onChangeTab('stamp')}
           className={
             selectedTab === 'stamp'
-              ? 'ty-body3 text-(--color-primary-500)'
+              ? 'ty-body3 text-[var(--color-primary-500)]'
               : 'ty-body3 text-black/40'
           }
         >
