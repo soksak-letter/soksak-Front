@@ -1,4 +1,5 @@
 import { DEFAULT_THEME, makeEnvelopeLineColor, PAPER_THEME } from '@/constants/paperTheme';
+import type { FeedLetter } from '@/types/letter';
 import { getParseDate } from '@/utils/date';
 
 interface LetterItemProps {

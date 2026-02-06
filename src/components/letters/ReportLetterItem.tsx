@@ -1,7 +1,7 @@
-import type { Letter } from '../../types/letter';
+import type { FeedLetter } from '../../types/letter';
 
 interface ReportLetterItemProps {
-  letter: Letter;
+  letter: FeedLetter;
   onClick: () => void;
 }
 
@@ -11,8 +11,23 @@ const variantStyles = {
   yellow: { bg: '#F3EFB9', line: '#D9D6AA' },
 };
 
+type VariantKey = keyof typeof variantStyles; // 'blue' | 'pink' | 'yellow'
+
+const paperIdToVariant = (paperId?: number): VariantKey => {
+  switch (paperId) {
+    case 1:
+      return 'blue';
+    case 2:
+      return 'pink';
+    case 3:
+      return 'yellow';
+    default:
+      return 'blue';
+  }
+};
+
 export default function ReportLetterItem({ letter, onClick }: ReportLetterItemProps) {
-  const variant = letter.variant || 'blue';
+  const variant = paperIdToVariant(letter.paperId);
   const colors = variantStyles[variant];
 
   return (
