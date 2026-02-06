@@ -108,7 +108,7 @@ export default function OnboardingLetterGuidePage() {
       <button
         type='button'
         onClick={() => setIsGuideOpen(true)}
-        className='text-right ty-body3 text-(--color-text-assistive) underline underline-offset-2'
+        className='text-right ty-body3 text-[var(--color-text-assistive)] underline underline-offset-2'
       >
         알림 설정 가이드
       </button>
@@ -124,7 +124,7 @@ export default function OnboardingLetterGuidePage() {
           깜짝 선물처럼 알림을 보내드릴게요.
         </p>
 
-        <p className='mt-[28px] ty-title3 text-(--color-primary-500)'>
+        <p className='mt-[28px] ty-title3 text-[var(--color-primary-500)]'>
           3일 뒤, 나는 어떤 모습으로 달라져 있을까요?
         </p>
       </div>

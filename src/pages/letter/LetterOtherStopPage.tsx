@@ -72,7 +72,7 @@ export default function OtherStopPage() {
 
         <Link
           to={`/letter/thread/${sessionId}`}
-          className='ty-body5 text-(--color-text-assistive) mt-3 underline underline-offset-4'
+          className='ty-body5 text-[var(--color-text-assistive)] mt-3 underline underline-offset-4'
         >
           우리가 나눴던 대화 다시보기
         </Link>

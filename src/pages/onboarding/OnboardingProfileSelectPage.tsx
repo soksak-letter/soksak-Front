@@ -96,13 +96,13 @@ export default function OnboardingProfileSelectPage() {
 
       <p className='mb-2 ty-body3'>선택지에 맞는 오늘의 질문을 전달해드립니다.</p>
 
-      <p className='mb-6 flex items-center gap-1.5 text-(--color-text-assistive) ty-detail'>
+      <p className='mb-6 flex items-center gap-1.5 text-[var(--color-text-assistive)] ty-detail'>
         <CautionIcon className='h-4 w-4 shrink-0' />
         <span>제공한 정보는 오늘의 질문 개인화를 위해서만 활용됩니다.</span>
       </p>
 
       <section className='mb-6'>
-        <h2 className='mb-3 ty-body2 text-(--color-text-strong)'>성별을 선택해주세요.</h2>
+        <h2 className='mb-3 ty-body2 text-[var(--color-text-strong)]'>성별을 선택해주세요.</h2>
         <div className='flex flex-wrap gap-2'>
           {ONBOARDING_GENDERS.map((opt) => (
             <SelectButton
@@ -118,7 +118,7 @@ export default function OnboardingProfileSelectPage() {
       </section>
 
       <section className='mb-8'>
-        <h2 className='mb-3 ty-body2 text-(--color-text-strong)'>직업을 선택해주세요.</h2>
+        <h2 className='mb-3 ty-body2 text-[var(--color-text-strong)]'>직업을 선택해주세요.</h2>
         <div className='flex flex-wrap gap-2'>
           {ONBOARDING_JOBS.map((opt) => (
             <SelectButton
@@ -136,7 +136,7 @@ export default function OnboardingProfileSelectPage() {
       <div className='mt-auto mb-6 flex flex-col items-center gap-3'>
         <button
           type='button'
-          className='ty-body5 text-(--color-text-assistive) underline underline-offset-2'
+          className='ty-body5 text-[var(--color-text-assistive)] underline underline-offset-2'
           onClick={handleSkipOpen}
         >
           건너뛰기
