@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { useActivityStore } from '@/stores/activityStore';
 import { useMyProfile } from '@/hooks/useMyProfile';
+import { ROUTES } from '@/routes/paths';
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const handleProfilEedit = () => {
+    return navigate(ROUTES.auth.profile);
+  };
 
   // 관심사 조회 (enabled는 true로 두면 됨)
   const { data: response, isLoading, isError } = useMyProfile();
@@ -48,8 +52,7 @@ const MyPage = () => {
           <button
             type='button'
             className='flex-shrink-0 px-3 py-2 border border-[var(--color-line-normal)] rounded-xl ty-body5 text-[var(--color-text-normal)]'
-            // TODO: 프로필 편집 기능 미구현. 추후 /onboarding/profile-select?mode=edit 등으로 연결 필요
-            disabled
+            onClick={handleProfilEedit}
           >
             프로필 수정
           </button>

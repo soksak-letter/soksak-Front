@@ -7,6 +7,7 @@ export const ROUTES = {
     signin: '/auth/signin',
     signup: '/auth/signup',
     terms: '/auth/terms',
+    profile: '/auth/profile-setup',
   },
   report: {
     keyword: '/report/keyword-letter',
