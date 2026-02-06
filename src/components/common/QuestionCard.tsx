@@ -16,18 +16,7 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
         {/* 질문 텍스트 영역 */}
         <div className='flex-1 flex flex-col gap-2'>
           {/* 질문 */}
-          <h2
-            className='whitespace-pre-line'
-            style={{
-              fontFamily: 'Hallym Gothic',
-              fontWeight: 500,
-              fontSize: '20px',
-              lineHeight: '24px',
-              color: '#000000',
-            }}
-          >
-            {question}
-          </h2>
+          <h2 className='whitespace-pre-line ty-title2'>{question}</h2>
 
           {/* 타이머 */}
           <p

@@ -1,17 +1,16 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LetterCarousel from '../../components/letters/LetterCarousel';
-import QuestionCard from '../../components/common/QuestionCard';
+import LetterCarousel from '@/components/letters/LetterCarousel';
+import QuestionCard from '@/components/common/QuestionCard';
 import WriteLetterButtons from './WriteLetterButtons';
 import LetterJourney from './LetterJourney';
-import MainPageSkeleton from '../../components/skeleton/MainPageSkeleton';
-import { useHomeSummary } from '../../hooks/useHomeSummary';
-import { useFriendPublicLetters, useOtherPublicLetters } from '../../hooks/usePublicLetters';
+import MainPageSkeleton from '@/components/skeleton/MainPageSkeleton';
+import { useHomeSummary } from '@/hooks/useHomeSummary';
+import { useFriendPublicLetters, useOtherPublicLetters } from '@/hooks/usePublicLetters';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStore } from '@/stores/letterStore';
 import { useLocation } from 'react-router-dom';
 import type { ToastLocationState } from '@/types/toastLocationState';
-import { DEFAULT_THEME, PAPER_THEME } from '@/constants/paperTheme';
 
 interface FeedLetter {
   letterId: number;
@@ -29,15 +28,16 @@ const MainPage = () => {
 
   // 홈 요약 API 연동 (오늘의 질문, 편지 통계, 유저 정보)
   const { data: homeSummary, isLoading: summaryLoading, timeLeft } = useHomeSummary();
+  const formattedQuestionText = (homeSummary?.todayQuestion?.content ?? '').replace(
+    /^질문\s*#\d+:\s*/,
+    '',
+  );
 
   // 공개 편지 API 연동
   const { data: otherPublicLetters, isLoading: isOtherLettersLoading } = useOtherPublicLetters();
 
   // 친구 편지 API 연동
   const { data: friendPublicLetters, isLoading: isFriendLettersLoading } = useFriendPublicLetters();
-
-  // 캐러셀 컬러 - paperId와 연동
-  const getTheme = (paperId?: number) => PAPER_THEME[paperId ?? 0] ?? DEFAULT_THEME;
 
   // API 데이터를 Letter 타입으로 변환
   const otherLetters = useMemo<FeedLetter[]>(
@@ -82,16 +82,18 @@ const MainPage = () => {
     navigate('/letter/anon/draft');
   };
 
-  if (summaryLoading) {
+  const isPageLoading = summaryLoading || isOtherLettersLoading || isFriendLettersLoading;
+
+  if (isPageLoading) {
     return <MainPageSkeleton />;
   }
 
   return (
-    <div className='min-h-dvh bg-white pb-24'>
+    <div className='min-h-dvh bg-white pb-22 pt-5'>
       {/* 오늘의 질문 섹션 */}
-      <section>
+      <section className='ty-title2'>
         <QuestionCard
-          question={homeSummary?.todayQuestion?.content || ''}
+          question={formattedQuestionText}
           timeLeft={timeLeft}
           profileImageUrl={homeSummary?.user?.profileImageUrl || 'https://placehold.co/47x48'}
         />
@@ -137,7 +139,14 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel letters={otherLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
+        <LetterCarousel
+          letters={otherLetters}
+          emptyMessage='현재 공개된 편지가 더이상 없어요.'
+          onLetterClick={(l) => {
+            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
+            console.log('public letter click:', l.letterId);
+          }}
+        />
       </section>
 
       {/* 친구 편지 섹션 */}
@@ -163,7 +172,14 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel letters={friendLetters} emptyMessage='친구의 편지가 아직 없어요.' />
+        <LetterCarousel
+          letters={friendLetters}
+          emptyMessage='친구의 편지가 아직 없어요.'
+          onLetterClick={(l) => {
+            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
+            console.log('friend letter click:', l.letterId);
+          }}
+        />
       </section>
     </div>
   );
