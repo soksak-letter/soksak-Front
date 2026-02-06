@@ -14,7 +14,6 @@ import {
 import { useModalStore } from '@/stores/modalStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSaveBasicInfo } from '@/hooks/onboarding/useSaveBasicInfo';
-import type { Gender, Job } from '@/types/dto/onboarding';
 
 type GenderId = GenderOption['id'];
 type JobId = JobOption['id'];
