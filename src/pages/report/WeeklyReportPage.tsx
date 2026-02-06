@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/paths';
 
 import ReportLetterCarousel from '@/components/WeeklyReport/ReportLetterCarousel';
+import type { FeedLetter } from '@/types/letter';
 
 // import StampIcon from '@/assets/icons/StampIcon.svg?react';
 
@@ -52,6 +53,14 @@ const reportMockData = [
     link: '#',
   },
 ];
+
+const reportMockLetters: FeedLetter[] = reportMockData.map((x) => ({
+  letterId: Number(x.id), // string -> number
+  title: x.title,
+  deliveredAt: '2024-02-01T00:00:00.000Z', // 화면용 임시 ISO
+  paperId: x.variant === 'pink' ? 2 : 1, // 임시 매핑 (원하는대로 바꿔도 됨)
+}));
+
 //MockData 끝
 
 export default function WeeklyReportPage() {
@@ -97,7 +106,7 @@ export default function WeeklyReportPage() {
     { key: 'calm', label: '차분함', value: 30, color: '#F3B3AE' },
     { key: 'excited', label: '설렘', value: 15, color: '#D9D9D9' },
     { key: 'other', label: '기타', value: 5, color: '#BFBFBF' },
-  ] as const;
+  ] as unknown as Parameters<typeof WeeklyEmotionDistributionCard>[0]['data'];
 
   return (
     <div className='relative isolate min-h-[100dvh] bg-[#FFEEED] overflow-x-hidden'>
@@ -222,7 +231,7 @@ export default function WeeklyReportPage() {
                   </button>
                 </div>
 
-                <ReportLetterCarousel letters={reportMockData} />
+                <ReportLetterCarousel letters={reportMockLetters} />
               </div>
             </div>
           </div>

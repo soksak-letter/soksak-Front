@@ -90,7 +90,9 @@ export default function BottomSheet({
     dragRef.current = null;
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {}
+    } catch {
+      // ignore: pointer capture may already be released
+    }
   };
 
   if (!isOpen) return null;
@@ -116,7 +118,10 @@ export default function BottomSheet({
           width: '375px',
           maxWidth: '100vw',
           height: hasFixedHeight ? currentHeight : 'auto',
-          maxHeight: hasFixedHeight ? currentHeight : undefined,
+          // maxHeight: hasFixedHeight ? currentHeight : undefined,
+          // 젠: 빌드 오류 고치기 위해 임의로 수정했습니다! 나중에 이 부분 수정 하시면서 확인해주세요~
+          maxHeight: hasFixedHeight ? maxHeightPx : undefined,
+
           animation: 'slideUp 0.3s ease-out',
           boxShadow: '0 -4px 15px rgba(0, 0, 0, 0.12)',
         }}

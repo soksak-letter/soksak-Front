@@ -2,7 +2,7 @@ import { useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getHomeSummary } from '@/api/home';
 import { getNowKSTIsoString, getTodayKstKey } from '@/utils/date';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from './auth/useCountdown';
 
 export function useHomeSummary() {
   const nowKstIso = useMemo(() => getNowKSTIsoString(), []);

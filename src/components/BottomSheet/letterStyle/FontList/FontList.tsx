@@ -1,10 +1,11 @@
 // 리스트 렌더링 (매핑 + 구분선)
-import { Divider } from './Divider';
+import { Divider } from './divider';
 import { FontItem, type FontOption } from './FontItem';
 
 interface FontListProps {
   fonts: FontOption[];
   selectedFontId: number;
+  // eslint-disable-next-line no-unused-vars
   onChange: (id: number) => void;
 }
 

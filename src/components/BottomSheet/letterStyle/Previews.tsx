@@ -8,7 +8,8 @@ export function PaperPreview({
   name: string;
 }) {
   return (
-    <div className='w-full h-full overflow-hidden'>
+    <div className='w-full h-full overflow-hidden' aria-label={name}>
+      {/* name 사용하실 거면 추후에 수정해주세요 */}
       <Preview className='w-full h-full' />
     </div>
   );

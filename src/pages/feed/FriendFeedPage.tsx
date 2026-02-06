@@ -3,7 +3,7 @@ import FeedHeader from '../../components/common/headers/FeedHeader';
 import LetterPreviewCard from '../../components/feed/LetterPreviewCard';
 import EmptyFeedCard from '../../components/feed/EmptyFeedCard';
 import FloatingButton from '../../components/common/FloatingButton';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from '@/hooks/auth/useCountdown';
 import LoadingPage from '../system/LoadingPage';
 import ErrorPage from '../system/ErrorPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';

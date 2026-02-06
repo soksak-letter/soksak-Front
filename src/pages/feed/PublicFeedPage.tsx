@@ -4,7 +4,7 @@ import LetterPreviewCard from '../../components/feed/LetterPreviewCard';
 import FloatingButton from '../../components/common/FloatingButton';
 import LoadingPage from '../system/LoadingPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
-import useCountdown from '@/hooks/useCountdown';
+import useCountdown from '@/hooks/auth/useCountdown';
 import ErrorPage from '../system/ErrorPage';
 import { useOtherPublicFeed } from '@/hooks/usePublicFeed';
 import { useCreateLike, useDeleteLike } from '@/hooks/useCreateLetterLike';

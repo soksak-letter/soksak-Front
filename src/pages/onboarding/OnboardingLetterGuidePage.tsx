@@ -26,7 +26,9 @@ export default function OnboardingLetterGuidePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // location.state + store fallback
-  const { draft, patchDraft } = useLetterStore();
+  const draft = useLetterStore((s) => s.getDraft());
+  const patchDraft = useLetterStore((s) => s.patchDraft);
+
   const title = state?.title ?? draft.title ?? '제목';
   const content = state?.content ?? draft.content ?? '';
 

@@ -11,6 +11,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStore } from '@/stores/letterStore';
 import { useLocation } from 'react-router-dom';
 import type { ToastLocationState } from '@/types/toastLocationState';
+import type { FeedLetter } from '@/types/letter';
 
 const MainPage = () => {
   const navigate = useNavigate();
