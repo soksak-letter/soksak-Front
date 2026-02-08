@@ -30,8 +30,9 @@ const MyPage = () => {
   if (isLoading) return <div className='w-[375px] mx-auto py-20 text-center'>로딩 중...</div>;
   if (isError || !response)
     return <div className='w-[375px] mx-auto py-20 text-center'>데이터를 가져오지 못했습니다.</div>;
-  // 온도값을 0~100으로 clamp
-  const safeTemp = Math.max(0, Math.min(100, response.temperatureAvg));
+  // 온도값을 0~100으로 clamp(기본이 36.5)
+  const currentTemp = response?.temperatureAvg ?? 36.5;
+  const safeTemp = Math.max(0, Math.min(100, currentTemp));
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -89,7 +90,7 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {response.interests.map((item) => {
+            {(response.interests ?? []).map((item) => {
               const emoji = getInterestEmoji(item.id);
               return (
                 <span
@@ -132,7 +133,7 @@ const MyPage = () => {
                 className='absolute ty-body5 text-[var(--color-primary-500)] -translate-x-1/2'
                 style={{ left: `${safeTemp}%` }}
               >
-                {safeTemp}도
+                {safeTemp.toFixed(1)}도
               </span>
               {/* <span className='ty-body5 text-[var(--color-text-normal)]'>100도</span> */}
             </div>
