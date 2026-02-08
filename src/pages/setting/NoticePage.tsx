@@ -110,7 +110,7 @@ export default function NoticePage() {
             불러오는 중...
           </p>
         )}
-        {isError && (
+        {!data && isError && (
           <p style={{ fontFamily: 'Pretendard', fontSize: '14px', color: '#595959' }}>
             공지사항을 불러오지 못했습니다.
           </p>
@@ -120,15 +120,18 @@ export default function NoticePage() {
             공지사항이 없습니다.
           </p>
         )}
-        {notices.map((notice, index) => (
-          <NoticeItem
-            key={notice.id}
-            title={notice.title}
-            summary={notice.summary}
-            createdAt={notice.createdAt}
-            isLast={index === notices.length - 1}
-          />
-        ))}
+        {!isLoading &&
+          !isError &&
+          notices.length > 0 &&
+          notices.map((notice, index) => (
+            <NoticeItem
+              key={notice.id}
+              title={notice.title}
+              summary={notice.summary}
+              createdAt={notice.createdAt}
+              isLast={index === notices.length - 1}
+            />
+          ))}
       </main>
     </div>
   );
