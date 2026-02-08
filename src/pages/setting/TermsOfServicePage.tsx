@@ -30,7 +30,7 @@ export default function TermsOfServicePage() {
       <main className='mx-auto w-full max-w-[375px] pb-8'>
         <div style={{ marginTop: '8px' }} className='px-9'>
           {isLoading && <p style={contentStyle}>불러오는 중...</p>}
-          {isError && <p style={contentStyle}>이용약관을 불러오지 못했습니다.</p>}
+          {!data && isError && <p style={contentStyle}>이용약관을 불러오지 못했습니다.</p>}
           {data && <p style={contentStyle}>{data.content}</p>}
         </div>
       </main>
