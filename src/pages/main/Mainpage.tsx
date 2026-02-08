@@ -55,6 +55,7 @@ const MainPage = () => {
       })) ?? [],
     [friendPublicLetters],
   );
+  const profileImageCacheBuster = useMemo(() => Date.now(), [homeSummary?.user?.profileImageUrl]);
 
   // 편지 발송 후 성공 토스트 뜨면 resetAll 실행
   useEffect(() => {
@@ -91,7 +92,7 @@ const MainPage = () => {
           timeLeft={timeLeft}
           profileImageUrl={
             homeSummary?.user?.profileImageUrl
-              ? `${homeSummary.user.profileImageUrl}?t=${Date.now()}`
+              ? `${homeSummary.user.profileImageUrl}?t=${profileImageCacheBuster}`
               : 'https://placehold.co/47x48'
           }
         />

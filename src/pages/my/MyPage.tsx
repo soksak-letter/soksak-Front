@@ -9,12 +9,16 @@ import { useActivityStore } from '@/stores/activityStore';
 import { useMyProfile } from '@/hooks/useMyProfile';
 import { ROUTES } from '@/routes/paths';
 import { getInterestEmoji } from '@/constants/interestUiMap';
+import { useMemo } from 'react';
 
 const MyPage = () => {
   const navigate = useNavigate();
   const handleProfilEedit = () => {
     return navigate(ROUTES.auth.profile);
   };
+
+  // 컴포넌트가 처음 생성될 때 한 번만 현재 시간을 저장 (캐시 버스터 고정)
+  const cacheBuster = useMemo(() => Date.now(), []);
 
   // 관심사 조회 (enabled는 true로 두면 됨)
   const { data: response, isLoading, isError } = useMyProfile();
@@ -44,20 +48,13 @@ const MyPage = () => {
           <div className='w-[90px] h-[90px] rounded-full bg-[var(--color-primary-100)] flex-shrink-0 overflow-hidden border border-[var(--color-line-normal)]'>
             {response.profileImageUrl ? (
               <img
-                src={
-                  response.profileImageUrl
-                    ? `${response.profileImageUrl}?t=${Date.now()}`
-                    : '/default-profile.png'
-                }
+                src={`${response.profileImageUrl}?t=${cacheBuster}`}
                 alt='프로필'
                 className='w-full h-full object-cover'
               />
             ) : (
-              /* 이미지가 없을 때 보여줄 기본 아이콘이나 빈 화면 */
-              <div className='w-full h-full flex items-center justify-center text-[var(--color-primary-300)]'>
-                {/* 아이콘 예시 (선택사항) */}
-                <span className='text-xs'>No Image</span>
-              </div>
+              /* 이미지가 없을 때 보여줄 빈 화면 */
+              <div className='w-full h-full flex items-center justify-center text-[var(--color-primary-300)]'></div>
             )}
           </div>
 

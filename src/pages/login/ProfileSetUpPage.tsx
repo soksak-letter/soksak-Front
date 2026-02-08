@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
@@ -24,7 +24,9 @@ const ProfileSetUpPage = () => {
   //프로필 사진 업로드 상태 관리
   const [profileImage, setProfileImage] = useState<File | null>(null); // 업로드할 파일 객체
   const [previewUrl, setPreviewUrl] = useState<string>(''); // 화면에 보여줄 미리보기 URL
+  const cacheBuster = useMemo(() => Date.now(), []);
 
+  //프로필 수정인지 프로필입력인지 확인
   const isEditMode = !!(existingProfile?.nickname || existingProfile?.profileImageUrl);
 
   // 파일 인풋 제어를 위한 ref
@@ -132,7 +134,7 @@ const ProfileSetUpPage = () => {
           <div className='w-[128px] h-[128px] bg-[var(--color-primary-100)] rounded-full mb-3 overflow-hidden'>
             {previewUrl ? (
               <img
-                src={previewUrl.startsWith('blob:') ? previewUrl : `${previewUrl}?t=${Date.now()}`}
+                src={previewUrl.startsWith('blob:') ? previewUrl : `${previewUrl}?t=${cacheBuster}`}
                 alt='프로필 미리보기'
                 className='w-full h-full object-cover'
               />
