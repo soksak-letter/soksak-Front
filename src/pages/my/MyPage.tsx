@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const handleProfilEedit = () => {
+  const handleProfileEdit = () => {
     return navigate(ROUTES.auth.profile);
   };
 
@@ -68,7 +68,7 @@ const MyPage = () => {
           <button
             type='button'
             className='flex-shrink-0 px-3 py-2 border border-[var(--color-line-normal)] rounded-xl ty-body5 text-[var(--color-text-normal)]'
-            onClick={handleProfilEedit}
+            onClick={handleProfileEdit}
           >
             프로필 수정
           </button>
