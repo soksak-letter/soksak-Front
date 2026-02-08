@@ -56,7 +56,7 @@ const MyPage = () => {
               />
             ) : (
               /* 이미지가 없을 때 보여줄 빈 화면 */
-              <div className='w-full h-full flex items-center justify-center text-[var(--color-primary-300)]'></div>
+              <div className='w-full h-full flex items-center justify-center text-[var(--color-primary-300)]' />
             )}
           </div>
 
@@ -148,7 +148,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 보낸 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {response.sentLettersCount}통
+                {response.sentLettersCount ?? 0}통
               </span>
             </div>
 
@@ -158,7 +158,7 @@ const MyPage = () => {
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 받은 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
-                {response.receivedLettersCount}통
+                {response.receivedLettersCount ?? 0}통
               </span>
             </div>
 
