@@ -10,6 +10,8 @@ import { useMyProfile } from '@/hooks/useMyProfile';
 import { ROUTES } from '@/routes/paths';
 import { getInterestEmoji } from '@/constants/interestUiMap';
 import { useMemo } from 'react';
+import ErrorPage from '../system/ErrorPage';
+import LoadingPage from '../system/LoadingPage';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -27,9 +29,8 @@ const MyPage = () => {
   const totalUsageMinutes = Math.floor(totalSeconds / 60);
 
   // 2. 로딩 및 에러 처리 (필수)
-  if (isLoading) return <div className='w-[375px] mx-auto py-20 text-center'>로딩 중...</div>;
-  if (isError || !response)
-    return <div className='w-[375px] mx-auto py-20 text-center'>데이터를 가져오지 못했습니다.</div>;
+  if (isLoading) return <LoadingPage />;
+  if (isError || !response) return <ErrorPage />;
   // 온도값을 0~100으로 clamp(기본이 36.5)
   const currentTemp = response?.temperatureAvg ?? 36.5;
   const safeTemp = Math.max(0, Math.min(100, currentTemp));
