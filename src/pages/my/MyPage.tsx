@@ -26,7 +26,7 @@ const MyPage = () => {
   if (isError || !response)
     return <div className='w-[375px] mx-auto py-20 text-center'>데이터를 가져오지 못했습니다.</div>;
   // 온도값을 0~100으로 clamp
-  const safeTemp = Math.max(0, Math.min(100, 0));
+  const safeTemp = Math.max(0, Math.min(100, response.temperatureAvg));
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -82,7 +82,7 @@ const MyPage = () => {
             <h2 className='ty-body2 text-[var(--color-text-normal)]'>현재 나의 관심사</h2>
             <button
               type='button'
-              onClick={() => navigate('/onboarding/profile-select?mode=edit')}
+              onClick={() => navigate('/onboarding/topic-select-2?mode=edit')} //라우팅 수정 필요!온보딩으로 이동이지만 확인 필요
               className='flex items-center gap-1 ty-body5 text-[var(--color-text-assistive)]'
             >
               수정
@@ -125,14 +125,14 @@ const MyPage = () => {
 
             {/* Labels */}
             <div className='relative flex justify-between mt-[6px]'>
-              <span className='ty-body5 text-[var(--color-text-normal)]'>0도</span>
+              {/* <span className='ty-body5 text-[var(--color-text-normal)]'>0도</span> */}
               <span
                 className='absolute ty-body5 text-[var(--color-primary-500)] -translate-x-1/2'
                 style={{ left: `${safeTemp}%` }}
               >
                 {safeTemp}도
               </span>
-              <span className='ty-body5 text-[var(--color-text-normal)]'>100도</span>
+              {/* <span className='ty-body5 text-[var(--color-text-normal)]'>100도</span> */}
             </div>
           </div>
 
