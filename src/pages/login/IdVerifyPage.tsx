@@ -26,7 +26,7 @@ const IdVerifyPage = () => {
             </div>
             <div>
               <p className='ty-body4 text-[var(--color-text-alternative)] mb-1'>가입일</p>
-              <p className='ty-body4 text-[var(--color-text-normal)]'>{formatDate(date, 'korean')}</p>
+              <p className='ty-body4 text-[var(--color-text-normal)]'>{formatDate(date, { format: 'korean' })}</p>
             </div>
           </div>
         </div>
