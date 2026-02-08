@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
-import { usePrivacyPolicy } from '@/hooks/setting/usePrivacyPolicy';
+import { useCommunityGuideline } from '@/hooks/setting/useCommunityGuideline';
 
 const contentStyle: CSSProperties = {
   fontFamily: 'Pretendard',
@@ -12,9 +12,9 @@ const contentStyle: CSSProperties = {
   whiteSpace: 'pre-wrap',
 };
 
-export default function PrivacyPolicyPage() {
+export default function CommunityGuidelinePage() {
   const navigate = useNavigate();
-  const { data, isLoading, isError } = usePrivacyPolicy();
+  const { data, isLoading, isError } = useCommunityGuideline();
 
   const handleBack = () => {
     navigate(-1);
@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className='min-h-screen bg-white'>
-      <SettingHeader title={data?.title ?? '개인정보 처리방침'} onBack={handleBack} />
+      <SettingHeader title={data?.title ?? '커뮤니티 가이드라인'} onBack={handleBack} />
       {/* 헤더 높이만큼 여백 */}
       <div style={{ height: '50px' }} />
 
@@ -30,7 +30,9 @@ export default function PrivacyPolicyPage() {
       <main className='mx-auto w-full max-w-[375px] pb-8'>
         <div style={{ marginTop: '8px' }} className='px-9'>
           {isLoading && <p style={contentStyle}>불러오는 중...</p>}
-          {!data && isError && <p style={contentStyle}>개인정보 처리방침을 불러오지 못했습니다.</p>}
+          {!data && isError && (
+            <p style={contentStyle}>커뮤니티 가이드라인을 불러오지 못했습니다.</p>
+          )}
           {data && <p style={contentStyle}>{data.content}</p>}
         </div>
       </main>

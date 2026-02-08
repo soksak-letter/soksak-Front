@@ -71,6 +71,7 @@ import PersonalConsentPage from './pages/setting/PersonalConsentPage';
 import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
+import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -201,6 +202,7 @@ const router = createBrowserRouter([
               { path: 'setting/notice', element: <NoticePage /> },
               { path: 'setting/terms', element: <TermsOfServicePage /> },
               { path: 'setting/privacy', element: <PrivacyPolicyPage /> },
+              { path: 'setting/guideline', element: <CommunityGuidelinePage /> },
 
               // 404 처리
               { path: '*', element: <NotFoundPage /> },
