@@ -43,7 +43,11 @@ const MyPage = () => {
           <div className='w-[90px] h-[90px] rounded-full bg-[var(--color-primary-100)] flex-shrink-0 overflow-hidden border border-[var(--color-line-normal)]'>
             {response.profileImageUrl ? (
               <img
-                src={response.profileImageUrl}
+                src={
+                  response.profileImageUrl
+                    ? `${response.profileImageUrl}?t=${Date.now()}`
+                    : '/default-profile.png'
+                }
                 alt='프로필'
                 className='w-full h-full object-cover'
               />

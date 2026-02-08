@@ -89,7 +89,11 @@ const MainPage = () => {
         <QuestionCard
           question={formattedQuestionText}
           timeLeft={timeLeft}
-          profileImageUrl={homeSummary?.user?.profileImageUrl || 'https://placehold.co/47x48'}
+          profileImageUrl={
+            homeSummary?.user?.profileImageUrl
+              ? `${homeSummary.user.profileImageUrl}?t=${Date.now()}`
+              : 'https://placehold.co/47x48'
+          }
         />
       </section>
 
