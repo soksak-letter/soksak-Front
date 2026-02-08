@@ -8,10 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/paths';
 import { patchNickname, postProfileImage } from '@/api/auth';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useMyProfile } from '@/hooks/useMyProfile';
+import { useQueryClient } from '@tanstack/react-query';
+
+const { data: existingProfile } = useMyProfile();
 
 const ProfileSetUpPage = () => {
   const navigate = useNavigate();
   const { showToast } = useGlobalToast();
+  const queryClient = useQueryClient();
   //  닉네임 입력 상태 관리
   const [nickname, setNickname] = useState('');
 
@@ -67,7 +72,7 @@ const ProfileSetUpPage = () => {
       if (profileImage) {
         await postProfileImage(profileImage);
       }
-
+      await queryClient.invalidateQueries({ queryKey: ['myProfile'] });
       // 전체 성공 시 이동
       navigate(ROUTES.onboarding.start);
     } catch (error: unknown) {
@@ -103,7 +108,13 @@ const ProfileSetUpPage = () => {
       }
     };
   }, [previewUrl]);
-
+  useEffect(() => {
+    if (existingProfile) {
+      setNickname(existingProfile.nickname);
+      setPreviewUrl(existingProfile.profileImageUrl);
+      // 이미지는 파일 객체가 아니므로 profileImage는 null 유지 (수정할 때만 담김)
+    }
+  }, [existingProfile]);
   return (
     <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>
       <div className='[&>*]:!bg-[#FAFAFA]'>
@@ -193,7 +204,7 @@ const ProfileSetUpPage = () => {
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
         <Button onClick={handleOnboarding} disabled={!isValid || isLoading}>
-          시작하기
+          {existingProfile?.nickname ? '완료' : '시작하기'}
         </Button>
       </div>
     </div>
