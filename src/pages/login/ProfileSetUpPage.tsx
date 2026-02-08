@@ -27,7 +27,9 @@ const ProfileSetUpPage = () => {
   const cacheBuster = useMemo(() => Date.now(), []);
 
   //프로필 수정인지 프로필입력인지 확인
-  const isEditMode = !!(existingProfile?.nickname || existingProfile?.profileImageUrl);
+  const isEditMode = !!(
+    existingProfile?.nickname?.trim() || existingProfile?.profileImageUrl?.trim()
+  );
 
   // 파일 인풋 제어를 위한 ref
   const fileInputRef = useRef<HTMLInputElement>(null);
