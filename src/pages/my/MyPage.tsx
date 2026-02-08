@@ -26,7 +26,7 @@ const MyPage = () => {
   if (isError || !response)
     return <div className='w-[375px] mx-auto py-20 text-center'>데이터를 가져오지 못했습니다.</div>;
   // 온도값을 0~100으로 clamp
-  const safeTemp = Math.max(0, Math.min(100, response.temperatureAvg));
+  const safeTemp = Math.max(0, Math.min(100, 0));
 
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
@@ -40,7 +40,21 @@ const MyPage = () => {
         {/* Profile Section */}
         <section className='pb-4 flex items-end gap-2'>
           {/* Avatar */}
-          <div className='w-[90px] h-[90px] rounded-full bg-[var(--color-primary-100)] flex-shrink-0' />
+          <div className='w-[90px] h-[90px] rounded-full bg-[var(--color-primary-100)] flex-shrink-0 overflow-hidden border border-[var(--color-line-normal)]'>
+            {response.profileImageUrl ? (
+              <img
+                src={response.profileImageUrl}
+                alt='프로필'
+                className='w-full h-full object-cover'
+              />
+            ) : (
+              /* 이미지가 없을 때 보여줄 기본 아이콘이나 빈 화면 */
+              <div className='w-full h-full flex items-center justify-center text-[var(--color-primary-300)]'>
+                {/* 아이콘 예시 (선택사항) */}
+                <span className='text-xs'>No Image</span>
+              </div>
+            )}
+          </div>
 
           {/* User Info */}
           <div className='flex-1 min-w-0 pb-1'>
@@ -89,25 +103,27 @@ const MyPage = () => {
           <h2 className='ty-body2 text-[var(--color-text-normal)] mb-8'>현재 나의 온도</h2>
 
           {/* Temperature Gauge */}
-          <div className='mb-8'>
-            <div className='relative h-2 bg-[var(--color-primary-100)] rounded-full'>
-              {/* Filled portion */}
-              <div
-                className='absolute left-0 top-0 h-full bg-[var(--color-primary-400)] rounded-full'
-                style={{ width: `${safeTemp}%` }}
-              />
-              {/* Indicator circle */}
-              <div
-                className='absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-[var(--color-primary-400)] rounded-full border-2 border-white shadow-[0_0_10px_rgba(0,0,0,0.1)]'
-                style={{ left: `calc(${safeTemp}% - 10px)` }}
-              />
+          <div className='mb-8 px-[16px]'>
+            <div className='px-[1px]'>
+              <div className='relative h-2 bg-[var(--color-primary-200)] rounded-full'>
+                {/* Filled portion */}
+                <div
+                  className='absolute left-0 top-0 h-full bg-[var(--color-primary-500)] rounded-full'
+                  style={{ width: `${safeTemp}%` }}
+                />
+                {/* Indicator circle */}
+                <div
+                  className='absolute top-1/2 -translate-y-1/2 w-[23px] h-[23px] bg-[var(--color-primary-500)] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]'
+                  style={{ left: `calc(${safeTemp}% - 10px)` }}
+                />
+              </div>
             </div>
 
             {/* Labels */}
-            <div className='relative flex justify-between mt-2'>
+            <div className='relative flex justify-between mt-[6px]'>
               <span className='ty-body5 text-[var(--color-text-normal)]'>0도</span>
               <span
-                className='absolute ty-body5 text-[var(--color-primary-400)] -translate-x-1/2'
+                className='absolute ty-body5 text-[var(--color-primary-500)] -translate-x-1/2'
                 style={{ left: `${safeTemp}%` }}
               >
                 {safeTemp}도
@@ -120,7 +136,7 @@ const MyPage = () => {
           <div className='flex flex-col gap-4 mt-6'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
-                <HiPaperAirplane className='w-5 h-5 text-[var(--color-primary-400)] rotate-[-45deg]' />
+                <HiPaperAirplane className='w-5 h-5 text-[var(--color-primary-500)] rotate-[-45deg]' />
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 보낸 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
@@ -130,7 +146,7 @@ const MyPage = () => {
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
-                <HiEnvelope className='w-5 h-5 text-[var(--color-primary-400)]' />
+                <HiEnvelope className='w-5 h-5 text-[var(--color-primary-500)]' />
                 <span className='ty-body5 text-[var(--color-text-normal)]'>내가 받은 편지</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
@@ -140,7 +156,7 @@ const MyPage = () => {
 
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
-                <HiClock className='w-5 h-5 text-[var(--color-primary-400)]' />
+                <HiClock className='w-5 h-5 text-[var(--color-primary-500)]' />
                 <span className='ty-body5 text-[var(--color-text-normal)]'>서비스 총 이용시간</span>
               </div>
               <span className='ty-body4 text-[var(--color-text-normal)]'>
