@@ -12,7 +12,7 @@ import { useMyProfile } from '@/hooks/useMyProfile';
 import { useQueryClient } from '@tanstack/react-query';
 
 const ProfileSetUpPage = () => {
-  const { data: existingProfile } = useMyProfile();
+  const { data: existingProfile, isPending: isProfileLoading } = useMyProfile();
   const navigate = useNavigate();
   const { showToast } = useGlobalToast();
   const queryClient = useQueryClient();
@@ -217,7 +217,7 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboarding} disabled={!isValid || isLoading}>
+        <Button onClick={handleOnboarding} disabled={!isValid || isLoading || isProfileLoading}>
           {isEditMode ? '완료' : '시작하기'}
         </Button>
       </div>
