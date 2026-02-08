@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useActivityStore } from '@/stores/activityStore';
 import { useMyProfile } from '@/hooks/useMyProfile';
 import { ROUTES } from '@/routes/paths';
+import { getInterestEmoji } from '@/constants/interestUiMap';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const MyPage = () => {
             <h2 className='ty-body2 text-[var(--color-text-normal)]'>현재 나의 관심사</h2>
             <button
               type='button'
-              onClick={() => navigate('/onboarding/topic-select-2?mode=edit')} //라우팅 수정 필요!온보딩으로 이동이지만 확인 필요
+              onClick={() => navigate('/onboarding/topic-select-2?mode=edit')}
               className='flex items-center gap-1 ty-body5 text-[var(--color-text-assistive)]'
             >
               수정
@@ -91,14 +92,18 @@ const MyPage = () => {
           </div>
 
           <div className='flex gap-2 flex-wrap justify-center'>
-            {response.interests.map((item) => (
-              <span
-                key={item.id}
-                className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
-              >
-                {item.name}
-              </span>
-            ))}
+            {response.interests.map((item) => {
+              const emoji = getInterestEmoji(item.id);
+              return (
+                <span
+                  key={item.id}
+                  className='px-5 py-2 rounded-full border border-[var(--color-line-normal)] ty-body3 text-[var(--color-text-normal)]'
+                >
+                  <span>{item.name}</span>
+                  <span aria-hidden>{emoji}</span>
+                </span>
+              );
+            })}
           </div>
         </section>
 
