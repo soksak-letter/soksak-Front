@@ -60,7 +60,7 @@ export function formatDate(
 }
 
 /**
- * @deprecated formatDate({ padded: true })를 사용하세요
+ * @deprecated formatDate(iso, { padded: true })를 사용하세요
  */
 export function getParseDate(iso: string): string {
   return formatDate(iso, { padded: true });
