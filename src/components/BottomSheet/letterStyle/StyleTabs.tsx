@@ -8,7 +8,7 @@ type StyleTabProps = {
 
 const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
   return (
-    <div className='sticky top-0 z-10 bg-white'>
+    <div className='sticky top-0 z-10 bg-white pt-1 pb-0.5'>
       <div className='flex justify-center gap-23 mb-7'>
         <button
           onClick={() => onChangeTab('font')}
@@ -25,8 +25,8 @@ const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
           onClick={() => onChangeTab('paper')}
           className={
             selectedTab === 'paper'
-              ? 'ty-body3 text-[var(--color-primary-500)]'
-              : 'ty-body3 text-black/40'
+              ? 'ty-body3 text-[var(--color-primary-500)] mr-1'
+              : 'ty-body3 text-black/40 mr-1'
           }
         >
           색상
@@ -36,8 +36,8 @@ const StyleTabs = ({ selectedTab, onChangeTab }: StyleTabProps) => {
           onClick={() => onChangeTab('stamp')}
           className={
             selectedTab === 'stamp'
-              ? 'ty-body3 text-[var(--color-primary-500)]'
-              : 'ty-body3 text-black/40'
+              ? 'ty-body3 text-[var(--color-primary-500)] mr-1'
+              : 'ty-body3 text-black/40 mr-1'
           }
         >
           우표

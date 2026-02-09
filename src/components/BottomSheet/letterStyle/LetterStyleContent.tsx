@@ -79,7 +79,7 @@ export default function LetterStyleContent({
 
       {/* 편지지 그리드 뷰 */}
       {selectedTab === 'paper' && (
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-cols-3 gap-2'>
           {paperViewModels.map((p) => (
             <button
               key={p.id}
