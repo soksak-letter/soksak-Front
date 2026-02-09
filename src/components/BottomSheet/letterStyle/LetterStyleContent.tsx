@@ -87,7 +87,7 @@ export default function LetterStyleContent({
               onClick={() => onChange?.({ paperId: p.id })}
               className={[
                 'relative overflow-hidden shadow-md transition-all duration-200',
-                'scale-90 -rotate-2',
+                'scale-80 -rotate-2',
               ].join(' ')}
               style={
                 value.paperId === p.id
