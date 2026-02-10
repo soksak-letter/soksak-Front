@@ -11,7 +11,8 @@ import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
+import { getAnonNickname } from '@/utils/anonNickname';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -51,8 +52,8 @@ export default function LetterInboxOtherPage() {
         sessionId: x.sessionId,
         senderId: x.sender.id,
         question: x.lastLetterTitle,
-        senderName: x.sender.nickname,
-        receivedAt: getParseDate(deliveredAt),
+        senderName: getAnonNickname(x.sender.id),
+        receivedAt: formatDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
         letterCount: x.sender.letterCount,
         isUnread: false,

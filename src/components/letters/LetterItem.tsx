@@ -1,6 +1,6 @@
 import { DEFAULT_THEME, makeEnvelopeLineColor, PAPER_THEME } from '@/constants/paperTheme';
 import type { FeedLetter } from '@/types/letter';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
 
 interface LetterItemProps {
   letter: FeedLetter;
@@ -89,7 +89,7 @@ export default function LetterItem({ letter, onClick }: LetterItemProps) {
               whiteSpace: 'nowrap',
             }}
           >
-            {getParseDate(letter.deliveredAt)}
+            {formatDate(letter.deliveredAt)}
           </p>
         </div>
       </div>

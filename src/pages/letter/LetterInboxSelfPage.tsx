@@ -10,6 +10,7 @@ import { useSelfMailbox } from '@/hooks/mails/useSelfMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { formatDate } from '@/utils/date';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -23,19 +24,6 @@ type InboxSelfLetterItem = {
   paperId: number;
   stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
   stampUrl: string;
-};
-
-const parseDate = (input: string | null | undefined) => {
-  if (!input) return '-';
-
-  const d = new Date(input);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxSelfPage() {
@@ -54,7 +42,7 @@ export default function LetterInboxSelfPage() {
       letterId: x.id,
       questionId: x.questionId,
       title: x.title,
-      receivedAt: parseDate(x.createdAt),
+      receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
       isUnread: false,
       paperId: x.paperId + 1,

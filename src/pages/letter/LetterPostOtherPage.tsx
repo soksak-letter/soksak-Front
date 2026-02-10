@@ -9,7 +9,7 @@ import { Button } from '@/components/common/Button';
 import { LoadingDots } from '@/components/LoadingDots';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
 
 type PostItem = {
   letterId: number;
@@ -42,7 +42,7 @@ export default function LetterPostOtherPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: getParseDate(l.deliveredAt),
+      dateText: formatDate(l.deliveredAt),
       isMine: l.isMine,
       isUnread: l.readAt === null,
       paperId: l.design?.paperId ?? 0,
