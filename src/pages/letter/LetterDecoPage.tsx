@@ -79,6 +79,30 @@ function LetterDecoPage() {
   }, []);
   const closeSheet = () => setIsOpen(false);
 
+  // body를 고정해서 배경 스크롤 막기
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const scrollY = window.scrollY;
+
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+
+    return () => {
+      const y = Math.abs(parseInt(document.body.style.top || '0', 10));
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+
+      window.scrollTo(0, y);
+    };
+  }, [isOpen]);
+
   // 잘못된 접근 방어 (URL로 직접 접근, 작성 흐름 없이 들어온 경우)
   useEffect(() => {
     if (!safeMode) {

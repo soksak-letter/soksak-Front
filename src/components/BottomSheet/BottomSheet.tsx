@@ -84,14 +84,16 @@ export default function BottomSheet({
     setCurrentHeight(clamped);
   };
 
-  const onPointerUpHandle = (e: React.PointerEvent) => {
+  const endDrag = (e: React.PointerEvent) => {
     if (!draggable || !hasFixedHeight) return;
 
+    setIsDragging(false);
     dragRef.current = null;
+
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {
-      // ignore: pointer capture may already be released
+      // ignore
     }
   };
 
@@ -113,25 +115,33 @@ export default function BottomSheet({
       {/* BottomSheet */}
       <div
         ref={sheetRef}
-        className='fixed bottom-0 left-1/2 -translate-x-1/2 bg-white rounded-t-2xl z-50 transform transition-transform duration-300 ease-out'
+        className={[
+          'fixed bottom-0 left-1/2 -translate-x-1/2 bg-white rounded-t-2xl z-50',
+          'transition-transform duration-300 ease-out',
+          isOpen ? 'translate-y-0' : 'translate-y-full',
+        ].join(' ')}
         style={{
           width: '375px',
           maxWidth: '100vw',
           height: hasFixedHeight ? currentHeight : 'auto',
-          // maxHeight: hasFixedHeight ? currentHeight : undefined,
-          // 젠: 빌드 오류 고치기 위해 임의로 수정했습니다! 나중에 이 부분 수정 하시면서 확인해주세요~
           maxHeight: hasFixedHeight ? maxHeightPx : undefined,
 
-          animation: 'slideUp 0.3s ease-out',
           boxShadow: '0 -4px 15px rgba(0, 0, 0, 0.12)',
+
+          willChange: 'transform',
         }}
       >
         {/* 드래그 핸들 */}
         <div
           className='flex justify-center py-3 cursor-grab'
+          style={{
+            // pointer 이벤트는 드래그에 집중 (핸들에서만)
+            touchAction: 'none',
+          }}
           onPointerDown={onPointerDownHandle}
           onPointerMove={onPointerMoveHandle}
-          onPointerUp={onPointerUpHandle}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
         >
           <div className='w-14 h-1 bg-[var(--color-text-assistive)] rounded-full' />
         </div>
@@ -149,22 +159,15 @@ export default function BottomSheet({
           style={{
             height: contentHeight,
             overflow: isDragging ? 'hidden' : 'auto',
+
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain',
+            touchAction: 'pan-y',
           }}
         >
           {children}
         </div>
       </div>
-
-      <style>{`
-        @keyframes slideUp {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </>
   );
 }
