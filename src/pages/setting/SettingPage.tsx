@@ -27,7 +27,7 @@ export default function SettingPage() {
     navigate(-1);
   };
   return (
-    <div className='min-h-dvh bg-[#FAFAFA]'>
+    <div className='min-h-dvh bg-[#FAFAFA]!'>
       <div>
         <SettingHeader title='설정' onBack={handleBack} />
         {/* 헤더 높이만큼 여백 */}
