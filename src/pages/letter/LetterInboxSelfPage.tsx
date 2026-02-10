@@ -16,13 +16,13 @@ type SortOrder = 'latest' | 'oldest';
 
 type InboxSelfLetterItem = {
   letterId: number;
-  questionId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  questionId: number;
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
-  stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  stampId: number;
   stampUrl: string;
 };
 
@@ -124,7 +124,7 @@ export default function LetterInboxSelfPage() {
                 </Button>
               </div>
             ) : /* 3) 비었을 때 */ isEmpty ? (
-              <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+              <div className='mt-8 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                 검색 결과가 없어요
               </div>
             ) : (

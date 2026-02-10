@@ -21,7 +21,7 @@ type InboxOtherLetterItem = {
   sessionId: number;
   senderId: number; // 상대방 userId (신고/차단 시 필요)
   question: string;
-  senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
+  senderName: string; // 랜덤 익명 닉네임
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   letterCount: number;
@@ -109,6 +109,7 @@ export default function LetterInboxOtherPage() {
       <main className='px-5 pb-[95px]'>
         <div className='mx-auto w-full max-w-[343px]'>
           <LetterInboxTabs value={tab} onChange={handleTabChange} />
+
           {/* 검색 */}
           <div className='mt-[16px] flex items-center gap-3'>
             <div className='flex h-11 flex-1 w-[229px] items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
