@@ -8,8 +8,10 @@ import { useAllInterests } from '@/hooks/onboarding/useAllInterests';
 import { useMyInterests } from '@/hooks/onboarding/useMyInterests';
 import { useSaveInterests } from '@/hooks/onboarding/useSaveInterests';
 import { getInterestEmoji } from '@/constants/interestUiMap';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function OnboardingTopicSelectPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -53,8 +55,9 @@ export default function OnboardingTopicSelectPage() {
     saveInterests.mutate(
       { interestIds: selectedArray },
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           if (res.resultType === 'SUCCESS') {
+            await queryClient.invalidateQueries({ queryKey: ['myProfile'] }); // 마이페이지가 사용하는 데이터를 무효화하여 새로 가져옴
             if (isEdit) {
               navigate('/my/my-page', { replace: true });
             } else {

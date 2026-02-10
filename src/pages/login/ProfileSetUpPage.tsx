@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button';
 import BackHeader from '@/components/common/headers/BackHeader';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Question from '@/assets/icons/Question.svg?react';
 import { FaCamera } from 'react-icons/fa';
 import { validate } from '@/utils/validate';
@@ -8,10 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/paths';
 import { patchNickname, postProfileImage } from '@/api/auth';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useMyProfile } from '@/hooks/useMyProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ProfileSetUpPage = () => {
+  const { data: existingProfile, isPending: isProfileLoading } = useMyProfile();
   const navigate = useNavigate();
   const { showToast } = useGlobalToast();
+  const queryClient = useQueryClient();
   //  닉네임 입력 상태 관리
   const [nickname, setNickname] = useState('');
 
@@ -20,6 +24,12 @@ const ProfileSetUpPage = () => {
   //프로필 사진 업로드 상태 관리
   const [profileImage, setProfileImage] = useState<File | null>(null); // 업로드할 파일 객체
   const [previewUrl, setPreviewUrl] = useState<string>(''); // 화면에 보여줄 미리보기 URL
+  const cacheBuster = useMemo(() => Date.now(), []);
+
+  //프로필 수정인지 프로필입력인지 확인
+  const isEditMode = !!(
+    existingProfile?.nickname?.trim() || existingProfile?.profileImageUrl?.trim()
+  );
 
   // 파일 인풋 제어를 위한 ref
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,9 +77,14 @@ const ProfileSetUpPage = () => {
       if (profileImage) {
         await postProfileImage(profileImage);
       }
+      await queryClient.invalidateQueries({ queryKey: ['myProfile'] });
 
-      // 전체 성공 시 이동
-      navigate(ROUTES.onboarding.start);
+      // ✅ 조건에 따른 페이지 이동
+      if (isEditMode) {
+        navigate(ROUTES.my.mypage); // 기존 유저는 마이페이지로
+      } else {
+        navigate(ROUTES.onboarding.start); // 신규 유저는 온보딩으로
+      }
     } catch (error: unknown) {
       // 상세한 에러 피드백
       showToast('설정 중 에러가 발생했습니다.', 'error');
@@ -103,7 +118,13 @@ const ProfileSetUpPage = () => {
       }
     };
   }, [previewUrl]);
-
+  useEffect(() => {
+    if (existingProfile) {
+      setNickname(existingProfile.nickname || '');
+      setPreviewUrl(existingProfile.profileImageUrl || '');
+      // 이미지는 파일 객체가 아니므로 profileImage는 null 유지 (수정할 때만 담김)
+    }
+  }, [existingProfile]);
   return (
     <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>
       <div className='[&>*]:!bg-[#FAFAFA]'>
@@ -114,7 +135,11 @@ const ProfileSetUpPage = () => {
         <div className='relative'>
           <div className='w-[128px] h-[128px] bg-[var(--color-primary-100)] rounded-full mb-3 overflow-hidden'>
             {previewUrl ? (
-              <img src={previewUrl} alt='프로필 미리보기' className='w-full h-full object-cover' />
+              <img
+                src={previewUrl.startsWith('blob:') ? previewUrl : `${previewUrl}?t=${cacheBuster}`}
+                alt='프로필 미리보기'
+                className='w-full h-full object-cover'
+              />
             ) : (
               <div className='w-full h-full bg-[var(--color-primary-100)]' />
             )}
@@ -192,8 +217,8 @@ const ProfileSetUpPage = () => {
       </div>
 
       <div className='fixed bottom-[40px] left-0 right-0 mx-auto w-full max-w-[375px] px-4'>
-        <Button onClick={handleOnboarding} disabled={!isValid || isLoading}>
-          시작하기
+        <Button onClick={handleOnboarding} disabled={!isValid || isLoading || isProfileLoading}>
+          {isEditMode ? '완료' : '시작하기'}
         </Button>
       </div>
     </div>
