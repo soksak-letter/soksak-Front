@@ -161,14 +161,14 @@ export default function FriendInboxPage() {
             })}
 
           {isEmptyFriends && (
-            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
+            <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
               아직 친구가 없어요
             </div>
           )}
 
           {isEmptySearch && (
-            <div className='mt-8 px-4 py-10 text-center ty-body3 text-[var(--color-text-assistive)]'>
-              검색 결과가 없어요
+            <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+              검색 결과가 없\
             </div>
           )}
         </div>

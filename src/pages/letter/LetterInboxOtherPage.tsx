@@ -198,7 +198,7 @@ export default function LetterInboxOtherPage() {
                   );
                 })}
                 {isEmpty && (
-                  <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                     검색 결과가 없어요
                   </div>
                 )}
