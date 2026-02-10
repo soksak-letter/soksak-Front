@@ -51,8 +51,7 @@ export default function FloatingButton({
           justifyContent: 'center',
           paddingTop: '16px',
           paddingBottom: '16px',
-          boxShadow:
-            '0px 0px 10px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)',
           pointerEvents: 'auto',
         }}
       >

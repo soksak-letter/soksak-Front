@@ -47,9 +47,7 @@ export function formatDate(
   if (Number.isNaN(date.getTime())) return fallback;
 
   const year = date.getFullYear();
-  const month = padded
-    ? String(date.getMonth() + 1).padStart(2, '0')
-    : String(date.getMonth() + 1);
+  const month = padded ? String(date.getMonth() + 1).padStart(2, '0') : String(date.getMonth() + 1);
   const day = padded ? String(date.getDate()).padStart(2, '0') : String(date.getDate());
 
   if (format === 'korean') {
@@ -57,13 +55,6 @@ export function formatDate(
   }
 
   return `${year}.${month}.${day}`;
-}
-
-/**
- * @deprecated formatDate(iso, { padded: true })를 사용하세요
- */
-export function getParseDate(iso: string): string {
-  return formatDate(iso, { padded: true });
 }
 
 // UI 파싱용 (yyyy.mm.dd hh:mm am|pm)
