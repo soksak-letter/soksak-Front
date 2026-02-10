@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 interface QuestionCardProps {
   question: string;
   timeLeft: string;
@@ -5,6 +7,12 @@ interface QuestionCardProps {
 }
 
 export default function QuestionCard({ question, timeLeft, profileImageUrl }: QuestionCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/my/my-page');
+  };
+
   return (
     <div
       className='w-full px-4 py-2.5'
@@ -19,24 +27,9 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
           <h2 className='whitespace-pre-line ty-title2'>{question}</h2>
 
           {/* 타이머 */}
-          <p
-            style={{
-              fontFamily: 'Pretendard',
-              fontWeight: 500,
-              fontSize: '16px',
-              lineHeight: '25.6px',
-              color: '#000000',
-            }}
-          >
-            <span
-              style={{
-                fontWeight: 600,
-                color: '#F22619', // rgb(242, 38, 25) - 피그마: rgb(0.950, 0.150, 0.110)
-              }}
-            >
-              {timeLeft}
-            </span>{' '}
-            후에 질문이 사라져요.
+          <p className='ty-body2 text-[var(--color-primary-heavy)]'>
+            <span className='text-[var(--color-primary-500)]'>{timeLeft}</span> 후에 질문이
+            사라져요.
           </p>
         </div>
 
@@ -50,7 +43,12 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
               border: '0.5px solid #E2E2E2',
             }}
           >
-            <img src={profileImageUrl} alt='프로필' className='w-full h-full object-cover' />
+            <img
+              src={profileImageUrl}
+              alt='프로필'
+              className='w-full h-full object-cover cursor-pointer'
+              onClick={handleClick}
+            />
           </div>
         )}
       </div>

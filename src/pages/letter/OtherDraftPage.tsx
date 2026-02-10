@@ -109,7 +109,7 @@ const OtherDraftPage = () => {
       />
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
         <div className='ty-title3'>
-          <span className='text-black'>우리에게 남은 편지 횟수는 </span>
+          <span className='text-[var(--color-primary-heavy)]'>우리에게 남은 편지 횟수는 </span>
           <span className='text-[var(--color-primary-500)]'>{letterLeft}회</span>
         </div>
         {/* daily question */}
