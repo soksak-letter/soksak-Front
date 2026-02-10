@@ -109,8 +109,10 @@ const SignUpPage = () => {
               onBlur={handleBlur}
               placeholder='이메일'
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
-              px-4 border-[1px]  rounded-lg 
-              outline-none focus:border-[var(--color-grey-800)] ${getEmailBorderColor()}`}
+               px-4 border-[1px]  rounded-lg 
+              outline-none focus:border-[var(--color-grey-800)] 
+              ${form.email ? 'ty-body5' : 'ty-detailMedium'} 
+              ${getEmailBorderColor()}`}
             />
             <Button
               color={
@@ -154,7 +156,9 @@ const SignUpPage = () => {
             onBlur={handleUsernameBlur}
             placeholder='아이디'
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] 
-              px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)] ${getBorderColor(validations.username.success, form.username)}`}
+            ty-body5 px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)] 
+            ${form.username ? 'ty-body5' : 'ty-detailMedium'} 
+            ${getBorderColor(validations.username.success, form.username)}`}
           />
           <p
             className={`px-[3px] ty-detail ${
@@ -184,8 +188,10 @@ const SignUpPage = () => {
               onFocus={handleFocus('password')} //입력시
               onBlur={handleBlur} //입력완료 나가서
               placeholder='비밀번호'
-              className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
-                focus:border-[var(--color-grey-800)] outline-none ${getBorderColor(validations.password.success, form.password)}`}
+              className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] ty-body5  px-4 border-[1px] rounded-lg 
+                focus:border-[var(--color-grey-800)] outline-none 
+                ${form.password ? 'ty-body5' : 'ty-detailMedium'}
+                ${getBorderColor(validations.password.success, form.password)}`}
             />
             <p
               className={`px-[3px]  ty-detail mb-[4px] 
@@ -209,7 +215,9 @@ const SignUpPage = () => {
               onBlur={handleBlur}
               placeholder='비밀번호 확인'
               className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] 
-                rounded-lg outline-none focus:border-[var(--color-grey-800)] ${getBorderColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
+                rounded-lg outline-none focus:border-[var(--color-grey-800)] 
+                ${form.passwordConfirm ? 'ty-body5' : 'ty-detailMedium'}
+                ${getBorderColor(validations.passwordConfirm.success, form.passwordConfirm)}`}
             />
             {/*  안내 문구 하나로 통합 */}
             <p
@@ -236,7 +244,9 @@ const SignUpPage = () => {
             onBlur={handleBlur}
             placeholder='이름'
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] 
-              focus:border-[var(--color-grey-800)] rounded-lg outline-none ${getBorderColor(validations.name.success, form.name)}`}
+              focus:border-[var(--color-grey-800)] rounded-lg outline-none
+              ${form.name ? 'ty-body5' : 'ty-detailMedium'} 
+              ${getBorderColor(validations.name.success, form.name)}`}
           />
           <p
             className={`px-[3px] mt-1 ty-detail ${getMessageColor(validations.name.success, form.name)}`}
@@ -256,7 +266,9 @@ const SignUpPage = () => {
             onBlur={handleBlur}
             placeholder='휴대폰 번호'
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
-              outline-none focus:border-[var(--color-grey-800)] ${getBorderColor(validations.phone.success, form.phone)}`}
+              outline-none focus:border-[var(--color-grey-800)] 
+              ${form.phone ? 'ty-body5' : 'ty-detailMedium'}
+              ${getBorderColor(validations.phone.success, form.phone)}`}
           />
           <p
             className={`px-[3px] ty-detail 

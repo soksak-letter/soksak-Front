@@ -73,6 +73,7 @@ const PwFindPage = () => {
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg border-[var(--color-grey-100)]
               outline-none 
+              ${email ? 'ty-body5' : 'ty-detailMedium'}
               ${
                 // 1. 성공 (그린): 존재하는 이메일일 때
                 apiStatus === 'success'
@@ -117,11 +118,13 @@ const PwFindPage = () => {
                   value={authCode}
                   onChange={handleAuthCodeChange}
                   placeholder='인증번호 6자리 입력'
-                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)] ${
-                    !isAuthVerified
-                      ? 'border-[var(--color-grey-100)]'
-                      : 'border-[var(--color-status-positive)]'
-                  }`}
+                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)]
+                    ${authCode ? 'ty-body5' : 'ty-detailMedium'}
+                     ${
+                       !isAuthVerified
+                         ? 'border-[var(--color-grey-100)]'
+                         : 'border-[var(--color-status-positive)]'
+                     }`}
                 />
                 {/* 타이머 (인풋창 내부 우측) */}
                 {!isAuthVerified && (
