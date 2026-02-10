@@ -133,14 +133,7 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={otherLetters}
-          emptyMessage='현재 공개된 편지가 더이상 없어요.'
-          onLetterClick={(l) => {
-            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
-            console.log('public letter click:', l.letterId);
-          }}
-        />
+        <LetterCarousel letters={otherLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
       </section>
 
       {/* 친구 편지 섹션 */}
@@ -166,14 +159,7 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={friendLetters}
-          emptyMessage='친구의 편지가 아직 없어요.'
-          onLetterClick={(l) => {
-            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
-            console.log('friend letter click:', l.letterId);
-          }}
-        />
+        <LetterCarousel letters={friendLetters} emptyMessage='친구의 편지가 아직 없어요.' />
       </section>
     </div>
   );
