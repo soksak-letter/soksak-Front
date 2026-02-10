@@ -84,7 +84,7 @@ const MainPage = () => {
   }
 
   return (
-    <div className='min-h-dvh bg-white pb-22 pt-5'>
+    <div className='min-h-dvh bg-[var(--color-bg-500)] pb-22 pt-5'>
       {/* 오늘의 질문 섹션 */}
       <section className='ty-title2'>
         <QuestionCard
@@ -119,10 +119,10 @@ const MainPage = () => {
       <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
-          <h2 className='text-base font-semibold text-[#171717]'>공개 편지</h2>
+          <h2 className='ty-body2'>공개 편지</h2>
           <button
             onClick={() => navigate('/feed/public-all')}
-            className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
+            className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
           >
             <span>전체보기</span>
             <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>
@@ -152,10 +152,10 @@ const MainPage = () => {
       <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
-          <h2 className='text-base font-semibold text-[#171717]'>친구 편지</h2>
+          <h2 className='ty-body2'>친구 편지</h2>
           <button
             onClick={() => navigate('/feed/friend-all')}
-            className='flex items-center gap-2 text-sm font-medium text-[#595959] hover:text-gray-700 transition-colors'
+            className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
           >
             <span>전체보기</span>
             <svg width='12' height='12' viewBox='0 0 12 12' fill='none' className='rotate-180'>

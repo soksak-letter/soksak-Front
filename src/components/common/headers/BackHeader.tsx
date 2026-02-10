@@ -22,7 +22,7 @@ const BackHeader = ({ title, rightElement, titleClassName, onBack }: Props) => {
   };
 
   return (
-    <Header className='h-[68px]'>
+    <Header className='h-[68px] bg-[var(--color-bg-500)]'>
       {/* 1. 뒤로가기 버튼 (왼쪽 고정) */}
       <button
         type='button'
