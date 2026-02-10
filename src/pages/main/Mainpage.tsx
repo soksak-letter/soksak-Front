@@ -83,7 +83,7 @@ const MainPage = () => {
   }
 
   return (
-    <div className='min-h-dvh bg-white pb-22 pt-5'>
+    <div className='min-h-dvh bg-[var(--color-bg-500)] pb-22 pt-5'>
       {/* 오늘의 질문 섹션 */}
       <section className='ty-title2'>
         <QuestionCard
