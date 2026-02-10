@@ -1,4 +1,4 @@
-import { createRandomName } from '@/utils/nicknameGenerator';
+import { createRandomNameWithNumber } from '@/utils/nicknameGenerator';
 
 const STORAGE_KEY = 'anon_nickname_map_v1';
 
@@ -30,7 +30,7 @@ export const getAnonNickname = (key: number | string): string => {
 
   if (map[k]) return map[k];
 
-  const name = createRandomName();
+  const name = createRandomNameWithNumber();
   map[k] = name;
   saveMap(map);
 

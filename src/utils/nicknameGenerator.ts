@@ -127,16 +127,10 @@ export const createRandomName = (): string => {
  * @param {boolean} includeNumber 숫자 포함 여부 (기본값 : false)
  * @returns {string} 랜덤 닉네임 (선택적으로 숫자 포함)
  */
-export const createRandomNameWithNumber = (includeNumber: boolean = false): string => {
+export const createRandomNameWithNumber = (): string => {
   const baseName = createRandomName();
-
-  if (includeNumber) {
-    // 1부터 99 사이의 랜덤 숫자 생성
-    const randomNumber = Math.floor(Math.random() * 99) + 1;
-    return `${baseName}${randomNumber}`;
-  }
-
-  return baseName;
+  const randomNumber = Math.floor(Math.random() * 90) + 10;
+  return `${baseName}${randomNumber}`;
 };
 
 export default createRandomName;
