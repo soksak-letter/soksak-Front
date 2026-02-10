@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import ToggleSwitch from '@/components/common/ToggleSwitch';
@@ -33,8 +33,8 @@ const OtherDraftPage = () => {
   // SenderName 불러오기
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
 
-  // TODO : 남은 편지 횟수 처리 필요
-  const letterLeft = 4;
+  const { state } = useLocation();
+  const remainingCount = state?.remainingCount ?? 0;
 
   // questionId 저장
   useEffect(() => {
@@ -110,7 +110,7 @@ const OtherDraftPage = () => {
       <div className='flex flex-col items-start p-4 -mt-3 gap-3'>
         <div className='ty-title3'>
           <span className='text-[var(--color-primary-heavy)]'>우리에게 남은 편지 횟수는 </span>
-          <span className='text-[var(--color-primary-500)]'>{letterLeft}회</span>
+          <span className='text-[var(--color-primary-500)]'>{remainingCount}회</span>
         </div>
         {/* daily question */}
         <DailyQuestionBox
