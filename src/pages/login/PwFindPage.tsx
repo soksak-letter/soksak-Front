@@ -56,7 +56,7 @@ const PwFindPage = () => {
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>비밀번호 재설정을 위해 본인 인증이 필요해요.</p>
-        <p className='ty-body4'>이메일로 전송받은 인증번호를 확인해주세요.</p>
+        <p className='ty-body5'>이메일로 전송받은 인증번호를 확인해주세요.</p>
       </div>
 
       <div className='flex flex-col h-[180px] gap-[8px]'>

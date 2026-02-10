@@ -54,7 +54,7 @@ const IdFindPage = () => {
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>속삭편지에 등록된 아이디를 찾아요.</p>
-        <p className='ty-body4'>이메일로 전송받은 인증번호를 확인해주세요.</p>
+        <p className='ty-body5'>이메일로 전송받은 인증번호를 확인해주세요.</p>
       </div>
 
       <div className='flex flex-col h-[180px] gap-[8px]'>
