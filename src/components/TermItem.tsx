@@ -10,13 +10,13 @@ interface TermItemProps {
 
 const TermItem = ({ label, checked, onToggle, onViewClick }: TermItemProps) => {
   return (
-    <div className='flex justify-between items-center h-[24px]'>
+    <div className='flex justify-between items-center h-[24px] w-full '>
       {/* 개별 항목 컴포넌트*/}
       <div className='flex items-center cursor-pointer' onClick={onToggle}>
-        <div className='mr-2'>{checked ? <ToastCheck /> : <CheckBlank />}</div>
-        <span className='ty-body4 text-[#171717]'>{label}</span>
+        <div className='mr-[8px]'>{checked ? <ToastCheck /> : <CheckBlank />}</div>
+        <span className='ty-body5 text-[#171717]'>{label}</span>
       </div>
-      {onViewClick && (
+      {onViewClick ? (
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -26,6 +26,8 @@ const TermItem = ({ label, checked, onToggle, onViewClick }: TermItemProps) => {
         >
           보기
         </button>
+      ) : (
+        <div />
       )}
     </div>
   );
