@@ -50,7 +50,7 @@ const IdFindPage = () => {
     return null;
   };
   return (
-    <div className='relative flex flex-col h-full'>
+    <div className='relative flex flex-col m'>
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>속삭편지에 등록된 아이디를 찾아요.</p>
