@@ -21,18 +21,8 @@ export default function LetterJourney({
   return (
     <div className='w-full px-4 py-2.5'>
       {/* 헤더 */}
-      <div className='flex items-center justify-between mb-3'>
-        <h3
-          style={{
-            fontFamily: 'Pretendard',
-            fontWeight: 600,
-            fontSize: '16px',
-            lineHeight: '25.6px',
-            color: '#000000',
-          }}
-        >
-          {userName}의 편지 여행
-        </h3>
+      <div className='flex items-center justify-between mb-3 ty-body2 text-[var(--color-text-normal)]'>
+        {userName}의 편지 여행
       </div>
 
       {/* 전체 컨테이너 */}
@@ -73,23 +63,8 @@ export default function LetterJourney({
 
         {/* 기간 태그 */}
         <div className='mb-[5px]'>
-          <div
-            className='inline-block px-2.5 py-0.5 rounded-2xl'
-            style={{
-              backgroundColor: '#F55449', // rgb(245, 84, 73)
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 400,
-                fontSize: '12px',
-                lineHeight: '19.2px',
-                color: '#FFFFFF',
-              }}
-            >
-              {weekLabel}
-            </span>
+          <div className='inline-block px-2.5 py-0.5 rounded-2xl bg-[var(--color-primary-500)]'>
+            <span className='ty-detailMedium text-white'>{weekLabel}</span>
           </div>
         </div>
 
@@ -104,94 +79,33 @@ export default function LetterJourney({
           >
             {/* 내가 받은 편지 */}
             <div className='flex items-center gap-1.5'>
-              <span
-                style={{
-                  fontFamily: 'Pretendard',
-                  fontWeight: 400,
-                  fontSize: '12px',
-                  lineHeight: '19.2px',
-                  color: '#000000',
-                }}
-              >
+              <span className='ty-detailMedium text-[var(--color-text-normal)]'>
                 내가 받은 편지
               </span>
-              <span
-                style={{
-                  fontFamily: 'Pretendard',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '23.8px',
-                  color: '#F55449',
-                }}
-              >
-                {receivedCount}통
-              </span>
+              <span className='ty-body4 text-[var(--color-primary-500)]'>{receivedCount}통</span>
             </div>
 
             {/* 내가 보낸 편지 */}
             <div className='flex items-center gap-1.5'>
-              <span
-                style={{
-                  fontFamily: 'Pretendard',
-                  fontWeight: 400,
-                  fontSize: '12px',
-                  lineHeight: '19.2px',
-                  color: '#000000',
-                }}
-              >
+              <span className='ty-detailMedium text-[var(--color-text-normal)]'>
                 내가 보낸 편지
               </span>
-              <span
-                style={{
-                  fontFamily: 'Pretendard',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '23.8px',
-                  color: '#F55449',
-                }}
-              >
-                {sentCount}통
-              </span>
+              <span className='ty-body4 text-[var(--color-primary-500)]'>{sentCount}통</span>
             </div>
           </div>
 
           {/* 총 편지 수 */}
           <div className='flex items-center justify-center gap-1.5 py-1 mt-1'>
-            <span
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '23.8px',
-                color: '#000000',
-              }}
-            >
-              그동안 내가 보낸 편지
-            </span>
-            <span
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 600,
-                fontSize: '16px',
-                lineHeight: '25.6px',
-                color: '#F55449',
-              }}
-            >
-              총 {totalCount}통
-            </span>
+            <span className='ty-body4 text-[var(--color-text-normal)]'>그동안 내가 보낸 편지</span>
+            <span className='ty-body2 text-[var(--color-primary-500)]'>총 {totalCount}통</span>
           </div>
         </div>
 
         {/* 진행 메시지 */}
         <div className='flex items-center justify-center gap-2 mt-1'>
           <p
-            className='text-center'
+            className='text-center ty-detailMedium text-[var(--color-text-alternative)]'
             style={{
-              fontFamily: 'Pretendard',
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '19.2px',
-              color: '#595959',
               maxWidth: '219px',
               whiteSpace: 'pre-line',
             }}
@@ -199,7 +113,7 @@ export default function LetterJourney({
             {progressMessage}
           </p>
           <div className='flex-shrink-0'>
-            <IoPlanet size={24} color='#F55449' />
+            <IoPlanet className='w-6 h-6 text-[var(--color-primary-500)]' />
           </div>
         </div>
       </div>

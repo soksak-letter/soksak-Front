@@ -69,7 +69,7 @@ export default function FriendFeedPage() {
   const formattedQuestionText = (questionData?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
-    <div className='min-h-dvh pb-24' style={{ backgroundColor: '#FAFAFA' }}>
+    <div className='min-h-dvh pb-24 bg-[var(--color-bg-500)]'>
       {/* 고정 상단바 */}
       <FeedHeader title='친구 편지' />
 
@@ -78,12 +78,12 @@ export default function FriendFeedPage() {
 
       {/* 상단 질문 섹션 */}
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
+        <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
           {formattedQuestionText}
         </p>
         <div className='flex items-center ty-body2'>
-          <span className='text-[#F2261C]'>{mmss}</span>
-          <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+          <span className='text-[var(--color-primary-500)]'>{mmss}</span>
+          <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ export default function FriendFeedPage() {
       </section>
 
       {/* 플로팅 버튼 */}
-      <FloatingButton text='나도 편지 작성하기' navigateTo='/write' />
+      <FloatingButton text='나도 편지 작성하기' navigateTo='/friend/inbox' />
     </div>
   );
 }
