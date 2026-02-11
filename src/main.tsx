@@ -6,8 +6,7 @@ import { RouterProvider } from 'react-router-dom';
 import router from './Router';
 import { ToastProvider } from './components/toast/ToastProvider';
 import GlobalToast from './components/toast/GlobalToast';
-
-const queryClient = new QueryClient();
+import { queryClient } from './api/queryClient';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

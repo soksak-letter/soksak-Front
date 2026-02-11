@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { postLogout, deleteWithdraw } from '@/api/auth'; //TODO: 회원탈퇴 API
+import { postLogout, deleteWithdraw } from '@/api/auth';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
-import { useQueryClient } from '@tanstack/react-query';
+import { queryClient } from '@/api/queryClient';
 export const useAuthHandlers = () => {
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const { showToast } = useGlobalToast();
-  const queryClient = useQueryClient(); // 2. 추가
 
   // 1. 로그아웃 핸들러
   const handleLogout = async () => {

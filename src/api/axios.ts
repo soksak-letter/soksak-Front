@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { RefreshTokenResponse } from '@/types/dto/auth';
-import { useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+import { queryClient } from './queryClient';
 
 // 1. 토큰 재발급 관리 변수
 let isRefreshing = false;
@@ -59,7 +59,6 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     const { logout, login } = useAuthStore.getState();
-    const queryClient = useQueryClient();
 
     if (!error.response) {
       return Promise.reject(error);
@@ -73,7 +72,7 @@ axiosInstance.interceptors.response.use(
     // -> 자동으로 스플래쉬으로 쫓아냄
     if (originalRequest.url?.includes('/auth/refresh')) {
       isRefreshing = false;
-
+      queryClient.clear();
       logout();
 
       onRefreshFailed(error);
