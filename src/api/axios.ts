@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { RefreshTokenResponse } from '@/types/dto/auth';
+import { useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 
 // 1. 토큰 재발급 관리 변수
@@ -58,6 +59,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     const { logout, login } = useAuthStore.getState();
+    const queryClient = useQueryClient();
 
     if (!error.response) {
       return Promise.reject(error);
@@ -141,6 +143,7 @@ axiosInstance.interceptors.response.use(
       } else {
         // [수정 2] 200 OK지만 비즈니스 로직상 실패(FAIL)인 경우 -> 로그아웃 처리
         // 이걸 안 하면 isRefreshing이 true로 남아서 무한 대기 걸림
+        queryClient.clear();
         logout();
         throw new Error('Refresh Token Invalid');
       }
@@ -148,6 +151,7 @@ axiosInstance.interceptors.response.use(
       // 갱신 실패 시 (네트워크 에러 or 위에서 throw한 에러) -> 스플래쉬으로 이동
       isRefreshing = false; // [중요] 상태 초기화
       onRefreshFailed(refreshError);
+      queryClient.clear();
       logout(); // 강제 로그아웃
 
       return Promise.reject(refreshError);

@@ -42,7 +42,7 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
               src={profileImageUrl}
               alt='프로필'
               className='w-full h-full object-cover cursor-pointer'
-              onClick={handleClick}
+              onClick={handleMypage}
             />
           </div>
         )}
