@@ -74,7 +74,8 @@ function getSenderDisplayName(detail: unknown): string {
 
 function parseDotDate(s: string) {
   const date = new Date(s);
-  return date.getTime();
+  const t = date.getTime();
+  return Number.isNaN(t) ? 0 : t;
 }
 
 export default function KeywordLetterPage() {
