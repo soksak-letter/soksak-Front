@@ -169,13 +169,13 @@ export default function LetterReviewPage() {
         </div>
 
         {/* ===== 슬라이더 ===== */}
-        <div className='mt-10'>
+        <div className='mt-[45px]'>
           <p className='ty-body2 text-[#000000]'>우리의 편지 온도는 어땠나요?</p>
           <p className='mt-2 ty-body5 text-[var(--color-text-alternative)]'>
             남겨주신 온도는 이후 매칭에 도움이 됩니다.
           </p>
 
-          <div className='mt-10 relative px-1'>
+          <div className='mt-[27px] relative px-1'>
             {/* A. 시각적 디자인 레이어 (실제 슬라이더 아래에 위치) */}
             <div className='relative h-2 bg-[#F3B6B3] rounded-full'>
               {/* 채워진 게이지 (왼쪽부터 현재 온도까지) */}
