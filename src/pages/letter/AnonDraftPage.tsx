@@ -18,7 +18,6 @@ const AnonDraftPage = () => {
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
   const patchDraft = useLetterStore((s) => s.patchDraft);
-  const resetCurrent = useLetterStore((s) => s.resetCurrent);
 
   const navigate = useNavigate();
   const { openModal } = useModalStore();
@@ -44,24 +43,7 @@ const AnonDraftPage = () => {
       });
       return;
     }
-
-    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
-
-    if (!hasSomething) {
-      navigate(-1);
-      return;
-    }
-
-    openModal('storageConfirm', {
-      onExit: () => {
-        resetCurrent();
-        navigate(-1);
-      },
-      onConfirmStorage: async () => {
-        showToast('임시저장 되었습니다!', 'success');
-        navigate(-1);
-      },
-    });
+    navigate(-1);
   };
 
   const handleSubmit = () => {
@@ -104,10 +86,6 @@ const AnonDraftPage = () => {
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   return (
@@ -122,13 +100,21 @@ const AnonDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
-          {formattedQuestionText}
-        </p>
-        <div className='flex items-center ty-body2'>
-          <span className='text-[var(--color-primary-500)]'>{mmss}</span>
-          <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
-        </div>
+        {isLoading ? (
+          <>
+            <LoadingPage />
+          </>
+        ) : (
+          <>
+            <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
+              {formattedQuestionText}
+            </p>
+            <div className='flex items-center ty-body2'>
+              <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
+              <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
+            </div>
+          </>
+        )}
       </div>
 
       <div className='px-4'>
