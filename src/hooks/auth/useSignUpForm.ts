@@ -2,11 +2,21 @@ import { useEffect, useState } from 'react';
 import { validate } from '@/utils/validate';
 import { removeWhitespace } from '@/utils/inputUtils';
 import { postCheckEmailExists, postCheckUsernameExists } from '@/api/auth';
+import axios from 'axios';
 
 // 검사 결과 타입 정의
 interface ValidationResult {
   success: boolean;
   message: string;
+}
+
+// 에러 응답 인터페이스 정의 (예시)
+interface ApiErrorResponse {
+  error: {
+    errorCode: string;
+    reason: string;
+    data: Record<string, unknown> | Array<{ field: string; message: string }>; // 빈 객체 {} 도 포함 가능하도록
+  };
 }
 
 const useSignUpForm = () => {
@@ -25,7 +35,7 @@ const useSignUpForm = () => {
   const [isEmailUnique, setIsEmailUnique] = useState(false);
   //아이디 중복확인 완료 여부
   const [isUsernameUnique, setIsUsernameUnique] = useState(false);
-  //포커스 상태 관리ㄴ
+  //포커스 상태 관리
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   // 각 필드별 유효성 검사 에러 메시지 저장
@@ -143,16 +153,17 @@ const useSignUpForm = () => {
           },
         }));
       }
-    } catch (error: any) {
-      const errorResponse = error.response?.data;
-      const errorCode = errorResponse?.error?.errorCode; // "USER_409_01" 등
-      const errorMessage = errorResponse?.error?.reason; // "이미 soksak에서..."
+    } catch (error: unknown) {
+      setIsEmailUnique(false);
+      if (axios.isAxiosError<ApiErrorResponse>(error)) {
+        const errorResponse = error.response?.data;
+        const errorCode = errorResponse?.error?.errorCode; // "USER_409_01" 등
+        const errorMessage = errorResponse?.error?.reason; // "이미 soksak에서..."
 
-      // 2. 409 Conflict (중복) 처리
-      if (error.response?.status === 409) {
-        //  이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
-        if (errorCode === 'USER_EMAIL_DUPLICATED') {
-          setIsEmailUnique(false);
+        // 2. 409 Conflict (중복) 처리
+        if (error.response?.status === 409 && errorCode === 'USER_EMAIL_DUPLICATED') {
+          //  이메일 중복 코드인지 확인 (USER_EMAIL_DUPLICATED)
+
           setValidations((prev) => ({
             ...prev,
             email: { success: false, message: errorMessage || '이미 가입된 이메일입니다.' },
@@ -163,7 +174,6 @@ const useSignUpForm = () => {
 
       // 3. 그 외 에러 처리
       console.error('API 호출 에러:', error);
-      setIsEmailUnique(false);
       setValidations((prev) => ({
         ...prev,
         email: {
@@ -224,15 +234,16 @@ const useSignUpForm = () => {
           },
         }));
       }
-    } catch (error: any) {
-      const errorResponse = error.response?.data;
-      const errorCode = errorResponse?.error?.errorCode;
-      const errorMessage = errorResponse?.error?.reason;
+    } catch (error: unknown) {
+      setIsUsernameUnique(false);
+      if (axios.isAxiosError<ApiErrorResponse>(error)) {
+        const errorResponse = error.response?.data;
+        const errorCode = errorResponse?.error?.errorCode;
+        const errorMessage = errorResponse?.error?.reason;
 
-      if (error.response?.status === 409) {
-        // 🎯 [핵심] 아이디 중복 코드인지 확인 (USER_USERNAME_DUPLICATED 로)
-        if (errorCode === 'USER_USERNAME_DUPLICATED') {
-          setIsUsernameUnique(false);
+        if (error.response?.status === 409 && errorCode === 'USER_USERNAME_DUPLICATED') {
+          // 아이디 중복 코드인지 확인 (USER_USERNAME_DUPLICATED 로)
+
           setValidations((prev) => ({
             ...prev,
             username: { success: false, message: errorMessage || '이미 사용 중인 아이디입니다.' },
@@ -242,7 +253,6 @@ const useSignUpForm = () => {
       }
       // 3. 그 외 에러 처리
       console.error('API 호출 에러:', error);
-      setIsUsernameUnique(false);
       setValidations((prev) => ({
         ...prev,
         username: {
