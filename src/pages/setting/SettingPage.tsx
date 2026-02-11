@@ -187,6 +187,24 @@ export default function SettingPage() {
                   개인정보 처리방침
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => navigate('/setting/community-guidelines')}
+                  className='w-full text-left'
+                  style={{
+                    fontFamily: 'Pretendard',
+                    fontWeight: 500,
+                    fontSize: 16,
+                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
+                    color: '#000000',
+                    paddingTop: BUTTON_PADDING_Y,
+                    paddingBottom: BUTTON_PADDING_Y,
+                    marginLeft: BUTTON_MARGIN_LEFT,
+                  }}
+                >
+                  커뮤니티 가이드라인
+                </button>
+              </li>
             </ul>
           </section>
 
