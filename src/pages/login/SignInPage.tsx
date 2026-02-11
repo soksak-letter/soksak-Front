@@ -43,7 +43,7 @@ const SignInPage = () => {
   // };
 
   return (
-    <div className='w-[375px] bg-[var(--color-bg-500)] mx-auto flex flex-col '>
+    <div className='w-[375px] min-h-screen bg-[var(--color-bg-500)]! mx-auto flex flex-col '>
       <BackHeader title='로그인' />
       <div className='mx-auto flex flex-col items-center justify-center gap-[16px] py-[16px]'>
         <input

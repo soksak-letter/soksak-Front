@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 interface TabHistory {
   path: string;
-  state: any;
+  state: unknown;
 }
 
 const FindAccountPage = () => {
@@ -29,15 +29,16 @@ const FindAccountPage = () => {
   });
   // [핵심] 경로가 바뀔 때마다, 현재 탭의 마지막 상태를 업데이트
   useEffect(() => {
+    const currentState: unknown = location.state;
     if (isIdTab) {
       setTabHistory((prev) => ({
         ...prev,
-        id: { path: location.pathname, state: location.state },
+        id: { path: location.pathname, state: currentState },
       }));
     } else {
       setTabHistory((prev) => ({
         ...prev,
-        pw: { path: location.pathname, state: location.state },
+        pw: { path: location.pathname, state: currentState },
       }));
     }
   }, [location.pathname, location.state, isIdTab]);
@@ -46,13 +47,25 @@ const FindAccountPage = () => {
   const handleTabClick = (type: 'id' | 'pw') => {
     if ((type === 'id' && isIdTab) || (type === 'pw' && !isIdTab)) return;
     const target = tabHistory[type];
-    navigate(target.path, { state: target.state });
+    navigate(target.path, { state: target.state, replace: true });
+  };
+
+  const handleCustomBack = () => {
+    // 1. 결과 페이지나 재설정 페이지라면 각 탭의 첫 화면으로 이동
+    if (isVerifyPage || isReset) {
+      // replace: true를 써서 기록을 덮어쓰는 것이 깔끔합니다.
+      navigate(isIdTab ? '/auth/id-find' : '/auth/pw-find', { replace: true });
+      return;
+    }
+
+    // 2. 탭의 첫 화면(메인) 상태에서 뒤로가기를 누르면 서비스 진입점(로그인 등)으로 탈출
+    navigate('/auth/signin');
   };
 
   return (
     <div className='w-[375px] min-h-screen bg-[#FAFAFA]! mx-auto flex flex-col'>
       <div className='[&>*]:!bg-[#FAFAFA]'>
-        <BackHeader title='아이디 및 비밀번호 찾기' />
+        <BackHeader title='아이디 및 비밀번호 찾기' onBack={handleCustomBack} />
       </div>
 
       {/* 탭 영역 */}

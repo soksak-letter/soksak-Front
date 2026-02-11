@@ -35,6 +35,7 @@ import NetworkErrorPage from './pages/system/NetworkErrorPage';
 import ForbiddenPage from './pages/system/ForbiddenPage';
 import NotFoundPage from './pages/system/NotFoundPage';
 import ErrorPage from './pages/system/ErrorPage';
+import SocialErrorPage from './pages/system/SocialErrorPage';
 
 import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
@@ -42,7 +43,6 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
-import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
 
 import LetterInboxOtherPage from './pages/letter/LetterInboxOtherPage';
@@ -72,6 +72,7 @@ import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
+import FindAccountPage from './pages/login/FindAccountPAge';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -127,6 +128,7 @@ const router = createBrowserRouter([
               { path: 'error/network', element: <NetworkErrorPage /> },
               { path: 'error/403', element: <ForbiddenPage /> },
               { path: 'error/404', element: <NotFoundPage /> },
+              { path: 'error/social', element: <SocialErrorPage /> },
               {
                 path: 'auth',
                 children: [
