@@ -22,7 +22,7 @@ export function useWeeklyReportHighlights(letterIds: number[]) {
 
   const queries = useQueries({
     queries: uniqueIds.map((id) => ({
-      queryKey: ['letterDetail', id],
+      queryKey: ['letter-detail', id],
       queryFn: () => getLetterDetail(id) as Promise<CommonResponse<GetLetterSuccess>>,
       enabled: uniqueIds.length > 0,
       staleTime: 60_000,
