@@ -36,8 +36,8 @@ export const useSignupMutation = () => {
         showToast(response.error?.reason || '회원가입에 실패했습니다.', 'error');
       }
     },
-    onError: (err: unknown) => {
-      let message = '네트워크 오류가 발생했습니다.';
+    onError: () => {
+      const message = '네트워크 오류가 발생했습니다.';
       showToast(message, 'error');
     },
   });
