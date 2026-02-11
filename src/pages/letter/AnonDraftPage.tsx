@@ -9,7 +9,7 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoadingPage from '../system/LoadingPage';
+import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { validateLetter } from '@/utils/validateLetter';
 
 const AnonDraftPage = () => {
@@ -109,6 +109,8 @@ const AnonDraftPage = () => {
   }
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
+  if (isLoading) return <DraftSkeleton title='타인에게 보내는 편지' />;
 
   return (
     <div className='relative flex flex-col'>

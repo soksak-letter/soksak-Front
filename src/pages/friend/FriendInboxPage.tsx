@@ -8,6 +8,7 @@ import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { formatDate } from '@/utils/date';
+import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 
 type FriendInboxItem = {
   id: number;
@@ -72,6 +73,8 @@ export default function FriendInboxPage() {
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
 
+  if (isLoading) return <InboxSkeleton title='친구' cardHeight={144} />;
+
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='친구' />
@@ -109,9 +112,7 @@ export default function FriendInboxPage() {
 
         {/* 리스트 */}
         <div className='mt-4 space-y-4'>
-          {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
-          {!isLoading &&
-            filtered.map((f) => {
+          {filtered.map((f) => {
               const envelopeAsset = ENVELOPE_ASSET_MAP[f.paperId];
               const EnvelopePreview = envelopeAsset?.Preview;
 

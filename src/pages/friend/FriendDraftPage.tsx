@@ -10,7 +10,7 @@ import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
-import LoadingPage from '../system/LoadingPage';
+import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { Button } from '@/components/common/Button';
 import { validateLetter } from '@/utils/validateLetter';
 import { useModalStore } from '@/stores/modalStore';
@@ -34,6 +34,7 @@ export default function FriendDraftPage() {
 
   // friendId, friendName 가져오기
   const location = useLocation();
+  const headerTitle = `${friendName ?? ''}에게 보내는 편지`;
   const { friendId, friendName } = (location.state ?? {}) as {
     friendId?: number;
     friendName?: string;
@@ -108,13 +109,12 @@ export default function FriendDraftPage() {
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <DraftSkeleton title={headerTitle} />;
   }
-
   if (isError) {
     return (
       <div className='min-h-dvh bg-[var(--color-bg-500)]'>
-        <BackHeader title={`${friendName}에게 보내는 편지`} onBack={handleBack} />
+        <BackHeader title={headerTitle} onBack={handleBack} />
         <div className='flex flex-col items-center justify-center gap-8 py-30 text-center px-5'>
           <p className='ty-title3'>질문을 불러오지 못했어요.</p>
           <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
@@ -128,7 +128,7 @@ export default function FriendDraftPage() {
   return (
     <div className='flex flex-col'>
       <BackHeader
-        title={`${friendName}에게 보내는 편지`}
+        title={headerTitle}
         rightElement={
           <button type='submit' onClick={handleSubmit}>
             꾸미기

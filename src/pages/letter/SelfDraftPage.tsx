@@ -13,7 +13,7 @@ import SurpriseLetterContent from '@/components/BottomSheet/contents/SurpriseLet
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
-import LoadingPage from '../system/LoadingPage';
+import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { validateLetter } from '@/utils/validateLetter';
 
 type DateValue = { year: number; month: number; day: number };
@@ -184,11 +184,9 @@ const SelfDraftPage = () => {
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
+  if (isLoading) return <DraftSkeleton title='나에게 보내는 편지' />;
 
   return (
     <div className='flex flex-col'>
@@ -202,15 +200,13 @@ const SelfDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        <>
-          <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
-            {formattedQuestionText}
-          </p>
-          <div className='flex items-center ty-body2'>
-            <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
-            <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
-          </div>
-        </>
+        <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
+          {formattedQuestionText}
+        </p>
+        <div className='flex items-center ty-body2'>
+          <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
+          <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
+        </div>
       </div>
 
       <div className='flex items-center justify-end p-5 -mt-7 gap-1'>
