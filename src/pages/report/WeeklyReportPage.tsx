@@ -90,7 +90,7 @@ export default function WeeklyReportPage() {
 
   const isEmpty = report == null && keywords.length === 0 && (emotions?.TOTAL?.length ?? 0) === 0;
 
-  if (isEmpty) {
+  if (isEmpty || report == null) {
     return (
       <div className='w-[375px] mx-auto p-6 text-center'>
         <p className='ty-body2'>아직 주간 리포트가 없어요.</p>
