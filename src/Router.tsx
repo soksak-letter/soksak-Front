@@ -35,6 +35,7 @@ import NetworkErrorPage from './pages/system/NetworkErrorPage';
 import ForbiddenPage from './pages/system/ForbiddenPage';
 import NotFoundPage from './pages/system/NotFoundPage';
 import ErrorPage from './pages/system/ErrorPage';
+import SocialErrorPage from './pages/system/SocialErrorPage';
 
 import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
@@ -71,8 +72,7 @@ import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
-import FindAccountPage from './pages/login/FindAccountPAge';
-import SocialErrorPage from './pages/system/SocialErrorPage';
+import FindAccountPage from './pages/login/FindAccountge';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
