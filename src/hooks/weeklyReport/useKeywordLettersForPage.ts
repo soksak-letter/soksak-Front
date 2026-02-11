@@ -6,13 +6,9 @@ import { getLetterDetail } from '@/api/weeklyReport';
 
 import type { ApiError } from '@/types/dto/common';
 import type { GetLetterSuccess, LettersByKeywordItem } from '@/types/dto/weeklyReport';
+import type { CommonResponse } from '@/types/dto/common';
 
 import { formatDate } from '@/utils/date';
-
-type GetLetterDetailResponse = {
-  success: GetLetterSuccess;
-  message?: string;
-};
 
 export type KeywordLetterCardVM = {
   letterId: number;
@@ -140,16 +136,16 @@ export function useKeywordLettersForPage(aiKeyword: string) {
   const detailQueries = useQueries({
     queries: needDetailIds.map((id) => ({
       queryKey: ['letterDetail', id] as const,
-      queryFn: () => getLetterDetail(id) as Promise<GetLetterDetailResponse>,
+      queryFn: () => getLetterDetail(id),
       enabled: Boolean(aiKeyword) && id > 0,
       staleTime: 60_000,
       retry: 0,
     })),
-  }) as UseQueryResult<GetLetterDetailResponse, ApiError>[];
+  }) as UseQueryResult<CommonResponse<GetLetterSuccess>, ApiError>[];
 
   const details = useMemo<GetLetterSuccess[]>(() => {
     return detailQueries
-      .map((q) => q.data?.success)
+      .map((q) => (q.data?.resultType === 'SUCCESS' ? q.data.success : undefined))
       .filter((x): x is GetLetterSuccess => Boolean(x));
   }, [detailQueries]);
 
