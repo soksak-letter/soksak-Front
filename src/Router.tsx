@@ -42,7 +42,6 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
-import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
 
 import LetterInboxOtherPage from './pages/letter/LetterInboxOtherPage';
@@ -72,6 +71,7 @@ import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
+import FindAccountPage from './pages/login/FindAccountPAge';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;

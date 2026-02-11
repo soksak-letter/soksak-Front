@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 interface TabHistory {
   path: string;
-  state: any;
+  state: unknown;
 }
 
 const FindAccountPage = () => {
@@ -29,15 +29,16 @@ const FindAccountPage = () => {
   });
   // [핵심] 경로가 바뀔 때마다, 현재 탭의 마지막 상태를 업데이트
   useEffect(() => {
+    const currentState: unknown = location.state;
     if (isIdTab) {
       setTabHistory((prev) => ({
         ...prev,
-        id: { path: location.pathname, state: location.state },
+        id: { path: location.pathname, state: currentState },
       }));
     } else {
       setTabHistory((prev) => ({
         ...prev,
-        pw: { path: location.pathname, state: location.state },
+        pw: { path: location.pathname, state: currentState },
       }));
     }
   }, [location.pathname, location.state, isIdTab]);
