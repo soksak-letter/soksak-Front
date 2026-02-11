@@ -5,7 +5,7 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import LetterTextBox from '@/components/letters/LetterTextBox';
 import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BsQuestionCircleFill } from 'react-icons/bs';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useLetterStore } from '@/stores/letterStore';
@@ -17,13 +17,6 @@ import { validateLetter } from '@/utils/validateLetter';
 
 const OtherDraftPage = () => {
   const { data, isLoading, isError, refetch } = useDailyQuestion();
-  const [fakeLoading, setFakeLoading] = useState(true);
-
-  useEffect(() => {
-    setFakeLoading(true);
-    const timer = setTimeout(() => setFakeLoading(false), 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
@@ -89,7 +82,7 @@ const OtherDraftPage = () => {
     return <DraftSkeleton title={`${senderName}에게 보내는 편지`} />;
   }
 
-  if (isLoading || fakeLoading) {
+  if (isLoading) {
     return <DraftSkeleton title={`${senderName}에게 보내는 편지`} />;
   }
 

@@ -20,13 +20,6 @@ type DateValue = { year: number; month: number; day: number };
 
 const SelfDraftPage = () => {
   const { data, isLoading, isError, error } = useDailyQuestion();
-  const [fakeLoading, setFakeLoading] = useState(true);
-
-  useEffect(() => {
-    setFakeLoading(true);
-    const timer = setTimeout(() => setFakeLoading(false), 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
@@ -193,7 +186,7 @@ const SelfDraftPage = () => {
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
-  if (isLoading || fakeLoading) return <DraftSkeleton title='나에게 보내는 편지' />;
+  if (isLoading) return <DraftSkeleton title='나에게 보내는 편지' />;
 
   return (
     <div className='flex flex-col'>

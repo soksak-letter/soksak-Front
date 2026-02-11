@@ -81,7 +81,6 @@ export default function FriendDraftPage() {
   if (isLoading) {
     return <DraftSkeleton title={`${friendName}에게 보내는 편지`} />;
   }
-
   if (isError) {
     return (
       <div className='min-h-dvh bg-[var(--color-bg-500)]'>
