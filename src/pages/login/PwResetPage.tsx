@@ -19,7 +19,7 @@ const PwResetPage = () => {
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>비밀번호 재설정하기</p>
-        <p className='ty-body4'>새로운 비밀번호를 입력해주세요.</p>
+        <p className='ty-body5'>새로운 비밀번호를 입력해주세요.</p>
       </div>
 
       <div className='flex flex-col h-[180px] gap-[8px]'>

@@ -32,7 +32,7 @@ export function getTodayKstKey(): string {
  * @param options.fallback - 파싱 실패 시 반환값 (기본값: '-')
  */
 export function formatDate(
-  dateString: string,
+  dateString: string | null | undefined,
   options: {
     format?: 'dot' | 'korean';
     padded?: boolean;

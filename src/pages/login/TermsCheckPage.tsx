@@ -51,22 +51,22 @@ const TermCheckPage = () => {
         <BackHeader title='이용약관 동의' />
       </div>
       {/* 약관 동의 영역 */}
-      <div className='flex flex-col px-[16px] gap-[8px] w-[343px] h-[236px] mb-[23px]'>
+      <div className='flex flex-col justify-between px-[16px] gap-[8px] w-[375px]  mb-[23px]'>
         {/* 전체 동의 영역 */}
         <div className=' w-[343px] h-[108px] cursor-pointer' onClick={handleAllCheck}>
-          <div className='flex flex-row items-center w-[112px] h-[24px]'>
-            <div className='mr-[4px]'>{isAllChecked ? <ToastCheck /> : <CheckBlank />}</div>
-            <span className='ty-body4'>전체 동의합니다.</span>
+          <div className='flex flex-row items-center h-[24px]'>
+            <div className='mr-[8px]'>{isAllChecked ? <ToastCheck /> : <CheckBlank />}</div>
+            <span className='ty-body5'>전체 동의합니다.</span>
           </div>
 
-          <p className='py[3px] px-[26px] mt-[8px] ty-detail text-[var(--color-text-assistive)]'>
+          <p className='py-[4px] px-[26px] ty-detail text-[var(--color-text-assistive)]'>
             전체 동의는 필수 및 선택 항목에 대한 동의가 포함되어 있으며, 개별적으로도 동의를
             선택하실 수 있습니다. 선택항목에 대한 동의를 거부하시는 경우에도 회원가입 및 일반적인
             서비스를 이용할 수 있습니다.
           </p>
         </div>
         {/* 개별 항목 리스트 */}
-        <div className='flex flex-col gap-3 pl-[2px]'>
+        <div className='flex flex-col gap-3 '>
           <TermItem
             label='[필수] 이용약관 동의'
             checked={agreements.terms}

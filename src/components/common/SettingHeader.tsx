@@ -4,14 +4,20 @@ interface SettingHeaderProps {
   title: string;
   onBack?: () => void;
   right?: React.ReactNode;
+  bgColor?: string;
 }
 
-const SettingHeader: React.FC<SettingHeaderProps> = ({ title, onBack, right }) => {
+const SettingHeader: React.FC<SettingHeaderProps> = ({
+  title,
+  onBack,
+  right,
+  bgColor = 'var(--color-bg-500)',
+}) => {
   return (
     <header
       className='fixed top-0 left-1/2 z-50 flex items-center justify-center px-[21px] py-[13px]'
       style={{
-        backgroundColor: '#FAFAFA',
+        backgroundColor: bgColor,
         height: '50px',
         width: '100%',
         maxWidth: '375px',

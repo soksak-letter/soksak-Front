@@ -35,7 +35,7 @@ const AnonDraftPage = () => {
     return Number.isNaN(t) ? null : t;
   }, [data?.expiredAt]);
 
-  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now());
+  const { isExpired, formattedTime } = useCountdown(deadlineMs ?? Date.now());
 
   const handleBack = () => {
     if (isExpired) {
