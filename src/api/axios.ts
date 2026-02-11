@@ -64,8 +64,13 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
     const { status } = error.response;
+
+    // 로그인, 회원가입, 소셜 로그인 API는 401 발생 시 바로 에러를 던져야 함
+    const excludeUrls = ['/auth/signin', '/auth/signup', '/auth/social'];
+    const isExcluded = excludeUrls.some((url) => originalRequest.url?.includes(url));
+
     //  401 에러 처리 로직
-    if (status !== 401) {
+    if (isExcluded || status !== 401) {
       return Promise.reject(error);
     }
     // Case A: 리프레시 요청 자체가 401이 뜬 경우 (갱신 요청 실패 -> 강제 로그아웃)

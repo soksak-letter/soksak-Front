@@ -25,21 +25,20 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: (requestBody: SignUpRequest) => postSignup(requestBody),
     onSuccess: (response) => {
-      if (response.resultType === 'SUCCESS') {
+      if (response.resultType === 'SUCCESS' && response.success) {
         const { jwtAccessToken, jwtRefreshToken } = response.success.result.tokens;
         // 토큰 저장
         // (Store가 내부적으로 localStorage 저장도 하고, isLoggedIn 상태도 true로 바꿈)
         login({ accessToken: jwtAccessToken, refreshToken: jwtRefreshToken });
         navigate('/auth/profile-setup');
       } else {
-        // API 레벨의 에러 처리
+        // 안전장치
         showToast(response.error?.reason || '회원가입에 실패했습니다.', 'error');
       }
     },
-    onError: () => {
-      // 네트워크 에러 처리
-      showToast('네트워크 오류입니다', 'error');
-      navigate('/error/500');
+    onError: (err: unknown) => {
+      let message = '네트워크 오류가 발생했습니다.';
+      showToast(message, 'error');
     },
   });
 };
@@ -58,14 +57,15 @@ export const useSigninMutation = () => {
         login({ accessToken: jwtAccessToken, refreshToken: jwtRefreshToken });
         navigate('/');
       } else {
-        showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
+        //서버 실수 등 안전장치 역할
+        showToast('아이디 또는 비밀번호fh 확인해주세요.', 'error');
       }
     },
     onError: (err: unknown) => {
       let message = '네트워크 연결이 원활하지 않습니다.';
 
       if (axios.isAxiosError<ApiErrorResponse>(err)) {
-        // 2. response 객체 자체가 없을 때를 대비해 안전하게 꺼내기
+        //  response 객체 자체가 없을 때를 대비해 안전하게 꺼내기
         const status = err.response?.status;
         const errorData = err.response?.data?.error;
 
@@ -76,11 +76,7 @@ export const useSigninMutation = () => {
           // 4. 서버에서 보내준 구체적인 실패 사유가 있다면 활용
           message = errorData.reason;
         }
-      } else if (err instanceof Error) {
-        // 5. 일반적인 Error 객체인 경우 (가이드라인 준수)
-        message = err.message;
       }
-
       showToast(message, 'error');
     },
   });
@@ -95,7 +91,7 @@ export const useSocialLoginMutation = () => {
     mutationFn: ({ provider, code }: { provider: SocialProvider; code: string }) =>
       postSocialLogin(provider, code),
     onSuccess: (data) => {
-      if (data.resultType === 'SUCCESS') {
+      if (data.resultType === 'SUCCESS' && data.success) {
         const { isNewUser, tokens } = data.success;
 
         // 토큰 저장
@@ -115,7 +111,6 @@ export const useSocialLoginMutation = () => {
       }
     },
     onError: (error) => {
-      console.error('소셜 로그인 에러:', error);
       navigate(ROUTES.auth.welcome, { replace: true });
     },
   });
