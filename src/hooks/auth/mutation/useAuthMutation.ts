@@ -112,7 +112,7 @@ export const useSocialLoginMutation = () => {
     },
     onError: (err: unknown) => {
       let message = '인증 정보가 만료되었습니다.';
-      if (axios.isAxiosError(err)) {
+      if (axios.isAxiosError<ApiErrorResponse>(err)) {
         message = err.response?.data?.error?.reason || message;
       }
       // state를 담아 SocialErrorPage로 이동

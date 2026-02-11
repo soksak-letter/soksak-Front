@@ -72,7 +72,7 @@ import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
-import FindAccountPage from './pages/login/FindAccountge';
+import FindAccountPage from './pages/login/FindAccountPAge';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
