@@ -78,6 +78,38 @@ function parseDotDate(s: string) {
   return Number.isNaN(t) ? 0 : t;
 }
 
+function extractKeywordList(raw: unknown): unknown[] {
+  if (Array.isArray(raw)) return raw;
+
+  if (isRecord(raw)) {
+    const rawObj = raw.raw;
+    if (isRecord(rawObj) && Array.isArray(rawObj.success)) {
+      return rawObj.success as unknown[];
+    }
+
+    // 1) { list: [...] }
+    if (Array.isArray(raw.list)) return raw.list as unknown[];
+
+    // 2) { data: [...] }
+    if (Array.isArray(raw.data)) return raw.data as unknown[];
+
+    // 3) { success: { result: { data: [...] } } }
+    const success = raw.success;
+    if (isRecord(success)) {
+      const result = success.result;
+      if (isRecord(result) && Array.isArray(result.data)) {
+        return result.data as unknown[];
+      }
+    }
+
+    // 4) { result: { data: [...] } }
+    const result = raw.result;
+    if (isRecord(result) && Array.isArray(result.data)) return result.data as unknown[];
+  }
+
+  return [];
+}
+
 export default function KeywordLetterPage() {
   const location = useLocation();
   const { openModal, activeModal, payload } = useModalStore();
@@ -105,7 +137,9 @@ export default function KeywordLetterPage() {
     isError: isKeywordError,
   } = useLettersByKeyword(selectedKeyword);
 
-  const keywordList: unknown[] = (keywordQuery?.list as unknown[]) ?? [];
+  // const keywordList: unknown[] = (keywordQuery?.list as unknown[]) ?? [];
+  const keywordList: unknown[] = extractKeywordList(keywordQuery);
+  console.log('keywordQuery', keywordQuery);
 
   // 2) letterId 배열 (any 제거)
   const letterIds = useMemo(() => {
