@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
 import LetterCard from '@/components/letters/LetterCard';
@@ -82,9 +82,20 @@ export default function KeywordLetterPage() {
   const location = useLocation();
   const { openModal, activeModal, payload } = useModalStore();
 
-  const selectedKeyword = (location.state as { keyword?: string } | null)?.keyword ?? '피곤';
-  const keywordCount = (location.state as { count?: number } | null)?.count ?? 0;
+  // location.state가 비어도(새로고침/직접 접근) URL 쿼리로 복원 가능하게 처리
+  const [searchParams] = useSearchParams();
 
+  const keywordFromQuery = searchParams.get('keyword') ?? undefined;
+  const countFromQueryRaw = searchParams.get('count'); // string | null
+  const countFromQuery = countFromQueryRaw ? Number(countFromQueryRaw) : undefined;
+
+  const selectedKeyword =
+    keywordFromQuery ?? (location.state as { keyword?: string } | null)?.keyword ?? '피곤';
+
+  const keywordCount =
+    (Number.isFinite(countFromQuery) ? (countFromQuery as number) : undefined) ??
+    (location.state as { count?: number } | null)?.count ??
+    0;
   const sortOrder: 'latest' | 'oldest' = 'latest';
 
   // 1) 키워드 목록 조회 (list 반환하는 훅)
