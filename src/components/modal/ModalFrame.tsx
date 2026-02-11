@@ -19,7 +19,7 @@ export default function ModalFrame({ children }: Props) {
 
   return (
     <div
-      className='fixed inset-0 z-50 flex items-center justify-center bg-black/60'
+      className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/60'
       onClick={closeModal} //배경 클릭시 닫기
     >
       {/* 이벤트 전파 방지: 편지(children) 부분을 눌렀을 때는 

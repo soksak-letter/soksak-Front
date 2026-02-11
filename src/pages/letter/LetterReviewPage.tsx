@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
@@ -28,9 +28,19 @@ export default function LetterReviewPage() {
 
   const [mood, setMood] = useState<ReviewMood | null>(null);
   const [temp, setTemp] = useState<number>(36.5);
-  const [isSliding, setIsSliding] = useState(false);
 
-  const percent = useMemo(() => Math.min(100, Math.max(0, temp)), [temp]);
+  const percent = useMemo(() => {
+    return Math.min(100, Math.max(0, temp));
+  }, [temp]);
+  // 2. 핸들(서클) 및 온도 텍스트 통합 위치 스타일
+  // translateX(-50%)를 사용해 정확히 중앙을 맞춥니다.
+  const positionStyle = useMemo(
+    () => ({
+      left: `${percent}%`,
+      transform: 'translateX(-50%)',
+    }),
+    [percent],
+  );
 
   // URL params 우선 > 없으면 store로 sessionId 받아오기
   const { sessionId: sessionIdParam } = useParams<{ sessionId?: string }>();
@@ -159,98 +169,47 @@ export default function LetterReviewPage() {
         </div>
 
         {/* ===== 슬라이더 ===== */}
-        <div className='mt-10'>
+        <div className='mt-[45px]'>
           <p className='ty-body2 text-[#000000]'>우리의 편지 온도는 어땠나요?</p>
           <p className='mt-2 ty-body5 text-[var(--color-text-alternative)]'>
             남겨주신 온도는 이후 매칭에 도움이 됩니다.
           </p>
 
-          <div className='mt-5'>
-            <div
-              className='relative'
-              onMouseDown={() => setIsSliding(true)}
-              onMouseUp={() => setIsSliding(false)}
-              onMouseLeave={() => setIsSliding(false)}
-              onTouchStart={() => setIsSliding(true)}
-              onTouchEnd={() => setIsSliding(false)}
-            >
-              {isSliding && (
-                <div
-                  className='pointer-events-none absolute -bottom-7 ml-2 ty-body4 text-[var(--color-primary-500)]'
-                  style={{
-                    left: `calc(${percent}% - 10px)`,
-                    transform: 'translateX(-50%)',
-                  }}
-                >
-                  {temp}도
-                </div>
-              )}
-
-              <input
-                type='range'
-                min={0}
-                max={100}
-                step={0.5}
-                value={temp}
-                onChange={(e) => setTemp(Number(e.target.value))}
-                className='w-[320px] ml-2 appearance-none bg-transparent outline-none'
-                style={
-                  {
-                    '--fill': `${percent}%`,
-                  } as React.CSSProperties
-                }
+          <div className='mt-[27px] w-full px-[15px] relative '>
+            {/* A. 시각적 디자인 레이어 (실제 슬라이더 아래에 위치) */}
+            <div className='relative h-2 bg-[#F3B6B3] rounded-full'>
+              {/* 채워진 게이지 (왼쪽부터 현재 온도까지) */}
+              <div
+                className='absolute left-0 top-0 h-full bg-[var(--color-primary-500)] rounded-full'
+                style={{ width: `${percent}%` }}
+              />
+              {/* 커스텀 핸들 (분홍색 큰 원) */}
+              <div
+                className='absolute w-[22px] h-[22px] bg-[var(--color-primary-500)] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.2)]'
+                style={{
+                  top: '-50%', // 부모 h-2의 중앙
+                  ...positionStyle,
+                }}
               />
 
-              <style>{`
-                input[type="range"]{
-                  height: 24px;
-                }
-                input[type="range"]::-webkit-slider-runnable-track{
-                  height: 8px;
-                  border-radius: 9999px;
-                  background: linear-gradient(
-                    to right,
-                    var(--color-primary-500) 0%,
-                    var(--color-primary-500) var(--fill),
-                    #F3B6B3 var(--fill),
-                    #F3B6B3 100%
-                  );
-                }
-                input[type="range"]::-webkit-slider-thumb{
-                  -webkit-appearance: none;
-                  width: 22px;
-                  height: 22px;
-                  margin-top: -7px;
-                  border-radius: 9999px;
-                  background: var(--color-primary-500);
-                  border: none;
-                  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
-                }
-                input[type="range"]::-moz-range-track{
-                  height: 8px;
-                  border-radius: 9999px;
-                  background: #F3B6B3;
-                }
-                input[type="range"]::-moz-range-progress{
-                  height: 8px;
-                  border-radius: 9999px;
-                  background: var(--color-primary-500);
-                }
-                input[type="range"]::-moz-range-thumb{
-                  width: 22px;
-                  height: 22px;
-                  border-radius: 9999px;
-                  background: var(--color-primary-500);
-                  border: none;
-                  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
-                }
-              `}</style>
+              {/* 온도 표시 텍스트 (원 바로 아래) */}
+              <div
+                className='absolute top-[20px] ty-body4 text-[var(--color-primary-500)] font-bold whitespace-nowrap'
+                style={positionStyle}
+              >
+                {percent.toFixed(1)}도
+              </div>
             </div>
 
-            <div className='mt-1 flex items-center justify-between ty-body5 text-[var(--color-text-normal)]'>
-              <span>0도</span>
-              <span>100도</span>
-            </div>
+            <input
+              type='range'
+              min={0}
+              max={100}
+              step={0.5}
+              value={temp}
+              onChange={(e) => setTemp(Number(e.target.value))}
+              className='absolute top-[-16px] left-0 w-full h-10 opacity-0 cursor-pointer z-10'
+            />
           </div>
         </div>
       </div>

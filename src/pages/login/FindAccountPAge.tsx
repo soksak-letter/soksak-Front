@@ -50,7 +50,7 @@ const FindAccountPage = () => {
   };
 
   return (
-    <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col'>
+    <div className='w-[375px] min-h-screen bg-[#FAFAFA]! mx-auto flex flex-col'>
       <div className='[&>*]:!bg-[#FAFAFA]'>
         <BackHeader title='아이디 및 비밀번호 찾기' />
       </div>
@@ -90,7 +90,7 @@ const FindAccountPage = () => {
         </button>
       </div>
       {/* 컨텐츠 영역 (조건부 렌더링) */}
-      <div className='flex-1 px-[16px] py-[16px] bg-white'>
+      <div className='flex-1 px-[16px] py-[16px]'>
         {/* 1. 아이디 찾기 영역 (ID 탭일 때만 보임) */}
         <div className={isIdTab ? 'block h-full' : 'hidden'}>
           {/* 아이디 찾기 입력창 vs 결과창은 서로 대체되어도 되므로 조건부 렌더링 유지 */}

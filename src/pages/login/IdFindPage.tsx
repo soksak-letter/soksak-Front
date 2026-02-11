@@ -36,7 +36,11 @@ const IdFindPage = () => {
     if (isAuthVerified)
       return <p className='text-[var(--color-status-positive)] ty-detail mt-1'>인증되었습니다.</p>;
     if (apiStatus === 'error')
-      return <p className='text-[var(--color-status-alert)] ty-detail mt-1'>{serverMessage}</p>;
+      return (
+        <p className='text-[var(--color-status-alert)] ty-detail mt-1'>
+          존재하지 않는 이메일입니다.
+        </p>
+      );
     if (apiStatus === 'success')
       return (
         <p className='ty-detail text-[var(--color-status-positive)] mt-1'>
@@ -50,11 +54,11 @@ const IdFindPage = () => {
     return null;
   };
   return (
-    <div className='relative flex flex-col h-full'>
+    <div className='relative flex flex-col '>
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>속삭편지에 등록된 아이디를 찾아요.</p>
-        <p className='ty-body4'>이메일로 전송받은 인증번호를 확인해주세요.</p>
+        <p className='ty-body5'>이메일로 전송받은 인증번호를 확인해주세요.</p>
       </div>
 
       <div className='flex flex-col h-[180px] gap-[8px]'>
@@ -71,6 +75,7 @@ const IdFindPage = () => {
               className={`w-[240px] h-[48px] bg-[var(--color-bg-primary)] 
               px-4 border-[1px] rounded-lg border-[var(--color-grey-100)]
               outline-none  
+              ${email ? 'ty-body5' : 'ty-detailMedium'}
               ${
                 // 1. 성공 (그린): 존재하는 이메일일 때
                 apiStatus === 'success'
@@ -115,11 +120,13 @@ const IdFindPage = () => {
                   value={authCode}
                   onChange={handleAuthCodeChange}
                   placeholder='인증번호 6자리 입력'
-                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)] ${
-                    !isAuthVerified
-                      ? 'border-[var(--color-grey-100)]'
-                      : 'border-[var(--color-status-positive)]'
-                  }`}
+                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] focus:border-[var(--color-grey-800)] 
+                    ${authCode ? 'ty-body5' : 'ty-detailMedium'}
+                    ${
+                      !isAuthVerified
+                        ? 'border-[var(--color-grey-100)]'
+                        : 'border-[var(--color-status-positive)]'
+                    }`}
                 />
                 {/* 타이머 (인풋창 내부 우측) */}
                 {!isAuthVerified && (

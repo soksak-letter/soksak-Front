@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
   };
 
   return (
-    <div className='min-h-screen bg-white'>
+    <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <SettingHeader title={data?.title ?? '개인정보 처리방침'} onBack={handleBack} />
       {/* 헤더 높이만큼 여백 */}
       <div style={{ height: '50px' }} />

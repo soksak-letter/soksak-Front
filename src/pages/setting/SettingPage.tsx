@@ -27,7 +27,7 @@ export default function SettingPage() {
     navigate(-1);
   };
   return (
-    <div className='min-h-dvh bg-[#FAFAFA]'>
+    <div className='min-h-dvh bg-[#FAFAFA]!'>
       <div>
         <SettingHeader title='설정' onBack={handleBack} />
         {/* 헤더 높이만큼 여백 */}
@@ -197,7 +197,6 @@ export default function SettingPage() {
             <ul className='flex flex-col gap-[9px]'>
               <li>
                 <button
-                  // TODO: 실제 로그아웃 처리 함수(onConfirmLogout) 연결 필요
                   onClick={() => openModal('logoutConfirm', { onConfirmLogout: handleLogout })}
                   className='w-full text-left'
                   style={{
@@ -216,7 +215,6 @@ export default function SettingPage() {
               </li>
               <li>
                 <button
-                  // TODO: 실제 회원탈퇴 처리 함수(onConfirmWithdraw) 연결 필요
                   onClick={() =>
                     openModal('withdrawalConfirm', { onConfirmWithdraw: handleWithdraw })
                   }
