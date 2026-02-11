@@ -72,7 +72,7 @@ import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
 import FindAccountPage from './pages/login/FindAccountPAge';
-import SocialErrorPage from './pages/system/SocailErrorPage';
+import SocialErrorPage from './pages/system/SocialErrorPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;

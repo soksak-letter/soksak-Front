@@ -58,7 +58,7 @@ export const useSigninMutation = () => {
         navigate('/');
       } else {
         //서버 실수 등 안전장치 역할
-        showToast('아이디 또는 비밀번호fh 확인해주세요.', 'error');
+        showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
       }
     },
     onError: (err: unknown) => {
