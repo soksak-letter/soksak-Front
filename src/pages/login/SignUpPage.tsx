@@ -156,7 +156,7 @@ const SignUpPage = () => {
             onBlur={handleUsernameBlur}
             placeholder='아이디'
             className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] 
-            ty-body5 px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)] 
+            px-4 border-[1px] rounded-lg outline-none focus:border-[var(--color-grey-800)] 
             ${form.username ? 'ty-body5' : 'ty-detailMedium'} 
             ${getBorderColor(validations.username.success, form.username)}`}
           />
@@ -188,7 +188,7 @@ const SignUpPage = () => {
               onFocus={handleFocus('password')} //입력시
               onBlur={handleBlur} //입력완료 나가서
               placeholder='비밀번호'
-              className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] ty-body5  px-4 border-[1px] rounded-lg 
+              className={`w-[343px] h-[48px] bg-[var(--color-bg-primary)] px-4 border-[1px] rounded-lg 
                 focus:border-[var(--color-grey-800)] outline-none 
                 ${form.password ? 'ty-body5' : 'ty-detailMedium'}
                 ${getBorderColor(validations.password.success, form.password)}`}

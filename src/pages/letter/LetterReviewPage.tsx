@@ -185,10 +185,9 @@ export default function LetterReviewPage() {
               />
               {/* 커스텀 핸들 (분홍색 큰 원) */}
               <div
-                className='absolute top-1/2 w-[22px] h-[22px] bg-[var(--color-primary-500)] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.2)]'
+                className='absolute w-[22px] h-[22px] bg-[var(--color-primary-500)] rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.2)]'
                 style={{
                   top: '-50%', // 부모 h-2의 중앙
-                  marginTop: '0px', // 미세 조정 필요 시 사용
                   ...positionStyle,
                 }}
               />

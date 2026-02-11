@@ -50,7 +50,7 @@ const IdFindPage = () => {
     return null;
   };
   return (
-    <div className='relative flex flex-col m'>
+    <div className='relative flex flex-col '>
       {/* 설명 텍스트 */}
       <div className='mb-[16px]'>
         <p className='ty-body2'>속삭편지에 등록된 아이디를 찾아요.</p>
@@ -116,7 +116,7 @@ const IdFindPage = () => {
                   value={authCode}
                   onChange={handleAuthCodeChange}
                   placeholder='인증번호 6자리 입력'
-                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] border-[var(--color-grey-100)] focus:border-[var(--color-grey-800)] 
+                  className={`w-full h-[48px] px-4 rounded-lg outline-none border-[1px] focus:border-[var(--color-grey-800)] 
                     ${authCode ? 'ty-body5' : 'ty-detailMedium'}
                     ${
                       !isAuthVerified
