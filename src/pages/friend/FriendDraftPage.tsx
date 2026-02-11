@@ -14,6 +14,7 @@ import LoadingPage from '../system/LoadingPage';
 import { Button } from '@/components/common/Button';
 import { validateLetter } from '@/utils/validateLetter';
 import { useModalStore } from '@/stores/modalStore';
+import NotFoundPage from '../system/NotFoundPage';
 
 export default function FriendDraftPage() {
   const { data, isLoading, isError, refetch } = useDailyQuestion();
@@ -84,6 +85,8 @@ export default function FriendDraftPage() {
       state: { friendName },
     });
   };
+
+  if (!friendId || !friendName) return <NotFoundPage />;
 
   const handleBack = () => {
     const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
