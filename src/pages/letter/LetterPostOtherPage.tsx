@@ -6,7 +6,7 @@ import PenIcon from '@/assets/icons/PenIcon.svg?react';
 import NotFoundPage from '../system/NotFoundPage';
 import { useAnonThread } from '@/hooks/mails/useAnonThread';
 import { Button } from '@/components/common/Button';
-import { LoadingDots } from '@/components/LoadingDots';
+import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { formatDate } from '@/utils/date';
@@ -66,6 +66,7 @@ export default function LetterPostOtherPage() {
 
   // 잘못된 접근 - 404 처리
   if (!sessionIdParam || !sessionId) return <NotFoundPage />;
+  if (isLoading) return <ThreadSkeleton title='익명 편지' />;
 
   const handleOpenLetterDetail = (item: PostItem) => {
     navigate(`/letter/reply/${sessionId}/${item.letterId}`, {
@@ -96,13 +97,7 @@ export default function LetterPostOtherPage() {
           {formattedQuestionTitle}
         </h2>
 
-        {/* 1) 로딩 */}
-        {isLoading ? (
-          <div className='flex flex-col items-center justify-center gap-8 py-70'>
-            <LoadingDots fillIntervalMs={350} />
-            <p className='ty-title2'>로딩 중...</p>
-          </div>
-        ) : /* 2) 에러 */ isError ? (
+        {isError ? (
           <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
             <p className='ty-title3'>목록을 불러오지 못했어요.</p>
             <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
