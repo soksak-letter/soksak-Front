@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import type { FeedLetter } from '@/types/letter';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/paths';
