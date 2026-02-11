@@ -13,7 +13,7 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
     navigate(ROUTES.my.mypage);
   };
   return (
-    <div className='w-full px-4 py-2.5 bg-[var(--color-bg-primary)]'>
+    <div className='w-full px-4 py-2.5 bg-[var(--color-bg-500)]'>
       <div className='flex items-center gap-10'>
         {/* 질문 텍스트 영역 */}
         <div className='flex-1 flex flex-col gap-2'>
