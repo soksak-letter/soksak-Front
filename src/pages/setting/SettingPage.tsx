@@ -189,7 +189,7 @@ export default function SettingPage() {
               </li>
               <li>
                 <button
-                  onClick={() => navigate('/setting/community-guidelines')}
+                  onClick={() => navigate('/setting/guideline')}
                   className='w-full text-left'
                   style={{
                     fontFamily: 'Pretendard',
