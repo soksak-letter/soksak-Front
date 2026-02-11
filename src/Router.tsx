@@ -72,6 +72,7 @@ import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
 import FindAccountPage from './pages/login/FindAccountPAge';
+import SocialErrorPage from './pages/system/SocailErrorPage';
 
 // ===== Placeholders =====
 const TODOPage = () => <div />;
@@ -127,6 +128,7 @@ const router = createBrowserRouter([
               { path: 'error/network', element: <NetworkErrorPage /> },
               { path: 'error/403', element: <ForbiddenPage /> },
               { path: 'error/404', element: <NotFoundPage /> },
+              { path: 'error/social', element: <SocialErrorPage /> },
               {
                 path: 'auth',
                 children: [

@@ -110,8 +110,13 @@ export const useSocialLoginMutation = () => {
         throw new Error('로그인 처리 실패');
       }
     },
-    onError: (error) => {
-      navigate(ROUTES.auth.welcome, { replace: true });
+    onError: (err: unknown) => {
+      let message = '인증 정보가 만료되었습니다.';
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.error?.reason || message;
+      }
+      // state를 담아 SocialErrorPage로 이동
+      navigate('/error/social', { replace: true, state: { message } });
     },
   });
 };
