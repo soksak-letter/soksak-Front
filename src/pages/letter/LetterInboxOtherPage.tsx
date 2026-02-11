@@ -20,7 +20,7 @@ type InboxOtherLetterItem = {
   letterId: number;
   sessionId: number;
   senderId: number; // 상대방 userId (신고/차단 시 필요)
-  question: string;
+  letterTitle: string;
   senderName: string; // 랜덤 익명 닉네임
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
@@ -51,7 +51,7 @@ export default function LetterInboxOtherPage() {
         letterId: x.lastLetterId,
         sessionId: x.sessionId,
         senderId: x.sender.id,
-        question: x.lastLetterTitle,
+        letterTitle: x.lastLetterTitle,
         senderName: getAnonNickname(x.sender.id),
         receivedAt: formatDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
@@ -69,7 +69,7 @@ export default function LetterInboxOtherPage() {
 
     const result = !k
       ? items
-      : items.filter((x) => x.question.includes(k) || x.senderName.includes(k));
+      : items.filter((x) => x.letterTitle.includes(k) || x.senderName.includes(k));
 
     return [...result].sort((a, b) => {
       return sortOrder === 'latest'
@@ -161,7 +161,7 @@ export default function LetterInboxOtherPage() {
                         {/* 왼쪽 텍스트 */}
                         <div className='min-w-0 flex flex-col gap-9 mt-1'>
                           <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
-                            {it.question}
+                            {it.letterTitle}
                           </p>
                           <div className='mt-4 flex items-center gap-1'>
                             <p className='text-[12px] text-[#171717]'>{it.senderName}</p>

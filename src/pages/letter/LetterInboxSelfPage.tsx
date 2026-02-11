@@ -16,7 +16,7 @@ type SortOrder = 'latest' | 'oldest';
 
 type InboxSelfLetterItem = {
   letterId: number;
-  questionId: number;
+  questionId: number; // TODO : questionTitle로 수정 필요
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
@@ -54,7 +54,7 @@ export default function LetterInboxSelfPage() {
   const filtered = useMemo(() => {
     const k = keyword.trim();
 
-    const result = !k ? items : items.filter((x) => x.title.includes(k)); // TODO : question 추가되면 '|| x.question.includes(x)' 추가
+    const result = !k ? items : items.filter((x) => x.title.includes(k)); // TODO : questionTitle 받은 후 || x.question.includes(k) 추가
 
     return [...result].sort((a, b) => {
       return sortOrder === 'latest'
