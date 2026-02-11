@@ -82,10 +82,6 @@ const OtherDraftPage = () => {
     return <DraftSkeleton title={`${senderName}에게 보내는 편지`} />;
   }
 
-  if (isLoading) {
-    return <DraftSkeleton title={`${senderName}에게 보내는 편지`} />;
-  }
-
   if (isError) {
     return (
       <div className='min-h-dvh bg-[var(--color-bg-500)]'>
