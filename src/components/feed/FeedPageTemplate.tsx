@@ -9,15 +9,12 @@ import ErrorPage from '@/pages/system/ErrorPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useCreateLike, useDeleteLike } from '@/hooks/useCreateLetterLike';
 import type { PublicFeedDetail } from '@/types/dto/feed';
+import type { FeedLetter } from '@/types/letter';
 
-interface FeedLetter {
-  letterId: number;
-  title: string;
+interface FeedPageLetter extends FeedLetter {
   content: string;
   likes: number;
   isLiked: boolean;
-  deliveredAt: string;
-  paperId: number;
 }
 
 interface FeedPageTemplateProps {
@@ -42,7 +39,7 @@ export default function FeedPageTemplate({
   const createLike = useCreateLike();
   const deleteLike = useDeleteLike();
 
-  const letters = useMemo<FeedLetter[]>(
+  const letters = useMemo<FeedPageLetter[]>(
     () =>
       rawLetters?.map((l) => ({
         letterId: l.id,
