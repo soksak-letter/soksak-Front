@@ -184,6 +184,7 @@ export default function LetterInboxOtherPage() {
                           {!!it.stampUrl && (
                             <img
                               src={it.stampUrl}
+                              alt=''
                               className='absolute right-6.5 bottom-12.5 h-6 w-6 object-contain pointer-events-none'
                               draggable={false}
                             />
