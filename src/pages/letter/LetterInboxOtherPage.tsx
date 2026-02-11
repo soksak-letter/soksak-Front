@@ -7,7 +7,7 @@ import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInbo
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useAnonMailbox } from '@/hooks/mails/useAnonMailbox';
-import { LoadingDots } from '@/components/LoadingDots';
+import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
@@ -102,6 +102,8 @@ export default function LetterInboxOtherPage() {
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
+  if (isLoading) return <InboxSkeleton />;
+
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='편지함' />
@@ -131,13 +133,8 @@ export default function LetterInboxOtherPage() {
             </button>
           </div>
           <div className='mt-4 space-y-[10px]'>
-            {/* 1) 로딩 */}
-            {isLoading ? (
-              <div className='flex flex-col items-center justify-center gap-8 py-50'>
-                <LoadingDots fillIntervalMs={350} />
-                <p className='ty-title2'>로딩 중...</p>
-              </div>
-            ) : /* 2) 에러 */ isError ? (
+            {/* 1) 에러 */}
+            {isError ? (
               <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
                 <p className='ty-title3'>목록을 불러오지 못했어요.</p>
                 <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>

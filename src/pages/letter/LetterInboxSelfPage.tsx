@@ -7,7 +7,7 @@ import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInbo
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useSelfMailbox } from '@/hooks/mails/useSelfMailbox';
-import InboxSelfSkeleton from '@/components/skeleton/InboxSelfSkeleton';
+import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { formatDate } from '@/utils/date';
@@ -79,7 +79,7 @@ export default function LetterInboxSelfPage() {
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
-  if (isLoading) return <InboxSelfSkeleton />;
+  if (isLoading) return <InboxSkeleton />;
 
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
