@@ -83,6 +83,7 @@ export default function LetterPostOtherPage() {
     // store에 저장해둔 sessionId, letterCount, senderName 삭제
     // flow가 이어져야만 저장 가능
     resetFlow();
+    navigate(-1);
   };
 
   return (
