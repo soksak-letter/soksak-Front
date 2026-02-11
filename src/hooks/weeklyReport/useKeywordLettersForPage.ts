@@ -135,7 +135,7 @@ export function useKeywordLettersForPage(aiKeyword: string) {
 
   const detailQueries = useQueries({
     queries: needDetailIds.map((id) => ({
-      queryKey: ['letterDetail', id] as const,
+      queryKey: ['letter-detail', id] as const,
       queryFn: () => getLetterDetail(id),
       enabled: Boolean(aiKeyword) && id > 0,
       staleTime: 60_000,
