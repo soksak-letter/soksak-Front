@@ -120,6 +120,7 @@ const MainPage = () => {
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='ty-body2 text-[var(--color-text-normal)]'>공개 편지</h2>
+
           <button
             onClick={() => navigate('/feed/public-all')}
             className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
@@ -146,6 +147,7 @@ const MainPage = () => {
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
           <h2 className='ty-body2 text-[var(--color-text-normal)]'>친구 편지</h2>
+
           <button
             onClick={() => navigate('/feed/friend-all')}
             className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'

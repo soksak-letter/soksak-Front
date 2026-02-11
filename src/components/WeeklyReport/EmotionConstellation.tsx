@@ -1,34 +1,41 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+
 // 1. 데이터 항목에 대한 명확한 타입 정의
 interface KeywordData {
-  keyword?: string; // 키워드 (선택적)
+  keyword: string; // 키워드
   count: number; // 해당 키워드의 빈도수
 }
+
 // 2. 컴포넌트 Props 타입 정의
 interface EmotionConstellationProps {
   data: KeywordData[];
+  // eslint-disable-next-line no-unused-vars
+  onSelectKeyword?: (keyword: string) => void;
+  // activeKeyword?: string;
 }
 
-export function EmotionConstellation({ data }: EmotionConstellationProps) {
+export function EmotionConstellation({ data, onSelectKeyword }: EmotionConstellationProps) {
   const VIEWBOX_WIDTH = 343; // 카드 내부 실질 너비 (375 - 패딩)
   const VIEWBOX_HEIGHT = 200;
 
   // 별자리 노드(별) 좌표 및 데이터 변환 로직
   const nodes = useMemo(() => {
     if (!data || data.length === 0) return [];
-    //빈도수(count)가 높은 순서대로 정렬
+    // 빈도수(count)가 높은 순서대로 정렬
     const sorted = [...data].sort((a, b) => b.count - a.count);
     const count = sorted.length;
 
     return sorted.map((item, index) => {
-      // [X 좌표 계산]전체 너비에서 여백(60px)을 빼고 노드개수만큼 분할 데이터가 많아질수록 간격(step)이 좁아짐
+      // [X 좌표 계산] 전체 너비에서 여백(60px)을 빼고 노드개수만큼 분할
+      // 데이터가 많아질수록 간격(step)이 좁아짐
       const xStep = (VIEWBOX_WIDTH - 60) / (count > 1 ? count - 1 : 1);
       return {
         ...item,
         id: index,
         x: index * xStep + 30, // 양옆 여백 30px 부여
-        // [Y 좌표 계산] 별자리 느낌을 위해 상하 폭을 조금 더 좁게 조정 (짧은 선 유도)높이값을 순환(index % 6)
+        // [Y 좌표 계산] 별자리 느낌을 위해 상하 폭을 조금 더 좁게 조정 (짧은 선 유도)
+        // 높이값을 순환(index % 6)
         y: [50, 105, 120, 70, 45, 80][index % 6],
       };
     });
@@ -67,6 +74,7 @@ export function EmotionConstellation({ data }: EmotionConstellationProps) {
           </feMerge>
         </filter>
       </defs>
+
       {/* 선 연결 로직 */}
       {nodes.map((node, i) => {
         if (i === 0) return null; // 첫 번째 노드는 연결할 이전 노드가 없으므로 생략
@@ -91,13 +99,27 @@ export function EmotionConstellation({ data }: EmotionConstellationProps) {
       {/* 노드(원) 및 텍스트 로직 */}
       {nodes.map((node) => {
         const isMax = node.count === maxCount; // 현재 노드가 최대 빈도인지 확인
+
         // 노드 개수가 많아지면(6개 초과) 반지름을 살짝 줄여서 겹침 방지
         const baseRadius = nodes.length > 6 ? 12 : 13;
+
         // 빈도수 비율에 따라 반지름을 10px 범위 내에서 추가로 키움
         const radius = baseRadius + (node.count / (maxCount || 1)) * 10;
 
         return (
           <g key={`node-${node.id}`}>
+            {/* 클릭 영역 (원/색은 건드리지 않고, 선택만 동작) */}
+            {onSelectKeyword && (
+              <circle
+                cx={node.x}
+                cy={node.y}
+                r={radius + 8} // 클릭 판정 넓히기
+                fill='transparent'
+                style={{ cursor: 'pointer' }}
+                onClick={() => onSelectKeyword(node.keyword)}
+              />
+            )}
+
             {/* 별(원) 그리기 */}
             <motion.circle
               cx={node.x}
@@ -106,18 +128,19 @@ export function EmotionConstellation({ data }: EmotionConstellationProps) {
               fill={isMax ? '#FF5C5C' : '#FFFFFF'} // 최대값은 붉은색, 나머지는 흰색
               stroke='#FFC8C6'
               strokeWidth='1'
-              filter={isMax ? 'url(#glow-strong)' : 'url(#glow-soft)'} // 노드에  글로우 필터 적용
+              filter={isMax ? 'url(#glow-strong)' : 'url(#glow-soft)'} // 노드에 글로우 필터 적용
               // 애니메이션: 톡톡 튀어나오는 느낌의 스프링 효과
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', damping: 12, delay: node.id * 0.05 }}
             />
+
             <text
               x={node.x}
               y={node.y}
               textAnchor='middle'
               dominantBaseline='central'
-              className={isMax ? 'fill-white' : 'fill-[#171717]'} //가장 크면 흰색 아니면 블랙
+              className={isMax ? 'fill-white' : 'fill-[#171717]'} // 가장 크면 흰색, 아니면 블랙
               style={{
                 fontSize: `${radius * 0.45 + 3}px`, // 원 크기에 맞춰 글자 크기도 살짝 조절
                 fontWeight: '500',

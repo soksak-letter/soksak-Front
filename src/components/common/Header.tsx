@@ -10,7 +10,7 @@ const Header = ({ children, className }: HeaderProps) => {
     <header
       className={`flex w-full max-w-[375px] mx-auto
              px-[10px]  justify-center items-center relative
-             bg-[#fafafa] ${className}`}
+             bg-[var(--color-bg-500)] ${className}`}
     >
       {children}
     </header>

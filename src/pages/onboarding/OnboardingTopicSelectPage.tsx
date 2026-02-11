@@ -115,7 +115,10 @@ export default function OnboardingTopicSelectPage() {
         })}
       </div>
 
-      <div className='mt-auto mb-6 flex justify-center'>
+      <div className='mt-auto mb-6 flex flex-col items-center gap-3'>
+        <span className='ty-detailMedium text-[var(--color-text-assistive)]'>
+          관심 주제는 마이페이지에서 다시 수정할 수 있어요!
+        </span>
         <Button color='primary' size='large' disabled={!isNextEnabled} onClick={handleNext}>
           {isNextEnabled ? '다음으로' : '3개 이상 선택해주세요.'}
           {/* TODO: 버튼 색 바뀌는 거 다시 체크하기 */}
