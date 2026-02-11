@@ -161,7 +161,9 @@ export default function LetterInboxOtherPage() {
                             {it.letterTitle}
                           </p>
                           <div className='mt-4 flex items-center gap-1'>
-                            <p className='text-[12px] text-[#171717]'>{it.senderName}</p>
+                            <p className='ty-detailMedium text-[var(--color-text-normal)]'>
+                              {it.senderName}
+                            </p>
                             {it.isUnread && (
                               <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
                             )}
