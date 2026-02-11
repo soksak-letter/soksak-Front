@@ -24,10 +24,6 @@ export default function FriendRequestPage() {
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const patchDraft = useLetterStore((s) => s.patchDraft);
   const { data: incoming = [] } = useIncomingFriendRequests();
-  // TODO : 이전 friend draft를 리셋해야 하는가?
-  // 이전 friend draft 임시저장 -> 다른 친구에게 새로 작성하려고 하면 모달 띄우기
-  // (임시 저장된 글이 있습니다. 삭제하고 새로 작성하시겠어요?)
-  // const resetCurrent = useLetterStore((s) => s.resetCurrent);
   const { data: outgoing = [] } = useOutgoingFriendRequests();
 
   const acceptMutation = useAcceptFriendRequest();
@@ -38,7 +34,7 @@ export default function FriendRequestPage() {
     () =>
       incoming.map((r) => ({
         id: r.requesterUserId,
-        name: String(r.requesterUserId), // TODO: nickname 내려오면 교체
+        name: String(r.requesterNickname),
       })),
     [incoming],
   );
@@ -47,7 +43,7 @@ export default function FriendRequestPage() {
     () =>
       outgoing.map((r) => ({
         id: r.receiverUserId,
-        name: String(r.receiverUserId), // TODO: nickname 내려오면 교체
+        name: String(r.requesterNickname),
       })),
     [outgoing],
   );

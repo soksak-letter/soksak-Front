@@ -20,7 +20,6 @@ type InboxSelfLetterItem = {
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
-  isUnread: boolean;
   paperId: number;
   stampId: number;
   stampUrl: string;
@@ -44,7 +43,6 @@ export default function LetterInboxSelfPage() {
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
-      isUnread: false,
       paperId: x.paperId + 1,
       stampId: x.stampId,
       stampUrl: x.stampUrl,
@@ -149,9 +147,6 @@ export default function LetterInboxSelfPage() {
 
                           <div className='mt-4 flex items-center gap-1'>
                             <p className='text-[12px] text-[#171717]'>{it.title}</p>
-                            {it.isUnread && (
-                              <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
-                            )}
                           </div>
                         </div>
 
