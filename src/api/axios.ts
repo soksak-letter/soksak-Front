@@ -66,7 +66,7 @@ axiosInstance.interceptors.response.use(
     const { status } = error.response;
 
     // 로그인, 회원가입, 소셜 로그인 API는 401 발생 시 바로 에러를 던져야 함
-    const excludeUrls = ['/auth/signin', '/auth/signup', '/auth/social'];
+    const excludeUrls = ['/auth/welcome', '/auth/signin', '/auth/signup', '/auth/callback'];
     const isExcluded = excludeUrls.some((url) => originalRequest.url?.includes(url));
 
     //  401 에러 처리 로직

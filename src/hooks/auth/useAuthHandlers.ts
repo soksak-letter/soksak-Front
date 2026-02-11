@@ -12,7 +12,7 @@ export const useAuthHandlers = () => {
   const handleLogout = async () => {
     try {
       await postLogout(); // 서버에 "나 간다" 알림
-    } catch (error) {
+    } catch (error: unknown) {
       showToast('로그아웃 실패했어요. 잠시 후 다시 요청해주세요.', 'error');
     } finally {
       queryClient.clear();
@@ -32,7 +32,7 @@ export const useAuthHandlers = () => {
       // 탈퇴 후에도 로그아웃 처리와 동일하게 청소 필요
       logout();
       navigate('/splash', { replace: true });
-    } catch (error) {
+    } catch (error: unknown) {
       showToast('회원 탈퇴에 실패했어요. 잠시 후 다시 요청해주세요.', 'error');
     }
   };
