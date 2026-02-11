@@ -9,30 +9,7 @@ import { PAPER_ASSET_MAP, DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import NotFoundPage from '../system/NotFoundPage';
 import LetterCard from '@/components/letters/LetterCard';
 import { LoadingDots } from '@/components/LoadingDots';
-
-const parseSentAt = (isoOrNull: string | null) => {
-  if (!isoOrNull) return '-';
-
-  const d = new Date(isoOrNull);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  let hours = d.getHours(); // 0 ~ 23
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-
-  const isPM = hours >= 12;
-  const ampm = isPM ? 'PM' : 'AM';
-
-  hours = hours % 12;
-  if (hours === 0) hours = 12;
-
-  const hh = String(hours).padStart(2, '0');
-
-  return `${y}.${m}.${day} ${hh}:${minutes} ${ampm}`;
-};
+import { getParseSentAt } from '@/utils/date';
 
 type PostSelfData = {
   title: string;
@@ -56,7 +33,7 @@ export default function LetterPostSelfPage() {
 
     return {
       title: data.title,
-      sentAtText: parseSentAt(data.deliveredAt),
+      sentAtText: getParseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
       paperId: (data.design?.paper?.id ?? 0) + 1,

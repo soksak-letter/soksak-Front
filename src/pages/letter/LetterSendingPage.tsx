@@ -7,8 +7,10 @@ import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import NotFoundPage from '../system/NotFoundPage';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useMyProfile } from '@/hooks/useMyProfile';
+import ServerErrorPage from '../system/ServerErrorPage';
+import ErrorPage from '../system/ErrorPage';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -18,6 +20,7 @@ const LetterSendingPage = () => {
 
   const navigate = useNavigate();
 
+  const senderId = useThreadFlowStore((s) => s.senderId);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
   const sessionId = useThreadFlowStore((s) => s.sessionId);
   const letterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
@@ -30,6 +33,9 @@ const LetterSendingPage = () => {
   const createSelfLetterMutation = useCreateSelfLetter();
   const { data } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
+
+  const { data: myProfile } = useMyProfile();
+  const username = myProfile?.nickname ?? '사용자';
 
   const safeMode: Target | null = useMemo(() => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
@@ -71,12 +77,17 @@ const LetterSendingPage = () => {
       return { ...basePayload, receiverUserId: draft.receiverUserId };
     }
 
-    if (safeMode === 'anon' || safeMode === 'other') {
+    if (safeMode === 'other') {
+      if (senderId == null) return null;
+      return { ...basePayload, receiverUserId: senderId };
+    }
+
+    if (safeMode === 'anon') {
       return basePayload;
     }
 
     return null; // self는 여기 아님
-  }, [basePayload, safeMode, draft.receiverUserId]);
+  }, [basePayload, safeMode, draft.receiverUserId, senderId]);
 
   // 나에게 전송할 때 payload
   const selfPayload = useMemo(() => {
@@ -167,17 +178,14 @@ const LetterSendingPage = () => {
   const invalid = !safeMode || (needsSessionId && !sessionId);
 
   if (invalid) {
-    return <NotFoundPage />;
+    return <ErrorPage />;
   }
 
   const getTargetText = () => {
-    // TODO : Mock data 제거
-    const sender = '개굴';
-
     if (safeMode === 'anon') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           누군가에게 전달되고 있어요.
         </>
@@ -186,7 +194,7 @@ const LetterSendingPage = () => {
     if (safeMode === 'other') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           {senderName}님에게 전달되고 있어요.
         </>
@@ -195,16 +203,16 @@ const LetterSendingPage = () => {
     if (safeMode === 'self') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
-          미래의 {sender}님에게 전달되고 있어요.
+          미래의 {username}님에게 전달되고 있어요.
         </>
       );
     }
     if (safeMode === 'friend') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           {senderName}님에게 전달되고 있어요.
         </>
@@ -212,7 +220,7 @@ const LetterSendingPage = () => {
     }
     return (
       <>
-        {sender}님의 소중한 편지가
+        {username}님의 소중한 편지가
         <br />
         누군가에게 전달되고 있어요.
       </>
@@ -234,7 +242,7 @@ const LetterSendingPage = () => {
   const TargetText = getTargetText();
 
   const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
-  if (!safeMode || !ok) return null;
+  if (!safeMode || !ok) return <ServerErrorPage />;
 
   return (
     <div className='min-h-dvh flex flex-col items-center justify-center'>

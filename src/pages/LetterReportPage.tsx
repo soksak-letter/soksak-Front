@@ -11,6 +11,7 @@ import { REPORT_REASONS, type ReportReason } from '@/types/dto/letterReport';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useMyProfile } from '@/hooks/useMyProfile';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,10 @@ const LetterReportPage = () => {
 
   // store에서 senderId 가져오기 (fallback용)
   const senderIdFromStore = useThreadFlowStore((s) => s.senderId);
+
+  // username 불러오기
+  const { data } = useMyProfile();
+  const username = data?.nickname ?? '사용자';
 
   // targetUserId 파싱 및 유효성 검사 (차단용)
   // 우선순위: query param > state > store
@@ -204,8 +209,7 @@ const LetterReportPage = () => {
         <div className='px-4'>
           {/* 안내 문구 */}
           <div className='mb-6'>
-            {/*TTODO:내 닉네임 불러오기 API*/}
-            <h2 className='ty-body2 mb-1'>개굴님, 신고 사유를 선택해주세요.</h2>
+            <h2 className='ty-body2 mb-1'>{username}님, 신고 사유를 선택해주세요.</h2>
             <p className='ty-body5 text-[#595959]'>
               해당 내역은 마이페이지 - 신고 내역에서 확인할 수 있습니다.
             </p>

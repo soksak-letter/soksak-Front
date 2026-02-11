@@ -25,10 +25,13 @@ export type FriendRequestStatus = 'PENDING' | 'REJECTED' | 'DELETED';
 
 export type FriendRequestItem = {
   id: number;
+  requesterNickname: string;
   requesterUserId: number;
   receiverUserId: number;
   sessionId: number;
   status: FriendRequestStatus;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type SendFriendRequestBody = {

@@ -8,7 +8,7 @@ type DateValue = { year: number; month: number; day: number };
 
 type LetterDraft = {
   questionId: number | null;
-  receiverUserId: number | null;
+  receiverUserId: number | undefined;
   title: string;
   content: string;
   isPublic: boolean;
@@ -23,7 +23,7 @@ type LetterStyle = {
 
 const createInitialDraft = (): LetterDraft => ({
   questionId: null,
-  receiverUserId: null,
+  receiverUserId: undefined,
   title: '',
   content: '',
   isPublic: false,

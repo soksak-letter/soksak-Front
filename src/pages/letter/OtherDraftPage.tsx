@@ -14,6 +14,7 @@ import LoadingPage from '../system/LoadingPage';
 import { Button } from '@/components/common/Button';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { validateLetter } from '@/utils/validateLetter';
+import { useModalStore } from '@/stores/modalStore';
 
 const OtherDraftPage = () => {
   const { data, isLoading, isError, refetch } = useDailyQuestion();
@@ -21,7 +22,9 @@ const OtherDraftPage = () => {
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
   const patchDraft = useLetterStore((s) => s.patchDraft);
+  const resetCurrent = useLetterStore((s) => s.resetCurrent);
 
+  const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();
   const navigate = useNavigate();
 
@@ -73,7 +76,23 @@ const OtherDraftPage = () => {
   };
 
   const handleBack = () => {
-    navigate(-1);
+    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
+
+    if (!hasSomething) {
+      navigate(-1);
+      return;
+    }
+
+    openModal('storageConfirm', {
+      onExit: () => {
+        resetCurrent();
+        navigate(-1);
+      },
+      onConfirmStorage: async () => {
+        showToast('임시저장 되었습니다!', 'success');
+        navigate(-1);
+      },
+    });
   };
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');

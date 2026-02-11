@@ -31,10 +31,13 @@ export default function LetterPostOtherPage() {
   const setFlow = useThreadFlowStore((s) => s.setFlow);
   const resetFlow = useThreadFlowStore((s) => s.resetFlow);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
+  const letterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
 
   const { data, isLoading, isError, refetch } = useAnonThread(sessionId);
 
   const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
+
+  const remainingCount = useMemo(() => Math.max(0, 10 - letterCount), [letterCount]);
 
   const posts = useMemo<PostItem[]>(() => {
     const letters = data?.letters ?? [];
@@ -57,8 +60,9 @@ export default function LetterPostOtherPage() {
       target: 'other',
       sessionId,
       senderName: senderName,
+      letterCount,
     });
-  }, [setFlow, sessionId, senderName]);
+  }, [setFlow, sessionId, senderName, letterCount]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
@@ -69,13 +73,19 @@ export default function LetterPostOtherPage() {
 
   const handleOpenLetterDetail = (item: PostItem) => {
     navigate(`/letter/reply/${sessionId}/${item.letterId}`, {
-      state: { sessionId, letterId: item.letterId, senderName, isMine: item.isMine },
+      state: {
+        sessionId,
+        letterId: item.letterId,
+        senderName,
+        isMine: item.isMine,
+        remainingCount: remainingCount,
+      },
     });
   };
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
-    navigate('/letter/other/draft');
+    navigate('/letter/other/draft', { state: { remainingCount } });
     // senderName, sessionId는 letterContext store에 저장되어 있다.
   };
 
@@ -83,6 +93,7 @@ export default function LetterPostOtherPage() {
     // store에 저장해둔 sessionId, letterCount, senderName 삭제
     // flow가 이어져야만 저장 가능
     resetFlow();
+    navigate(-1);
   };
 
   return (
@@ -203,7 +214,9 @@ function PostCard({
 
         <div className='mt-1 flex items-center gap-1'>
           <p className='ty-detailMedium'>{item.dateText}</p>
-          {item.isUnread && <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />}
+          {item.isUnread && item.isMine === false && (
+            <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />
+          )}
         </div>
       </div>
     </button>
