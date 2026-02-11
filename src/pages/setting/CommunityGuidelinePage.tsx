@@ -79,7 +79,11 @@ export default function CommunityGuidelinePage() {
 
   return (
     <div className='min-h-screen bg-[#F9F9F9]'>
-      <SettingHeader title={data?.title ?? '커뮤니티 가이드라인'} onBack={handleBack} />
+      <SettingHeader
+        title={data?.title ?? '커뮤니티 가이드라인'}
+        onBack={handleBack}
+        bgColor='#F9F9F9'
+      />
       {/* 헤더 높이만큼 여백 */}
       <div style={{ height: '50px' }} />
 
