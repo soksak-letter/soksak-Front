@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Button } from './Button';
 
 interface FloatingButtonProps {
   text?: string;
@@ -39,34 +40,13 @@ export default function FloatingButton({
         pointerEvents: 'none',
       }}
     >
-      <button
+      <Button
+        size='large'
         onClick={handleClick}
-        className='w-full'
-        style={{
-          backgroundColor: 'rgb(245, 84, 76)',
-          height: '58px',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: '16px',
-          paddingBottom: '16px',
-          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)',
-          pointerEvents: 'auto',
-        }}
+        className='w-full pointer-events-auto'
       >
-        <span
-          style={{
-            fontFamily: 'Pretendard',
-            fontWeight: 600,
-            fontSize: '16px',
-            lineHeight: '25.6px',
-            color: '#FFFFFF',
-          }}
-        >
-          {text}
-        </span>
-      </button>
+        {text}
+      </Button>
     </div>
   );
 }

@@ -104,10 +104,6 @@ const AnonDraftPage = () => {
     return () => window.clearTimeout(id);
   }, [isError, error, navigate, showToast]);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   if (isLoading) return <DraftSkeleton title='타인에게 보내는 편지' />;
