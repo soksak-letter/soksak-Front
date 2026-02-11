@@ -9,6 +9,7 @@ interface LetterPreviewCardProps {
   isLiked: boolean;
   onToggleLike?: () => void;
   disabled?: boolean;
+  isLikeLoading?: boolean;
 }
 
 export default function LetterPreviewCard({
@@ -19,6 +20,7 @@ export default function LetterPreviewCard({
   isLiked,
   onToggleLike,
   disabled,
+  isLikeLoading,
 }: LetterPreviewCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -118,7 +120,7 @@ export default function LetterPreviewCard({
             disabled={disabled}
             className='flex items-center justify-center w-[22px] h-[22px] disabled:opacity-50'
           >
-            {disabled ? (
+            {isLikeLoading ? (
               <svg className='animate-spin' width='18' height='18' viewBox='0 0 24 24' fill='none'>
                 <circle
                   className='opacity-25'

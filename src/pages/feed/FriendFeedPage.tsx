@@ -98,6 +98,10 @@ export default function FriendFeedPage() {
             likes={l.likes}
             isLiked={l.isLiked}
             disabled={createLike.isPending || deleteLike.isPending}
+            isLikeLoading={
+              (createLike.isPending && createLike.variables === l.letterId) ||
+              (deleteLike.isPending && deleteLike.variables === l.letterId)
+            }
             onToggleLike={() => handleToggleLike(l.letterId, l.isLiked)}
           />
         ))}
