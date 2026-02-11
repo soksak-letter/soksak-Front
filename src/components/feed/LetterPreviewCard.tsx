@@ -118,14 +118,32 @@ export default function LetterPreviewCard({
             disabled={disabled}
             className='flex items-center justify-center w-[22px] h-[22px] disabled:opacity-50'
           >
-            <svg width='22' height='22' viewBox='0 0 22 22' fill='none'>
-              <path
-                d='M11 19.5L9.55 18.2C5.4 14.5 2.75 12.14 2.75 9.25C2.75 6.89 4.49 5.15 6.85 5.15C8.18 5.15 9.46 5.77 10.34 6.74H11.66C12.54 5.77 13.82 5.15 15.15 5.15C17.51 5.15 19.25 6.89 19.25 9.25C19.25 12.14 16.6 14.5 12.45 18.2L11 19.5Z'
-                fill={isLiked ? '#F55449' : '#FFFFFF'}
-                stroke='#F55449'
-                strokeWidth='1.5'
-              />
-            </svg>
+            {disabled ? (
+              <svg className='animate-spin' width='18' height='18' viewBox='0 0 24 24' fill='none'>
+                <circle
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='#F55449'
+                  strokeWidth='4'
+                />
+                <path
+                  className='opacity-75'
+                  fill='#F55449'
+                  d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
+                />
+              </svg>
+            ) : (
+              <svg width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                <path
+                  d='M11 19.5L9.55 18.2C5.4 14.5 2.75 12.14 2.75 9.25C2.75 6.89 4.49 5.15 6.85 5.15C8.18 5.15 9.46 5.77 10.34 6.74H11.66C12.54 5.77 13.82 5.15 15.15 5.15C17.51 5.15 19.25 6.89 19.25 9.25C19.25 12.14 16.6 14.5 12.45 18.2L11 19.5Z'
+                  fill={isLiked ? '#F55449' : '#FFFFFF'}
+                  stroke='#F55449'
+                  strokeWidth='1.5'
+                />
+              </svg>
+            )}
           </button>
 
           <span
