@@ -168,7 +168,7 @@ export default function FriendInboxPage() {
 
           {isEmptySearch && (
             <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
-              검색 결과가 없\
+              검색 결과가 없어요
             </div>
           )}
         </div>

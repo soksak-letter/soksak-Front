@@ -31,14 +31,7 @@ export default function WeeklyReportPage() {
   const emotions = reportData?.emotions;
   const report = reportData?.report ?? null;
 
-  useEffect(() => {
-    console.log('[WeeklyReport] raw data:', data);
-    console.log('[WeeklyReport] reportData:', reportData);
-    console.log('[WeeklyReport] emotions:', emotions);
-    console.log('[WeeklyReport] emotions.TOTAL:', emotions?.TOTAL);
-  }, [data, reportData, emotions]);
-
-  // ✅ 하이라이트 ids (캐러셀은 이것만 보여줌)
+  // 하이라이트 ids (캐러셀은 이것만 보여줌)
   const highlightIds = useMemo(() => {
     const ids = reportData?.highlights?.map((h) => h.letterId) ?? [];
     return Array.from(new Set(ids)).filter((n) => Number.isFinite(n) && n > 0) as number[];
@@ -50,7 +43,7 @@ export default function WeeklyReportPage() {
     isError: isHighlightError,
   } = useWeeklyReportHighlights(highlightIds);
 
-  // ✅ 키워드 칩 포맷(네 constellation/칩에 쓰는 용도)
+  // 키워드 칩 포맷(네 constellation/칩에 쓰는 용도)
   const formattedKeywords = useMemo(() => {
     return [...keywords]
       .sort((a, b) => b.count - a.count)
@@ -62,7 +55,7 @@ export default function WeeklyReportPage() {
       }));
   }, [keywords]);
 
-  // ✅ 선택 키워드(전체보기 이동용)
+  // 선택 키워드(전체보기 이동용)
   const [selectedKeyword, setSelectedKeyword] = useState<string>('');
 
   useEffect(() => {
@@ -76,10 +69,10 @@ export default function WeeklyReportPage() {
     return found?.count ?? 0;
   }, [formattedKeywords, selectedKeyword]);
 
-  // ✅ 감정 분포(도넛)
+  // 감정 분포(도넛)
   const distribution = useMemo(() => mapWeeklyEmotionDistribution(emotions), [emotions]);
 
-  // ✅ 감정 흐름(막대)
+  // 감정 흐름(막대)
   const flowData = useMemo(() => mapWeeklyEmotionFlow(emotions), [emotions]);
 
   // ---- 렌더 분기 ----
@@ -108,7 +101,7 @@ export default function WeeklyReportPage() {
   const emotionStatusMock: EmotionStatusKey = 'neutral';
 
   const handleGoKeywordPage = () => {
-    // ✅ 전체보기는 키워드 페이지에서 /letters/keywords/{aiKeyword}를 호출해서 리스트로 뿌리면 됨
+    // 전체보기는 키워드 페이지에서 /letters/keywords/{aiKeyword}를 호출해서 리스트로 뿌리면 됨
     navigate(ROUTES.report.keyword, {
       state: { keyword: selectedKeyword, count: selectedCount },
     });
@@ -184,7 +177,7 @@ export default function WeeklyReportPage() {
             </div>
           </section>
 
-          {/* 편지조각 보기 (✅ 하이라이트 3개 캐러셀) */}
+          {/* 편지조각 보기 (하이라이트 3개 캐러셀) */}
           <div className='w-[375px] h-[170px] px-[16px]'>
             <div className='h-full w-full py-4'>
               <div className='flex flex-col gap-[16px]'>

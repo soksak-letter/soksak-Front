@@ -47,6 +47,8 @@ function normalizeSegments(segments?: DaySegment[]) {
   return out;
 }
 
+const DAYS: DayKey[] = ['월', '화', '수', '목', '금', '토', '일'];
+
 export function WeeklyEmotionFlowCard({
   title = '주간 감정 흐름',
   subtitle = '요일별 감정 변화를 확인하세요',
@@ -58,8 +60,6 @@ export function WeeklyEmotionFlowCard({
   data?: WeeklyEmotionFlowItem[];
   emptyText?: string;
 }) {
-  const DAYS: DayKey[] = ['월', '화', '수', '목', '금', '토', '일'];
-
   const map = useMemo(() => {
     const m = new Map<DayKey, DaySegment[]>();
     const safeData = Array.isArray(data) ? data : [];
