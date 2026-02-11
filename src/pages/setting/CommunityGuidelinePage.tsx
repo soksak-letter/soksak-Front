@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingHeader from '@/components/common/SettingHeader';
-import { useCommunityGuideline } from '@/hooks/setting/useCommunityGuideline';
 
 const RULES = [
   { number: '01', text: '욕설 및 개인/집단에 대한 비하·모욕' },
@@ -61,17 +60,8 @@ const ruleTextStyle: CSSProperties = {
   color: '#000000',
 };
 
-const loadingStyle: CSSProperties = {
-  fontFamily: 'Pretendard',
-  fontWeight: 500,
-  fontSize: '12px',
-  lineHeight: '19.2px',
-  color: '#171717',
-};
-
 export default function CommunityGuidelinePage() {
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useCommunityGuideline();
 
   const handleBack = () => {
     navigate(-1);
@@ -79,79 +69,63 @@ export default function CommunityGuidelinePage() {
 
   return (
     <div className='min-h-screen bg-[#F9F9F9]'>
-      <SettingHeader
-        title={data?.title ?? '커뮤니티 가이드라인'}
-        onBack={handleBack}
-        bgColor='#F9F9F9'
-      />
+      <SettingHeader title='커뮤니티 가이드라인' onBack={handleBack} bgColor='#F9F9F9' />
       {/* 헤더 높이만큼 여백 */}
       <div style={{ height: '50px' }} />
 
       {/* 메인 컨텐츠 */}
       <main className='mx-auto w-full max-w-[375px] px-4 pb-8'>
-        {isLoading && (
-          <p className='mt-[23px]' style={loadingStyle}>
-            불러오는 중...
-          </p>
-        )}
-        {!data && isError && (
-          <p className='mt-[23px]' style={loadingStyle}>
-            커뮤니티 가이드라인을 불러오지 못했습니다.
-          </p>
-        )}
-        {data && (
-          <div className='flex flex-col gap-4 pt-[23px]'>
-            {/* 카드 1: 편지를 보낼 때 */}
-            <div style={cardStyle}>
-              <div className='flex flex-col gap-3'>
-                <p style={sectionTitleStyle}>📮 편지를 보낼 때</p>
-                <div className='flex flex-col gap-2'>
-                  <p style={bodyTextStyle}>상대방에게 편지를 작성할 때 정중하게 작성해주세요.</p>
-                  <p style={bodyTextStyle}>타인에게 위협이 되는 표현은 삼가주세요.</p>
-                  <p style={bodyTextStyle}>친구가 되기 전까지는 서로의 익명성을 존중해주세요.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* 카드 2: 편지를 받고 나서 */}
-            <div style={cardStyle}>
-              <div className='flex flex-col gap-3'>
-                <p style={sectionTitleStyle}>📩 편지를 받고 나서</p>
-                <div className='flex flex-col gap-2'>
-                  <p style={bodyTextStyle}>도착한 편지에 비난보다는 공감의 시선을 보내주세요.</p>
-                  <p style={bodyTextStyle}>답장을 할 때 상대방에 대한 예의를 담아주세요.</p>
-                  <p style={bodyTextStyle}>
-                    불쾌한 내용을 담은 편지를 받았다면 신고 기능을 활용해주세요.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* 카드 3: 깨끗한 커뮤니티를 위한 약속 */}
-            <div style={cardStyle}>
-              <div className='flex flex-col gap-3'>
-                <div>
-                  <p style={sectionTitleStyle}>🚫 깨끗한 커뮤니티를 위한 약속</p>
-                  <div className='mt-2'>
-                    <p style={bodyTextStyle}>
-                      아래 항목은 신고 사유에 해당할 수 있으며, 타인을 위한 규칙입니다.
-                    </p>
-                  </div>
-                </div>
-                <div className='flex flex-col gap-1'>
-                  {RULES.map((rule) => (
-                    <div key={rule.number} style={ruleRowStyle}>
-                      <div className='flex items-center gap-2'>
-                        <span style={ruleNumberStyle}>{rule.number}</span>
-                        <span style={ruleTextStyle}>{rule.text}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+        <div className='flex flex-col gap-4 pt-[23px]'>
+          {/* 카드 1: 편지를 보낼 때 */}
+          <div style={cardStyle}>
+            <div className='flex flex-col gap-3'>
+              <p style={sectionTitleStyle}>📮 편지를 보낼 때</p>
+              <div className='flex flex-col gap-2'>
+                <p style={bodyTextStyle}>상대방에게 편지를 작성할 때 정중하게 작성해주세요.</p>
+                <p style={bodyTextStyle}>타인에게 위협이 되는 표현은 삼가주세요.</p>
+                <p style={bodyTextStyle}>친구가 되기 전까지는 서로의 익명성을 존중해주세요.</p>
               </div>
             </div>
           </div>
-        )}
+
+          {/* 카드 2: 편지를 받고 나서 */}
+          <div style={cardStyle}>
+            <div className='flex flex-col gap-3'>
+              <p style={sectionTitleStyle}>📩 편지를 받고 나서</p>
+              <div className='flex flex-col gap-2'>
+                <p style={bodyTextStyle}>도착한 편지에 비난보다는 공감의 시선을 보내주세요.</p>
+                <p style={bodyTextStyle}>답장을 할 때 상대방에 대한 예의를 담아주세요.</p>
+                <p style={bodyTextStyle}>
+                  불쾌한 내용을 담은 편지를 받았다면 신고 기능을 활용해주세요.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 카드 3: 깨끗한 커뮤니티를 위한 약속 */}
+          <div style={cardStyle}>
+            <div className='flex flex-col gap-3'>
+              <div>
+                <p style={sectionTitleStyle}>🚫 깨끗한 커뮤니티를 위한 약속</p>
+                <div className='mt-2'>
+                  <p style={bodyTextStyle}>
+                    아래 항목은 신고 사유에 해당할 수 있으며, 타인을 위한 규칙입니다.
+                  </p>
+                </div>
+              </div>
+              <div className='flex flex-col gap-1'>
+                {RULES.map((rule) => (
+                  <div key={rule.number} style={ruleRowStyle}>
+                    <div className='flex items-center gap-2'>
+                      <span style={ruleNumberStyle}>{rule.number}</span>
+                      <span style={ruleTextStyle}>{rule.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
