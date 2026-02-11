@@ -33,7 +33,7 @@ const LetterSendingPage = () => {
   const { showToast } = useGlobalToast();
 
   const { data: myProfile } = useMyProfile();
-  const username = myProfile?.nickname;
+  const username = myProfile?.nickname ?? '사용자';
 
   const safeMode: Target | null = useMemo(() => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
