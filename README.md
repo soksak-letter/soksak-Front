@@ -5,7 +5,7 @@
 
 사용자 서비스: https://www.soksak-letter.com/
 
-<!-- 어드민: [https://(어드민링크)](https://%28어드민링크%29) -->
+<!-- 어드민: [https://(어드민링크)] -->
 
 <img width="1920" height="1080" alt="soksak_main" src="https://github.com/user-attachments/assets/3075779c-e47f-4555-9f59-4ac92872fd46" />
 
@@ -146,7 +146,6 @@
 ### Web
 
 - ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black)![TypeScript](https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=Typescript&logoColor=white)
-- ![React-Query](https://img.shields.io/badge/reactquery-FF4154?style=flat-square&logo=react-query&logoColor=white)
   ![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=TanStackQuery&logoColor=white)
   ![Zustand](https://img.shields.io/badge/zustand-000000?style=flat-square&logo=zustand&logoColor=white)
   ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white)
@@ -156,7 +155,6 @@
 
 - ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-000000.svg?style=flat-square&logo=intellij-idea&logoColor=white)
   ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
-  ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=flat-square&logo=Gradle&logoColor=white)
   ![JWT](https://img.shields.io/badge/JWT-black?style=flat-square&logo=JSON%20web%20tokens)
 - ![MySQL](https://img.shields.io/badge/MySQL-%2300f.svg?style=flat-square&logo=mysql&logoColor=white)
 - ![GitHub Actions](https://img.shields.io/badge/Github%20Actions-%232671E5.svg?style=flat-square&logo=githubactions&logoColor=white)
@@ -165,10 +163,10 @@
 
 ### Co-working Tool
 
-- ![Github](https://img.shields.io/badge/Github-181717.svg?style=flat-square&logo=github&logoColor=white)
+- ![GitHub](https://img.shields.io/badge/Github-181717.svg?style=flat-square&logo=github&logoColor=white)
   ![Notion](https://img.shields.io/badge/Notion-000000.svg?style=flat-square&logo=notion&logoColor=white)
 
-<br>
+<br />
 
 ## **🐾 기술 스택 선정 이유**
 
@@ -318,7 +316,8 @@ npm i
 npm run dev
 
 # BE
-./gradlew bootRun
+npm i
+npm run start
 ```
 
 <br />
