@@ -9,6 +9,7 @@ import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import NotFoundPage from '../system/NotFoundPage';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { useMyProfile } from '@/hooks/useMyProfile';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -30,6 +31,9 @@ const LetterSendingPage = () => {
   const createSelfLetterMutation = useCreateSelfLetter();
   const { data } = useLetterStyleOptions();
   const { showToast } = useGlobalToast();
+
+  const { data: myProfile } = useMyProfile();
+  const username = myProfile?.nickname;
 
   const safeMode: Target | null = useMemo(() => {
     return ['anon', 'other', 'self', 'friend'].includes(target ?? '') ? (target as Target) : null;
@@ -171,13 +175,10 @@ const LetterSendingPage = () => {
   }
 
   const getTargetText = () => {
-    // TODO : Mock data 제거
-    const sender = '개굴';
-
     if (safeMode === 'anon') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           누군가에게 전달되고 있어요.
         </>
@@ -186,7 +187,7 @@ const LetterSendingPage = () => {
     if (safeMode === 'other') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           {senderName}님에게 전달되고 있어요.
         </>
@@ -195,16 +196,16 @@ const LetterSendingPage = () => {
     if (safeMode === 'self') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
-          미래의 {sender}님에게 전달되고 있어요.
+          미래의 {username}님에게 전달되고 있어요.
         </>
       );
     }
     if (safeMode === 'friend') {
       return (
         <>
-          {sender}님의 소중한 편지가
+          {username}님의 소중한 편지가
           <br />
           {senderName}님에게 전달되고 있어요.
         </>
@@ -212,7 +213,7 @@ const LetterSendingPage = () => {
     }
     return (
       <>
-        {sender}님의 소중한 편지가
+        {username}님의 소중한 편지가
         <br />
         누군가에게 전달되고 있어요.
       </>

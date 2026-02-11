@@ -11,6 +11,7 @@ import LoveIcon from '@/assets/icons/LoveIcon.svg?react';
 import { useCreateReview } from '@/hooks/useCreateReview';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
+import { useMyProfile } from '@/hooks/useMyProfile';
 
 type ReviewMood = 'meh' | 'good' | 'love';
 
@@ -40,8 +41,9 @@ export default function LetterReviewPage() {
 
   const { showToast } = useGlobalToast();
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
-  // TODO : 내 이름 불러오기
-  const username = '개굴';
+
+  const { data } = useMyProfile();
+  const username = data?.nickname ?? '사용자';
 
   // 서버에 보낼 데이터로 매핑 (reviewTag)
   const moodToTag = (m: ReviewMood) => {
