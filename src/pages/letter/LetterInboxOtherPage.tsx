@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
@@ -38,6 +39,7 @@ export default function LetterInboxOtherPage() {
 
   const [tab, setTab] = useState<LetterInboxTabKey>('other');
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
   // 서버 응답을 화면 아이템으로 변환
@@ -65,7 +67,7 @@ export default function LetterInboxOtherPage() {
   }, [data]);
 
   const filtered = useMemo(() => {
-    const k = keyword.trim();
+    const k = debouncedKeyword.trim();
 
     const result = !k
       ? items
@@ -76,7 +78,7 @@ export default function LetterInboxOtherPage() {
         ? b.receivedAtMs - a.receivedAtMs
         : a.receivedAtMs - b.receivedAtMs;
     });
-  }, [items, keyword, sortOrder]);
+  }, [items, debouncedKeyword, sortOrder]);
 
   const handleTabChange = (next: LetterInboxTabKey) => {
     setTab(next);
