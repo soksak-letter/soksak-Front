@@ -16,11 +16,10 @@ type SortOrder = 'latest' | 'oldest';
 
 type InboxSelfLetterItem = {
   letterId: number;
-  questionId: number;
+  question: string;
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
-  isUnread: boolean;
   paperId: number;
   stampId: number;
   stampUrl: string;
@@ -40,11 +39,10 @@ export default function LetterInboxSelfPage() {
 
     return raw.map((x) => ({
       letterId: x.id,
-      questionId: x.questionId,
+      question: x.questionTitle ?? '오늘의 질문',
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
-      isUnread: false,
       paperId: x.paperId + 1,
       stampId: x.stampId,
       stampUrl: x.stampUrl,
@@ -54,7 +52,7 @@ export default function LetterInboxSelfPage() {
   const filtered = useMemo(() => {
     const k = keyword.trim();
 
-    const result = !k ? items : items.filter((x) => x.title.includes(k)); // TODO : question 추가되면 '|| x.question.includes(x)' 추가
+    const result = !k ? items : items.filter((x) => x.title.includes(k) || x.question.includes(k));
 
     return [...result].sort((a, b) => {
       return sortOrder === 'latest'
@@ -135,25 +133,23 @@ export default function LetterInboxSelfPage() {
                       key={it.letterId}
                       type='button'
                       onClick={() => handleOpenLetter(it.letterId)}
-                      className='w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                      className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>
-                        {/* 왼쪽 텍스트 (현재: title / TODO: 상단에 question, 하단에 title) */}
-                        <div className='min-w-0 mt-1'>
-                          <p className='ty-body5 line-clamp-2 text-[var(--color-text-normal)]'>
-                            {it.title}
+                        {/* 왼쪽 텍스트  */}
+                        <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
+                          <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                            {it.question}
                           </p>
 
-                          {it.isUnread && (
-                            <div className='mt-4'>
-                              <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
-                            </div>
-                          )}
+                          <div className='mt-4 flex items-center gap-1'>
+                            <p className='text-[12px] text-[#171717]'>{it.title}</p>
+                          </div>
                         </div>
 
-                        <div className='relative flex flex-col'>
+                        <div className='flex flex-col'>
                           {/* 오른쪽 봉투 썸네일 */}
-                          <div className='h-23 w-25 shrink-0 flex items-center justify-center -mt-3'>
+                          <div className='h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
                             {EnvelopePreview ? (
                               <EnvelopePreview className='h-full w-full' />
                             ) : (
@@ -165,13 +161,13 @@ export default function LetterInboxSelfPage() {
                             <img
                               src={it.stampUrl}
                               alt=''
-                              className='absolute right-1 bottom-3 h-7 w-7 object-contain pointer-events-none'
+                              className='absolute  right-6.5 bottom-12.5 h-6 w-6 object-contain pointer-events-none'
                               draggable={false}
                             />
                           )}
 
                           {/* 오른쪽 하단 날짜 */}
-                          <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                          <div className='flex justify-end pr-2 -mt-2 ty-detailMedium text-[var(--color-text-normal)]'>
                             {it.receivedAt}
                           </div>
                         </div>

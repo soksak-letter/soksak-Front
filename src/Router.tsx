@@ -35,6 +35,7 @@ import NetworkErrorPage from './pages/system/NetworkErrorPage';
 import ForbiddenPage from './pages/system/ForbiddenPage';
 import NotFoundPage from './pages/system/NotFoundPage';
 import ErrorPage from './pages/system/ErrorPage';
+import SocialErrorPage from './pages/system/SocialErrorPage';
 
 import FeedPage from './pages/feed/PublicFeedPage';
 import FriendFeedPage from './pages/feed/FriendFeedPage';
@@ -42,7 +43,6 @@ import FriendFeedPage from './pages/feed/FriendFeedPage';
 import LetterSendingPage from './pages/letter/LetterSendingPage';
 import ProfileSetUpPage from './pages/login/ProfileSetUpPage';
 
-import FindAccountPage from './pages/login/FindAccountPAge';
 import LetterReviewPage from './pages/letter/LetterReviewPage';
 
 import LetterInboxOtherPage from './pages/letter/LetterInboxOtherPage';
@@ -72,9 +72,7 @@ import NoticePage from './pages/setting/NoticePage';
 import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
-
-// ===== Placeholders =====
-const TODOPage = () => <div />;
+import FindAccountPage from './pages/login/FindAccountPAge';
 
 const router = createBrowserRouter([
   {
@@ -98,7 +96,6 @@ const router = createBrowserRouter([
                   { path: 'inbox-other', element: <LetterInboxOtherPage /> },
                   { path: 'inbox-self', element: <LetterInboxSelfPage /> },
                   { path: 'other-stop', element: <LetterOtherStopPage /> },
-                  // { path: 'letter/10-end', element: <LetterTenEndPage /> },
                 ],
               },
               {
@@ -107,7 +104,7 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
                   { path: 'request', element: <FriendRequestPage /> },
-                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> }, // letter/10-end 페이지
+                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> },
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
@@ -127,6 +124,7 @@ const router = createBrowserRouter([
               { path: 'error/network', element: <NetworkErrorPage /> },
               { path: 'error/403', element: <ForbiddenPage /> },
               { path: 'error/404', element: <NotFoundPage /> },
+              { path: 'error/social', element: <SocialErrorPage /> },
               {
                 path: 'auth',
                 children: [
@@ -175,24 +173,17 @@ const router = createBrowserRouter([
               { path: 'letter/review/:sessionId', element: <LetterReviewPage /> },
               { path: 'letter/post-self/:letterId', element: <LetterPostSelfPage /> },
               { path: 'letter/loading', element: <LoadingPage /> },
-              // 기존 코드 충돌 방지를 위한 코드(레거시). 추후 삭제
-              {
-                path: 'letter/other_draft',
-                element: <Navigate to='/letter/other/draft' replace />,
-              },
-              { path: 'letter/self_draft', element: <Navigate to='/letter/self/draft' replace /> },
-              { path: 'friend/draft', element: <FriendDraftPage /> }, // 기존 라우팅
+
+              { path: 'friend/draft', element: <FriendDraftPage /> },
               { path: 'friend/thread/:friendId', element: <FriendPostPage /> }, // 나눈 편지 목록(질문 스레드 단위)
               {
                 path: 'friend/thread/:friendId/:letterId',
                 element: <FriendReplyPage />,
               },
-              { path: 'report/keyword-letter', element: <KeywordLetterPage /> }, // TODO: 수정 필요
-              { path: 'report/keyword-letter-indi', element: <TODOPage /> },
+
+              { path: 'report/keyword-letter', element: <KeywordLetterPage /> },
 
               { path: 'my/my-page', element: <MyPage /> },
-              { path: 'my/limits', element: <TODOPage /> },
-              { path: 'my/complain', element: <TODOPage /> },
               { path: 'my/inquiry', element: <InquiryPage /> },
 
               // 설정 페이지들

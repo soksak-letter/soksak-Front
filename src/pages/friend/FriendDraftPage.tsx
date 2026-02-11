@@ -13,6 +13,7 @@ import { useGlobalToast } from '@/components/toast/ToastProvider';
 import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { Button } from '@/components/common/Button';
 import { validateLetter } from '@/utils/validateLetter';
+import { useModalStore } from '@/stores/modalStore';
 
 export default function FriendDraftPage() {
   const { data, isLoading, isError, refetch } = useDailyQuestion();
@@ -22,6 +23,7 @@ export default function FriendDraftPage() {
   const patchDraft = useLetterStore((s) => s.patchDraft);
   const resetCurrent = useLetterStore((s) => s.resetCurrent);
 
+  const { openModal } = useModalStore();
   const { showToast } = useGlobalToast();
   const navigate = useNavigate();
 
@@ -30,9 +32,21 @@ export default function FriendDraftPage() {
     setActiveTarget('friend');
   }, [setActiveTarget]);
 
+  // friendId, friendName 가져오기
   const location = useLocation();
-  const friendName = (location.state as { friendName?: string })?.friendName;
   const headerTitle = `${friendName ?? ''}에게 보내는 편지`;
+  const { friendId, friendName } = (location.state ?? {}) as {
+    friendId?: number;
+    friendName?: string;
+  };
+
+  useEffect(() => {
+    setActiveTarget('friend');
+
+    if (typeof friendId === 'number' && Number.isFinite(friendId) && friendId > 0) {
+      patchDraft({ receiverUserId: friendId });
+    }
+  }, [setActiveTarget, patchDraft, friendId]);
 
   // questionId 저장
   useEffect(() => {
@@ -73,8 +87,23 @@ export default function FriendDraftPage() {
   };
 
   const handleBack = () => {
-    resetCurrent();
-    navigate(-1);
+    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
+
+    if (!hasSomething) {
+      navigate(-1);
+      return;
+    }
+
+    openModal('storageConfirm', {
+      onExit: () => {
+        resetCurrent();
+        navigate(-1);
+      },
+      onConfirmStorage: async () => {
+        showToast('임시저장 되었습니다!', 'success');
+        navigate(-1);
+      },
+    });
   };
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');

@@ -3,8 +3,8 @@ import type { ApiError } from '../common';
 export type SelfMailboxSuccess = {
   letters: {
     id: number;
-    questionId: number;
     title: string;
+    questionTitle: string;
     createdAt: string;
     paperId: number;
     stampId: number;

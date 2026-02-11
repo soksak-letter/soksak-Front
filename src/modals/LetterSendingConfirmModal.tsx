@@ -22,7 +22,6 @@ export default function LetterSendingConfirmModal() {
   };
 
   const getTargetText = () => {
-    // TODO : 추후 라이팅 주소 확인 필요
     if (pathname.includes('/letter/anon/decorate')) return `익명 친구에게 편지를`;
     if (pathname.includes('/letter/other/decorate')) return `${senderName}님에게 편지를`;
     if (pathname.includes('/letter/self/decorate')) return '미래의 나에게 편지를';
