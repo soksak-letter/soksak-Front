@@ -29,7 +29,7 @@ export default function DraftSkeleton({ title = '편지 작성' }: DraftSkeleton
       <div className='flex items-center justify-end p-5 mt-8 gap-2'>
         <div className='w-[170px] h-[16px] rounded bg-gray-200' />
       </div>
-      {/* 안내 텍스트 영역*/}ㄴ
+      {/* 안내 텍스트 영역*/}
       <div className='flex flex-col gap-1 px-5 -mt-3'>
         <div className='flex p-5 -mt-3 ty-detailMedium text-[var(--color-text-assistive)] flex-col gap-1'>
           <div className='w-[220px] h-[14px] rounded bg-gray-200 mb-1' />

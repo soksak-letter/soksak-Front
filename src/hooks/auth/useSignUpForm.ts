@@ -25,7 +25,7 @@ const useSignUpForm = () => {
   const [isEmailUnique, setIsEmailUnique] = useState(false);
   //아이디 중복확인 완료 여부
   const [isUsernameUnique, setIsUsernameUnique] = useState(false);
-  //포커스 상태 관리ㄴ
+  //포커스 상태 관리
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   // 각 필드별 유효성 검사 에러 메시지 저장

@@ -32,6 +32,7 @@ export default function FriendDraftPage() {
 
   const location = useLocation();
   const friendName = (location.state as { friendName?: string })?.friendName;
+  const headerTitle = `${friendName ?? ''}에게 보내는 편지`;
 
   // questionId 저장
   useEffect(() => {
@@ -79,12 +80,12 @@ export default function FriendDraftPage() {
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   if (isLoading) {
-    return <DraftSkeleton title={`${friendName}에게 보내는 편지`} />;
+    return <DraftSkeleton title={headerTitle} />;
   }
   if (isError) {
     return (
       <div className='min-h-dvh bg-[var(--color-bg-500)]'>
-        <BackHeader title={`${friendName}에게 보내는 편지`} onBack={handleBack} />
+        <BackHeader title={headerTitle} onBack={handleBack} />
         <div className='flex flex-col items-center justify-center gap-8 py-30 text-center px-5'>
           <p className='ty-title3'>질문을 불러오지 못했어요.</p>
           <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>
@@ -98,7 +99,7 @@ export default function FriendDraftPage() {
   return (
     <div className='flex flex-col'>
       <BackHeader
-        title={`${friendName}에게 보내는 편지`}
+        title={headerTitle}
         rightElement={
           <button type='submit' onClick={handleSubmit}>
             꾸미기
