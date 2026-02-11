@@ -168,8 +168,7 @@ export default function LetterInboxSelfPage() {
                           {!!it.stampUrl && (
                             <img
                               src={it.stampUrl}
-                              alt=''
-                              className='absolute right-6 bottom-11.5 h-7 w-7 object-contain pointer-events-none'
+                              className='absolute  right-6.5 bottom-12.5 h-6 w-6 object-contain pointer-events-none'
                               draggable={false}
                             />
                           )}

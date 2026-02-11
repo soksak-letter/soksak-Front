@@ -13,6 +13,7 @@ export type AnonMailboxLetter = {
   lastLetterTitle: string;
   lastLetterPreview: string;
   deliveredAt: string;
+  hasUnread: boolean;
 
   design: {
     paperId: number;
