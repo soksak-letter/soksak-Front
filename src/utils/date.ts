@@ -32,7 +32,7 @@ export function getTodayKstKey(): string {
  * @param options.fallback - 파싱 실패 시 반환값 (기본값: '-')
  */
 export function formatDate(
-  dateString: string,
+  dateString: string | null | undefined,
   options: {
     format?: 'dot' | 'korean';
     padded?: boolean;
@@ -47,9 +47,7 @@ export function formatDate(
   if (Number.isNaN(date.getTime())) return fallback;
 
   const year = date.getFullYear();
-  const month = padded
-    ? String(date.getMonth() + 1).padStart(2, '0')
-    : String(date.getMonth() + 1);
+  const month = padded ? String(date.getMonth() + 1).padStart(2, '0') : String(date.getMonth() + 1);
   const day = padded ? String(date.getDate()).padStart(2, '0') : String(date.getDate());
 
   if (format === 'korean') {

@@ -87,7 +87,7 @@ export type LettersByKeywordItem = {
 
   // 있을 수도
   title?: string;
-  deliveredAt?: string | null;
+  deliveredAt?: string;
   createdAt?: string;
 
   // 디자인이 목록에 올 수도/안 올 수도

@@ -7,6 +7,8 @@ import { getLetterDetail } from '@/api/weeklyReport';
 import type { ApiError } from '@/types/dto/common';
 import type { GetLetterSuccess, LettersByKeywordItem } from '@/types/dto/weeklyReport';
 
+import { formatDate } from '@/utils/date';
+
 type GetLetterDetailResponse = {
   success: GetLetterSuccess;
   message?: string;
@@ -25,12 +27,7 @@ export type KeywordLetterCardVM = {
   senderUserId?: number;
 };
 
-function formatDate(iso: string | null | undefined) {
-  if (!iso) return '';
-  return iso.slice(0, 10).replaceAll('-', '.');
-}
-
-/** ✅ useLettersByKeyword가 list를 unknown[]로 줄 때를 대비한 타입가드 */
+/** useLettersByKeyword가 list를 unknown[]로 줄 때를 대비한 타입가드 */
 function isLettersByKeywordItem(v: unknown): v is LettersByKeywordItem {
   if (!v || typeof v !== 'object') return false;
   const r = v as Record<string, unknown>;

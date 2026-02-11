@@ -15,6 +15,8 @@ import { useLetterDetails } from '@/hooks/letters/useLetterDetails';
 import { useLettersByKeyword } from '@/hooks/weeklyReport/useLettersByKeyword';
 import { useModalStore } from '@/stores/modalStore';
 
+import { formatDate } from '@/utils/date';
+
 type KeywordLetterItem = {
   letterId: number;
   title: string;
@@ -75,16 +77,6 @@ function parseDotDate(s: string) {
   return date.getTime();
 }
 
-function formatDotDate(iso?: string | null) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${yyyy}.${mm}.${dd}`;
-}
-
 export default function KeywordLetterPage() {
   const location = useLocation();
   const { openModal, activeModal, payload } = useModalStore();
@@ -122,7 +114,7 @@ export default function KeywordLetterPage() {
       .map((base) => {
         const { letterId, title, receivedAt } = base;
 
-        const dateText = formatDotDate(receivedAt);
+        const dateText = formatDate(receivedAt);
         const detail = detailMap.get(letterId) as unknown; // detail DTO가 확정되면 여기 타입 교체 가능
 
         // design 정보는 DTO 확정 전까지 unknown에서 안전 접근
@@ -188,7 +180,7 @@ export default function KeywordLetterPage() {
           <div className='h-[28px] px-3 flex items-center justify-center rounded-full border border-[var(--color-primary-400)] bg-[var(--color-primary-100)] text-[#var(--color-black)] ty-detailMedium shadow-sm'>
             # {selectedKeyword} ({keywordCount})
           </div>
-          <span className='ty-body1 text-[var(--color-black)]'>이 담긴 편지</span>
+          <span className='ty-body1'>이 담긴 편지</span>
         </div>
 
         {/* 3. 편지 그리드 섹션 */}
