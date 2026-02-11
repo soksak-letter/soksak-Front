@@ -68,7 +68,6 @@ export default function OnboardingTopicSelectPage() {
 
           // 이미 온보딩 완료 사용자
           if (res.error.errorCode === '409') {
-            // TODO: 에러코드 화이트리스트 필요(자유 문자열로 들어옴)
             if (isEdit) {
               navigate('/my/my-page', { replace: true });
             } else {
@@ -76,9 +75,6 @@ export default function OnboardingTopicSelectPage() {
             }
             return;
           }
-
-          // TODO: 프로젝트 토스트 방식으로 교체
-          console.log(res.error.reason);
         },
       },
     );
@@ -121,7 +117,6 @@ export default function OnboardingTopicSelectPage() {
         </span>
         <Button color='primary' size='large' disabled={!isNextEnabled} onClick={handleNext}>
           {isNextEnabled ? '다음으로' : '3개 이상 선택해주세요.'}
-          {/* TODO: 버튼 색 바뀌는 거 다시 체크하기 */}
         </Button>
       </div>
     </div>

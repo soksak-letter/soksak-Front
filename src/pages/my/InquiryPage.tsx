@@ -82,7 +82,7 @@ const InquiryPage = () => {
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
       {/* Header */}
-      <div className='bg-white'>
+      <div className='bg-[var(--color-bg-500)]'>
         <BackHeader
           title='1:1 문의하기'
           rightElement={
