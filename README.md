@@ -209,3 +209,40 @@
    무상태 인증 구조를 유지하기 위해 JWT 기반 인증 방식을 적용하였습니다. 서버 확장성과 인증 처리의 단순화를 고려하여 해당 방식을 채택하였습니다.
 
 <br />
+
+## 🔖 Naming Rules (Front 기준)
+
+### 폴더 규칙
+
+- 모든 폴더는 **소문자 또는 kebab-case**
+  - 예: `weekly-report`, `bottom-sheet`
+
+- 도메인 단위로 분리 (`feed`, `letters`, `friend` 등)
+- 공통 UI는 `common/`
+- 전역 동작 컴포넌트는 `system/`
+
+### 컴포넌트 파일
+
+- React 컴포넌트: `PascalCase.tsx`
+- Page 컴포넌트: `PascalCasePage.tsx`
+- Tab/Section/Modal 등 역할이 드러나는 이름 사용
+  - 예: `FriendTopTabs`, `LetterCard`, `ModalFrame`
+
+### Hook
+
+- 반드시 `use`로 시작
+- camelCase
+- 도메인별 하위 폴더 유지
+
+### Store (Zustand)
+
+- `camelCaseStore.ts`
+  - 예: `activityStore.ts`
+
+### API
+
+- 도메인 단위 파일
+  - `friend.ts`
+  - `weeklyReport.ts`
+
+<br />
