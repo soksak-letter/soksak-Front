@@ -11,7 +11,7 @@ const SettingHeader: React.FC<SettingHeaderProps> = ({
   title,
   onBack,
   right,
-  bgColor = '#FAFAFA',
+  bgColor = 'bg-[var(--color-bg-500)]',
 }) => {
   return (
     <header
