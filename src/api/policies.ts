@@ -4,8 +4,6 @@ import type {
   TermsOfServiceSuccess,
   PrivacyPolicyResponse,
   PrivacyPolicySuccess,
-  CommunityGuidelineResponse,
-  CommunityGuidelineSuccess,
 } from '@/types/dto/policies';
 
 export async function getTermsOfService(): Promise<TermsOfServiceSuccess> {
@@ -32,24 +30,6 @@ export async function getPrivacyPolicy(): Promise<PrivacyPolicySuccess> {
       data.error ?? {
         errorCode: 'PRIVACY_FETCH_FAIL',
         reason: '개인정보 처리방침을 불러오지 못했어요. 잠시 후 다시 시도해주세요.',
-        data: {},
-      }
-    );
-  }
-
-  return data.success;
-}
-
-export async function getCommunityGuideline(): Promise<CommunityGuidelineSuccess> {
-  const { data } = await axiosInstance.get<CommunityGuidelineResponse>(
-    '/policies/community-guidelines',
-  );
-
-  if (data.resultType !== 'SUCCESS' || !data.success) {
-    throw (
-      data.error ?? {
-        errorCode: 'GUIDELINE_FETCH_FAIL',
-        reason: '커뮤니티 가이드라인을 불러오지 못했어요. 잠시 후 다시 시도해주세요.',
         data: {},
       }
     );
