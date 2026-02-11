@@ -10,7 +10,7 @@ import DailyQuestionBox from '@/components/letters/DailyQuestionBox';
 import { useLetterStore } from '@/stores/letterStore';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useGlobalToast } from '@/components/toast/ToastProvider';
-import LoadingPage from '../system/LoadingPage';
+import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { Button } from '@/components/common/Button';
 import { validateLetter } from '@/utils/validateLetter';
 
@@ -79,7 +79,7 @@ export default function FriendDraftPage() {
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <DraftSkeleton title={`${friendName}에게 보내는 편지`} />;
   }
 
   if (isError) {

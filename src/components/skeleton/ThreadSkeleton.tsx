@@ -1,7 +1,6 @@
 /**
  * 편지 스레드(2열 그리드) 페이지 공통 로딩 스켈레톤 UI
  * 사용처: FriendPostPage, LetterPostOtherPage
- * Figma: 스켈레톤/개인편지함 (node 3804-37543)
  */
 
 interface ThreadSkeletonProps {

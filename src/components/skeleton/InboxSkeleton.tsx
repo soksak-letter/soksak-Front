@@ -1,6 +1,5 @@
 /**
  * 편지함/친구 목록 페이지 공통 로딩 스켈레톤 UI
- * Figma: 스켈레톤/편지함 (node 3804-37403)
  */
 
 interface InboxSkeletonProps {
@@ -8,10 +7,7 @@ interface InboxSkeletonProps {
   cardHeight?: number;
 }
 
-export default function InboxSkeleton({
-  title = '편지함',
-  cardHeight = 120,
-}: InboxSkeletonProps) {
+export default function InboxSkeleton({ title = '편지함', cardHeight = 120 }: InboxSkeletonProps) {
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)] animate-pulse'>
       {/* 헤더 영역 (실제 TitleHeader와 동일한 높이) */}
