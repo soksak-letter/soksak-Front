@@ -38,7 +38,7 @@ const MyPage = () => {
   return (
     <div className='w-[375px] min-h-screen mx-auto bg-[var(--color-bg-500)]'>
       {/* Header */}
-      <div className='bg-white'>
+      <div className='bg-[var(--color-bg-500)]'>
         <BackHeader title='마이페이지' onBack={() => navigate('/home/main')} />
       </div>
 

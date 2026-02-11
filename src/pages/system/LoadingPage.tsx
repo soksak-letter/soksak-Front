@@ -3,7 +3,7 @@ import { LoadingDots } from '@/components/LoadingDots';
 
 export default function LoadingPage() {
   return (
-    <div className='flex h-screen flex-col items-center justify-center bg-white'>
+    <div className='flex h-screen flex-col items-center justify-center bg-[var(--color-bg-500)]'>
       <LoadingDots fillIntervalMs={350} />
 
       <SleepIcon className='h-[93px] w-[96px] mt-6 ml-3.5' />

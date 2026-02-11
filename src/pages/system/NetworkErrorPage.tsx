@@ -17,7 +17,7 @@ export default function NetworkErrorPage() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center bg-white px-4'>
+    <div className='flex h-screen flex-col items-center justify-center bg-[var(--color-bg-500)] px-4'>
       <SadModalIcon className='mb-6 h-[87px] w-[82px]' />
 
       <div className='mb-8 text-center'>

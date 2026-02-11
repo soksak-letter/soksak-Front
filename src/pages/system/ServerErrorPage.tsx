@@ -17,7 +17,7 @@ export default function ServerErrorPage() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center bg-white px-4'>
+    <div className='flex h-screen flex-col items-center justify-center bg-[var(--color-bg-500)] px-4'>
       <SleepIcon className='mb-2 ml-3.5 h-[96px] w-[93px]' />
 
       <div className='mb-8 text-center'>
