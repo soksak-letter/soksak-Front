@@ -32,8 +32,20 @@ export default function FriendDraftPage() {
     setActiveTarget('friend');
   }, [setActiveTarget]);
 
+  // friendId, friendName 가져오기
   const location = useLocation();
-  const friendName = (location.state as { friendName?: string })?.friendName;
+  const { friendId, friendName } = (location.state ?? {}) as {
+    friendId?: number;
+    friendName?: string;
+  };
+
+  useEffect(() => {
+    setActiveTarget('friend');
+
+    if (typeof friendId === 'number' && Number.isFinite(friendId) && friendId > 0) {
+      patchDraft({ receiverUserId: friendId });
+    }
+  }, [setActiveTarget, patchDraft, friendId]);
 
   // questionId 저장
   useEffect(() => {

@@ -214,7 +214,9 @@ function PostCard({
 
         <div className='mt-1 flex items-center gap-1'>
           <p className='ty-detailMedium'>{item.dateText}</p>
-          {item.isUnread && <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />}
+          {item.isUnread && item.isMine === false && (
+            <span className='-mt-3 h-[8px] w-[8px] rounded-full bg-[#E06856]' />
+          )}
         </div>
       </div>
     </button>
