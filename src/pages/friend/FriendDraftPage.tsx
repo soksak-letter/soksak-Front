@@ -34,11 +34,11 @@ export default function FriendDraftPage() {
 
   // friendId, friendName 가져오기
   const location = useLocation();
-  const headerTitle = `${friendName ?? ''}에게 보내는 편지`;
   const { friendId, friendName } = (location.state ?? {}) as {
     friendId?: number;
     friendName?: string;
   };
+  const headerTitle = `${friendName ?? ''}에게 보내는 편지`;
 
   useEffect(() => {
     setActiveTarget('friend');
