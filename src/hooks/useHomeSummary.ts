@@ -27,7 +27,7 @@ export function useHomeSummary() {
     return Number.isNaN(t) ? null : t;
   }, [query.data?.todayQuestion?.expiredAt]);
 
-  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now() + 60000);
+  const { isExpired, formattedTime } = useCountdown(deadlineMs ?? Date.now() + 60000);
 
   useEffect(() => {
     if (!isExpired) return;
@@ -39,7 +39,7 @@ export function useHomeSummary() {
     isLoading: query.isLoading,
     isRefetching: query.isRefetching,
     error: query.error ? (query.error as Error).message : null,
-    timeLeft: mmss,
+    timeLeft: formattedTime,
     isExpired,
     refetch: query.refetch,
   };
