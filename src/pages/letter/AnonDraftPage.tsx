@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { validateLetter } from '@/utils/validateLetter';
+import LoadingPage from '../system/LoadingPage';
 
 const AnonDraftPage = () => {
   const { data, isLoading, isError, error } = useDailyQuestion();
