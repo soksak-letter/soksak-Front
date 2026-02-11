@@ -26,8 +26,9 @@ type ReplyData = {
   stampUrl: string;
 };
 
-type LetterReplyLocationState = {
+type LetterReplyNavState = {
   isMine?: boolean;
+  remainingCount?: number;
 };
 
 export default function LetterReplyPage() {
@@ -39,15 +40,16 @@ export default function LetterReplyPage() {
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
   const senderId = useThreadFlowStore((s) => s.senderId);
-  const letterCount = Number(useThreadFlowStore((l) => l.letterCount) ?? '0');
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const discardSession = useDiscardSession();
   const sessionId = useThreadFlowStore((t) => t.sessionId);
 
   const location = useLocation();
-  const state = location.state as LetterReplyLocationState | null;
-  const isMine = state?.isMine ?? false;
+  const navState = (location.state ?? null) as LetterReplyNavState | null;
+
+  const isMine = navState?.isMine ?? false;
+  const remainingCount = navState?.remainingCount ?? 0;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -70,8 +72,6 @@ export default function LetterReplyPage() {
     const q = view?.question ?? data?.question ?? '';
     return stripQuestionPrefix(q);
   }, [view?.question, data?.question]);
-
-  const remainingCount = useMemo(() => Math.max(0, 10 - letterCount), [letterCount]);
 
   const assets = useMemo(() => {
     if (!view) return null;

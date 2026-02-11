@@ -7,9 +7,10 @@ import { useLetterStyleOptions } from '@/hooks/letters/useLetterStyleOptions';
 import { DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 import { useCreateSelfLetter } from '@/hooks/letters/useCreateSelfLetter';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import NotFoundPage from '../system/NotFoundPage';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useMyProfile } from '@/hooks/useMyProfile';
+import ServerErrorPage from '../system/ServerErrorPage';
+import ErrorPage from '../system/ErrorPage';
 
 type Target = 'anon' | 'other' | 'self' | 'friend';
 
@@ -19,6 +20,7 @@ const LetterSendingPage = () => {
 
   const navigate = useNavigate();
 
+  const senderId = useThreadFlowStore((s) => s.senderId);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
   const sessionId = useThreadFlowStore((s) => s.sessionId);
   const letterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
@@ -75,12 +77,17 @@ const LetterSendingPage = () => {
       return { ...basePayload, receiverUserId: draft.receiverUserId };
     }
 
-    if (safeMode === 'anon' || safeMode === 'other') {
+    if (safeMode === 'other') {
+      if (senderId == null) return null;
+      return { ...basePayload, receiverUserId: senderId };
+    }
+
+    if (safeMode === 'anon') {
       return basePayload;
     }
 
     return null; // self는 여기 아님
-  }, [basePayload, safeMode, draft.receiverUserId]);
+  }, [basePayload, safeMode, draft.receiverUserId, senderId]);
 
   // 나에게 전송할 때 payload
   const selfPayload = useMemo(() => {
@@ -171,7 +178,7 @@ const LetterSendingPage = () => {
   const invalid = !safeMode || (needsSessionId && !sessionId);
 
   if (invalid) {
-    return <NotFoundPage />;
+    return <ErrorPage />;
   }
 
   const getTargetText = () => {
@@ -235,7 +242,7 @@ const LetterSendingPage = () => {
   const TargetText = getTargetText();
 
   const ok = safeMode === 'self' ? selfPayload != null : sendPayload != null;
-  if (!safeMode || !ok) return null;
+  if (!safeMode || !ok) return <ServerErrorPage />;
 
   return (
     <div className='min-h-dvh flex flex-col items-center justify-center'>
