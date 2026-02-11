@@ -116,7 +116,7 @@ const SelfDraftPage = () => {
   // deadlineMs가 아직 로딩되지 않은 경우 Date.now()를 그대로 전달하면
   // countdown이 즉시 만료된 것으로 판단될 수 있다.
   // 이를 방지하기 위해 로딩 중에는 1분의 여유 시간을 둔다.
-  const { isExpired, mmss } = useCountdown(deadlineMs ?? Date.now() + 60000);
+  const { isExpired, formattedTime } = useCountdown(deadlineMs ?? Date.now() + 60000);
 
   const handleBack = () => {
     if (isExpired) {
@@ -208,7 +208,7 @@ const SelfDraftPage = () => {
               {formattedQuestionText}
             </p>
             <div className='flex items-center ty-body2'>
-              <span className='text-[var(--color-primary-500)]'>{mmss}</span>
+              <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
               <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
             </div>
           </>

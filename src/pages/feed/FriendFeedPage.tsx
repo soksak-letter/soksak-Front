@@ -58,7 +58,7 @@ export default function FriendFeedPage() {
     return Number.isNaN(t) ? null : t;
   }, [questionData?.expiredAt]);
 
-  const { mmss } = useCountdown(deadlineMs ?? Date.now() + 60000);
+  const { formattedTime } = useCountdown(deadlineMs ?? Date.now() + 60000);
 
   const isLoading = isQuestionLoading || isLettersLoading;
   const isError = isQuestionError;
@@ -82,7 +82,7 @@ export default function FriendFeedPage() {
           {formattedQuestionText}
         </p>
         <div className='flex items-center ty-body2'>
-          <span className='text-[var(--color-primary-500)]'>{mmss}</span>
+          <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
           <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
         </div>
       </div>

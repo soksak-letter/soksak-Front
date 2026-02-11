@@ -31,7 +31,7 @@ function useCountdown(deadlineMs: number, { tickMs = 1000, onExpire }: UseCountd
 
   const isExpired = secondsLeft === 0;
 
-  const mmss = useMemo(() => {
+  const formattedTime = useMemo(() => {
     const h = Math.floor(secondsLeft / 3600);
     const m = Math.floor((secondsLeft % 3600) / 60);
     const pad = (n: number) => String(n).padStart(2, '0');
@@ -40,7 +40,7 @@ function useCountdown(deadlineMs: number, { tickMs = 1000, onExpire }: UseCountd
     return `${pad(h)}시간 ${pad(m)}분`;
   }, [secondsLeft]);
 
-  return { secondsLeft, isExpired, mmss };
+  return { secondsLeft, isExpired, formattedTime };
 }
 
 export default useCountdown;
