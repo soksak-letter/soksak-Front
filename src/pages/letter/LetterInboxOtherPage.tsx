@@ -11,7 +11,8 @@ import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { useThreadFlowStore } from '@/stores/letterContextStore';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
+import { getAnonNickname } from '@/utils/anonNickname';
 
 type SortOrder = 'latest' | 'oldest';
 
@@ -20,7 +21,7 @@ type InboxOtherLetterItem = {
   sessionId: number;
   senderId: number; // 상대방 userId (신고/차단 시 필요)
   question: string;
-  senderName: string; // 랜덤 익명 닉네임 (TODO : 유틸 함수 사용해서 발급 필요)
+  senderName: string; // 랜덤 익명 닉네임
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   letterCount: number;
@@ -51,8 +52,8 @@ export default function LetterInboxOtherPage() {
         sessionId: x.sessionId,
         senderId: x.sender.id,
         question: x.lastLetterTitle,
-        senderName: x.sender.nickname,
-        receivedAt: getParseDate(deliveredAt),
+        senderName: getAnonNickname(x.sender.id),
+        receivedAt: formatDate(deliveredAt),
         receivedAtMs: new Date(deliveredAt).getTime(),
         letterCount: x.sender.letterCount,
         isUnread: false,
@@ -108,6 +109,7 @@ export default function LetterInboxOtherPage() {
       <main className='px-5 pb-[95px]'>
         <div className='mx-auto w-full max-w-[343px]'>
           <LetterInboxTabs value={tab} onChange={handleTabChange} />
+
           {/* 검색 */}
           <div className='mt-[16px] flex items-center gap-3'>
             <div className='flex h-11 flex-1 w-[229px] items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
@@ -198,7 +200,7 @@ export default function LetterInboxOtherPage() {
                   );
                 })}
                 {isEmpty && (
-                  <div className='mt-8 rounded-2xl border border-dashed border-[#E6E6E6] bg-[#FAFAFA] px-4 py-10 text-center text-sm text-[#9B9B9B]'>
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                     검색 결과가 없어요
                   </div>
                 )}

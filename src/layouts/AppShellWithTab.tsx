@@ -10,7 +10,11 @@ export default function AppShellWithTab() {
         <main className='flex-1 overflow-y-auto'>
           <Outlet />
         </main>
-        <TabBar />
+
+        {/* 탭바는 항상 위로 */}
+        <div className='relative z-[999]'>
+          <TabBar />
+        </div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function FeedHeader({ title = '공개 편지' }: FeedHeaderProps)
     <header
       className='fixed top-0 left-1/2 z-50 flex items-center justify-center px-4 py-3'
       style={{
-        backgroundColor: '#F9F9F9',
+        backgroundColor: 'bg-[var(--color-bg-500)]',
         height: '50px',
         width: '375px',
         transform: 'translateX(-50%)',
