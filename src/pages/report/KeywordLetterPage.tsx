@@ -178,7 +178,7 @@ export default function KeywordLetterPage() {
       <main className='px-5 py-6'>
         {/* 2. 키워드 태그 섹션 */}
         <div className='flex items-center gap-2 mb-8'>
-          <div className='h-[28px] px-3 flex items-center justify-center rounded-full border border-[var(--color-primary-400)] bg-[var(--color-primary-100)] text-[#var(--color-black)] ty-detailMedium shadow-sm'>
+          <div className='h-[28px] px-3 flex items-center justify-center rounded-full border border-[var(--color-primary-400)] bg-[var(--color-primary-100)] ty-detailMedium shadow-sm'>
             # {selectedKeyword} ({keywordCount})
           </div>
           <span className='ty-body1'>이 담긴 편지</span>
@@ -255,9 +255,9 @@ function PostCard({
 
       {/* 하단 텍스트 정보 */}
       <div className='ml-[10px]'>
-        <p className='mt-[12px] line-clamp-1 ty-body4 text-[var(--color-black)]'>{item.title}</p>
+        <p className='mt-[12px] line-clamp-1 ty-body4'>{item.title}</p>
         <div className='mt-1 flex items-center '>
-          <p className='ty-detailMedium text-[var(--color-black)]'>{item.dateText}</p>
+          <p className='ty-detailMedium'>{item.dateText}</p>
         </div>
       </div>
     </button>
