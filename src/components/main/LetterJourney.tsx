@@ -1,5 +1,5 @@
 import { IoPlanet } from 'react-icons/io5';
-import StampIcon from '../../assets/icons/StampIcon.svg';
+import StampIcon from '@/assets/icons/StampIcon.svg';
 
 interface LetterJourneyProps {
   userName: string;
