@@ -57,13 +57,6 @@ export function formatDate(
   return `${year}.${month}.${day}`;
 }
 
-/**
- * @deprecated formatDate(iso, { padded: true })를 사용하세요
- */
-export function getParseDate(iso: string): string {
-  return formatDate(iso, { padded: true });
-}
-
 // UI 파싱용 (yyyy.mm.dd hh:mm am|pm)
 export const getParseSentAt = (isoOrNull: string | null) => {
   if (!isoOrNull) return '-';

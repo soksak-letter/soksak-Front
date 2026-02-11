@@ -106,12 +106,12 @@ const AnonDraftPage = () => {
           </>
         ) : (
           <>
-            <p className='text-black ty-title2 w-[251px] whitespace-pre-line'>
+            <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
               {formattedQuestionText}
             </p>
             <div className='flex items-center ty-body2'>
-              <span className='text-[#F2261C]'>{mmss}</span>
-              <span className='text-black ml-1'>후에 질문이 사라져요.</span>
+              <span className='text-[var(--color-primary-500)]'>{mmss}</span>
+              <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
             </div>
           </>
         )}

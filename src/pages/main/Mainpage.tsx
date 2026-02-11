@@ -119,7 +119,8 @@ const MainPage = () => {
       <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
-          <h2 className='ty-body2'>공개 편지</h2>
+          <h2 className='ty-body2 text-[var(--color-text-normal)]'>공개 편지</h2>
+
           <button
             onClick={() => navigate('/feed/public-all')}
             className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
@@ -138,21 +139,15 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={otherLetters}
-          emptyMessage='현재 공개된 편지가 더이상 없어요.'
-          onLetterClick={(l) => {
-            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
-            console.log('public letter click:', l.letterId);
-          }}
-        />
+        <LetterCarousel letters={otherLetters} emptyMessage='현재 공개된 편지가 더이상 없어요.' />
       </section>
 
       {/* 친구 편지 섹션 */}
       <section className='pt-2.5 pb-2.5'>
         {/* 헤더 */}
         <div className='flex items-center justify-between px-4 py-1.5'>
-          <h2 className='ty-body2'>친구 편지</h2>
+          <h2 className='ty-body2 text-[var(--color-text-normal)]'>친구 편지</h2>
+
           <button
             onClick={() => navigate('/feed/friend-all')}
             className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
@@ -171,14 +166,7 @@ const MainPage = () => {
         </div>
 
         {/* 편지 캐러셀 */}
-        <LetterCarousel
-          letters={friendLetters}
-          emptyMessage='친구의 편지가 아직 없어요.'
-          onLetterClick={(l) => {
-            // TODO : 캐러셀 눌렀을 때 어디로 이동하는지 주소 재확인
-            console.log('friend letter click:', l.letterId);
-          }}
-        />
+        <LetterCarousel letters={friendLetters} emptyMessage='친구의 편지가 아직 없어요.' />
       </section>
     </div>
   );

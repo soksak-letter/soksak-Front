@@ -71,6 +71,8 @@ export default function LetterReplyPage() {
     return stripQuestionPrefix(q);
   }, [view?.question, data?.question]);
 
+  const remainingCount = useMemo(() => Math.max(0, 10 - letterCount), [letterCount]);
+
   const assets = useMemo(() => {
     if (!view) return null;
 
@@ -98,12 +100,10 @@ export default function LetterReplyPage() {
   };
 
   const handleReply = () => {
-    navigate('/letter/other/draft');
+    navigate('/letter/other/draft', { state: { remainingCount } });
   };
 
   const handleEnd = () => {
-    const remainingCount = Math.max(0, 10 - letterCount);
-
     openModal('conversationRemaining', {
       friendName: senderName,
       remainingCount,

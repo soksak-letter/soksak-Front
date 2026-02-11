@@ -8,7 +8,7 @@ import NotFoundPage from '../system/NotFoundPage';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
 
 type Direction = 'received' | 'sent';
 
@@ -45,7 +45,7 @@ export default function FriendPostPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: getParseDate(l.deliveredAt),
+      dateText: formatDate(l.deliveredAt),
       direction: 'received',
       isUnread: l.readAt === null,
       paperId: (l.design.paper.id ?? 0) + 1,
@@ -57,7 +57,7 @@ export default function FriendPostPage() {
       letterId: l.id,
       title: l.title,
       deliveredAt: l.deliveredAt,
-      dateText: getParseDate(l.deliveredAt),
+      dateText: formatDate(l.deliveredAt),
       direction: 'sent',
       isUnread: false,
       paperId: (l.design.paper.id ?? 0) + 1,

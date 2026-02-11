@@ -7,7 +7,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { getParseDate } from '@/utils/date';
+import { formatDate } from '@/utils/date';
 
 type FriendInboxItem = {
   id: number;
@@ -42,7 +42,7 @@ export default function FriendInboxPage() {
           name: (f.nickname ?? '').trim(),
           exchangeCount: f.letterCount,
 
-          lastDate: iso ? getParseDate(iso) : '-', // UI용
+          lastDate: iso ? formatDate(iso) : '-', // UI용
           lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
 
           paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),

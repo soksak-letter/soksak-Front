@@ -10,32 +10,20 @@ import { useSelfMailbox } from '@/hooks/mails/useSelfMailbox';
 import { LoadingDots } from '@/components/LoadingDots';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
+import { formatDate } from '@/utils/date';
 
 type SortOrder = 'latest' | 'oldest';
 
 type InboxSelfLetterItem = {
   letterId: number;
-  questionId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  questionId: number;
   title: string;
   receivedAt: string; // 화면 표시용 (YYYY.MM.DD)
   receivedAtMs: number; // Sorting용
   isUnread: boolean;
   paperId: number;
-  stampId: number; // TODO : 백엔드 필드 수정 후 연동 필요
+  stampId: number;
   stampUrl: string;
-};
-
-const parseDate = (input: string | null | undefined) => {
-  if (!input) return '-';
-
-  const d = new Date(input);
-  if (Number.isNaN(d.getTime())) return '-';
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  return `${y}.${m}.${day}`;
 };
 
 export default function LetterInboxSelfPage() {
@@ -54,7 +42,7 @@ export default function LetterInboxSelfPage() {
       letterId: x.id,
       questionId: x.questionId,
       title: x.title,
-      receivedAt: parseDate(x.createdAt),
+      receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
       isUnread: false,
       paperId: x.paperId + 1,
@@ -136,7 +124,7 @@ export default function LetterInboxSelfPage() {
                 </Button>
               </div>
             ) : /* 3) 비었을 때 */ isEmpty ? (
-              <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+              <div className='mt-8 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                 검색 결과가 없어요
               </div>
             ) : (

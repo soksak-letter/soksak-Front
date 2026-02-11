@@ -79,7 +79,7 @@ export default function LetterStyleContent({
 
       {/* 편지지 그리드 뷰 */}
       {selectedTab === 'paper' && (
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-cols-3 gap-2'>
           {paperViewModels.map((p) => (
             <button
               key={p.id}
@@ -87,7 +87,7 @@ export default function LetterStyleContent({
               onClick={() => onChange?.({ paperId: p.id })}
               className={[
                 'relative overflow-hidden shadow-md transition-all duration-200',
-                'scale-90 -rotate-2',
+                'scale-80 -rotate-2',
               ].join(' ')}
               style={
                 value.paperId === p.id
