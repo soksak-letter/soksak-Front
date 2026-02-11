@@ -38,7 +38,11 @@ const PwFindPage = () => {
     if (isAuthVerified)
       return <p className='ty-detail text-[var(--color-status-positive)] mt-1'>인증되었습니다.</p>;
     if (apiStatus === 'error')
-      return <p className='ty-detail text-[var(--color-status-alert)] mt-1'>{serverMessage}</p>;
+      return (
+        <p className='ty-detail text-[var(--color-status-alert)] mt-1'>
+          존재하지 않는 이메일입니다.
+        </p>
+      );
     if (apiStatus === 'success')
       return (
         <p className='ty-detail text-[var(--color-status-positive)] mt-1'>
