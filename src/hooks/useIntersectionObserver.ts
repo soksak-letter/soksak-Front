@@ -5,6 +5,8 @@ interface UseIntersectionObserverOptions {
   enabled?: boolean;
   rootMargin?: string;
   threshold?: number;
+  /** 값이 바뀌면 옵저버를 재등록하여 재감지 */
+  resetKey?: unknown;
 }
 
 export function useIntersectionObserver({
@@ -12,8 +14,11 @@ export function useIntersectionObserver({
   enabled = true,
   rootMargin = '0px 0px 200px 0px',
   threshold = 0,
+  resetKey,
 }: UseIntersectionObserverOptions) {
   const targetRef = useRef<HTMLDivElement | null>(null);
+  const onIntersectRef = useRef(onIntersect);
+  onIntersectRef.current = onIntersect;
 
   useEffect(() => {
     const el = targetRef.current;
@@ -22,7 +27,7 @@ export function useIntersectionObserver({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          onIntersect();
+          onIntersectRef.current();
         }
       },
       { rootMargin, threshold },
@@ -30,7 +35,7 @@ export function useIntersectionObserver({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [onIntersect, enabled, rootMargin, threshold]);
+  }, [enabled, rootMargin, threshold, resetKey]);
 
   return targetRef;
 }

@@ -67,12 +67,10 @@ export default function FeedPageTemplate({
   const sentinelRef = useIntersectionObserver({
     onIntersect: handleLoadMore,
     enabled: hasMore,
+    resetKey: displayCount,
   });
 
-  const visibleLetters = useMemo(
-    () => letters.slice(0, displayCount),
-    [letters, displayCount],
-  );
+  const visibleLetters = useMemo(() => letters.slice(0, displayCount), [letters, displayCount]);
 
   const handleToggleLike = (letterId: number, isLiked: boolean) => {
     if (createLike.isPending || deleteLike.isPending) return;
@@ -101,7 +99,6 @@ export default function FeedPageTemplate({
     <div className='min-h-dvh pb-24 bg-[var(--color-bg-500)]'>
       {/* 고정 상단바 */}
       <FeedHeader title={title} />
-
       {/* 상단바 높이만큼 여백 */}
       <div style={{ height: '50px' }} />
 
