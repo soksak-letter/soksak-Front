@@ -135,7 +135,6 @@ export default function KeywordLetterPage() {
 
   // const keywordList: unknown[] = (keywordQuery?.list as unknown[]) ?? [];
   const keywordList: unknown[] = extractKeywordList(keywordQuery);
-  console.log('keywordQuery', keywordQuery);
 
   // 2) letterId 배열 (any 제거)
   const letterIds = useMemo(() => {
