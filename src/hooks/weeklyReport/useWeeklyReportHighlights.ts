@@ -10,7 +10,7 @@ function toFeedLetter(letter: GetLetterSuccess): FeedLetter {
     letterId: letter.id,
     title: letter.title ?? '편지',
     deliveredAt: letter.deliveredAt ?? '',
-    paperId: (letter.design?.paper?.id ?? 0) + 1,
+    paperId: letter.design?.paper?.id ?? 0,
   };
 }
 

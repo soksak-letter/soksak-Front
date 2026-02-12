@@ -48,7 +48,7 @@ export default function FriendInboxPage() {
           lastDate: iso ? formatDate(iso) : '-', // UI용
           lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
 
-          paperId: Number((f.recentLetter?.design.paper?.id ?? 0) + 1),
+          paperId: Number(f.recentLetter?.design.paper?.id ?? 0),
           stampId: Number(f.recentLetter?.design.stamp?.id ?? 0),
           stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
         };

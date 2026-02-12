@@ -59,7 +59,7 @@ export default function LetterReplyPage() {
       sentAtText: getParseSentAt(data.deliveredAt),
       question: data.question,
       content: data.content,
-      paperId: (data.design.paper.id ?? 0) + 1,
+      paperId: data.design.paper.id ?? 0,
       fontId: data.design.font.id ?? 0,
       stampId: data.design.stamp.id ?? 0,
       stampUrl: data.design.stamp.assetUrl ?? '',
@@ -168,6 +168,7 @@ export default function LetterReplyPage() {
       <LetterCard
         PaperBg={assets.paper.Preview}
         font={assets.font.fontFamily}
+        fontStyle={assets.font.style}
         value={{ title: view.title, content: view.content }}
         className='rotate-1 mt-5'
       />
