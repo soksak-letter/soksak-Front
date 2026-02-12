@@ -114,7 +114,12 @@ export default function FeedPageTemplate({
       </div>
 
       {/* 편지 리스트 섹션 */}
-      <section className='px-4 py-4 space-y-4'>
+      <section
+        role='feed'
+        aria-label='공개 편지 목록'
+        aria-busy={hasMore}
+        className='px-4 py-4 space-y-4'
+      >
         {visibleLetters.map((l) => (
           <LetterPreviewCard
             key={l.letterId}
@@ -134,11 +139,11 @@ export default function FeedPageTemplate({
         {!hasMore && letters.length <= 1 && <EmptyFeedCard />}
 
         {hasMore && (
-          <div className='flex justify-center py-4'>
+          <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
             <LoadingDots fillIntervalMs={350} />
           </div>
         )}
-        <div ref={sentinelRef} className='h-1' />
+        <div ref={sentinelRef} aria-hidden='true' className='h-1' />
       </section>
 
       {/* 플로팅 버튼 */}

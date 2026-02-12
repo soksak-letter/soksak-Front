@@ -121,6 +121,7 @@ export default function LetterInboxSelfPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder='키워드를 검색해보세요'
+                aria-label='편지 검색'
                 className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
               />
             </div>
@@ -129,13 +130,13 @@ export default function LetterInboxSelfPage() {
               type='button'
               onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
               className='h-11 w-11 flex items-center justify-center'
-              aria-label='정렬 변경'
+              aria-label={`정렬 변경, 현재 ${sortOrder === 'latest' ? '최신순' : '오래된순'}`}
             >
               <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
             </button>
           </div>
 
-          <div className='mt-4 space-y-[10px]'>
+          <div role='feed' aria-label='내 편지 목록' aria-busy={hasMore} className='mt-4 space-y-[10px]'>
             {/* 1) 에러 */}
             {isError ? (
               <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
@@ -159,6 +160,7 @@ export default function LetterInboxSelfPage() {
                       key={it.letterId}
                       type='button'
                       onClick={() => handleOpenLetter(it.letterId)}
+                      aria-label={`${it.question}: ${it.title}, ${it.receivedAt}`}
                       className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>
@@ -202,11 +204,11 @@ export default function LetterInboxSelfPage() {
                   );
                 })}
                 {hasMore && (
-                  <div className='flex justify-center py-4'>
+                  <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
                     <LoadingDots fillIntervalMs={350} />
                   </div>
                 )}
-                <div ref={sentinelRef} className='h-1' />
+                <div ref={sentinelRef} aria-hidden='true' className='h-1' />
               </>
             )}
           </div>
