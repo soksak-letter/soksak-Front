@@ -116,7 +116,7 @@ const OtherDraftPage = () => {
   }
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col bg-[var(--color-bg-500)] min-h-screen'>
       <BackHeader
         title={`${senderName}에게 보내는 편지`}
         rightElement={
