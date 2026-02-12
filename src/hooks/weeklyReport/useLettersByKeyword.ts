@@ -41,6 +41,7 @@ export function useLettersByKeyword(aiKeyword: string) {
       return { raw: res, list };
     },
     enabled: Boolean(aiKeyword),
+    staleTime: 1000 * 60,
     retry: 0,
   });
 }

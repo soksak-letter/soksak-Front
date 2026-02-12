@@ -9,5 +9,6 @@ export function useLetterStyleOptions() {
   return useQuery({
     queryKey: letterStylekeys.options,
     queryFn: getLetterStyleOptions,
+    staleTime: 1000 * 60 * 30,
   });
 }

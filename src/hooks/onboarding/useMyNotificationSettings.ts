@@ -20,6 +20,7 @@ export function useMyNotificationSettings(enabled: boolean = true) {
     queryKey: onboardingKeys.notificationSettings,
     queryFn: () => getMyNotificationSettings(),
     enabled,
+    staleTime: 1000 * 60 * 5,
     retry: 0,
     select: (res) => {
       if (res.resultType === 'SUCCESS') return res.success;

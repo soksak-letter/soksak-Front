@@ -8,6 +8,7 @@ export function useOtherPublicLetters() {
   return useQuery({
     queryKey: ['other-public-letters', todayKey],
     queryFn: getOtherPublicLetters,
+    staleTime: 1000 * 60 * 2,
     retry: false,
   });
 }
@@ -18,6 +19,7 @@ export function useFriendPublicLetters() {
   return useQuery({
     queryKey: ['friend-public-letters', todayKey],
     queryFn: getFriendPublicLetters,
+    staleTime: 1000 * 60 * 2,
     retry: false,
   });
 }
