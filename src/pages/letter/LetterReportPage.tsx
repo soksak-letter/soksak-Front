@@ -168,7 +168,7 @@ const LetterReportPage = () => {
   }
 
   return (
-    <div className='w-[375px] h-screen relative mx-auto'>
+    <div className='w-[375px] h-screen relative mx-auto bg-[var(--color-bg-500)]'>
       <div>
         <div className='flex justify-center items-center h-[77px]'>
           <BackHeader
