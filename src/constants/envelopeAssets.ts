@@ -25,7 +25,7 @@ export const ENVELOPE_ASSET_MAP: Record<string | number, EnvelopeAsset> = {
   8: { label: 'Vintage', Preview: vintage },
   9: { label: 'Grey', Preview: grey },
 
-  // 2. 새로운 문자열 기반 추가 (서버 응답값 대응)
+  // 새로운 문자열 기반 추가 (서버 응답값 대응)
   Mint: { label: 'Mint', Preview: mint },
   Purple: { label: 'Purple', Preview: purple },
   Blue: { label: 'Blue', Preview: blue },
