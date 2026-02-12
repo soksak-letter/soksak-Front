@@ -8,8 +8,8 @@ export type FriendApiResponse<T> = CommonResponse<{
 export type RecentLetter = {
   createdAt: string;
   design: {
-    paper: { id: number; color: string };
-    stamp: { id: number; name: string; assetUrl: string };
+    paper: { id?: number; color: string };
+    stamp: { id?: number; name: string; assetUrl: string };
   };
 };
 
