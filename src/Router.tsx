@@ -96,6 +96,7 @@ const router = createBrowserRouter([
                   { path: 'inbox-other', element: <LetterInboxOtherPage /> },
                   { path: 'inbox-self', element: <LetterInboxSelfPage /> },
                   { path: 'other-stop', element: <LetterOtherStopPage /> },
+                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> },
                 ],
               },
               {
@@ -104,7 +105,6 @@ const router = createBrowserRouter([
                   { index: true, element: <Navigate to='/friend/inbox' replace /> },
                   { path: 'inbox', element: <FriendInboxPage /> },
                   { path: 'request', element: <FriendRequestPage /> },
-                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> },
                 ],
               },
               { path: 'report/weekly-report', element: <WeeklyReportPage /> },
