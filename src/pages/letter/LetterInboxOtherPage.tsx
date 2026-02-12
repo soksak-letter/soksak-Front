@@ -111,12 +111,12 @@ export default function LetterInboxOtherPage() {
 
           <div className='mt-[16px] flex items-center gap-3'>
             <div className='flex h-11 flex-1 items-center gap-2 rounded-xl bg-[var(--color-bg-secondary)] px-4'>
-              <AiOutlineSearch className='w-5 h-5 text-[var(--color-grey-500)]' />
+              <AiOutlineSearch className='w-[20px] h-[20px] text-[var(--color-grey-500)]' />
               <input
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder='키워드를 검색해보세요'
-                className='w-full bg-transparent ty-body5 outline-none'
+                className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function LetterInboxOtherPage() {
               onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
               className='h-11 w-11 flex items-center justify-center'
             >
-              <SortIcon className='w-6 h-6 text-[var(--color-grey-500)]' />
+              <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
             </button>
           </div>
 
@@ -161,14 +161,24 @@ export default function LetterInboxOtherPage() {
                         onClick={() => handleOpenThread(it)}
                         className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                       >
-                        <div className='flex justify-between gap-3'>
-                          <div className='flex flex-col gap-4 mt-2'>
-                            <p className='ty-body5 line-clamp-2'>{it.letterTitle}</p>
-                            <p className='ty-detailMedium'>{it.senderName}</p>
+                        <div className='flex items-start justify-between gap-3'>
+                          <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
+                            <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                              {it.letterTitle}
+                            </p>
+
+                            <div className='mt-4 flex items-center gap-1'>
+                              <p className='ty-detailMedium text-[var(--color-text-normal)]'>
+                                {it.senderName}
+                              </p>
+                              {it.isUnread && (
+                                <span className='inline-block h-[6px] w-[6px] rounded-full bg-[#F5544C]' />
+                              )}
+                            </div>
                           </div>
 
-                          <div className='flex flex-col items-end'>
-                            <div className='h-25 w-27'>
+                          <div className='flex flex-col'>
+                            <div className='h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
                               {EnvelopePreview ? (
                                 <EnvelopePreview className='h-full w-full' />
                               ) : (
@@ -179,16 +189,30 @@ export default function LetterInboxOtherPage() {
                             {!!it.stampUrl && (
                               <img
                                 src={it.stampUrl}
-                                className='absolute right-6 bottom-12 h-6 w-6'
+                                className='absolute right-6 bottom-12 h-6 w-6 object-contain pointer-events-none'
+                                draggable={false}
                               />
                             )}
 
-                            <div className='mt-2 ty-detailMedium'>{it.receivedAt}</div>
+                            <div className='flex justify-end pr-2 -mt-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                              {it.receivedAt}
+                            </div>
                           </div>
                         </div>
                       </button>
                     );
                   })}
+                {isSearchEmpty && (
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    검색 결과가 없어요
+                  </div>
+                )}
+
+                {isInboxEmpty && (
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    받은 편지가 없어요
+                  </div>
+                )}
               </>
             )}
           </div>

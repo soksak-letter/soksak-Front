@@ -63,7 +63,7 @@ const ProfileSetUpPage = () => {
 
   // 3. 완료 버튼 핸들러 (API 연동)
   const handleOnboarding = async () => {
-    if (!isValid || isLoading) return;
+    if (!isValid || isLoading || isProfileLoading) return; // 로딩 중일 때 실행 방지
 
     setIsLoading(true);
     try {
