@@ -26,7 +26,7 @@ import FriendDraftPage from './pages/friend/FriendDraftPage';
 import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
-import LetterReportPage from './pages/LetterReportPage';
+import LetterReportPage from './pages/letter/LetterReportPage';
 import LetterDraftRoute from './pages/letter/LetterDraftRoute';
 
 import LoadingPage from './pages/system/LoadingPage';
