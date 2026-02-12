@@ -57,12 +57,12 @@
   }
 
   @font-face {
-    font-family: 'NanumBiSang';
+    font-family: 'NanumBisang';
     font-weight: 400;
     src:
-      local('Nanum BiSang'),
-      url('../../assets/fonts/NanumBiSang.woff2') format('woff2'),
-      url('../../assets/fonts/NanumBiSang.woff') format('woff');
+      local('Nanum Bisang'),
+      url('../../assets/fonts/NanumBisang.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBisang.woff') format('woff');
   }
 
   @font-face {
