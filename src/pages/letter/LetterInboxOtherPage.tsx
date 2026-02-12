@@ -150,7 +150,6 @@ export default function LetterInboxOtherPage() {
                     받은 편지가 없어요
                   </div>
                 )}
-
                 {!isSearchEmpty &&
                   !isInboxEmpty &&
                   filtered.map((it) => {
