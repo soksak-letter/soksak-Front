@@ -4,7 +4,8 @@ import { formatDate } from '@/utils/date';
 
 interface LetterItemProps {
   letter: FeedLetter;
-  onClick: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onClick: (letterId: number) => void;
 }
 
 export default function LetterItem({ letter, onClick }: LetterItemProps) {
@@ -13,7 +14,7 @@ export default function LetterItem({ letter, onClick }: LetterItemProps) {
 
   return (
     <button
-      onClick={onClick}
+      onClick={() => onClick(letter.letterId)}
       className='relative w-full transition-all duration-300 ease-out hover:scale-105 focus:outline-none'
       aria-label={`${letter.title} 편지 열기`}
       style={{

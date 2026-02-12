@@ -60,7 +60,7 @@ export default function FriendPostPage() {
       dateText: formatDate(l.deliveredAt),
       direction: 'sent',
       isUnread: false,
-      paperId: (l.design.paper.id ?? 0) + 1,
+      paperId: l.design.paper.id ?? 0,
       stampId: l.design.stamp.id ?? 0,
       stampUrl: l.design.stamp.assetUrl ?? '',
     }));

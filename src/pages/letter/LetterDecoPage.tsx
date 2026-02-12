@@ -60,8 +60,6 @@ function LetterDecoPage() {
     (style.paperId != null ? PAPER_ASSET_MAP[style.paperId] : undefined) ??
     PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
 
-  const PaperBg = paperAsset.Preview;
-
   const envelopeAsset =
     (style.paperId != null ? ENVELOPE_ASSET_MAP[style.paperId] : undefined) ??
     ENVELOPE_ASSET_MAP[DEFAULT_PAPER_ID];
@@ -70,9 +68,9 @@ function LetterDecoPage() {
 
   const stampUrl = selectedStamp?.assetUrl ?? '';
 
-  const fontFamily =
-    (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
-    FONT_ASSET_MAP[DEFAULT_FONT_ID].fontFamily;
+  const fontAsset =
+    (style.fontId != null ? FONT_ASSET_MAP[style.fontId] : undefined) ??
+    FONT_ASSET_MAP[DEFAULT_FONT_ID];
 
   useEffect(() => {
     setIsOpen(true);
@@ -143,7 +141,7 @@ function LetterDecoPage() {
   };
 
   return (
-    <div className='relative'>
+    <div className='relative bg-[var(--color-bg-500)]'>
       <BackHeader
         title='꾸미기'
         rightElement={
@@ -178,8 +176,9 @@ function LetterDecoPage() {
           </div>
         ) : (
           <LetterCard
-            PaperBg={PaperBg}
-            font={fontFamily}
+            paperSrc={paperAsset.src}
+            font={fontAsset.fontFamily}
+            fontStyle={fontAsset.style}
             value={{ title: draft.title, content: draft.content }}
             className='mt-5'
           />

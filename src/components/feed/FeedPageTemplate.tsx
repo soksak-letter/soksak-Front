@@ -1,15 +1,19 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import FeedHeader from '../common/headers/FeedHeader';
 import LetterPreviewCard from './LetterPreviewCard';
 import EmptyFeedCard from './EmptyFeedCard';
 import FloatingButton from '../common/FloatingButton';
+import { LoadingDots } from '@/components/LoadingDots';
 import useCountdown from '@/hooks/auth/useCountdown';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import LoadingPage from '@/pages/system/LoadingPage';
 import ErrorPage from '@/pages/system/ErrorPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useCreateLike, useDeleteLike } from '@/hooks/useCreateLetterLike';
 import type { PublicFeedDetail } from '@/types/dto/feed';
 import type { FeedLetter } from '@/types/letter';
+
+const PAGE_SIZE = 10;
 
 interface FeedPageLetter extends FeedLetter {
   content: string;
@@ -53,12 +57,29 @@ export default function FeedPageTemplate({
     [rawLetters],
   );
 
-  const handleToggleLike = (letterId: number, isLiked: boolean) => {
-    if (createLike.isPending || deleteLike.isPending) return;
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+  const hasMore = displayCount < letters.length;
 
-    if (isLiked) deleteLike.mutate(letterId);
-    else createLike.mutate(letterId);
-  };
+  const handleLoadMore = useCallback(() => {
+    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, letters.length));
+  }, [letters.length]);
+
+  const sentinelRef = useIntersectionObserver({
+    onIntersect: handleLoadMore,
+    enabled: hasMore,
+    resetKey: displayCount,
+  });
+
+  const visibleLetters = useMemo(() => letters.slice(0, displayCount), [letters, displayCount]);
+
+  const handleToggleLike = useCallback(
+    (letterId: number, isLiked: boolean) => {
+      if (createLike.isPending || deleteLike.isPending) return;
+      if (isLiked) deleteLike.mutate(letterId);
+      else createLike.mutate(letterId);
+    },
+    [createLike, deleteLike],
+  );
 
   const deadlineMs = useMemo(() => {
     if (!questionData?.expiredAt) return null;
@@ -80,7 +101,6 @@ export default function FeedPageTemplate({
     <div className='min-h-dvh pb-24 bg-[var(--color-bg-500)]'>
       {/* 고정 상단바 */}
       <FeedHeader title={title} />
-
       {/* 상단바 높이만큼 여백 */}
       <div style={{ height: '50px' }} />
 
@@ -96,10 +116,16 @@ export default function FeedPageTemplate({
       </div>
 
       {/* 편지 리스트 섹션 */}
-      <section className='px-4 py-4 space-y-4'>
-        {letters.map((l) => (
+      <section
+        role='feed'
+        aria-label='공개 편지 목록'
+        aria-busy={hasMore}
+        className='px-4 py-4 space-y-4'
+      >
+        {visibleLetters.map((l) => (
           <LetterPreviewCard
             key={l.letterId}
+            letterId={l.letterId}
             title={l.title}
             content={l.content}
             paperId={l.paperId}
@@ -110,10 +136,17 @@ export default function FeedPageTemplate({
               (createLike.isPending && createLike.variables === l.letterId) ||
               (deleteLike.isPending && deleteLike.variables === l.letterId)
             }
-            onToggleLike={() => handleToggleLike(l.letterId, l.isLiked)}
+            onToggleLike={handleToggleLike}
           />
         ))}
-        {letters.length <= 1 && <EmptyFeedCard />}
+        {!hasMore && letters.length <= 1 && <EmptyFeedCard />}
+
+        {hasMore && (
+          <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
+            <LoadingDots fillIntervalMs={350} />
+          </div>
+        )}
+        <div ref={sentinelRef} aria-hidden='true' className='h-1' />
       </section>
 
       {/* 플로팅 버튼 */}

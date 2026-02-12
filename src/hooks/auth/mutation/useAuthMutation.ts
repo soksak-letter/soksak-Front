@@ -12,7 +12,7 @@ interface ApiErrorResponse {
   error: {
     errorCode: string;
     reason: string;
-    data: Record<string, unknown> | Array<{ field: string; message: string }>; // 빈 객체 {} 도 포함 가능하도록
+    data: Record<string, unknown> | null; // 빈 객체 {} 도 포함 가능하도록
   };
 }
 
@@ -36,8 +36,29 @@ export const useSignupMutation = () => {
         showToast(response.error?.reason || '회원가입에 실패했습니다.', 'error');
       }
     },
-    onError: () => {
-      const message = '네트워크 오류가 발생했습니다.';
+    onError: (err: unknown) => {
+      let message = '네트워크 오류가 발생했습니다.';
+      if (axios.isAxiosError<ApiErrorResponse>(err)) {
+        const errorData = err.response?.data?.error;
+        const errorCode = errorData?.errorCode;
+
+        // 이미지에 정의된 에러 코드별 상세 처리
+        switch (errorCode) {
+          case 'TERM_BAD_REQUEST': // 약관 미동의 (400)
+            message = errorData?.reason || '필수 약관에 모두 동의해주세요.';
+            break;
+          case 'USER_EMAIL_DUPLICATED': // 이메일 중복 (409)
+          case 'USER_USERNAME_DUPLICATED': // 아이디 중복 (409)
+            message = errorData?.reason || '이미 사용 중인 정보입니다.';
+            break;
+          case 'AUTH_UNPROCESSABLE_PROVIDER': // 지원하지 않는 소셜 (422)
+            message = '지원하지 않는 가입 방식입니다.';
+            break;
+          default:
+            // 그 외 정의된 reason이 있다면 활용
+            message = errorData?.reason || message;
+        }
+      }
       showToast(message, 'error');
     },
   });
@@ -61,6 +82,7 @@ export const useSigninMutation = () => {
         showToast('아이디 또는 비밀번호를 확인해주세요.', 'error');
       }
     },
+
     onError: (err: unknown) => {
       let message = '네트워크 연결이 원활하지 않습니다.';
 

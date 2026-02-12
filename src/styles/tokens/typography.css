@@ -47,8 +47,9 @@
   }
 
   /* ===== Nanum Fonts ===== */
+
   @font-face {
-    font-family: 'NanumBaeEunHye';
+    font-family: 'NanumBisang';
     font-weight: 400;
     src:
       local('Nanum BaeEunHye'),
