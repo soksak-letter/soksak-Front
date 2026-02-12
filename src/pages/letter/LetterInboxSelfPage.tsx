@@ -45,7 +45,7 @@ export default function LetterInboxSelfPage() {
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
-      paperId: (x.paperId ?? 0) + 1, // ENVELOPE_ASSET_MAP index 보정
+      paperId: x.paperId ?? 0,
       stampId: x.stampId ?? 0,
       stampUrl: (x.stampUrl ?? '').trim(),
     }));
