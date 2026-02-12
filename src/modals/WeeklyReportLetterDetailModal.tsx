@@ -69,6 +69,7 @@ export function WeeklyReportLetterDetailModalContent({ letterId }: { letterId: n
         <LetterCard
           PaperBg={paper.Preview}
           font={font.fontFamily}
+          fontStyle={font.style}
           value={{ title: data.title, content: data.content }}
           className='-rotate-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
         />
