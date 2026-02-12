@@ -1,15 +1,19 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import FeedHeader from '../common/headers/FeedHeader';
 import LetterPreviewCard from './LetterPreviewCard';
 import EmptyFeedCard from './EmptyFeedCard';
 import FloatingButton from '../common/FloatingButton';
+import { LoadingDots } from '@/components/LoadingDots';
 import useCountdown from '@/hooks/auth/useCountdown';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import LoadingPage from '@/pages/system/LoadingPage';
 import ErrorPage from '@/pages/system/ErrorPage';
 import { useDailyQuestion } from '@/hooks/letters/useDailyQuestion';
 import { useCreateLike, useDeleteLike } from '@/hooks/useCreateLetterLike';
 import type { PublicFeedDetail } from '@/types/dto/feed';
 import type { FeedLetter } from '@/types/letter';
+
+const PAGE_SIZE = 10;
 
 interface FeedPageLetter extends FeedLetter {
   content: string;
@@ -51,6 +55,23 @@ export default function FeedPageTemplate({
         paperId: l.design?.paper?.id ?? 1,
       })) ?? [],
     [rawLetters],
+  );
+
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+  const hasMore = displayCount < letters.length;
+
+  const handleLoadMore = useCallback(() => {
+    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, letters.length));
+  }, [letters.length]);
+
+  const sentinelRef = useIntersectionObserver({
+    onIntersect: handleLoadMore,
+    enabled: hasMore,
+  });
+
+  const visibleLetters = useMemo(
+    () => letters.slice(0, displayCount),
+    [letters, displayCount],
   );
 
   const handleToggleLike = (letterId: number, isLiked: boolean) => {
@@ -97,7 +118,7 @@ export default function FeedPageTemplate({
 
       {/* 편지 리스트 섹션 */}
       <section className='px-4 py-4 space-y-4'>
-        {letters.map((l) => (
+        {visibleLetters.map((l) => (
           <LetterPreviewCard
             key={l.letterId}
             title={l.title}
@@ -113,7 +134,14 @@ export default function FeedPageTemplate({
             onToggleLike={() => handleToggleLike(l.letterId, l.isLiked)}
           />
         ))}
-        {letters.length <= 1 && <EmptyFeedCard />}
+        {!hasMore && letters.length <= 1 && <EmptyFeedCard />}
+
+        {hasMore && (
+          <div className='flex justify-center py-4'>
+            <LoadingDots fillIntervalMs={350} />
+          </div>
+        )}
+        <div ref={sentinelRef} className='h-1' />
       </section>
 
       {/* 플로팅 버튼 */}
