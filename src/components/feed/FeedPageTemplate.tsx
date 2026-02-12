@@ -72,12 +72,14 @@ export default function FeedPageTemplate({
 
   const visibleLetters = useMemo(() => letters.slice(0, displayCount), [letters, displayCount]);
 
-  const handleToggleLike = (letterId: number, isLiked: boolean) => {
-    if (createLike.isPending || deleteLike.isPending) return;
-
-    if (isLiked) deleteLike.mutate(letterId);
-    else createLike.mutate(letterId);
-  };
+  const handleToggleLike = useCallback(
+    (letterId: number, isLiked: boolean) => {
+      if (createLike.isPending || deleteLike.isPending) return;
+      if (isLiked) deleteLike.mutate(letterId);
+      else createLike.mutate(letterId);
+    },
+    [createLike, deleteLike],
+  );
 
   const deadlineMs = useMemo(() => {
     if (!questionData?.expiredAt) return null;
@@ -123,6 +125,7 @@ export default function FeedPageTemplate({
         {visibleLetters.map((l) => (
           <LetterPreviewCard
             key={l.letterId}
+            letterId={l.letterId}
             title={l.title}
             content={l.content}
             paperId={l.paperId}
@@ -133,7 +136,7 @@ export default function FeedPageTemplate({
               (createLike.isPending && createLike.variables === l.letterId) ||
               (deleteLike.isPending && deleteLike.variables === l.letterId)
             }
-            onToggleLike={() => handleToggleLike(l.letterId, l.isLiked)}
+            onToggleLike={handleToggleLike}
           />
         ))}
         {!hasMore && letters.length <= 1 && <EmptyFeedCard />}

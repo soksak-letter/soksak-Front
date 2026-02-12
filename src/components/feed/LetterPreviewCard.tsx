@@ -1,18 +1,21 @@
-import { DEFAULT_THEME, PAPER_THEME } from '@/constants/paperTheme';
-import { useState } from 'react';
+import { memo, useState } from 'react';
+import { PAPER_THEME, DEFAULT_THEME } from '@/constants/paperTheme';
 
 interface LetterPreviewCardProps {
+  letterId: number;
   title: string;
   content: string;
   paperId: number;
   likes: number;
   isLiked: boolean;
-  onToggleLike?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onToggleLike?: (letterId: number, isLiked: boolean) => void;
   disabled?: boolean;
   isLikeLoading?: boolean;
 }
 
-export default function LetterPreviewCard({
+function LetterPreviewCard({
+  letterId,
   title,
   content,
   paperId,
@@ -22,6 +25,14 @@ export default function LetterPreviewCard({
   disabled,
   isLikeLoading,
 }: LetterPreviewCardProps) {
+  console.log('LetterPreviewCard 렌더', {
+    letterId,
+    title,
+    likes,
+    isLiked,
+    isLikeLoading,
+    disabled,
+  });
   const [isExpanded, setIsExpanded] = useState(false);
 
   const theme = PAPER_THEME[paperId] ?? DEFAULT_THEME;
@@ -116,7 +127,12 @@ export default function LetterPreviewCard({
         {/* 좋아요 */}
         <div className='flex items-center gap-1 justify-end'>
           <button
-            onClick={onToggleLike}
+            onClick={() => {
+              console.log('LetterPreviewCard 좋아요 클릭', { letterId, isLiked });
+              if (onToggleLike) {
+                onToggleLike(letterId, isLiked);
+              }
+            }}
             disabled={disabled}
             className='flex items-center justify-center w-[22px] h-[22px] disabled:opacity-50'
           >
@@ -164,3 +180,18 @@ export default function LetterPreviewCard({
     </div>
   );
 }
+
+function areEqual(prevProps: LetterPreviewCardProps, nextProps: LetterPreviewCardProps) {
+  return (
+    prevProps.letterId === nextProps.letterId &&
+    prevProps.title === nextProps.title &&
+    prevProps.content === nextProps.content &&
+    prevProps.paperId === nextProps.paperId &&
+    prevProps.likes === nextProps.likes &&
+    prevProps.isLiked === nextProps.isLiked &&
+    prevProps.disabled === nextProps.disabled &&
+    prevProps.isLikeLoading === nextProps.isLikeLoading
+  );
+}
+
+export default memo(LetterPreviewCard, areEqual);
