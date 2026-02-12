@@ -129,7 +129,7 @@ export default function FriendDraftPage() {
   }
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col bg-[var(--color-bg-500)'>
       <BackHeader
         title={headerTitle}
         rightElement={

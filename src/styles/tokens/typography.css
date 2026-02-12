@@ -47,14 +47,6 @@
   }
 
   /* ===== Nanum Fonts ===== */
-  @font-face {
-    font-family: 'NanumBaeEunHye';
-    font-weight: 400;
-    src:
-      local('Nanum BaeEunHye'),
-      url('/fonts/NanumBaeEunHye.woff2') format('woff2'),
-      url('/fonts/NanumBaeEunHye.woff') format('woff');
-  }
 
   @font-face {
     font-family: 'NanumBiSang';
@@ -63,6 +55,33 @@
       local('Nanum BiSang'),
       url('/fonts/NanumBiSang.woff2') format('woff2'),
       url('/fonts/NanumBiSang.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumBiSang';
+    font-weight: 500;
+    src:
+      local('Nanum BiSang'),
+      url('/fonts/NanumBiSang.woff2') format('woff2'),
+      url('/fonts/NanumBiSang.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumBiSang';
+    font-weight: 600;
+    src:
+      local('Nanum BiSang'),
+      url('/fonts/NanumBiSang.woff2') format('woff2'),
+      url('/fonts/NanumBiSang.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'NanumBaeEunHye';
+    font-weight: 400;
+    src:
+      local('Nanum BaeEunHye'),
+      url('/fonts/NanumBaeEunHye.woff2') format('woff2'),
+      url('/fonts/NanumBaeEunHye.woff') format('woff');
   }
 
   @font-face {

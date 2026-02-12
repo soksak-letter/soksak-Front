@@ -143,7 +143,7 @@ function LetterDecoPage() {
   };
 
   return (
-    <div className='relative'>
+    <div className='relative bg-[var(--color-bg-500)]'>
       <BackHeader
         title='꾸미기'
         rightElement={

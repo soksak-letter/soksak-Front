@@ -45,7 +45,7 @@ export default function LetterInboxSelfPage() {
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
-      paperId: x.paperId + 1,
+      paperId: x.paperId,
       stampId: x.stampId,
       stampUrl: x.stampUrl,
     }));

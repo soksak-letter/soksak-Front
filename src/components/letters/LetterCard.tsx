@@ -21,14 +21,14 @@ const PADDING_BOTTOM = 24;
 
 const LetterCard = ({ PaperBg, font, fontStyle, value, className }: LetterCardProps) => {
   const titleTextStyle: React.CSSProperties = {
-    fontFamily: font,
+    fontFamily: `${font}, var(--font-pretendard)`,
     fontSize: fontStyle.titleSize,
     lineHeight: fontStyle.lineHeight,
     letterSpacing: fontStyle.letterSpacing,
   };
 
   const bodyTextStyle: React.CSSProperties = {
-    fontFamily: font,
+    fontFamily: `${font}, var(--font-pretendard)`,
     fontSize: fontStyle.bodySize,
     lineHeight: fontStyle.lineHeight,
     letterSpacing: fontStyle.letterSpacing,
