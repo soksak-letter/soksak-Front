@@ -58,7 +58,7 @@ export default function LetterStyleContent({
       return {
         id: p.id,
         name: p.color ?? `Paper ${p.id}`,
-        Preview: asset?.Preview,
+        src: asset?.src,
       };
     });
   }, [papers]);
@@ -88,6 +88,7 @@ export default function LetterStyleContent({
               className={[
                 'relative overflow-hidden shadow-md transition-all duration-200',
                 'scale-80 -rotate-2',
+                'w-full aspect-[309/494]',
               ].join(' ')}
               style={
                 value.paperId === p.id
@@ -95,8 +96,8 @@ export default function LetterStyleContent({
                   : undefined
               }
             >
-              {p.Preview ? (
-                <PaperPreview Preview={p.Preview} name={p.name} />
+              {p.src ? (
+                <PaperPreview src={p.src} name={p.name} />
               ) : (
                 <div className='w-full h-full bg-gray-100' />
               )}

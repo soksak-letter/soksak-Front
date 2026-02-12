@@ -12,7 +12,7 @@ export default function AppShellWithTab() {
         </main>
 
         {/* 탭바는 항상 위로 */}
-        <div className='relative z-[999]'>
+        <div className='relative z-[998]'>
           <TabBar />
         </div>
       </div>

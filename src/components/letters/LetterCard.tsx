@@ -1,8 +1,14 @@
 import React from 'react';
 
 type LetterCardProps = {
-  PaperBg: React.ComponentType<{ className?: string }>;
+  paperSrc?: string;
   font: string;
+  fontStyle: {
+    titleSize: number;
+    bodySize: number;
+    lineHeight: number;
+    letterSpacing?: number;
+  };
   value: { title: string; content: string };
   className?: string;
 };
@@ -13,7 +19,21 @@ const CARD_H = 493.72;
 const PADDING_X = 40;
 const PADDING_BOTTOM = 24;
 
-const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
+const LetterCard = ({ paperSrc, font, fontStyle, value, className }: LetterCardProps) => {
+  const titleTextStyle: React.CSSProperties = {
+    fontFamily: `${font}, var(--font-pretendard)`,
+    fontSize: fontStyle.titleSize,
+    lineHeight: fontStyle.lineHeight,
+    letterSpacing: fontStyle.letterSpacing,
+  };
+
+  const bodyTextStyle: React.CSSProperties = {
+    fontFamily: `${font}, var(--font-pretendard)`,
+    fontSize: fontStyle.bodySize,
+    lineHeight: fontStyle.lineHeight,
+    letterSpacing: fontStyle.letterSpacing,
+  };
+
   return (
     <div className='flex justify-center'>
       <div
@@ -25,9 +45,12 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
           fontFamily: font,
         }}
       >
-        <div className='absolute inset-0 pointer-events-none'>
-          {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}
-        </div>
+        <div
+          className='absolute inset-0 pointer-events-none bg-no-repeat bg-cover'
+          style={{
+            backgroundImage: paperSrc ? `url(${paperSrc})` : undefined,
+          }}
+        />
 
         {/* 텍스트 레이어 */}
         <div
@@ -44,32 +67,14 @@ const LetterCard = ({ PaperBg, font, value, className }: LetterCardProps) => {
         >
           {/* 제목 */}
           <div style={{ marginBottom: 5 }}>
-            <p
-              className='font-semibold'
-              style={{
-                fontSize: 18,
-                lineHeight: '24px',
-                color: '#171717',
-                wordBreak: 'break-word',
-              }}
-            >
+            <p className='font-semibold' style={titleTextStyle}>
               {value.title}
             </p>
           </div>
 
           {/* 내용 */}
           <div style={{ flex: 1, overflow: 'hidden' }}>
-            <p
-              style={{
-                fontSize: 14,
-                lineHeight: '19px',
-                color: '#171717',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-              }}
-            >
-              {value.content}
-            </p>
+            <p style={bodyTextStyle}>{value.content}</p>
           </div>
         </div>
       </div>

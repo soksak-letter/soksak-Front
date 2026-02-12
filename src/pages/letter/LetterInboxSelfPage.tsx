@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { LoadingDots } from '@/components/LoadingDots';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInboxTabs';
@@ -83,7 +85,6 @@ export default function LetterInboxSelfPage() {
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='편지함' />
-
       <main className='px-5 pb-[95px]'>
         <div className='mx-auto w-full max-w-[343px]'>
           <LetterInboxTabs value={tab} onChange={handleTabChange} />
@@ -96,6 +97,7 @@ export default function LetterInboxSelfPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder='키워드를 검색해보세요'
+                aria-label='편지 검색'
                 className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
               />
             </div>
@@ -104,13 +106,13 @@ export default function LetterInboxSelfPage() {
               type='button'
               onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
               className='h-11 w-11 flex items-center justify-center'
-              aria-label='정렬 변경'
+              aria-label={`정렬 변경, 현재 ${sortOrder === 'latest' ? '최신순' : '오래된순'}`}
             >
               <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
             </button>
           </div>
 
-          <div className='mt-4 space-y-[10px]'>
+          <div role='feed' aria-label='내 편지 목록' aria-busy={hasMore} className='mt-4 space-y-[10px]'>
             {/* 1) 에러 */}
             {isError ? (
               <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>

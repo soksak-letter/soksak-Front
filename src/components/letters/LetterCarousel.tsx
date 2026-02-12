@@ -7,7 +7,7 @@ interface LetterCarouselProps {
   letters: FeedLetter[];
   emptyMessage?: string;
   // eslint-disable-next-line no-unused-vars
-  onLetterClick?: (letter: FeedLetter) => void;
+  onLetterClick?: (letterId: number) => void;
 }
 
 export default function LetterCarousel({
@@ -49,10 +49,10 @@ export default function LetterCarousel({
   }, []);
 
   const handleCardClick = useCallback(
-    (letter: FeedLetter) => {
+    (letterId: number) => {
       // 드래그 중이었다면 클릭 이벤트 무시
       if (isDraggingRef.current) return;
-      onLetterClick?.(letter);
+      onLetterClick?.(letterId);
     },
     [onLetterClick],
   );
@@ -211,7 +211,7 @@ export default function LetterCarousel({
                 className='flex-shrink-0'
                 style={{ width: `${CARD_WIDTH}px` }}
               >
-                <LetterItem letter={letter} onClick={() => handleCardClick(letter)} />
+                <LetterItem letter={letter} onClick={handleCardClick} />
               </div>
             ))}
           </div>

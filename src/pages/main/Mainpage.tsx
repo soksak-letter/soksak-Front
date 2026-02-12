@@ -93,7 +93,7 @@ const MainPage = () => {
           profileImageUrl={
             homeSummary?.user?.profileImageUrl
               ? `${homeSummary.user.profileImageUrl}?t=${profileImageCacheBuster}`
-              : 'https://placehold.co/47x48'
+              : undefined
           }
         />
       </section>

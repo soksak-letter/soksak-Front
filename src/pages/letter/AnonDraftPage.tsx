@@ -18,7 +18,6 @@ const AnonDraftPage = () => {
   const setActiveTarget = useLetterStore((s) => s.setActiveTarget);
   const draft = useLetterStore((s) => s.getDraft());
   const patchDraft = useLetterStore((s) => s.patchDraft);
-  const resetCurrent = useLetterStore((s) => s.resetCurrent);
 
   const navigate = useNavigate();
   const { openModal } = useModalStore();
@@ -44,24 +43,7 @@ const AnonDraftPage = () => {
       });
       return;
     }
-
-    const hasSomething = draft.title.trim().length > 0 || draft.content.trim().length > 0;
-
-    if (!hasSomething) {
-      navigate(-1);
-      return;
-    }
-
-    openModal('storageConfirm', {
-      onExit: () => {
-        resetCurrent();
-        navigate(-1);
-      },
-      onConfirmStorage: async () => {
-        showToast('임시저장 되었습니다!', 'success');
-        navigate(-1);
-      },
-    });
+    navigate(-1);
   };
 
   const handleSubmit = () => {
