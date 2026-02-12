@@ -33,7 +33,7 @@ export default function OnboardingLetterGuidePage() {
   const content = state?.content ?? draft.content ?? '';
 
   const mintPaperId = 1; //  mint paper 선택
-  const PaperBg = PAPER_ASSET_MAP[mintPaperId].Preview;
+  const paperSrc = PAPER_ASSET_MAP[mintPaperId].src;
 
   const fontId = 4; // 나눔 바른히피체 선택
   const fontFamily = FONT_ASSET_MAP[fontId].fontFamily;
@@ -143,7 +143,7 @@ export default function OnboardingLetterGuidePage() {
             }}
           >
             <LetterCard
-              PaperBg={PaperBg}
+              paperSrc={paperSrc}
               font={fontFamily}
               fontStyle={fontStyle}
               value={{ title, content }}

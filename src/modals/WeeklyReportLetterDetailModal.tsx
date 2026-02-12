@@ -67,8 +67,9 @@ export function WeeklyReportLetterDetailModalContent({ letterId }: { letterId: n
     <div className='flex flex-col items-center animate-in fade-in zoom-in duration-300'>
       <div onClick={(e) => e.stopPropagation()}>
         <LetterCard
-          PaperBg={paper.Preview}
+          paperSrc={paper.src}
           font={font.fontFamily}
+          fontStyle={font.style}
           value={{ title: data.title, content: data.content }}
           className='-rotate-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
         />
