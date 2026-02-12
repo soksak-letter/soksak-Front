@@ -44,7 +44,7 @@ export default function FriendInboxPage() {
         const ms = iso ? new Date(iso).getTime() : 0;
         const paperColor = f.recentLetter?.design?.paper?.color;
         const paperId = f.recentLetter?.design?.paper?.id;
-        const stampColor = f.recentLetter?.design?.stamp?.name;
+        const stampName = f.recentLetter?.design?.stamp?.name;
         const stampId = f.recentLetter?.design?.stamp?.id;
 
         return {
@@ -58,7 +58,7 @@ export default function FriendInboxPage() {
           lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
 
           paperId: paperColor || (paperId !== undefined ? paperId : 1),
-          stampId: stampColor || (stampId !== undefined ? stampId : 1),
+          stampId: stampName || (stampId !== undefined ? stampId : 1),
           stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
         };
       }),
