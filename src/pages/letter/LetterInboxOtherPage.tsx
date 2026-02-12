@@ -104,30 +104,11 @@ export default function LetterInboxOtherPage() {
     navigate(`/letter/thread/${item.sessionId}`);
   };
 
-  const PAGE_SIZE = 10;
-  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+  const hasKeyword = debouncedKeyword.trim().length > 0;
 
-  useEffect(() => {
-    setDisplayCount(PAGE_SIZE);
-  }, [debouncedKeyword, sortOrder]);
-  const hasMore = displayCount < filtered.length;
+  const isSearchEmpty = !isLoading && !isError && hasKeyword && filtered.length === 0;
 
-  const handleLoadMore = useCallback(() => {
-    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, filtered.length));
-  }, [filtered.length]);
-
-  const sentinelRef = useIntersectionObserver({
-    onIntersect: handleLoadMore,
-    enabled: hasMore,
-    resetKey: displayCount,
-  });
-
-  const visibleItems = useMemo(
-    () => filtered.slice(0, displayCount),
-    [filtered, displayCount],
-  );
-
-  const isEmpty = !isLoading && !isError && filtered.length === 0;
+  const isInboxEmpty = !isLoading && !isError && !hasKeyword && items.length === 0;
 
   if (isLoading) return <InboxSkeleton />;
 
@@ -226,17 +207,18 @@ export default function LetterInboxOtherPage() {
                     </button>
                   );
                 })}
-                {isEmpty && (
+                {isSearchEmpty && (
                   <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                     검색 결과가 없어요
                   </div>
                 )}
-                {hasMore && (
-                  <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
-                    <LoadingDots fillIntervalMs={350} />
+
+                {isInboxEmpty && (
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    받은 편지가 없어요
                   </div>
                 )}
-                <div ref={sentinelRef} aria-hidden='true' className='h-1' />
+
               </>
             )}
           </div>

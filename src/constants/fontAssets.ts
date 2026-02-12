@@ -29,7 +29,7 @@ export const FONT_ASSET_MAP: Record<number, FontAsset> = {
   },
   2: {
     label: '나눔 비상체',
-    fontFamily: 'NanumBiSang',
+    fontFamily: 'NanumBisang, sans-serif',
     sampleKo: '혹은 익명으로 편지를 나눠보세요.',
     sampleEn: 'Try using Soksak letters',
     style: {

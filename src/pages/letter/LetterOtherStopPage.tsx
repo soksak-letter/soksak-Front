@@ -44,7 +44,7 @@ export default function OtherStopPage() {
       <header className='flex flex-col justify-start gap-2'>
         <p className='ty-body1 leading-tight'>
           {senderName}님과
-          <span className='text-[var(--color-primary-500)]'>{letterCount}회</span>
+          <span className='text-[var(--color-primary-500)]'> {letterCount}회</span>
           의 대화를
           <br />
           나누었어요.
@@ -52,19 +52,19 @@ export default function OtherStopPage() {
       </header>
 
       {/* Envelope + Link */}
-      <section className='mt-15 flex flex-col items-center'>
-        <div className='relative h-23 w-25 flex items-center justify-center'>
+      <section className='mt-8 flex flex-col items-center'>
+        <div className='relative w-[340px] h-[250px] -rotate-3'>
           {EnvelopePreview ? (
-            <EnvelopePreview className='h-full w-full' />
+            <EnvelopePreview className='h-full w-full drop-shadow-[0_10px_25px_rgba(0,0,0,0.10)]' />
           ) : (
-            <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+            <div className='h-full w-full rounded-xl bg-[#F2F2F2] drop-shadow-[0_10px_25px_rgba(0,0,0,0.10)]' />
           )}
 
           {!!stampUrl && (
             <img
               src={stampUrl}
               alt=''
-              className='absolute right-[10px] bottom-[10px] h-7 w-7 object-contain pointer-events-none'
+              className='absolute -rotate-5 right-[30px] bottom-[40px] h-[90px] w-[90px] object-contain pointer-events-none'
               draggable={false}
             />
           )}

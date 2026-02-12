@@ -37,7 +37,7 @@ export default function LetterInboxSelfPage() {
   const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
-  // 서버 응답 -> 화면 아이템으로 변환 (isUnread 제외)
+  // 서버 응답 -> 화면 아이템으로 변환
   const items: InboxSelfLetterItem[] = useMemo(() => {
     const raw = data?.letters ?? [];
 
@@ -47,9 +47,9 @@ export default function LetterInboxSelfPage() {
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
-      paperId: x.paperId,
-      stampId: x.stampId,
-      stampUrl: x.stampUrl,
+      paperId: x.paperId ?? 0,
+      stampId: x.stampId ?? 0,
+      stampUrl: (x.stampUrl ?? '').trim(),
     }));
   }, [data]);
 
@@ -67,42 +67,18 @@ export default function LetterInboxSelfPage() {
 
   const handleTabChange = (next: LetterInboxTabKey) => {
     setTab(next);
-
     if (next === 'other') {
       navigate('/letter/inbox-other');
     }
   };
 
   const handleOpenLetter = (letterId: number) => {
-    navigate(`/letter/post-self/${letterId}`, {
-      state: { letterId },
-    });
+    navigate(`/letter/post-self/${letterId}`, { state: { letterId } });
   };
 
-  const PAGE_SIZE = 10;
-  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
-    setDisplayCount(PAGE_SIZE);
-  }, [debouncedKeyword, sortOrder]);
-  const hasMore = displayCount < filtered.length;
-
-  const handleLoadMore = useCallback(() => {
-    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, filtered.length));
-  }, [filtered.length]);
-
-  const sentinelRef = useIntersectionObserver({
-    onIntersect: handleLoadMore,
-    enabled: hasMore,
-    resetKey: displayCount,
-  });
-
-  const visibleItems = useMemo(
-    () => filtered.slice(0, displayCount),
-    [filtered, displayCount],
-  );
-
-  const isEmpty = !isLoading && !isError && filtered.length === 0;
+  const hasKeyword = debouncedKeyword.trim().length > 0;
+  const isSearchEmpty = !isLoading && !isError && hasKeyword && filtered.length === 0;
+  const isInboxEmpty = !isLoading && !isError && !hasKeyword && items.length === 0;
 
   if (isLoading) return <InboxSkeleton />;
 
@@ -145,70 +121,78 @@ export default function LetterInboxSelfPage() {
                   다시 시도
                 </Button>
               </div>
-            ) : /* 3) 비었을 때 */ isEmpty ? (
-              <div className='mt-8 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
-                검색 결과가 없어요
-              </div>
             ) : (
-              /* 4) 정상 */ <>
-                {visibleItems.map((it) => {
-                  const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
-                  const EnvelopePreview = envelopeAsset?.Preview;
-
-                  return (
-                    <button
-                      key={it.letterId}
-                      type='button'
-                      onClick={() => handleOpenLetter(it.letterId)}
-                      aria-label={`${it.question}: ${it.title}, ${it.receivedAt}`}
-                      className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-                    >
-                      <div className='flex items-start justify-between gap-3'>
-                        {/* 왼쪽 텍스트  */}
-                        <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
-                          <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
-                            {it.question}
-                          </p>
-
-                          <div className='mt-4 flex items-center gap-1'>
-                            <p className='text-[12px] text-[#171717]'>{it.title}</p>
-                          </div>
-                        </div>
-
-                        <div className='flex flex-col'>
-                          {/* 오른쪽 봉투 썸네일 */}
-                          <div className='h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
-                            {EnvelopePreview ? (
-                              <EnvelopePreview className='h-full w-full' />
-                            ) : (
-                              <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
-                            )}
-                          </div>
-
-                          {!!it.stampUrl && (
-                            <img
-                              src={it.stampUrl}
-                              alt=''
-                              className='absolute  right-6.5 bottom-12.5 h-6 w-6 object-contain pointer-events-none'
-                              draggable={false}
-                            />
-                          )}
-
-                          {/* 오른쪽 하단 날짜 */}
-                          <div className='flex justify-end pr-2 -mt-2 ty-detailMedium text-[var(--color-text-normal)]'>
-                            {it.receivedAt}
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-                {hasMore && (
-                  <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
-                    <LoadingDots fillIntervalMs={350} />
+              <>
+                {/* 2) 검색 결과 없음 */}
+                {isSearchEmpty && (
+                  <div className='mt-8 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    검색 결과가 없어요
                   </div>
                 )}
-                <div ref={sentinelRef} aria-hidden='true' className='h-1' />
+
+                {/* 3) 받은 편지함 자체가 비었음 */}
+                {isInboxEmpty && (
+                  <div className='mt-8 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    받은 편지가 없어요
+                  </div>
+                )}
+
+                {/* 4) 정상 리스트 */}
+                {!isSearchEmpty && !isInboxEmpty && (
+                  <>
+                    {filtered.map((it) => {
+                      const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
+                      const EnvelopePreview = envelopeAsset?.Preview;
+
+                      return (
+                        <button
+                          key={it.letterId}
+                          type='button'
+                          onClick={() => handleOpenLetter(it.letterId)}
+                          className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+                        >
+                          <div className='flex items-start justify-between gap-3'>
+                            {/* 왼쪽 텍스트 */}
+                            <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
+                              <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
+                                {it.question}
+                              </p>
+
+                              <div className='mt-4 flex items-center gap-1'>
+                                <p className='text-[12px] text-[#171717]'>{it.title}</p>
+                              </div>
+                            </div>
+
+                            <div className='flex flex-col'>
+                              {/* 오른쪽 봉투 썸네일 */}
+                              <div className='h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
+                                {EnvelopePreview ? (
+                                  <EnvelopePreview className='h-full w-full' />
+                                ) : (
+                                  <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+                                )}
+                              </div>
+
+                              {!!it.stampUrl && (
+                                <img
+                                  src={it.stampUrl}
+                                  alt=''
+                                  className='absolute right-6.5 bottom-12.5 h-6 w-6 object-contain pointer-events-none'
+                                  draggable={false}
+                                />
+                              )}
+
+                              {/* 오른쪽 하단 날짜 */}
+                              <div className='flex justify-end pr-2 -mt-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                                {it.receivedAt}
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
               </>
             )}
           </div>
