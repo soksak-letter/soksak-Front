@@ -5,8 +5,8 @@
     font-weight: 700;
     src:
       local('Hallym Gothic Bold'),
-      url('/fonts/HallymGothic-Bold.woff2') format('woff2'),
-      url('/fonts/HallymGothic-Bold.woff') format('woff');
+      url('../../assets/fonts/HallymGothic-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/HallymGothic-Bold.woff') format('woff');
   }
 
   @font-face {
@@ -14,8 +14,8 @@
     font-weight: 500;
     src:
       local('Hallym Gothic Medium'),
-      url('/fonts/HallymGothic-Medium.woff2') format('woff2'),
-      url('/fonts/HallymGothic-Medium.woff') format('woff');
+      url('../../assets/fonts/HallymGothic-Medium.woff2') format('woff2'),
+      url('../../assets/fonts/HallymGothic-Medium.woff') format('woff');
   }
 
   /* ===== Pretendard ===== */
@@ -24,8 +24,8 @@
     font-weight: 400;
     src:
       local('Pretendard Regular'),
-      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
-      url('/fonts/Pretendard-Regular.woff') format('woff');
+      url('../../assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Regular.woff') format('woff');
   }
 
   @font-face {
@@ -33,8 +33,8 @@
     font-weight: 500;
     src:
       local('Pretendard Medium'),
-      url('/fonts/Pretendard-Medium.woff2') format('woff2'),
-      url('/fonts/Pretendard-Medium.woff') format('woff');
+      url('../../assets/fonts/Pretendard-Medium.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Medium.woff') format('woff');
   }
 
   @font-face {
@@ -42,8 +42,8 @@
     font-weight: 700;
     src:
       local('Pretendard Bold'),
-      url('/fonts/Pretendard-Bold.woff2') format('woff2'),
-      url('/fonts/Pretendard-Bold.woff') format('woff');
+      url('../../assets/fonts/Pretendard-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/Pretendard-Bold.woff') format('woff');
   }
 
   /* ===== Nanum Fonts ===== */
@@ -52,8 +52,8 @@
     font-weight: 400;
     src:
       local('Nanum BaeEunHye'),
-      url('/fonts/NanumBaeEunHye.woff2') format('woff2'),
-      url('/fonts/NanumBaeEunHye.woff') format('woff');
+      url('../../assets/fonts/NanumBaeEunHye.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBaeEunHye.woff') format('woff');
   }
 
   @font-face {
@@ -61,8 +61,8 @@
     font-weight: 400;
     src:
       local('Nanum BiSang'),
-      url('/fonts/NanumBiSang.woff2') format('woff2'),
-      url('/fonts/NanumBiSang.woff') format('woff');
+      url('../../assets/fonts/NanumBiSang.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBiSang.woff') format('woff');
   }
 
   @font-face {
@@ -70,8 +70,8 @@
     font-weight: 400;
     src:
       local('Nanum BarunHipi'),
-      url('/fonts/NanumBarunHipi.woff2') format('woff2'),
-      url('/fonts/NanumBarunHipi.woff') format('woff');
+      url('../../assets/fonts/NanumBarunHipi.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBarunHipi.woff') format('woff');
   }
 
   @font-face {
@@ -79,8 +79,8 @@
     font-weight: 400;
     src:
       local('Nanum AbbaGeulsi'),
-      url('/fonts/NanumAbbaGeulsi.woff2') format('woff2'),
-      url('/fonts/NanumAbbaGeulsi.woff') format('woff');
+      url('../../assets/fonts/NanumAbbaGeulsi.woff2') format('woff2'),
+      url('../../assets/fonts/NanumAbbaGeulsi.woff') format('woff');
   }
 
   @font-face {
@@ -88,8 +88,8 @@
     font-weight: 400;
     src:
       local('Nanum Barunpen'),
-      url('/fonts/NanumBarunpen.woff2') format('woff2'),
-      url('/fonts/NanumBarunpen.woff') format('woff');
+      url('../../assets/fonts/NanumBarunpen.woff2') format('woff2'),
+      url('../../assets/fonts/NanumBarunpen.woff') format('woff');
   }
 
   @font-face {
@@ -97,8 +97,8 @@
     font-weight: 400;
     src:
       local('Nanum Daheng'),
-      url('/fonts/NanumDaheng.woff2') format('woff2'),
-      url('/fonts/NanumDaheng.woff') format('woff');
+      url('../../assets/fonts/NanumDaheng.woff2') format('woff2'),
+      url('../../assets/fonts/NanumDaheng.woff') format('woff');
   }
 
   @font-face {
@@ -106,8 +106,8 @@
     font-weight: 400;
     src:
       local('Nanum NeuritNeurit'),
-      url('/fonts/NanumNeuritNeurit.woff2') format('woff2'),
-      url('/fonts/NanumNeuritNeurit.woff') format('woff');
+      url('../../assets/fonts/NanumNeuritNeurit.woff2') format('woff2'),
+      url('../../assets/fonts/NanumNeuritNeurit.woff') format('woff');
   }
 
   :root {
