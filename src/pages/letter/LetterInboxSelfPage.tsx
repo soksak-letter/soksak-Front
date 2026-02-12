@@ -35,13 +35,16 @@ export default function LetterInboxSelfPage() {
   const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
+  const formattedQuestionTitle = (q?: string) =>
+    (q ?? '오늘의 질문').replace(/^질문\s*#\d+:\s*/, '');
+
   // 서버 응답 -> 화면 아이템으로 변환
   const items: InboxSelfLetterItem[] = useMemo(() => {
     const raw = data?.letters ?? [];
 
     return raw.map((x) => ({
       letterId: x.id,
-      question: x.questionTitle ?? '오늘의 질문',
+      question: formattedQuestionTitle(x.questionTitle),
       title: x.title,
       receivedAt: formatDate(x.createdAt),
       receivedAtMs: new Date(x.createdAt).getTime(),
@@ -149,16 +152,16 @@ export default function LetterInboxSelfPage() {
                           onClick={() => handleOpenLetter(it.letterId)}
                           className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                         >
-                          <div className='flex items-start justify-between gap-3'>
+                          <div className='flex h-full items-start justify-between gap-3'>
                             {/* 왼쪽 텍스트 */}
-                            <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
+                            <div className='min-w-0 flex h-full flex-col justify-between mt-1 ml-1'>
                               <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
                                 {it.question}
                               </p>
 
-                              <div className='mt-4 flex items-center gap-1'>
-                                <p className='text-[12px] text-[#171717]'>{it.title}</p>
-                              </div>
+                              <p className='ty-detailMedium text-[var(--color-text-normal)] truncate'>
+                                {it.title}
+                              </p>
                             </div>
 
                             <div className='flex flex-col'>

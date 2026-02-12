@@ -161,14 +161,14 @@ export default function LetterInboxOtherPage() {
                         onClick={() => handleOpenThread(it)}
                         className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                       >
-                        <div className='flex items-start justify-between gap-3'>
-                          <div className='min-w-0 flex flex-col gap-8 mt-2 ml-1'>
+                        <div className='flex h-full items-start justify-between gap-3'>
+                          <div className='min-w-0 flex h-full flex-col justify-between mt-1 ml-1'>
                             <p className='ty-body5 text-[var(--color-text-normal)] line-clamp-2'>
                               {it.letterTitle}
                             </p>
 
                             <div className='mt-4 flex items-center gap-1'>
-                              <p className='ty-detailMedium text-[var(--color-text-normal)]'>
+                              <p className='ty-detailMedium text-[var(--color-text-normal)] truncate'>
                                 {it.senderName}
                               </p>
                               {it.isUnread && (
