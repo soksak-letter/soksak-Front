@@ -19,8 +19,8 @@ type FriendInboxItem = {
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
   lastAtMs: number;
-  paperId: number;
-  stampId: number;
+  paperId: string | number;
+  stampId: string | number;
   stampUrl: string;
 };
 
@@ -42,6 +42,10 @@ export default function FriendInboxPage() {
       friends.map((f) => {
         const iso = f.recentLetter?.createdAt ?? null;
         const ms = iso ? new Date(iso).getTime() : 0;
+        const paperColor = f.recentLetter?.design?.paper?.color;
+        const paperId = f.recentLetter?.design?.paper?.id;
+        const stampName = f.recentLetter?.design?.stamp?.name;
+        const stampId = f.recentLetter?.design?.stamp?.id;
 
         return {
           id: f.id,
@@ -53,8 +57,8 @@ export default function FriendInboxPage() {
           lastDate: iso ? formatDate(iso) : '-', // UI용
           lastAtMs: Number.isNaN(ms) ? 0 : ms, // 정렬용
 
-          paperId: Number(f.recentLetter?.design.paper?.id ?? 0),
-          stampId: Number(f.recentLetter?.design.stamp?.id ?? 0),
+          paperId: paperColor || (paperId !== undefined ? paperId : 1),
+          stampId: stampName || (stampId !== undefined ? stampId : 1),
           stampUrl: (f.recentLetter?.design?.stamp?.assetUrl ?? '').trim(),
         };
       }),
@@ -137,9 +141,9 @@ export default function FriendInboxPage() {
                     <div className='h-12 w-12 shrink-0 rounded-full bg-[var(--color-primary-100)] overflow-hidden flex items-center justify-center'>
                       {f.profileImageUrl ? (
                         <img
-                          src={`${f.profileImageUrl}?t=${cacheBuster}`}
+                          src={`${f.profileImageUrl}${f.profileImageUrl.includes('?') ? '&' : '?'}t=${cacheBuster}`}
                           alt='프로필'
-                          className='w-full h-full object-cover '
+                          className='w-full h-full object-cover'
                         />
                       ) : (
                         /* 이미지가 없을 때 보여줄 빈 화면 */

@@ -14,7 +14,7 @@ export type EnvelopeAsset = {
   Preview: React.ComponentType<{ className?: string }>;
 };
 
-export const ENVELOPE_ASSET_MAP: Record<number, EnvelopeAsset> = {
+export const ENVELOPE_ASSET_MAP: Record<string | number, EnvelopeAsset> = {
   1: { label: 'Mint', Preview: mint },
   2: { label: 'Purple', Preview: purple },
   3: { label: 'Blue', Preview: blue },
@@ -24,4 +24,15 @@ export const ENVELOPE_ASSET_MAP: Record<number, EnvelopeAsset> = {
   7: { label: 'Beige', Preview: beige },
   8: { label: 'Vintage', Preview: vintage },
   9: { label: 'Grey', Preview: grey },
+
+  // 새로운 문자열 기반 추가 (서버 응답값 대응)
+  Mint: { label: 'Mint', Preview: mint },
+  Purple: { label: 'Purple', Preview: purple },
+  Blue: { label: 'Blue', Preview: blue },
+  Yellow: { label: 'Yellow', Preview: yellow },
+  Pink: { label: 'Pink', Preview: pink },
+  Paper: { label: 'Paper', Preview: paper },
+  Beige: { label: 'Beige', Preview: beige },
+  Vintage: { label: 'Vintage', Preview: vintage },
+  Grey: { label: 'Grey', Preview: grey },
 };
