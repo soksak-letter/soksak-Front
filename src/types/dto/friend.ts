@@ -17,6 +17,7 @@ export type FriendItem = {
   id: number;
   friendUserId: number;
   nickname: string;
+  profileImageUrl: string | null;
   letterCount: number;
   recentLetter: RecentLetter | null;
 };
