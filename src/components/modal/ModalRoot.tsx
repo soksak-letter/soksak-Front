@@ -11,6 +11,7 @@ import LogoutConfirmModal from '@/modals/LogoutConfirmModal';
 import WithdrawalConfirmModal from '@/modals/WithdrawalConfirmModal';
 import ConversationRemainingModal from '@/modals/ConversationRemainingModal';
 import StorageConfirmModal from '@/modals/StorageConfirmModal';
+import WeeklyReportLetterDetailModal from '@/modals/WeeklyReportLetterDetailModal';
 
 export default function ModalRoot() {
   const { activeModal } = useModalStore();
@@ -47,6 +48,9 @@ export default function ModalRoot() {
 
     case 'storageConfirm':
       return <StorageConfirmModal />;
+
+    case 'weeklyReportLetterDetail':
+      return <WeeklyReportLetterDetailModal />;
 
     default:
       return null;

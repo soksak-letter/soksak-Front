@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { EmotionStatusKey } from '@/components/WeeklyReport/EmotionStatusIcon';
+import type { FeedLetter } from '@/types/letter';
 
 import { WeeklyEmotionDistributionCard } from '@/components/WeeklyReport/WeeklyEmotionDistributionCard';
 import { WeeklyEmotionFlowCard } from '@/components/WeeklyReport/WeeklyEmotionFlowCard';
@@ -12,11 +13,11 @@ import WeeklyMindLetterSection from '@/components/WeeklyReport/WeeklyMindLetterS
 import OnboardingStamp from '@/assets/icons/OnboardingStamp.svg?react';
 
 import LoadingPage from '../system/LoadingPage';
-import EmptyStateCard from '@/components/letters/EmptyStateCard';
 import { ROUTES } from '@/routes/paths';
 
 import { useWeeklyReport } from '@/hooks/weeklyReport/useWeeklyReport';
-import { useWeeklyReportHighlights } from '@/hooks/weeklyReport/useWeeklyReportHighlights';
+// TODO: 서버 500 이슈로 하이라이트 상세 조회는 임시 비활성화
+// import { useWeeklyReportHighlights } from '@/hooks/weeklyReport/useWeeklyReportHighlights';
 
 import { mapWeeklyEmotionDistribution } from '@/utils/report/mapWeeklyEmotionDistribution';
 import { mapWeeklyEmotionFlow } from '@/utils/report/mapWeeklyEmotionFlow';
@@ -24,24 +25,24 @@ import { mapWeeklyEmotionFlow } from '@/utils/report/mapWeeklyEmotionFlow';
 export default function WeeklyReportPage() {
   const navigate = useNavigate();
 
-  const { data, isLoading, isError, error } = useWeeklyReport();
+  const { data, isLoading } = useWeeklyReport();
 
-  const reportData = data?.success?.result?.data;
+  const reportData = data?.success?.result?.data ?? null;
   const keywords = reportData?.keywords ?? [];
-  const emotions = reportData?.emotions;
+  const emotions = reportData?.emotions ?? undefined;
   const report = reportData?.report ?? null;
 
-  // 하이라이트 ids (캐러셀은 이것만 보여줌)
-  const highlightIds = useMemo(() => {
-    const ids = reportData?.highlights?.map((h) => h.letterId) ?? [];
-    return Array.from(new Set(ids)).filter((n) => Number.isFinite(n) && n > 0) as number[];
-  }, [reportData]);
-
-  const {
-    letters: highlightCarouselLetters,
-    isLoading: isHighlightLoading,
-    isError: isHighlightError,
-  } = useWeeklyReportHighlights(highlightIds);
+  // TODO: 서버 500 이슈로 하이라이트 ids/조회 임시 비활성화
+  // const highlightIds = useMemo(() => {
+  //   const ids = reportData?.highlights?.map((h) => h.letterId) ?? [];
+  //   return Array.from(new Set(ids)).filter((n) => Number.isFinite(n) && n > 0) as number[];
+  // }, [reportData]);
+  //
+  // const {
+  //   letters: highlightCarouselLetters,
+  //   isLoading: isHighlightLoading,
+  //   isError: isHighlightError,
+  // } = useWeeklyReportHighlights(highlightIds);
 
   // 키워드 칩 포맷(네 constellation/칩에 쓰는 용도)
   const formattedKeywords = useMemo(() => {
@@ -69,6 +70,28 @@ export default function WeeklyReportPage() {
     return found?.count ?? 0;
   }, [formattedKeywords, selectedKeyword]);
 
+  // ✅ 키워드 기반 캐러셀 데이터(임시)
+  // - 서버 하이라이트 실패 시에도 "보이게"만 하는 목적
+  // - letterId는 안정적인 더미 id 생성
+  // - paperId는 1~3 사이로 순환(봉투 프리뷰가 1-base 라는 가정)
+  const keywordCarouselLetters: FeedLetter[] = useMemo(() => {
+    // 키워드가 하나도 없으면 빈 배열 → emptyMessage로 처리
+    if (formattedKeywords.length === 0) return [];
+
+    // 3개만 노출(디자인 상 "하이라이트 3개" 느낌 유지)
+    const base = formattedKeywords.slice(0, 3);
+
+    const now = new Date();
+    const iso = now.toISOString();
+
+    return base.map((k, idx) => ({
+      letterId: 10_000 + k.id, // 더미 but stable
+      title: `${k.keyword} (${k.count})`,
+      deliveredAt: iso,
+      paperId: (idx % 3) + 1, // 1~3 순환
+    }));
+  }, [formattedKeywords]);
+
   // 감정 분포(도넛)
   const distribution = useMemo(() => mapWeeklyEmotionDistribution(emotions), [emotions]);
 
@@ -78,30 +101,10 @@ export default function WeeklyReportPage() {
   // ---- 렌더 분기 ----
   if (isLoading) return <LoadingPage />;
 
-  if (isError || !reportData) {
-    return (
-      <div className='w-[375px] mx-auto p-4'>
-        <p className='ty-body2 text-[var(--color-text-normal)]'>
-          {error?.reason ?? '주간 리포트를 불러오지 못했어요.'}
-        </p>
-      </div>
-    );
-  }
-
-  const isEmpty = report == null && keywords.length === 0 && (emotions?.TOTAL?.length ?? 0) === 0;
-
-  if (isEmpty || report == null) {
-    return (
-      <div className='w-[375px] mx-auto p-6 text-center'>
-        <p className='ty-body2'>아직 주간 리포트가 없어요.</p>
-      </div>
-    );
-  }
-
   const emotionStatusMock: EmotionStatusKey = 'neutral';
 
   const handleGoKeywordPage = () => {
-    // 전체보기는 키워드 페이지에서 /letters/keywords/{aiKeyword}를 호출해서 리스트로 뿌리면 됨
+    if (!selectedKeyword) return;
     navigate(ROUTES.report.keyword, {
       state: { keyword: selectedKeyword, count: selectedCount },
     });
@@ -136,9 +139,19 @@ export default function WeeklyReportPage() {
       <main className='relative z-10 mx-auto w-full max-w-[375px] px-4 pb-[110px] pt-[16px]'>
         <div className='flex flex-col gap-3'>
           <h2 className='ty-title1 mb-4'>
-            {reportData.report.month}월 {reportData.report.week}주차,
-            <br />
-            주간 마음 리포트가 도착했어요!
+            {report ? (
+              <>
+                {report.month}월 {report.week}주차,
+                <br />
+                주간 마음 리포트가 도착했어요!
+              </>
+            ) : (
+              <>
+                이번 주 주간 마음 리포트,
+                <br />
+                아직 준비되지 않았어요
+              </>
+            )}
           </h2>
 
           {/* 상단 키워드 카드 */}
@@ -177,7 +190,7 @@ export default function WeeklyReportPage() {
             </div>
           </section>
 
-          {/* 편지조각 보기 (하이라이트 3개 캐러셀) */}
+          {/* 편지조각 보기 (키워드 기반 임시 캐러셀) */}
           <div className='w-[375px] h-[170px] px-[16px]'>
             <div className='h-full w-full py-4'>
               <div className='flex flex-col gap-[16px]'>
@@ -185,7 +198,12 @@ export default function WeeklyReportPage() {
                   <h2 className='ty-body2 text-[var(--color-text-normal)]'>편지조각 보기</h2>
                   <button
                     onClick={handleGoKeywordPage}
-                    className='flex items-center gap-2 ty-body5 text-[var(--color-text-alternative)] hover:text-gray-700 transition-colors'
+                    disabled={!selectedKeyword}
+                    className={`flex items-center gap-2 mr-5 ty-body5 transition-colors ${
+                      selectedKeyword
+                        ? 'text-[var(--color-text-alternative)] hover:text-gray-700'
+                        : 'text-[var(--color-text-disabled)] cursor-not-allowed'
+                    }`}
                   >
                     <span>전체보기</span>
                     <svg
@@ -206,20 +224,11 @@ export default function WeeklyReportPage() {
                   </button>
                 </div>
 
-                {isHighlightLoading ? (
-                  <div className='h-[92px] w-full rounded-xl bg-white/60 animate-pulse' />
-                ) : isHighlightError ? (
-                  <p className='ty-body5 text-[var(--color-text-alternative)]'>
-                    편지 조각을 불러오지 못했어요.
-                  </p>
-                ) : highlightCarouselLetters.length === 0 ? (
-                  <EmptyStateCard message='아직 모아볼 편지조각이 없어요.' />
-                ) : (
-                  <ReportLetterCarousel
-                    letters={highlightCarouselLetters}
-                    onClickItem={handleGoKeywordPage}
-                  />
-                )}
+                <ReportLetterCarousel
+                  letters={keywordCarouselLetters}
+                  emptyMessage='아직 모아볼 편지조각이 없어요.'
+                  onClickItem={handleGoKeywordPage}
+                />
               </div>
             </div>
           </div>
@@ -236,8 +245,8 @@ export default function WeeklyReportPage() {
 
           {/* 주간 마음 편지 */}
           <WeeklyMindLetterSection
-            receiverName={reportData.report.nickname}
-            body={reportData.report.summaryText}
+            receiverName={report?.nickname ?? ''}
+            body={report?.summaryText ?? ''}
             onClick={() => navigate('/letter/self/draft')}
           />
         </div>

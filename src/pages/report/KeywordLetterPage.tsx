@@ -2,15 +2,11 @@ import React, { useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 import BackHeader from '@/components/common/headers/BackHeader';
-import LetterCard from '@/components/letters/LetterCard';
 import { LoadingDots } from '@/components/LoadingDots';
-import ModalFrame from '@/components/modal/ModalFrame';
 
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
-import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
-import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { DEFAULT_PAPER_ID } from '@/constants/paperAssets';
 
-import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 import { useLetterDetails } from '@/hooks/letters/useLetterDetails';
 import { useLettersByKeyword } from '@/hooks/weeklyReport/useLettersByKeyword';
 import { useModalStore } from '@/stores/modalStore';
@@ -78,9 +74,41 @@ function parseDotDate(s: string) {
   return Number.isNaN(t) ? 0 : t;
 }
 
+function extractKeywordList(raw: unknown): unknown[] {
+  if (Array.isArray(raw)) return raw;
+
+  if (isRecord(raw)) {
+    const rawObj = raw.raw;
+    if (isRecord(rawObj) && Array.isArray(rawObj.success)) {
+      return rawObj.success as unknown[];
+    }
+
+    // 1) { list: [...] }
+    if (Array.isArray(raw.list)) return raw.list as unknown[];
+
+    // 2) { data: [...] }
+    if (Array.isArray(raw.data)) return raw.data as unknown[];
+
+    // 3) { success: { result: { data: [...] } } }
+    const success = raw.success;
+    if (isRecord(success)) {
+      const result = success.result;
+      if (isRecord(result) && Array.isArray(result.data)) {
+        return result.data as unknown[];
+      }
+    }
+
+    // 4) { result: { data: [...] } }
+    const result = raw.result;
+    if (isRecord(result) && Array.isArray(result.data)) return result.data as unknown[];
+  }
+
+  return [];
+}
+
 export default function KeywordLetterPage() {
   const location = useLocation();
-  const { openModal, activeModal, payload } = useModalStore();
+  const { openModal } = useModalStore();
 
   // location.state가 비어도(새로고침/직접 접근) URL 쿼리로 복원 가능하게 처리
   const [searchParams] = useSearchParams();
@@ -105,7 +133,8 @@ export default function KeywordLetterPage() {
     isError: isKeywordError,
   } = useLettersByKeyword(selectedKeyword);
 
-  const keywordList: unknown[] = (keywordQuery?.list as unknown[]) ?? [];
+  // const keywordList: unknown[] = (keywordQuery?.list as unknown[]) ?? [];
+  const keywordList: unknown[] = extractKeywordList(keywordQuery);
 
   // 2) letterId 배열 (any 제거)
   const letterIds = useMemo(() => {
@@ -118,7 +147,7 @@ export default function KeywordLetterPage() {
   // 3) 병렬 상세 조회 → map<number, detail>
   const { map: detailMap } = useLetterDetails(letterIds);
 
-  // 4) 최종 items (목록 + 상세 보강) - any 제거 + sender 빨간줄 제거
+  // 4) 최종 items
   const items = useMemo<KeywordLetterItem[]>(() => {
     return keywordList
       .map(parseKeywordLetterBase)
@@ -166,7 +195,7 @@ export default function KeywordLetterPage() {
       });
   }, [keywordList, detailMap]);
 
-  // 정렬 로직(그대로)
+  // 정렬 로직
   const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => {
       const ta = parseDotDate(a.receivedAt);
@@ -175,9 +204,9 @@ export default function KeywordLetterPage() {
     });
   }, [items, sortOrder]);
 
-  // 모달 핸들러(그대로)
+  // 모달 핸들러
   const handleOpenDetail = (item: KeywordLetterItem) => {
-    openModal('letterDetail', {
+    openModal('weeklyReportLetterDetail', {
       letterId: item.letterId,
     });
   };
@@ -221,13 +250,6 @@ export default function KeywordLetterPage() {
           </div>
         )}
       </main>
-
-      {/* 5. 편지 상세 모달 렌더링 */}
-      {activeModal === 'letterDetail' && payload?.letterId && (
-        <ModalFrame>
-          <LetterDetailModalContent letterId={payload.letterId} />
-        </ModalFrame>
-      )}
     </div>
   );
 }
@@ -272,37 +294,5 @@ function PostCard({
         </div>
       </div>
     </button>
-  );
-}
-
-/**
- * LetterDetailModalContent: 모달 내부
- */
-function LetterDetailModalContent({ letterId }: { letterId: number }) {
-  const { data, isLoading, isError } = useLetterDetail(letterId);
-
-  if (isLoading)
-    return (
-      <div className='py-20'>
-        <LoadingDots />
-      </div>
-    );
-  if (isError || !data) return <div className='p-6'>데이터를 불러오지 못했습니다.</div>;
-
-  const font = FONT_ASSET_MAP[data.design.font.id] ?? FONT_ASSET_MAP[DEFAULT_FONT_ID];
-  const paper = PAPER_ASSET_MAP[data.design.paper.id + 1] ?? PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
-
-  return (
-    <div className='flex flex-col items-center animate-in fade-in zoom-in duration-300'>
-      <div onClick={(e) => e.stopPropagation()}>
-        <LetterCard
-          PaperBg={paper.Preview}
-          font={font.fontFamily}
-          fontStyle={font.style}
-          value={{ title: data.title, content: data.content }}
-          className='-rotate-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
-        />
-      </div>
-    </div>
   );
 }

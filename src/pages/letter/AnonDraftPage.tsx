@@ -91,7 +91,7 @@ const AnonDraftPage = () => {
   if (isLoading) return <DraftSkeleton title='타인에게 보내는 편지' />;
 
   return (
-    <div className='relative flex flex-col'>
+    <div className='relative flex flex-col bg-[var(--color-bg-500)] min-h-screen'>
       <BackHeader
         title='타인에게 보내는 편지'
         rightElement={
