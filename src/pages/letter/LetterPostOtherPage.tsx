@@ -96,6 +96,7 @@ export default function LetterPostOtherPage() {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
     if (remainingCount <= 0) {
       const lastPost = posts[posts.length - 1];
+      if (!lastPost) return;
 
       navigate(`/letter/sent-transition/${sessionId}`, {
         state: {

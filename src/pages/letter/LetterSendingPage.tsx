@@ -120,7 +120,7 @@ const LetterSendingPage = () => {
           console.log('[CreateSelfLetter success response]', res);
 
           if (letterCount === 10) {
-            navigate(`/friend/sent-transition/${sessionId}`, { replace: true });
+            navigate(`/letter/sent-transition/${sessionId}`, { replace: true });
           } else {
             navigate('/home/main', {
               replace: true,
@@ -148,7 +148,7 @@ const LetterSendingPage = () => {
         console.log('[CreateLetter success response]', res);
 
         if (letterCount === 10) {
-          navigate(`/friend/sent-transition/${sessionId}`, { replace: true });
+          navigate(`/letter/sent-transition/${sessionId}`, { replace: true });
         } else {
           navigate('/home/main', {
             replace: true,
