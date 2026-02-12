@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
@@ -106,6 +106,10 @@ export default function LetterInboxOtherPage() {
 
   const PAGE_SIZE = 10;
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setDisplayCount(PAGE_SIZE);
+  }, [debouncedKeyword, sortOrder]);
   const hasMore = displayCount < filtered.length;
 
   const handleLoadMore = useCallback(() => {
