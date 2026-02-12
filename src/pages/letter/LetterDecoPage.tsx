@@ -70,9 +70,9 @@ function LetterDecoPage() {
 
   const stampUrl = selectedStamp?.assetUrl ?? '';
 
-  const fontFamily =
-    (style.fontId != null ? FONT_ASSET_MAP[style.fontId]?.fontFamily : undefined) ??
-    FONT_ASSET_MAP[DEFAULT_FONT_ID].fontFamily;
+  const fontAsset =
+    (style.fontId != null ? FONT_ASSET_MAP[style.fontId] : undefined) ??
+    FONT_ASSET_MAP[DEFAULT_FONT_ID];
 
   useEffect(() => {
     setIsOpen(true);
@@ -179,7 +179,8 @@ function LetterDecoPage() {
         ) : (
           <LetterCard
             PaperBg={PaperBg}
-            font={fontFamily}
+            font={fontAsset.fontFamily}
+            fontStyle={fontAsset.style}
             value={{ title: draft.title, content: draft.content }}
             className='mt-5'
           />

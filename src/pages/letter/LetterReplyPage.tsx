@@ -168,6 +168,7 @@ export default function LetterReplyPage() {
       <LetterCard
         PaperBg={assets.paper.Preview}
         font={assets.font.fontFamily}
+        fontStyle={assets.font.style}
         value={{ title: view.title, content: view.content }}
         className='rotate-1 mt-5'
       />

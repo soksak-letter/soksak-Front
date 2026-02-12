@@ -124,6 +124,7 @@ export default function FriendReplyPage() {
       <LetterCard
         PaperBg={assets.paper.Preview}
         font={assets.font.fontFamily}
+        fontStyle={assets.font.style}
         value={{ title: view.title, content: view.content }}
         className='mt-5'
       />

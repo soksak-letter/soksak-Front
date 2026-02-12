@@ -37,6 +37,7 @@ export default function OnboardingLetterGuidePage() {
 
   const fontId = 4; // 나눔 바른히피체 선택
   const fontFamily = FONT_ASSET_MAP[fontId].fontFamily;
+  const fontStyle = FONT_ASSET_MAP[fontId].style;
 
   useEffect(() => {
     if (state?.title || state?.content) {
@@ -144,6 +145,7 @@ export default function OnboardingLetterGuidePage() {
             <LetterCard
               PaperBg={PaperBg}
               font={fontFamily}
+              fontStyle={fontStyle}
               value={{ title, content }}
               className={[
                 'rotate-[2deg]',
