@@ -49,30 +49,12 @@
   /* ===== Nanum Fonts ===== */
 
   @font-face {
-    font-family: 'NanumBiSang';
+    font-family: 'NanumBisang';
     font-weight: 400;
     src:
-      local('Nanum BiSang'),
-      url('/fonts/NanumBiSang.woff2') format('woff2'),
-      url('/fonts/NanumBiSang.woff') format('woff');
-  }
-
-  @font-face {
-    font-family: 'NanumBiSang';
-    font-weight: 500;
-    src:
-      local('Nanum BiSang'),
-      url('/fonts/NanumBiSang.woff2') format('woff2'),
-      url('/fonts/NanumBiSang.woff') format('woff');
-  }
-
-  @font-face {
-    font-family: 'NanumBiSang';
-    font-weight: 600;
-    src:
-      local('Nanum BiSang'),
-      url('/fonts/NanumBiSang.woff2') format('woff2'),
-      url('/fonts/NanumBiSang.woff') format('woff');
+      local('Nanum Bisang'),
+      url('/fonts/NanumBisang.woff2') format('woff2'),
+      url('/fonts/NanumBisang.woff') format('woff');
   }
 
   @font-face {
