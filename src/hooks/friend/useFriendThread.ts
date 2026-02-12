@@ -6,6 +6,7 @@ export function useFriendThread(friendId: number) {
     queryKey: ['friend-thread', friendId],
     queryFn: () => getFriendThread(friendId),
     enabled: Number.isFinite(friendId) && friendId > 0,
+    staleTime: 1000 * 30,
     retry: false,
   });
 }

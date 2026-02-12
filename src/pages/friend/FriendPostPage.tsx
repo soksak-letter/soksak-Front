@@ -5,7 +5,7 @@ import BackHeader from '@/components/common/headers/BackHeader';
 import PenIcon from '@/assets/icons/PenIcon.svg?react';
 import { useFriendThread } from '@/hooks/friend/useFriendThread';
 import NotFoundPage from '../system/NotFoundPage';
-import { LoadingDots } from '@/components/LoadingDots';
+import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { formatDate } from '@/utils/date';
@@ -78,6 +78,7 @@ export default function FriendPostPage() {
 
   // 잘못된 접근 - 404 처리
   if (!friendIdParam || !Number.isFinite(friendId) || friendId <= 0) return <NotFoundPage />;
+  if (isLoading) return <ThreadSkeleton title={`${friendName}님과 나눈 편지`} />;
 
   const handleOpenLetterDetail = (letterId: number, direction: Direction) => {
     navigate(`/friend/thread/${friendId}/${letterId}`, {
@@ -105,13 +106,7 @@ export default function FriendPostPage() {
           {formattedQuestionTitle}
         </h2>
 
-        {/* 1) 로딩 */}
-        {isLoading ? (
-          <div className='flex flex-col items-center justify-center gap-8 py-70'>
-            <LoadingDots fillIntervalMs={350} />
-            <p className='ty-title2'>로딩 중...</p>
-          </div>
-        ) : /* 2) 에러 */ isError ? (
+        {isError ? (
           <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
             <p className='ty-title3'>목록을 불러오지 못했어요.</p>
             <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>

@@ -8,6 +8,7 @@ export function useOtherPublicFeed() {
   return useQuery({
     queryKey: ['other-public-feed', todayKey],
     queryFn: getOtherPublicFeed,
+    staleTime: 1000 * 60 * 2,
     retry: false,
   });
 }
@@ -18,6 +19,7 @@ export function useFriendPublicFeed() {
   return useQuery({
     queryKey: ['friend-public-feed', todayKey],
     queryFn: getFriendPublicFeed,
+    staleTime: 1000 * 60 * 2,
     retry: false,
   });
 }

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
@@ -7,7 +8,7 @@ import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInbo
 import { AiOutlineSearch } from 'react-icons/ai';
 import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useSelfMailbox } from '@/hooks/mails/useSelfMailbox';
-import { LoadingDots } from '@/components/LoadingDots';
+import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 import { Button } from '@/components/common/Button';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { formatDate } from '@/utils/date';
@@ -31,6 +32,7 @@ export default function LetterInboxSelfPage() {
 
   const [tab, setTab] = useState<LetterInboxTabKey>('received');
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
   // 서버 응답 -> 화면 아이템으로 변환 (isUnread 제외)
@@ -50,7 +52,7 @@ export default function LetterInboxSelfPage() {
   }, [data]);
 
   const filtered = useMemo(() => {
-    const k = keyword.trim();
+    const k = debouncedKeyword.trim();
 
     const result = !k ? items : items.filter((x) => x.title.includes(k) || x.question.includes(k));
 
@@ -59,7 +61,7 @@ export default function LetterInboxSelfPage() {
         ? b.receivedAtMs - a.receivedAtMs
         : a.receivedAtMs - b.receivedAtMs;
     });
-  }, [items, keyword, sortOrder]);
+  }, [items, debouncedKeyword, sortOrder]);
 
   const handleTabChange = (next: LetterInboxTabKey) => {
     setTab(next);
@@ -76,6 +78,8 @@ export default function LetterInboxSelfPage() {
   };
 
   const isEmpty = !isLoading && !isError && filtered.length === 0;
+
+  if (isLoading) return <InboxSkeleton />;
 
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
@@ -108,13 +112,8 @@ export default function LetterInboxSelfPage() {
           </div>
 
           <div className='mt-4 space-y-[10px]'>
-            {/* 1) 로딩 */}
-            {isLoading ? (
-              <div className='flex flex-col items-center justify-center gap-8 py-50'>
-                <LoadingDots fillIntervalMs={350} />
-                <p className='ty-title2'>로딩 중...</p>
-              </div>
-            ) : /* 2) 에러 */ isError ? (
+            {/* 1) 에러 */}
+            {isError ? (
               <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
                 <p className='ty-title3'>목록을 불러오지 못했어요.</p>
                 <Button type='button' onClick={() => refetch()} className='w-full max-w-[240px]'>

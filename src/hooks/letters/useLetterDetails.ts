@@ -20,6 +20,7 @@ export function useLetterDetails(letterIds: number[]) {
       queryKey: ['letter-detail', letterId] as const,
       queryFn: () => getLetterDetail(letterId),
       enabled: uniqueIds.length > 0, // id별 enabled 대신 한번에 켜도 됨
+      staleTime: 1000 * 60 * 5,
       retry: false,
     })),
   });

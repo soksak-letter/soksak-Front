@@ -9,7 +9,7 @@ import { useLetterStore } from '@/stores/letterStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoadingPage from '../system/LoadingPage';
+import DraftSkeleton from '@/components/skeleton/DraftSkeleton';
 import { validateLetter } from '@/utils/validateLetter';
 
 const AnonDraftPage = () => {
@@ -88,6 +88,8 @@ const AnonDraftPage = () => {
 
   const formattedQuestionText = (data?.content ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
+  if (isLoading) return <DraftSkeleton title='타인에게 보내는 편지' />;
+
   return (
     <div className='relative flex flex-col'>
       <BackHeader
@@ -100,21 +102,13 @@ const AnonDraftPage = () => {
         onBack={handleBack}
       />
       <div className='flex flex-col items-start p-5 -mt-3 gap-2'>
-        {isLoading ? (
-          <>
-            <LoadingPage />
-          </>
-        ) : (
-          <>
-            <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
-              {formattedQuestionText}
-            </p>
-            <div className='flex items-center ty-body2'>
-              <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
-              <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
-            </div>
-          </>
-        )}
+        <p className='text-[var(--color-primary-heavy)] ty-title2 w-[251px] whitespace-pre-line'>
+          {formattedQuestionText}
+        </p>
+        <div className='flex items-center ty-body2'>
+          <span className='text-[var(--color-primary-500)]'>{formattedTime}</span>
+          <span className='text-[var(--color-primary-heavy)] ml-1'>후에 질문이 사라져요.</span>
+        </div>
       </div>
 
       <div className='px-4'>

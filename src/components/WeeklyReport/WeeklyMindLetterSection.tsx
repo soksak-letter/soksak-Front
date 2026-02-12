@@ -8,7 +8,7 @@ type WeeklyMindLetterCardProps = {
   body: string;
   title?: string;
   buttonText?: string;
-  onClick?: () => void; // TODO: 편지 쓰기 페이지로 이동하는 라우팅 연결
+  onClick?: () => void;
 };
 
 function WeeklyMindLetterCard({
@@ -62,7 +62,6 @@ export default function WeeklyMindLetterSection({
   return (
     <div className='w-full rounded-[8px] bg-[#DFF1FF] p-[16px]'>
       <WeeklyMindLetterCard receiverName={receiverName} body={body} onClick={onClick} />
-      {/* TODO: 다음 주 편지 작성 페이지로 이동 */}
     </div>
   );
 }

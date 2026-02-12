@@ -5,6 +5,7 @@ export function useAnonMailbox() {
   return useQuery({
     queryKey: ['anon-mailbox'],
     queryFn: getAnonMailbox,
+    staleTime: 1000 * 60,
     retry: false,
   });
 }

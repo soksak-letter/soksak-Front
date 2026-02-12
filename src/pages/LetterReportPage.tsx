@@ -98,10 +98,6 @@ const LetterReportPage = () => {
 
   //  차단하기 토글 핸들러
   const handleBlockToggle = (nextState: boolean) => {
-    // console.log('[LetterReportPage] 차단 토글 변경:', nextState);
-    // console.log('[LetterReportPage] 현재 선택된 사유:', selectedReasons);
-    // console.log('[LetterReportPage] targetUserId:', targetUserId);
-
     // 켜려고 하는데(nextState === true) && 사유가 하나도 없으면
     if (nextState && selectedReasons.length === 0) {
       // console.log('[LetterReportPage] 사유 없이 차단 시도 - 차단됨');

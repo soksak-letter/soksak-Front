@@ -46,5 +46,6 @@ export const useFriends = () =>
         throw e;
       }
     },
+    staleTime: 1000 * 60 * 2,
     retry: 0, // 일단 개발 중엔 retry 꺼서 네트워크 폭주/오해 방지 추천
   });

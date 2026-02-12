@@ -46,8 +46,8 @@ const TermCheckPage = () => {
   };
 
   return (
-    <div className='w-[375px] h-screen bg-[#FAFAFA]! mx-auto flex flex-col '>
-      <div className='[&>*]:!bg-[#FAFAFA]'>
+    <div className='w-[375px] h-screen bg-[var(--color-bg-500)]! mx-auto flex flex-col '>
+      <div className='[&>*]:!bg-[var(--color-bg-500]'>
         <BackHeader title='이용약관 동의' />
       </div>
       {/* 약관 동의 영역 */}

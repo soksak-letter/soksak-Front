@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
@@ -8,6 +9,7 @@ import SortIcon from '@/assets/icons/SortIcon.svg?react';
 import { useFriends } from '@/hooks/friend/useFriend';
 import { ENVELOPE_ASSET_MAP } from '@/constants/envelopeAssets';
 import { formatDate } from '@/utils/date';
+import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 
 type FriendInboxItem = {
   id: number;
@@ -26,6 +28,7 @@ type SortOrder = 'latest' | 'oldest';
 export default function FriendInboxPage() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
   const { data: friends = [], isLoading } = useFriends();
@@ -60,17 +63,19 @@ export default function FriendInboxPage() {
   };
 
   const filtered = useMemo(() => {
-    const k = keyword.trim().toLowerCase();
+    const k = debouncedKeyword.trim().toLowerCase();
 
     const result = !k ? items : items.filter((x) => (x.name ?? '').toLowerCase().includes(k));
 
     return [...result].sort((a, b) =>
       sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs,
     );
-  }, [items, keyword, sortOrder]);
+  }, [items, debouncedKeyword, sortOrder]);
 
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;
+
+  if (isLoading) return <InboxSkeleton title='친구' cardHeight={144} />;
 
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
@@ -109,56 +114,54 @@ export default function FriendInboxPage() {
 
         {/* 리스트 */}
         <div className='mt-4 space-y-4'>
-          {isLoading && <div className='text-sm text-gray-400'>불러오는 중...</div>}
-          {!isLoading &&
-            filtered.map((f) => {
-              const envelopeAsset = ENVELOPE_ASSET_MAP[f.paperId];
-              const EnvelopePreview = envelopeAsset?.Preview;
+          {filtered.map((f) => {
+            const envelopeAsset = ENVELOPE_ASSET_MAP[f.paperId];
+            const EnvelopePreview = envelopeAsset?.Preview;
 
-              return (
-                <button
-                  key={f.id}
-                  type='button'
-                  onClick={() => handleOpenThread(f)}
-                  className='w-full h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
-                >
-                  {/* 상단: 프로필 + 봉투 */}
-                  <div className='flex items-center justify-between gap-3'>
-                    <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
-                      {/* TODO : 프로필 사진 불러오기 */}
-                      <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
-                      <div>
-                        <p className='ty-body2'>{f.name}</p>
-                        <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
-                      </div>
-                    </div>
-
-                    {/* 오른쪽: 봉투 + 스탬프 + 날짜 */}
-                    <div className='flex flex-col gap-1'>
-                      <div className='relative h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
-                        {EnvelopePreview ? (
-                          <EnvelopePreview className='h-full w-full' />
-                        ) : (
-                          <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
-                        )}
-
-                        {f.stampUrl ? (
-                          <img
-                            src={f.stampUrl}
-                            className='absolute right-2.5 bottom-6 h-6 w-6 object-contain'
-                            draggable={false}
-                          />
-                        ) : null}
-                      </div>
-
-                      <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
-                        {f.lastDate}
-                      </div>
+            return (
+              <button
+                key={f.id}
+                type='button'
+                onClick={() => handleOpenThread(f)}
+                className='w-full h-[144px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
+              >
+                {/* 상단: 프로필 + 봉투 */}
+                <div className='flex items-center justify-between gap-3'>
+                  <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
+                    {/* TODO : 프로필 사진 불러오기 */}
+                    <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
+                    <div>
+                      <p className='ty-body2'>{f.name}</p>
+                      <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
                     </div>
                   </div>
-                </button>
-              );
-            })}
+
+                  {/* 오른쪽: 봉투 + 스탬프 + 날짜 */}
+                  <div className='flex flex-col gap-1'>
+                    <div className='relative h-25 w-27 shrink-0 flex items-center justify-center -mt-3'>
+                      {EnvelopePreview ? (
+                        <EnvelopePreview className='h-full w-full' />
+                      ) : (
+                        <div className='h-full w-full rounded-xl bg-[#F2F2F2]' />
+                      )}
+
+                      {f.stampUrl ? (
+                        <img
+                          src={f.stampUrl}
+                          className='absolute right-2.5 bottom-6 h-6 w-6 object-contain'
+                          draggable={false}
+                        />
+                      ) : null}
+                    </div>
+
+                    <div className='flex justify-end pr-2 ty-detailMedium text-[var(--color-text-normal)]'>
+                      {f.lastDate}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
 
           {isEmptyFriends && (
             <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>

@@ -10,7 +10,7 @@ const PwFindPage = () => {
     authCode,
     validation,
     apiStatus,
-    serverMessage,
+    // serverMessage,
     isAuthVerified,
     toastState, // { message, status } 또는 null
     toastVisible, // boolean

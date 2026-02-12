@@ -10,6 +10,7 @@ export const useMyInterests = (enabled: boolean) =>
     queryKey: onboardingKeys.myInterests,
     queryFn: onboardingApi.getMyInterests,
     enabled,
+    staleTime: 1000 * 60 * 5,
     select: (res) => {
       if (res.resultType === 'SUCCESS') return res.success.items;
       throw res.error;

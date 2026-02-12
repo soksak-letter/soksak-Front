@@ -2,21 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/modalStore';
 import SettingHeader from '@/components/common/SettingHeader';
 import pkg from '../../../package.json';
-import {
-  HEADER_HEIGHT,
-  PAGE_MAX_WIDTH,
-  PAGE_PADDING_X,
-  PAGE_PADDING_TOP,
-  SECTION_MARGIN_BOTTOM,
-  SECTION_TITLE_MARGIN_BOTTOM,
-  BUTTON_MARGIN_LEFT,
-  BUTTON_PADDING_Y,
-  BUTTON_LINE_HEIGHT,
-  TAB_BAR_HEIGHT,
-  SECTION_SPACING_MEDIUM,
-  SECTION_SPACING_LARGE,
-} from '@/constants/settingLayout';
 import { useAuthHandlers } from '@/hooks/auth/useAuthHandlers';
+
+const sectionTitle =
+  'font-pretendard font-semibold text-[16px] leading-[25.6px] text-black mb-[23px]';
+const menuButton =
+  'w-full text-left font-pretendard font-medium text-[16px] leading-[25.6px] text-black py-[3px] ml-[3px]';
 
 export default function SettingPage() {
   const navigate = useNavigate();
@@ -31,84 +22,28 @@ export default function SettingPage() {
       <div>
         <SettingHeader title='설정' onBack={handleBack} />
         {/* 헤더 높이만큼 여백 */}
-        <div style={{ height: HEADER_HEIGHT }} />
+        <div className='h-[50px]' />
 
         {/* 메인 컨텐츠 */}
-        <main
-          className={`mx-auto w-full`}
-          style={{
-            maxWidth: PAGE_MAX_WIDTH,
-            paddingLeft: PAGE_PADDING_X,
-            paddingRight: PAGE_PADDING_X,
-            paddingTop: PAGE_PADDING_TOP,
-            paddingBottom: `calc(${TAB_BAR_HEIGHT}px + 16px + env(safe-area-inset-bottom, 0px))`,
-          }}
-        >
+        <main className='mx-auto w-full max-w-[375px] px-[18px] pt-[44px] pb-[calc(101px+env(safe-area-inset-bottom,0px))]'>
           {/* 계정·알림 섹션 */}
-          <section style={{ marginBottom: SECTION_MARGIN_BOTTOM }}>
-            <h2
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 600,
-                fontSize: 16,
-                lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                color: '#000000',
-                marginBottom: SECTION_TITLE_MARGIN_BOTTOM,
-              }}
-            >
-              계정·알림
-            </h2>
+          <section className='mb-[50px]'>
+            <h2 className={sectionTitle}>계정·알림</h2>
             <ul className='flex flex-col gap-[9px]'>
               <li>
-                <button
-                  onClick={() => navigate('/setting/pw-reset')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
-                >
+                <button onClick={() => navigate('/setting/pw-reset')} className={menuButton}>
                   비밀번호 변경
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => navigate('/setting/alarm')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
-                >
+                <button onClick={() => navigate('/setting/alarm')} className={menuButton}>
                   알림
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => navigate('/setting/personal-consent')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
+                  className={menuButton}
                 >
                   정보 동의 설정
                 </button>
@@ -117,98 +52,39 @@ export default function SettingPage() {
           </section>
 
           {/* 서비스 정보·정책 섹션 */}
-          <section
-            style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: SECTION_SPACING_MEDIUM }}
-          >
-            <h2
-              style={{
-                fontFamily: 'Pretendard',
-                fontWeight: 600,
-                fontSize: 16,
-                lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                color: '#000000',
-                marginBottom: SECTION_TITLE_MARGIN_BOTTOM,
-              }}
-            >
-              서비스 정보 정책
-            </h2>
+          <section className='mb-[50px] mt-[53px]'>
+            <h2 className={sectionTitle}>서비스 정보 정책</h2>
             <ul className='flex flex-col gap-[9px]'>
               <li>
-                <button
-                  onClick={() => navigate('/setting/notice')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
-                >
+                <button onClick={() => navigate('/setting/notice')} className={menuButton}>
                   공지사항
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => navigate('/setting/terms')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
-                >
+                <button onClick={() => navigate('/setting/terms')} className={menuButton}>
                   서비스 이용약관
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => navigate('/setting/privacy')}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
-                >
+                <button onClick={() => navigate('/setting/privacy')} className={menuButton}>
                   개인정보 처리방침
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate('/setting/guideline')} className={menuButton}>
+                  커뮤니티 가이드라인
                 </button>
               </li>
             </ul>
           </section>
 
           {/* 계정 관리 섹션 */}
-          <section
-            style={{ marginBottom: SECTION_MARGIN_BOTTOM, marginTop: SECTION_SPACING_LARGE }}
-          >
+          <section className='mb-[50px] mt-[137px]'>
             <ul className='flex flex-col gap-[9px]'>
               <li>
                 <button
                   onClick={() => openModal('logoutConfirm', { onConfirmLogout: handleLogout })}
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
+                  className={menuButton}
                 >
                   로그아웃
                 </button>
@@ -218,17 +94,7 @@ export default function SettingPage() {
                   onClick={() =>
                     openModal('withdrawalConfirm', { onConfirmWithdraw: handleWithdraw })
                   }
-                  className='w-full text-left'
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: `${BUTTON_LINE_HEIGHT}px`,
-                    color: '#000000',
-                    paddingTop: BUTTON_PADDING_Y,
-                    paddingBottom: BUTTON_PADDING_Y,
-                    marginLeft: BUTTON_MARGIN_LEFT,
-                  }}
+                  className={menuButton}
                 >
                   회원탈퇴
                 </button>
@@ -237,10 +103,7 @@ export default function SettingPage() {
           </section>
 
           {/* 버전 정보 */}
-          <section
-            className='mt-12 flex flex-row items-center justify-between w-full'
-            style={{ maxWidth: PAGE_MAX_WIDTH, paddingLeft: 8, paddingRight: 8 }}
-          >
+          <section className='mt-12 flex flex-row items-center justify-between w-full max-w-[375px] px-2'>
             <span className='font-pretendard font-medium text-[14px] leading-[22.4px] text-black/60 min-w-[40px]'>
               버전
             </span>

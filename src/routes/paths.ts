@@ -10,7 +10,7 @@ export const ROUTES = {
     profile: '/auth/profile-setup',
   },
   report: {
-    keyword: '/report/keyword-letter', // TODO: 수정 필요
+    keyword: '/report/keyword-letter',
   },
   setting: {
     setting: '/setting',

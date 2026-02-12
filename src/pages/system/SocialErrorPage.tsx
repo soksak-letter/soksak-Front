@@ -16,7 +16,7 @@ export default function SocialErrorPage() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center bg-white px-4'>
+    <div className='flex h-screen flex-col items-center justify-center bg-[var(--color-bg-500)] px-4'>
       {/* 네트워크 에러와 동일한 아이콘 사용으로 일관성 유지 */}
       <SadModalIcon className='mb-6 h-[87px] w-[82px]' />
 
