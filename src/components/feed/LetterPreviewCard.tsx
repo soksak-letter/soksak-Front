@@ -190,7 +190,8 @@ function areEqual(prevProps: LetterPreviewCardProps, nextProps: LetterPreviewCar
     prevProps.likes === nextProps.likes &&
     prevProps.isLiked === nextProps.isLiked &&
     prevProps.disabled === nextProps.disabled &&
-    prevProps.isLikeLoading === nextProps.isLikeLoading
+    prevProps.isLikeLoading === nextProps.isLikeLoading &&
+    prevProps.onToggleLike === nextProps.onToggleLike
   );
 }
 
