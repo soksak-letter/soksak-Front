@@ -67,7 +67,7 @@ function calcSegmentHeights(
   if (sumPercent <= 0 || available <= 0) return new Array(n).fill(0);
 
   // 1) 각 세그먼트의 "실수 높이"
-  const raws = segments.map((s) => (s.percent / sumPercent) * available);
+  const raws = segments.map((s) => ((s.percent ?? 0) / sumPercent) * available);
 
   // 2) 일단 내림으로 픽셀 배정
   const base = raws.map((x) => Math.floor(x));
