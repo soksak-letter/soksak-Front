@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { LoadingDots } from '@/components/LoadingDots';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInboxTabs';
@@ -102,6 +104,25 @@ export default function LetterInboxOtherPage() {
     navigate(`/letter/thread/${item.sessionId}`);
   };
 
+  const PAGE_SIZE = 10;
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+  const hasMore = displayCount < filtered.length;
+
+  const handleLoadMore = useCallback(() => {
+    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, filtered.length));
+  }, [filtered.length]);
+
+  const sentinelRef = useIntersectionObserver({
+    onIntersect: handleLoadMore,
+    enabled: hasMore,
+    resetKey: displayCount,
+  });
+
+  const visibleItems = useMemo(
+    () => filtered.slice(0, displayCount),
+    [filtered, displayCount],
+  );
+
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
   if (isLoading) return <InboxSkeleton />;
@@ -109,7 +130,6 @@ export default function LetterInboxOtherPage() {
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='편지함' />
-
       <main className='px-5 pb-[95px]'>
         <div className='mx-auto w-full max-w-[343px]'>
           <LetterInboxTabs value={tab} onChange={handleTabChange} />
@@ -145,7 +165,7 @@ export default function LetterInboxOtherPage() {
               </div>
             ) : (
               /* 3) 정상 */ <>
-                {filtered.map((it) => {
+                {visibleItems.map((it) => {
                   const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
                   const EnvelopePreview = envelopeAsset?.Preview;
 
@@ -205,6 +225,12 @@ export default function LetterInboxOtherPage() {
                     검색 결과가 없어요
                   </div>
                 )}
+                {hasMore && (
+                  <div className='flex justify-center py-4'>
+                    <LoadingDots fillIntervalMs={350} />
+                  </div>
+                )}
+                <div ref={sentinelRef} className='h-1' />
               </>
             )}
           </div>
