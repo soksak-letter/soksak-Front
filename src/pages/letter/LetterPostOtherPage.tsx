@@ -25,19 +25,25 @@ type PostItem = {
 
 export default function LetterPostOtherPage() {
   const navigate = useNavigate();
+
   const { sessionId: sessionIdParam } = useParams();
   const sessionId = sessionIdParam ? Number(sessionIdParam) : 0;
 
   const setFlow = useThreadFlowStore((s) => s.setFlow);
   const resetFlow = useThreadFlowStore((s) => s.resetFlow);
   const senderName = useThreadFlowStore((s) => s.senderName) ?? '익명';
-  const letterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
+  // const letterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
 
   const { data, isLoading, isError, refetch } = useAnonThread(sessionId);
 
   const formattedQuestionTitle = (data?.firstQuestion ?? '').replace(/^질문\s*#\d+:\s*/, '');
 
-  const remainingCount = useMemo(() => Math.max(0, 10 - letterCount), [letterCount]);
+  const computedLetterCount = useMemo(() => data?.letters?.length ?? 0, [data?.letters]);
+
+  const remainingCount = useMemo(
+    () => Math.max(0, 10 - computedLetterCount),
+    [computedLetterCount],
+  );
 
   const posts = useMemo<PostItem[]>(() => {
     const letters = data?.letters ?? [];
@@ -56,13 +62,15 @@ export default function LetterPostOtherPage() {
 
   // store에 컨텍스트 동기화 (새로고침 대비, 다음 페이지에서 사용하기 위해)
   useEffect(() => {
+    if (!data) return;
+
     setFlow({
       target: 'other',
       sessionId,
       senderName: senderName,
-      letterCount,
+      letterCount: computedLetterCount,
     });
-  }, [setFlow, sessionId, senderName, letterCount]);
+  }, [data, setFlow, sessionId, senderName, computedLetterCount]);
 
   // 레인 분리 + 각 레인 내부는 시간순 유지
   const leftLane = useMemo(() => posts.filter((p) => p.isMine === false), [posts]);
@@ -86,6 +94,18 @@ export default function LetterPostOtherPage() {
 
   const handleWriteReply = () => {
     // 우측 하단 플로팅 펜: 답장 작성(익명 상대에게 보내는 편지 작성)
+    if (remainingCount <= 0) {
+      const lastPost = posts[posts.length - 1];
+
+      navigate(`/letter/sent-transition/${sessionId}`, {
+        state: {
+          paperId: lastPost.paperId,
+          stampUrl: lastPost.stampUrl,
+          stampId: lastPost.stampId,
+        },
+      });
+      return;
+    }
     navigate('/letter/other/draft', { state: { remainingCount } });
     // senderName, sessionId는 letterContext store에 저장되어 있다.
   };
@@ -98,7 +118,7 @@ export default function LetterPostOtherPage() {
   };
 
   return (
-    <div className='min-h-screen bg-[#fafafa]'>
+    <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <BackHeader title='익명 편지' onBack={handleBack} />
 
       <main className='px-5 pb-[110px]'>
