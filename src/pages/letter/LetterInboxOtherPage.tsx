@@ -102,7 +102,11 @@ export default function LetterInboxOtherPage() {
     navigate(`/letter/thread/${item.sessionId}`);
   };
 
-  const isEmpty = !isLoading && !isError && filtered.length === 0;
+  const hasKeyword = debouncedKeyword.trim().length > 0;
+
+  const isSearchEmpty = !isLoading && !isError && hasKeyword && filtered.length === 0;
+
+  const isInboxEmpty = !isLoading && !isError && !hasKeyword && items.length === 0;
 
   if (isLoading) return <InboxSkeleton />;
 
@@ -200,9 +204,15 @@ export default function LetterInboxOtherPage() {
                     </button>
                   );
                 })}
-                {isEmpty && (
+                {isSearchEmpty && (
                   <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
                     검색 결과가 없어요
+                  </div>
+                )}
+
+                {isInboxEmpty && (
+                  <div className='mt-4 flex items-center justify-center py-[180px] ty-body3 text-[var(--color-text-assistive)]'>
+                    받은 편지가 없어요
                   </div>
                 )}
               </>
