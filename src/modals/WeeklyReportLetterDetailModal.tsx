@@ -7,6 +7,7 @@ import { useLetterDetail } from '@/hooks/letters/useLetterDetail';
 
 import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
+import { useEffect } from 'react';
 
 export default function WeeklyReportLetterDetailModal() {
   const closeModal = useModalStore((s) => s.closeModal);
@@ -14,11 +15,13 @@ export default function WeeklyReportLetterDetailModal() {
 
   const letterId = payload?.letterId;
 
-  // 여기서는 훅 안 씀. 조건부 return OK
-  if (!letterId || !Number.isFinite(letterId)) {
-    closeModal();
-    return null;
-  }
+  const isInvalid = !letterId || !Number.isFinite(letterId);
+
+  useEffect(() => {
+    if (isInvalid) closeModal();
+  }, [isInvalid, closeModal]);
+
+  if (isInvalid) return null;
 
   return (
     <ModalFrame>
