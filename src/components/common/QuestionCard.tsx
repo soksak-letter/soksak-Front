@@ -1,6 +1,8 @@
 import { ROUTES } from '@/routes/paths';
 import { useNavigate } from 'react-router-dom';
 
+import Soksakletter from '@/assets/icons/Soksakletter.svg?react';
+
 interface QuestionCardProps {
   question: string;
   timeLeft: string;
@@ -28,24 +30,25 @@ export default function QuestionCard({ question, timeLeft, profileImageUrl }: Qu
         </div>
 
         {/* 프로필 이미지 */}
-        {profileImageUrl && (
-          <div
-            onClick={handleMypage}
-            className='flex-shrink-0 rounded-full overflow-hidden cursor-pointer'
-            style={{
-              width: '47px',
-              height: '48px',
-              border: '0.5px solid #E2E2E2',
-            }}
-          >
-            <img
-              src={profileImageUrl}
-              alt='프로필'
-              className='w-full h-full object-cover cursor-pointer'
-              onClick={handleMypage}
-            />
-          </div>
-        )}
+        <div
+          onClick={handleMypage}
+          className={`flex-shrink-0 rounded-full overflow-hidden cursor-pointer ${
+            !profileImageUrl ? 'bg-[var(--color-primary-100)]' : ''
+          }`}
+          style={{
+            width: '47px',
+            height: '48px',
+            border: '0.5px solid #E2E2E2',
+          }}
+        >
+          {profileImageUrl ? (
+            <img src={profileImageUrl} alt='프로필' className='w-full h-full object-cover' />
+          ) : (
+            <div className='w-full h-full flex items-center justify-center'>
+              <Soksakletter className='w-6 h-6' />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

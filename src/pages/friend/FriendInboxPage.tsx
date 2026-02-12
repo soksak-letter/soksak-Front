@@ -14,6 +14,7 @@ import InboxSkeleton from '@/components/skeleton/InboxSkeleton';
 type FriendInboxItem = {
   id: number;
   friendUserId: number;
+  profileImageUrl: string | null;
   name: string;
   exchangeCount: number;
   lastDate: string; // '2026.1.3'
@@ -31,6 +32,9 @@ export default function FriendInboxPage() {
   const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
+  // 컴포넌트가 처음 생성될 때 한 번만 현재 시간을 저장 (캐시 버스터 고정)
+  const cacheBuster = useMemo(() => Date.now(), []);
+
   const { data: friends = [], isLoading } = useFriends();
 
   const items = useMemo<FriendInboxItem[]>(
@@ -42,6 +46,7 @@ export default function FriendInboxPage() {
         return {
           id: f.id,
           friendUserId: f.friendUserId,
+          profileImageUrl: f.profileImageUrl,
           name: (f.nickname ?? '').trim(),
           exchangeCount: f.letterCount,
 
@@ -128,8 +133,19 @@ export default function FriendInboxPage() {
                 {/* 상단: 프로필 + 봉투 */}
                 <div className='flex items-center justify-between gap-3'>
                   <div className='flex flex-col items-start gap-3 mt-2 ml-1'>
-                    {/* TODO : 프로필 사진 불러오기 */}
-                    <div className='h-10 w-10 rounded-full bg-[#EDEDED]' />
+                    {/* 프로필 이미지 원형 컨테이너 */}
+                    <div className='h-12 w-12 shrink-0 rounded-full bg-[var(--color-primary-100)] overflow-hidden flex items-center justify-center'>
+                      {f.profileImageUrl ? (
+                        <img
+                          src={`${f.profileImageUrl}?t=${cacheBuster}`}
+                          alt='프로필'
+                          className='w-full h-full object-cover '
+                        />
+                      ) : (
+                        /* 이미지가 없을 때 보여줄 빈 화면 */
+                        <div className='w-full h-full bg-[var(--color-primary-100)]' />
+                      )}
+                    </div>
                     <div>
                       <p className='ty-body2'>{f.name}</p>
                       <p className='mt-1 ty-detailMedium'>편지를 나눈 횟수 {f.exchangeCount}회</p>
