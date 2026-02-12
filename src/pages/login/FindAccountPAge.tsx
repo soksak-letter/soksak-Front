@@ -58,8 +58,8 @@ const FindAccountPage = () => {
       return;
     }
 
-    // 2. 탭의 첫 화면(메인) 상태에서 뒤로가기를 누르면 서비스 진입점(로그인 등)으로 탈출
-    navigate('/auth/signin');
+    // 2. 탭의 첫 화면(메인) 상태에서 뒤로가기를 누르면 이전 페이지로 복귀
+    navigate(-1);
   };
 
   return (
