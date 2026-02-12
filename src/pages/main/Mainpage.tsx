@@ -92,7 +92,7 @@ const MainPage = () => {
           timeLeft={timeLeft}
           profileImageUrl={
             homeSummary?.user?.profileImageUrl
-              ? `${homeSummary.user.profileImageUrl}?t=${profileImageCacheBuster}`
+              ? `${homeSummary.user.profileImageUrl}${homeSummary.user.profileImageUrl.includes('?') ? '&' : '?'}t=${profileImageCacheBuster}`
               : undefined
           }
         />

@@ -141,9 +141,9 @@ export default function FriendInboxPage() {
                     <div className='h-12 w-12 shrink-0 rounded-full bg-[var(--color-primary-100)] overflow-hidden flex items-center justify-center'>
                       {f.profileImageUrl ? (
                         <img
-                          src={`${f.profileImageUrl}?t=${cacheBuster}`}
+                          src={`${f.profileImageUrl}${f.profileImageUrl.includes('?') ? '&' : '?'}t=${cacheBuster}`}
                           alt='프로필'
-                          className='w-full h-full object-cover '
+                          className='w-full h-full object-cover'
                         />
                       ) : (
                         /* 이미지가 없을 때 보여줄 빈 화면 */
