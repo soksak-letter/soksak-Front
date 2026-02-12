@@ -11,7 +11,7 @@ export type ModalType =
   | 'logoutConfirm'
   | 'withdrawalConfirm'
   | 'conversationRemaining'
-  | 'letterDetail' // keywordPage에서 편지내용
+  | 'weeklyReportLetterDetail'
   | 'storageConfirm'
   | null;
 
@@ -51,7 +51,7 @@ export type ModalPayload = {
   onContinueConversation?: () => void;
   onStopConversation?: () => void;
 
-  // letterDetail (편지 상세 모달에서 쓸 데이터)
+  // weeklyReportLetterDetail (편지 상세 모달에서 쓸 데이터)
   letterId?: number;
   senderName?: string;
 

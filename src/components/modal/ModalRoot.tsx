@@ -49,7 +49,7 @@ export default function ModalRoot() {
     case 'storageConfirm':
       return <StorageConfirmModal />;
 
-    case 'letterDetail':
+    case 'weeklyReportLetterDetail':
       return <WeeklyReportLetterDetailModal />;
 
     default:
