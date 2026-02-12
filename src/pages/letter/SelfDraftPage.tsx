@@ -189,7 +189,7 @@ const SelfDraftPage = () => {
   if (isLoading) return <DraftSkeleton title='나에게 보내는 편지' />;
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col bg-[var(--color-bg-500)] min-h-screen'>
       <BackHeader
         title='나에게 보내는 편지'
         rightElement={
