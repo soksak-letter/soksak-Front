@@ -7,6 +7,7 @@ export default function LetterInboxTabs({
   onChange,
 }: {
   value: LetterInboxTabKey;
+  // eslint-disable-next-line no-unused-vars
   onChange: (v: LetterInboxTabKey) => void;
 }) {
   return (
