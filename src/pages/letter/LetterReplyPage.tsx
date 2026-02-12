@@ -49,7 +49,10 @@ export default function LetterReplyPage() {
   const navState = (location.state ?? null) as LetterReplyNavState | null;
 
   const isMine = navState?.isMine ?? false;
-  const remainingCount = navState?.remainingCount ?? 0;
+  const storedLetterCount = useThreadFlowStore((s) => s.letterCount) ?? 0;
+  const fallbackRemaining = Math.max(0, 10 - storedLetterCount);
+
+  const remainingCount = navState?.remainingCount ?? fallbackRemaining;
 
   const view = useMemo<ReplyData | null>(() => {
     if (!data) return null;
@@ -100,6 +103,22 @@ export default function LetterReplyPage() {
   };
 
   const handleReply = () => {
+    if (!view) {
+      showToast('편지를 불러오는 중이에요. 잠시만 기다려주세요.', 'error');
+      return;
+    }
+
+    if (remainingCount <= 0) {
+      navigate(`/letter/sent-transition/${sessionId}`, {
+        state: {
+          paperId: view.paperId,
+          stampUrl: view.stampUrl,
+          stampId: view.stampId,
+        },
+      });
+      return;
+    }
+
     navigate('/letter/other/draft', { state: { remainingCount } });
   };
 
