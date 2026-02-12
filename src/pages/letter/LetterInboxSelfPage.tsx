@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { LoadingDots } from '@/components/LoadingDots';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
 import LetterInboxTabs, { type LetterInboxTabKey } from '@/components/LetterInboxTabs';
@@ -77,6 +79,29 @@ export default function LetterInboxSelfPage() {
     });
   };
 
+  const PAGE_SIZE = 10;
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setDisplayCount(PAGE_SIZE);
+  }, [debouncedKeyword, sortOrder]);
+  const hasMore = displayCount < filtered.length;
+
+  const handleLoadMore = useCallback(() => {
+    setDisplayCount((prev) => Math.min(prev + PAGE_SIZE, filtered.length));
+  }, [filtered.length]);
+
+  const sentinelRef = useIntersectionObserver({
+    onIntersect: handleLoadMore,
+    enabled: hasMore,
+    resetKey: displayCount,
+  });
+
+  const visibleItems = useMemo(
+    () => filtered.slice(0, displayCount),
+    [filtered, displayCount],
+  );
+
   const isEmpty = !isLoading && !isError && filtered.length === 0;
 
   if (isLoading) return <InboxSkeleton />;
@@ -84,7 +109,6 @@ export default function LetterInboxSelfPage() {
   return (
     <div className='min-h-screen bg-[var(--color-bg-500)]'>
       <TitleHeader title='편지함' />
-
       <main className='px-5 pb-[95px]'>
         <div className='mx-auto w-full max-w-[343px]'>
           <LetterInboxTabs value={tab} onChange={handleTabChange} />
@@ -97,6 +121,7 @@ export default function LetterInboxSelfPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder='키워드를 검색해보세요'
+                aria-label='편지 검색'
                 className='w-full bg-transparent ty-body5 outline-none placeholder:text-[var(--color-text-assistive)]'
               />
             </div>
@@ -105,13 +130,13 @@ export default function LetterInboxSelfPage() {
               type='button'
               onClick={() => setSortOrder((p) => (p === 'latest' ? 'oldest' : 'latest'))}
               className='h-11 w-11 flex items-center justify-center'
-              aria-label='정렬 변경'
+              aria-label={`정렬 변경, 현재 ${sortOrder === 'latest' ? '최신순' : '오래된순'}`}
             >
               <SortIcon className='w-[24px] h-[24px] text-[var(--color-grey-500)]' />
             </button>
           </div>
 
-          <div className='mt-4 space-y-[10px]'>
+          <div role='feed' aria-label='내 편지 목록' aria-busy={hasMore} className='mt-4 space-y-[10px]'>
             {/* 1) 에러 */}
             {isError ? (
               <div className='flex flex-col items-center justify-center gap-8 py-30 text-center'>
@@ -126,7 +151,7 @@ export default function LetterInboxSelfPage() {
               </div>
             ) : (
               /* 4) 정상 */ <>
-                {filtered.map((it) => {
+                {visibleItems.map((it) => {
                   const envelopeAsset = ENVELOPE_ASSET_MAP[it.paperId];
                   const EnvelopePreview = envelopeAsset?.Preview;
 
@@ -135,6 +160,7 @@ export default function LetterInboxSelfPage() {
                       key={it.letterId}
                       type='button'
                       onClick={() => handleOpenLetter(it.letterId)}
+                      aria-label={`${it.question}: ${it.title}, ${it.receivedAt}`}
                       className='relative w-full h-[129px] rounded-xl bg-white p-4 text-left shadow-[0_8px_24px_rgba(0,0,0,0.06)]'
                     >
                       <div className='flex items-start justify-between gap-3'>
@@ -177,6 +203,12 @@ export default function LetterInboxSelfPage() {
                     </button>
                   );
                 })}
+                {hasMore && (
+                  <div role='status' aria-label='편지 불러오는 중' className='flex justify-center py-4'>
+                    <LoadingDots fillIntervalMs={350} />
+                  </div>
+                )}
+                <div ref={sentinelRef} aria-hidden='true' className='h-1' />
               </>
             )}
           </div>
