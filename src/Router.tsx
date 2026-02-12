@@ -23,7 +23,6 @@ import FriendRequestPage from './pages/friend/FriendRequestPage';
 import FriendInboxPage from './pages/friend/FriendInboxPage';
 import FriendPostPage from './pages/friend/FriendPostPage';
 import FriendDraftPage from './pages/friend/FriendDraftPage';
-import FriendSentTransitionPage from './pages/friend/FriendSentTransitionPage';
 
 import LetterDecoPage from './pages/letter/LetterDecoPage';
 import LetterReportPage from './pages/letter/LetterReportPage';
@@ -73,6 +72,7 @@ import TermsOfServicePage from './pages/setting/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/setting/PrivacyPolicyPage';
 import CommunityGuidelinePage from './pages/setting/CommunityGuidelinePage';
 import FindAccountPage from './pages/login/FindAccountPAge';
+import LetterSentTransitionPage from './pages/letter/LetterSentTransitionPage';
 
 const router = createBrowserRouter([
   {
@@ -96,7 +96,7 @@ const router = createBrowserRouter([
                   { path: 'inbox-other', element: <LetterInboxOtherPage /> },
                   { path: 'inbox-self', element: <LetterInboxSelfPage /> },
                   { path: 'other-stop', element: <LetterOtherStopPage /> },
-                  { path: 'sent-transition/:sessionId', element: <FriendSentTransitionPage /> },
+                  { path: 'sent-transition/:sessionId', element: <LetterSentTransitionPage /> },
                 ],
               },
               {

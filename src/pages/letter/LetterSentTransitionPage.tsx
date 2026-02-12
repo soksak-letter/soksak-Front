@@ -17,7 +17,7 @@ type SentTransitionLocationState = {
   // totalCount?: number;
 };
 
-export default function FriendSentTransitionPage() {
+export default function LetterSentTransitionPage() {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
   const { toast, visible, showToast, closeToast } = useToast();
