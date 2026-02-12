@@ -12,7 +12,6 @@ import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 import { useGlobalToast } from '@/components/toast/ToastProvider';
 import { useMyProfile } from '@/hooks/useMyProfile';
-import { useLetterStore } from '@/stores/letterStore';
 
 const LetterReportPage = () => {
   const navigate = useNavigate();
@@ -22,14 +21,13 @@ const LetterReportPage = () => {
   // state에서 letterId와 stamp 꺼내기
   const letterId = location.state?.letterId as number | undefined;
   const stampUrl = location.state?.stampUrl;
-  const activeTarget = useLetterStore((s) => s.activeTarget);
   const contextTarget = useThreadFlowStore((s) => s.target);
 
   const friendName = useThreadFlowStore((s) => s.friendName ?? '친구');
   const senderName = useThreadFlowStore((s) => s.senderName ?? '익명');
 
-  // 최종 타겟 결정 (컨텍스트에 있으면 쓰고, 없으면 작성 스토어 참고)
-  const finalTarget = contextTarget || activeTarget;
+  // 최종 타겟 결정 (컨텍스트에 있으면 참고)
+  const finalTarget = contextTarget;
 
   // 최종 닉네임 결정
   const displayNickname = finalTarget === 'friend' ? friendName : senderName;

@@ -11,6 +11,7 @@ import { DEFAULT_FONT_ID, FONT_ASSET_MAP } from '@/constants/fontAssets';
 import { DEFAULT_PAPER_ID, PAPER_ASSET_MAP } from '@/constants/paperAssets';
 import { useLetterStore } from '@/stores/letterStore';
 import { getParseSentAt } from '@/utils/date';
+import { useThreadFlowStore } from '@/stores/letterContextStore';
 
 type ReplyData = {
   title: string;
@@ -35,6 +36,8 @@ export default function FriendReplyPage() {
   const { letterId: letterIdParam, friendId: friendIdParam } = useParams();
   const letterId = letterIdParam ? Number(letterIdParam) : 0;
   const friendId = friendIdParam ? Number(friendIdParam) : 0;
+  //스토어에 저장
+  const { setFlow } = useThreadFlowStore();
 
   const { data, isLoading, isError, refetch } = useLetterDetail(letterId);
   const { setActiveTarget, patchDraft } = useLetterStore();
@@ -76,6 +79,13 @@ export default function FriendReplyPage() {
     return <NotFoundPage />;
 
   const handleReport = () => {
+    // 스토어에 신고 대상 정보 저장
+    setFlow({
+      target: 'friend',
+      friendName: friendName, // 현재 페이지에서 쓰고 있는 친구 이름
+      senderId: friendId,
+    });
+
     navigate('/letter/report', {
       state: {
         letterId,
