@@ -7,7 +7,7 @@ function GlobalToast() {
   if (!toast) return null;
 
   return (
-    <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-100'>
+    <div className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-[999]'>
       <ToastPopup
         status={toast.status}
         message={toast.message}
