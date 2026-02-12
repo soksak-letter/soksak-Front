@@ -206,7 +206,7 @@ export default function KeywordLetterPage() {
 
   // 모달 핸들러
   const handleOpenDetail = (item: KeywordLetterItem) => {
-    openModal('letterDetail', {
+    openModal('weeklyReportLetterDetail', {
       letterId: item.letterId,
     });
   };
