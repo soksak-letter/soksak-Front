@@ -25,14 +25,6 @@ function LetterPreviewCard({
   disabled,
   isLikeLoading,
 }: LetterPreviewCardProps) {
-  console.log('LetterPreviewCard 렌더', {
-    letterId,
-    title,
-    likes,
-    isLiked,
-    isLikeLoading,
-    disabled,
-  });
   const [isExpanded, setIsExpanded] = useState(false);
 
   const theme = PAPER_THEME[paperId] ?? DEFAULT_THEME;
@@ -128,7 +120,6 @@ function LetterPreviewCard({
         <div className='flex items-center gap-1 justify-end'>
           <button
             onClick={() => {
-              console.log('LetterPreviewCard 좋아요 클릭', { letterId, isLiked });
               if (onToggleLike) {
                 onToggleLike(letterId, isLiked);
               }
