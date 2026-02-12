@@ -10,6 +10,7 @@ export function useDailyQuestion() {
   return useQuery({
     queryKey: ['daily-question', todayKstKey],
     queryFn: () => getDailyQuestion(nowKstIso),
+    staleTime: 1000 * 60 * 5,
     retry: false,
   });
 }

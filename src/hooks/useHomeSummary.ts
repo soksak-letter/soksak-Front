@@ -11,6 +11,7 @@ export function useHomeSummary() {
   const query = useQuery({
     queryKey: ['home-summary', todayKstKey],
     queryFn: () => getHomeSummary(nowKstIso),
+    staleTime: 1000 * 60 * 2,
     retry: false,
     select: (res) => {
       if (res.resultType !== 'SUCCESS' || !res.success) {

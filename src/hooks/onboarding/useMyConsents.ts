@@ -24,6 +24,7 @@ export function useMyConsents(enabled: boolean = true) {
       throw res.error;
     },
     enabled,
+    staleTime: 1000 * 60 * 5,
     retry: 0,
   });
 }

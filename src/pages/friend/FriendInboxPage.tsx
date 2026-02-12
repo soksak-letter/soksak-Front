@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
@@ -27,6 +28,7 @@ type SortOrder = 'latest' | 'oldest';
 export default function FriendInboxPage() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest'); // 최신순 기본
 
   const { data: friends = [], isLoading } = useFriends();
@@ -61,14 +63,14 @@ export default function FriendInboxPage() {
   };
 
   const filtered = useMemo(() => {
-    const k = keyword.trim().toLowerCase();
+    const k = debouncedKeyword.trim().toLowerCase();
 
     const result = !k ? items : items.filter((x) => (x.name ?? '').toLowerCase().includes(k));
 
     return [...result].sort((a, b) =>
       sortOrder === 'latest' ? b.lastAtMs - a.lastAtMs : a.lastAtMs - b.lastAtMs,
     );
-  }, [items, keyword, sortOrder]);
+  }, [items, debouncedKeyword, sortOrder]);
 
   const isEmptyFriends = !isLoading && items.length === 0;
   const isEmptySearch = !isLoading && items.length > 0 && filtered.length === 0;

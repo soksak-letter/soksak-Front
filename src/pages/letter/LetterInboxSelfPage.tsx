@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useNavigate } from 'react-router-dom';
 
 import TitleHeader from '@/components/common/headers/TitleHeader';
@@ -31,6 +32,7 @@ export default function LetterInboxSelfPage() {
 
   const [tab, setTab] = useState<LetterInboxTabKey>('received');
   const [keyword, setKeyword] = useState('');
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [sortOrder, setSortOrder] = useState<SortOrder>('latest');
 
   // 서버 응답 -> 화면 아이템으로 변환 (isUnread 제외)
@@ -50,7 +52,7 @@ export default function LetterInboxSelfPage() {
   }, [data]);
 
   const filtered = useMemo(() => {
-    const k = keyword.trim();
+    const k = debouncedKeyword.trim();
 
     const result = !k ? items : items.filter((x) => x.title.includes(k) || x.question.includes(k));
 
@@ -59,7 +61,7 @@ export default function LetterInboxSelfPage() {
         ? b.receivedAtMs - a.receivedAtMs
         : a.receivedAtMs - b.receivedAtMs;
     });
-  }, [items, keyword, sortOrder]);
+  }, [items, debouncedKeyword, sortOrder]);
 
   const handleTabChange = (next: LetterInboxTabKey) => {
     setTab(next);

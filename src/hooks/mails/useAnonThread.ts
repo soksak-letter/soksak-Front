@@ -6,6 +6,7 @@ export function useAnonThread(sessionId: number) {
     queryKey: ['anon-thread', sessionId],
     queryFn: () => getAnonThread(sessionId),
     enabled: Number.isFinite(sessionId) && sessionId > 0,
+    staleTime: 1000 * 30,
     retry: false,
   });
 }

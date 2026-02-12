@@ -5,6 +5,7 @@ export function useSelfMailbox() {
   return useQuery({
     queryKey: ['self-mailbox'],
     queryFn: getSelfMailbox,
+    staleTime: 1000 * 60,
     retry: false,
   });
 }
