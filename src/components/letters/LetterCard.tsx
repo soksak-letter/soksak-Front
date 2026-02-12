@@ -1,7 +1,7 @@
 import React from 'react';
 
 type LetterCardProps = {
-  PaperBg: React.ComponentType<{ className?: string }>;
+  paperSrc?: string;
   font: string;
   fontStyle: {
     titleSize: number;
@@ -19,7 +19,7 @@ const CARD_H = 493.72;
 const PADDING_X = 40;
 const PADDING_BOTTOM = 24;
 
-const LetterCard = ({ PaperBg, font, fontStyle, value, className }: LetterCardProps) => {
+const LetterCard = ({ paperSrc, font, fontStyle, value, className }: LetterCardProps) => {
   const titleTextStyle: React.CSSProperties = {
     fontFamily: `${font}, var(--font-pretendard)`,
     fontSize: fontStyle.titleSize,
@@ -45,9 +45,12 @@ const LetterCard = ({ PaperBg, font, fontStyle, value, className }: LetterCardPr
           fontFamily: font,
         }}
       >
-        <div className='absolute inset-0 pointer-events-none'>
-          {PaperBg && <PaperBg className='absolute inset-0 w-full h-full' />}
-        </div>
+        <div
+          className='absolute inset-0 pointer-events-none bg-no-repeat bg-cover'
+          style={{
+            backgroundImage: paperSrc ? `url(${paperSrc})` : undefined,
+          }}
+        />
 
         {/* 텍스트 레이어 */}
         <div

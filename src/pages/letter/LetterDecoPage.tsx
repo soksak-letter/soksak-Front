@@ -60,8 +60,6 @@ function LetterDecoPage() {
     (style.paperId != null ? PAPER_ASSET_MAP[style.paperId] : undefined) ??
     PAPER_ASSET_MAP[DEFAULT_PAPER_ID];
 
-  const PaperBg = paperAsset.Preview;
-
   const envelopeAsset =
     (style.paperId != null ? ENVELOPE_ASSET_MAP[style.paperId] : undefined) ??
     ENVELOPE_ASSET_MAP[DEFAULT_PAPER_ID];
@@ -178,7 +176,7 @@ function LetterDecoPage() {
           </div>
         ) : (
           <LetterCard
-            PaperBg={PaperBg}
+            paperSrc={paperAsset.src}
             font={fontAsset.fontFamily}
             fontStyle={fontAsset.style}
             value={{ title: draft.title, content: draft.content }}

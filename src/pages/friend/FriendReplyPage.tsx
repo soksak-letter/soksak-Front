@@ -132,7 +132,7 @@ export default function FriendReplyPage() {
 
       {/* 편지지 컴포넌트 */}
       <LetterCard
-        PaperBg={assets.paper.Preview}
+        paperSrc={assets.paper.src}
         font={assets.font.fontFamily}
         fontStyle={assets.font.style}
         value={{ title: view.title, content: view.content }}
